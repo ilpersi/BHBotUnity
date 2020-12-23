@@ -167,7 +167,7 @@ public class BHBot {
         logger = BHBotLogger.create();
 
         // we need to initialize the CueManager after that we started log4j, so that the cue manager can use it to log
-        cues = new CueManager();
+        cues = new CueManager(bot.settings.useUnityEngine);
 
         // As we have initialized the cues successfully we also build familiar MD5 details
         EncounterManager.buildMD5();

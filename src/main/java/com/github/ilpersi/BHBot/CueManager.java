@@ -35,8 +35,8 @@ class CueManager {
     private final Map<String, Cue> loadedCues = new HashMap<>();
     private final ClassLoader classLoader = CueManager.class.getClassLoader();
 
-    CueManager() {
-        buildCues();
+    CueManager(boolean useUnityEngine) {
+        buildCues(useUnityEngine);
     }
 
     private void addCue(String cueKey, String cuePath, Bounds cueBounds) {
@@ -226,7 +226,7 @@ class CueManager {
         return totalLoaded;
     }
 
-    private void buildCues() {
+    private void buildCues(boolean useUnityEngine) {
         addCue("Main", "cues/cueMainScreen.png", new Bounds(90, 5, 100, 20));
         addCue("Login", "cues/cueLogin.png", new Bounds(270, 260, 330, 300)); // login window (happens seldom)
         addCue("AreYouThere", "cues/cueAreYouThere.png", Bounds.fromWidthHeight(250, 240, 300, 45));
@@ -600,5 +600,11 @@ class CueManager {
         newFamCnt += loadCueFolder("cues/familiars/03 Epic", null, false, new Bounds(145, 50, 575, 125));
         newFamCnt += loadCueFolder("cues/familiars/04 Legendary", null, false, new Bounds(145, 50, 575, 125));
         BHBot.logger.debug("Found " + newFamCnt + " familiar cues.");
+
+        if (useUnityEngine) updateUnityCues();
+    }
+
+    void updateUnityCues() {
+
     }
 }
