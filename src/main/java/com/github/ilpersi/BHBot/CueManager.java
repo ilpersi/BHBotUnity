@@ -611,13 +611,13 @@ class CueManager {
      */
     void updateUnityCues() {
         // Main screen cues
-        addCue("OrangeSelect", "unitycues/mainScreen/cueOrangeSelect.png", Bounds.fromWidthHeight(455, 410, 95, 30));
-
+        addCue("Main", "unitycues/mainScreen/cueMainScreen.png", new Bounds(90, 5, 100, 20)); // Gem cue used to identify the main screen
 
         // Blockers
         addCue("News", "unitycues/blockers/cueNewsPopup.png", Bounds.fromWidthHeight(345, 70, 110, 45)); // news popup
 
         // Common
+        addCue("OrangeSelect", "unitycues/blockers/cueOrangeSelect.png", Bounds.fromWidthHeight(455, 410, 95, 30)); // Orange select used to choose the Unity engine
         addCue("Close", "unitycues/common/cueClose.png", null); // close button used with "News" popup, also when defeated in dungeon, etc.
 
     }
