@@ -23,7 +23,7 @@ import java.util.List;
 
 public class BHBot {
 
-    private static final String PROGRAM_NAME = "BHBot";
+    private static final String PROGRAM_NAME = "BHBotUnity";
     static CueManager cues;
     private static String BHBotVersion;
     private static Properties gitProperties;
