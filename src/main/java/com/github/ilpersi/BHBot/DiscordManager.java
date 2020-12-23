@@ -69,7 +69,7 @@ public class DiscordManager {
                 response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
                 if (response.statusCode() != 200) {
-                    BHBot.logger.warn("Invalid HTTP Status when sending Discord notification!");
+                    BHBot.logger.warn("Invalid HTTP Status when sending Discord notification: '" + response.statusCode() + "'!");
                 }
 
             } catch (IOException | InterruptedException e) {
