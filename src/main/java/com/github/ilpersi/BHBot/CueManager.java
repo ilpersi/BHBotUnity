@@ -135,7 +135,7 @@ class CueManager {
                     }
                     int dotPosition = resource.lastIndexOf('.');
                     String fileExtension = dotPosition > 0 ? resource.substring(dotPosition + 1) : "";
-                    if ("png".equals(fileExtension.toLowerCase())) {
+                    if ("png".equalsIgnoreCase(fileExtension)) {
                         String cueName = resource.substring(0, dotPosition);
 
                         CueDetails details = new CueDetails(cueName.toLowerCase(), cuesPath + resource);
@@ -188,7 +188,7 @@ class CueManager {
 
                         int dotPosition = fileName.lastIndexOf('.');
                         String fileExtension = dotPosition > 0 ? fileName.substring(dotPosition + 1) : "";
-                        if ("png".equals(fileExtension.toLowerCase())) {
+                        if ("png".equalsIgnoreCase(fileExtension)) {
                             String cueName = fileName.substring(0, dotPosition);
 
                             BHBot.logger.trace("cueName: " + cueName.toLowerCase());
