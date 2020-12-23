@@ -282,6 +282,7 @@ public class Settings {
     boolean debugNullBounds = false; // if true, then each time a cue with null bounds is found, details are logged
     boolean useDoNotShareURL = false; // if true, then each time a cue detection from game screenshot will be attempted, a time taken will be displayed together with a name of the cue
     boolean useUnityEngine = false; // if true, then Unity cues will be loaded
+    boolean dumpReadScreen = false; // if true, everytime a readScreen is performed, the image is saved. Huge performance hog!
     boolean hideWindowOnRestart = false; // if true, game window will be hidden upon driver (re)start
     int reconnectTimer = 60;
     boolean idleMode = false;
@@ -603,6 +604,7 @@ public class Settings {
         tankPriority = new ArrayList<>();
         useDoNotShareURL = false;
         useUnityEngine = false;
+        dumpReadScreen = false;
         useHeadlessMode = false;
         username = "";
         victoryScreenshot = false;
@@ -1486,6 +1488,7 @@ public class Settings {
         debugNullBounds = lastUsedMap.getOrDefault("debugNullBounds", debugNullBounds ? "1" : "0").equals("1");
         useDoNotShareURL = lastUsedMap.getOrDefault("useDoNotShareURL", useDoNotShareURL ? "1" : "0").equals("1");
         useUnityEngine = lastUsedMap.getOrDefault("useUnityEngine", useUnityEngine ? "1" : "0").equals("1");
+        dumpReadScreen = lastUsedMap.getOrDefault("dumpReadScreen", dumpReadScreen ? "1" : "0").equals("1");
         hideWindowOnRestart = lastUsedMap.getOrDefault("hideWindowOnRestart", hideWindowOnRestart ? "1" : "0").equals("1");
         resetTimersOnBattleEnd = lastUsedMap.getOrDefault("resetTimersOnBattleEnd", resetTimersOnBattleEnd ? "1" : "0").equals("1");
         autoStartChromeDriver = lastUsedMap.getOrDefault("autoStartChromeDriver", autoStartChromeDriver ? "1" : "0").equals("1");
