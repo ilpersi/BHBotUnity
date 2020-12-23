@@ -612,6 +612,7 @@ class CueManager {
     void updateUnityCues() {
         // Main screen cues
         addCue("Main", "unitycues/mainScreen/cueMainScreen.png", new Bounds(100, 10, 110, 25)); // Gem cue used to identify the main screen
+        addCue("SettingsGear", "unitycues/mainScreen/cueSettingsGear.png", new Bounds(655, 450, 730, 515)); // settings button
 
         // Blockers
         addCue("News", "unitycues/blockers/cueNewsPopup.png", Bounds.fromWidthHeight(345, 70, 110, 45)); // news popup
@@ -619,6 +620,10 @@ class CueManager {
         // Common
         addCue("OrangeSelect", "unitycues/blockers/cueOrangeSelect.png", Bounds.fromWidthHeight(455, 410, 95, 30)); // Orange select used to choose the Unity engine
         addCue("Close", "unitycues/common/cueClose.png", null); // close button used with "News" popup, also when defeated in dungeon, etc.
+        addCue("X", "unitycues/common/cueX.png", null); // "X" close button used in many different places
+
+        //Autoshrine
+        addCue("Settings", "unitycues/autoShrine/cueSettings.png", Bounds.fromWidthHeight(315, 65, 170, 40)); // settings menu
 
     }
 }
