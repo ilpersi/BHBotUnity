@@ -384,16 +384,14 @@ public class BrowserManager {
 
     synchronized void clickInGame(int x, int y) {
         Point clickCoordinates = getChromeOffset(x, y);
-        Point awayCoordinates = getChromeOffset(10, 10);
         Actions act = new Actions(driver);
 
         act.moveToElement(game, clickCoordinates.x, clickCoordinates.y);
         act.click();
         act.perform();
+
         // so that the mouse doesn't stay on the button, for example. Or else button will be highlighted and cue won't get detected!
-        act = new Actions(driver);
-        act.moveToElement(game, awayCoordinates.x, awayCoordinates.y);
-        act.perform();
+        moveMouseAway();
     }
 
     /**
