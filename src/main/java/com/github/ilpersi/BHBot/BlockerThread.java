@@ -48,16 +48,21 @@ public class BlockerThread implements Runnable {
                 seg = MarvinSegment.fromCue("Selector", bot.browser);
                 if (seg != null) {
                     BHBot.logger.info("Version selector detected. Choosing Flash...");
-                    seg = MarvinSegment.fromCue("Select", bot.browser);
+
+                    // We choose the engine based on the settings
+                    if (bot.settings.useUnityEngine)
+                        seg = MarvinSegment.fromCue("OrangeSelect", bot.browser);
+                    else
+                        seg = MarvinSegment.fromCue("LightBlueSelect", bot.browser);
+
                     if (seg != null) {
                         bot.browser.clickOnSeg(seg);
                         // we give some time to the bot to load the flash version
                         Misc.sleep(Misc.Durations.SECOND * 3);
-                        continue;
                     } else {
                         BHBot.logger.error("Selector found without select button");
-                        continue;
                     }
+                    continue;
                 }
 
                 seg = MarvinSegment.fromCue(BHBot.cues.get("UnableToConnect"), bot.browser);

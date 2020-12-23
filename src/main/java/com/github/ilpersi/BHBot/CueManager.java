@@ -241,7 +241,7 @@ class CueManager {
         addCue("UnableToConnect", "cues/cueUnableToConnect.png", new Bounds(245, 235, 270, 250)); // happens when some error occurs for which the flash app is unable to connect to the server. We must simply click on the "Reconnect" button in this case!
         addCue("GearCheck", "cues/cueGearCheck.png", Bounds.fromWidthHeight(244, 208, 314, 120));
         addCue("Selector", "cues/cueSelector.png", Bounds.fromWidthHeight(295, 55, 205, 45));
-        addCue("Select", "cues/cueSelect.png", Bounds.fromWidthHeight(255, 410, 90, 25));
+        addCue("LightBlueSelect", "cues/cueLightBlueSelect.png", Bounds.fromWidthHeight(255, 410, 90, 25));
 
         addCue("DailyRewards", "cues/cueDailyRewards.png", new Bounds(260, 45, 285, 75));
         addCue("Claim", "cues/cueClaim.png", null); // claim button, when daily rewards popup is open
@@ -605,6 +605,7 @@ class CueManager {
     }
 
     void updateUnityCues() {
-
+        // Main screen cues
+        addCue("OrangeSelect", "cuesunity/mainScreen/cueOrangeSelect.png", Bounds.fromWidthHeight(455, 410, 95, 30));
     }
 }
