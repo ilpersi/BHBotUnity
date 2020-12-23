@@ -384,6 +384,24 @@ public class BHBot {
             case "compare":
                 dungeon.cueDifference();
                 break;
+            case "cont-shot":
+            case "contshot":
+                String contFileName = "cont-shot";
+                if (params.length > 1)
+                    contFileName = params[1];
+
+                long duration = Misc.Durations.SECOND * 5;
+                if (params.length > 2)
+                    duration = Long.parseLong(params[2]);
+
+                int delay = 500;
+                if (params.length > 3)
+                    delay = Integer.parseInt(params[3]);
+
+                logger.info("Saving continous shot '" + contFileName + "' with duration " + Misc.millisToHumanForm(duration) + " and delay " + Misc.millisToHumanForm((long) delay));
+                Misc.saveContinuousShot(contFileName, duration, delay, browser);
+                logger.info("Continous shot completed.");
+                break;
             case "crash": {
                 throw new RuntimeException("CRASH!");
             }

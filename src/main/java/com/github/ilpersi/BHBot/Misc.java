@@ -67,6 +67,30 @@ public class Misc {
         return f.getPath();
     }
 
+    /**
+     * Use this method if you want to take multiple screenshots with a delay.
+     * This is useful for changing cues as the generated output screens can be used together with CueCompare class
+     *
+     * @param prefix The prefix that the continous shots will share
+     * @param duration for how long should we take screenshots? Unit is milliseconds
+     * @param delay how much time should we wait between each screenshot
+     * @param bot a BrowserManager used to capture the screenshots
+     */
+    synchronized static void saveContinuousShot(String prefix, long duration, int delay, BrowserManager bot) {
+        int shotCnt = 0;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+        String startDate = simpleDateFormat.format(new Date());
+
+        long timeout = Misc.getTime() + duration;
+
+        do {
+            shotCnt++;
+            bot.readScreen();
+            Misc.saveScreen(startDate + "-" + prefix + "-" + shotCnt, "continuous-screenshots", bot.getImg());
+            Misc.sleep(delay);
+        } while (Misc.getTime() <= timeout);
+    }
+
     static final class Durations {
         static final int SECOND = 1000;
         static final int MINUTE = 60 * SECOND;
