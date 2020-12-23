@@ -604,8 +604,21 @@ class CueManager {
         if (useUnityEngine) updateUnityCues();
     }
 
+    /**
+     * This method is taking care of managing new cues for the Unity engine. The logis is as follow:
+     * - new cues can be added using a new cueKey
+     * - flash cues can be overwritten using the same cueKey
+     */
     void updateUnityCues() {
         // Main screen cues
-        addCue("OrangeSelect", "cuesunity/mainScreen/cueOrangeSelect.png", Bounds.fromWidthHeight(455, 410, 95, 30));
+        addCue("OrangeSelect", "unitycues/mainScreen/cueOrangeSelect.png", Bounds.fromWidthHeight(455, 410, 95, 30));
+
+
+        // Blockers
+        addCue("News", "unitycues/blockers/cueNewsPopup.png", Bounds.fromWidthHeight(345, 70, 110, 45)); // news popup
+
+        // Common
+        addCue("Close", "unitycues/common/cueClose.png", null); // close button used with "News" popup, also when defeated in dungeon, etc.
+
     }
 }
