@@ -118,7 +118,11 @@ public class CueCompare {
         String fpUsage = "USAGE with file path: CueCompare -fp|--file-path <inputFolderPath> <outputImgPath>";
         String MD5FLfpUsage = "USAGE with file list: CueCompare -md5fl|--md5-file-list <inputImg1FilePath> <inputImg2FilePath> [... <inputImgNFilePath>]";
 
-        if ("-fl".equals(args[0]) || "--file-list".equals(args[0])) {
+        if (args.length == 0) {
+            System.out.println(flUsage);
+            System.out.println(fpUsage);
+            System.out.println(MD5FLfpUsage);
+        } else if ("-fl".equals(args[0]) || "--file-list".equals(args[0])) {
             if (args.length < 4) {
                 System.out.println(flUsage);
                 return;
