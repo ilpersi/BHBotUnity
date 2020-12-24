@@ -392,7 +392,7 @@ public class BrowserManager {
         act.perform();
 
         // so that the mouse doesn't stay on the button, for example. Or else button will be highlighted and cue won't get detected!
-        moveMouseAway();
+        moveMouseToPos(10, 10);
     }
 
     /**
