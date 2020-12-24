@@ -70,6 +70,7 @@ public class BrowserManager {
         // disable ephemeral flash permissions flag
         options.addArguments("--disable-features=EnableEphemeralFlashPermission");
         options.addArguments("disable-infobars");
+        options.addArguments("--disable-features=VizDisplayCompositor");
 
         Map<String, Object> prefs = new HashMap<>();
         // Enable flash for all sites for Chrome 69
