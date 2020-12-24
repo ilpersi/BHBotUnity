@@ -226,6 +226,8 @@ public class BHBot {
 
         if (!bot.checkPaths()) return;
 
+        bot.cleanScreenDumps();
+
         bot.botStartTime = Misc.getTime();
 
         // Scanner scanner = new Scanner(System.in);
@@ -821,6 +823,30 @@ public class BHBot {
         }
 
         return true;
+    }
+
+    private void cleanScreenDumps() {
+        // We make sure to clean the previous dumped read screens
+        if (settings.dumpReadScreen) {
+            logger.info("Cleaning screen dumps...");
+
+            int dumpCnt = 0;
+            int dumpErrors = 0;
+
+            for (File file : new File("screenshots/screen-dump").listFiles()) {
+                dumpCnt++;
+                if (!file.delete()) {
+                    logger.debug("It was impossible to clean the screen dump named " + file.getAbsolutePath());
+                    dumpCnt--;
+                    dumpErrors++;
+                }
+            }
+            logger.debug("Cleaned " + dumpCnt + " screen dumps.");
+
+            if (dumpErrors > 0) {
+                logger.warn(dumpErrors + " files were not deleted during the screen dumps cleanup.");
+            }
+        }
     }
 
     void reloadLogger() {
