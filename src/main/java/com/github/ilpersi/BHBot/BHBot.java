@@ -671,6 +671,11 @@ public class BHBot {
             case "resume":
                 scheduler.resume();
                 break;
+            case "sd":
+            case "screen-dump":
+                settings.dumpReadScreen = !settings.dumpReadScreen;
+                logger.info("Screen dump is now " + (settings.dumpReadScreen? "enabled" : "disabled") + ".");
+                break;
             case "set": {
                 List<String> list = new ArrayList<>();
                 int i = c.indexOf(" ");
