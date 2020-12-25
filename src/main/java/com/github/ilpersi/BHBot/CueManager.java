@@ -627,6 +627,6 @@ class CueManager {
         addCue("Settings", "unitycues/autoShrine/cueSettings.png", Bounds.fromWidthHeight(315, 65, 170, 40)); // settings menu
 
         // Raid
-        addCue("RaidPopup", "cues/cueRaidPopup.png", Bounds.fromWidthHeight(310, 45, 60, 45)); // The raid near the bar
+        addCue("RaidPopup", "unitycues/raid/cueRaidPopup.png", Bounds.fromWidthHeight(310, 45, 60, 45)); // The raid near the bar
     }
 }
