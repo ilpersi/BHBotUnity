@@ -605,7 +605,7 @@ class CueManager {
     }
 
     /**
-     * This method is taking care of managing new cues for the Unity engine. The logis is as follow:
+     * This method is taking care of managing new cues for the Unity engine. The logic is as follow:
      * - new cues can be added using a new cueKey
      * - flash cues can be overwritten using the same cueKey
      */
@@ -630,5 +630,9 @@ class CueManager {
 
         // Raid
         addCue("RaidPopup", "unitycues/raid/cueRaidPopup.png", Bounds.fromWidthHeight(310, 45, 60, 45)); // The raid near the bar
+        addCue("RaidLevel", "unitycues/raid/cueRaidLevel.png", Bounds.fromWidthHeight(190, 430, 430, 30)); // selected raid type button cue
+        addCue("cueRaidLevelEmpty", "unitycues/raid/cueRaidLevelEmpty.png", Bounds.fromWidthHeight(190, 430, 430, 30)); // unselected raid type button cue
+        addCue("Raid1Name", "unitycues/raid/r1Name.png", new Bounds(175, 350, 300, 45));// Raid 1 Name, used whe R1 is the only unlocked raid
+
     }
 }
