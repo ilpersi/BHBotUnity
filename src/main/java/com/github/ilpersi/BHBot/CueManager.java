@@ -625,6 +625,8 @@ class CueManager {
 
         //Autoshrine
         addCue("Settings", "unitycues/autoShrine/cueSettings.png", Bounds.fromWidthHeight(315, 65, 170, 40)); // settings menu
+        addCue("IgnoreCheck", "unitycues/autoShrine/cueIgnoreCheck.png", null); // Green check used on the Ignore options
+
 
         // Raid
         addCue("RaidPopup", "unitycues/raid/cueRaidPopup.png", Bounds.fromWidthHeight(310, 45, 60, 45)); // The raid near the bar
