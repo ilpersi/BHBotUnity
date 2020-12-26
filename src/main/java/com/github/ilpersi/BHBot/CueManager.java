@@ -627,12 +627,14 @@ class CueManager {
         addCue("Settings", "unitycues/autoShrine/cueSettings.png", Bounds.fromWidthHeight(315, 65, 170, 40)); // settings menu
         addCue("IgnoreCheck", "unitycues/autoShrine/cueIgnoreCheck.png", null); // Green check used on the Ignore options
 
-
         // Raid
         addCue("RaidPopup", "unitycues/raid/cueRaidPopup.png", Bounds.fromWidthHeight(310, 45, 60, 45)); // The raid near the bar
         addCue("RaidLevel", "unitycues/raid/cueRaidLevel.png", Bounds.fromWidthHeight(190, 430, 430, 30)); // selected raid type button cue
         addCue("cueRaidLevelEmpty", "unitycues/raid/cueRaidLevelEmpty.png", Bounds.fromWidthHeight(190, 430, 430, 30)); // unselected raid type button cue
-        addCue("Raid1Name", "unitycues/raid/r1Name.png", new Bounds(175, 350, 300, 45));// Raid 1 Name, used whe R1 is the only unlocked raid
-
+        addCue("Raid1Name", "unitycues/raid/r1Name.png", Bounds.fromWidthHeight(175, 350, 300, 45));// Raid 1 Name, used whe R1 is the only unlocked raid
+        addCue("RaidSummon", "unitycues/raid/cueRaidSummon.png", Bounds.fromWidthHeight(480, 360, 125, 40));
+        addCue("RaidNormal", "unitycues/raid/cueRaidNormal.png", Bounds.fromWidthHeight(140, 215, 135, 40));
+        addCue("RaidHard", "unitycues/raid/cueRaidHard.png", Bounds.fromWidthHeight(330, 215, 135, 40));
+        addCue("RaidHeroic", "unitycues/raid/cueRaidHeroic.png", Bounds.fromWidthHeight(520, 215, 135, 40));
     }
 }
