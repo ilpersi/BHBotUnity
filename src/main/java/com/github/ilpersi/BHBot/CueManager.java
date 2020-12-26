@@ -611,7 +611,7 @@ class CueManager {
      */
     void updateUnityCues() {
         // Main screen cues
-        addCue("Main", "unitycues/mainScreen/cueMainScreen.png", new Bounds(100, 10, 110, 25)); // Gem cue used to identify the main screen
+        addCue("Main", "unitycues/mainScreen/cueMainScreen.png", Bounds.fromWidthHeight(60, 5, 140, 40)); // Gem cue used to identify the main screen
         addCue("SettingsGear", "unitycues/mainScreen/cueSettingsGear.png", new Bounds(655, 450, 730, 515)); // settings button
         addCue("RaidButton", "unitycues/mainScreen/cueRaidButton.png", Bounds.fromWidthHeight(15, 200, 45, 200)); // Raid button
 
