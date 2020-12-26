@@ -384,7 +384,9 @@ public class DungeonThread implements Runnable {
                                 /* Solo-for-bounty code */
                                 if (raidSetting.solo) { //if the level is soloable then clear the team to complete bounties
                                     bot.browser.readScreen(Misc.Durations.SECOND);
-                                    seg = MarvinSegment.fromCue(BHBot.cues.get("Clear"), Misc.Durations.SECOND * 2, Bounds.fromWidthHeight(310, 440, 110, 50), bot.browser);
+                                    Cue raidClearCue = bot.settings.useUnityEngine ? BHBot.cues.get("RaidClear") : new Cue(BHBot.cues.get("Clear"), Bounds.fromWidthHeight(310, 440, 110, 50));
+
+                                    seg = MarvinSegment.fromCue(raidClearCue, Misc.Durations.SECOND * 2, bot.browser);
                                     if (seg != null) {
                                         BHBot.logger.info("Attempting solo as per selected raid setting....");
                                         bot.browser.clickOnSeg(seg);
@@ -395,11 +397,12 @@ public class DungeonThread implements Runnable {
                                     }
                                 }
 
-                                Cue AcceptBounds = new Cue(BHBot.cues.get("Accept"), Bounds.fromWidthHeight(465, 445, 110, 40));
-                                bot.browser.closePopupSecurely(AcceptBounds, AcceptBounds);
+                                Cue acceptCue = bot.settings.useUnityEngine ? BHBot.cues.get("RaidAccept") :  new Cue(BHBot.cues.get("Accept"), Bounds.fromWidthHeight(465, 445, 110, 40));
+                                bot.browser.closePopupSecurely(acceptCue, acceptCue);
 
                                 if (raidSetting.solo) {
-                                    Cue YesGreenBounds = new Cue(BHBot.cues.get("YesGreen"), Bounds.fromWidthHeight(290, 340, 70, 45));
+                                    Bounds yesGreenBounds = bot.settings.useUnityEngine ? Bounds.fromWidthHeight(290, 345, 95, 35) : Bounds.fromWidthHeight(290, 340, 70, 45);
+                                    Cue YesGreenBounds = new Cue(BHBot.cues.get("YesGreen"), yesGreenBounds);
                                     seg = MarvinSegment.fromCue(YesGreenBounds, 4 * Misc.Durations.SECOND, bot.browser);
                                     if (seg != null) {
                                         bot.browser.clickOnSeg(seg);
@@ -2420,7 +2423,7 @@ public class DungeonThread implements Runnable {
                     //close 'cleared' popup
                     Bounds yesGreenBounds = null;
                     if (BHBot.State.Raid.equals(bot.getState())) {
-                        yesGreenBounds = Bounds.fromWidthHeight(290, 345, 70, 45);
+                        yesGreenBounds = bot.settings.useUnityEngine ? Bounds.fromWidthHeight(279, 344, 117, 37) : Bounds.fromWidthHeight(290, 345, 70, 45);
                     }
 
                     bot.browser.closePopupSecurely(BHBot.cues.get("Cleared"), new Cue(BHBot.cues.get("YesGreen"), yesGreenBounds));
@@ -2435,7 +2438,8 @@ public class DungeonThread implements Runnable {
                                 XWithBounds = new Cue(BHBot.cues.get("X"), Bounds.fromWidthHeight(640, 75, 60, 60));
                                 break;
                             case Raid:
-                                XWithBounds = new Cue(BHBot.cues.get("X"), Bounds.fromWidthHeight(610, 90, 60, 60));
+                                Bounds xBounds = bot.settings.useUnityEngine ? Bounds.fromWidthHeight(625, 100, 30, 40) : Bounds.fromWidthHeight(610, 90, 60, 60);
+                                XWithBounds = new Cue(BHBot.cues.get("X"), xBounds);
                                 break;
                             default:
                                 XWithBounds = new Cue(BHBot.cues.get("X"), null);
@@ -3612,14 +3616,16 @@ public class DungeonThread implements Runnable {
     private boolean handleTeamMalformedWarning() {
 
         // We look for the team text on top of the text pop-up
-        MarvinSegment seg = MarvinSegment.fromCue(BHBot.cues.get("Team"), Misc.Durations.SECOND * 3, new Bounds(330, 135, 480, 180), bot.browser);
+        Bounds teamBounds = bot.settings.useUnityEngine ? Bounds.fromWidthHeight(348, 137, 106, 42) : new Bounds(330, 135, 480, 180);
+        MarvinSegment seg = MarvinSegment.fromCue(BHBot.cues.get("Team"), Misc.Durations.SECOND * 3, teamBounds, bot.browser);
         if (seg == null) {
             return false;
         }
 
         if (MarvinSegment.fromCue(BHBot.cues.get("TeamNotFull"), Misc.Durations.SECOND, bot.browser) != null || MarvinSegment.fromCue(BHBot.cues.get("TeamNotOrdered"), Misc.Durations.SECOND, bot.browser) != null) {
             bot.browser.readScreen(Misc.Durations.SECOND);
-            seg = MarvinSegment.fromCue(BHBot.cues.get("No"), 2 * Misc.Durations.SECOND, bot.browser);
+            Bounds noBounds = bot.settings.useUnityEngine ? Bounds.fromWidthHeight(428, 343, 76, 38) : null;
+            seg = MarvinSegment.fromCue(BHBot.cues.get("No"), 2 * Misc.Durations.SECOND, noBounds, bot.browser);
             if (seg == null) {
                 BHBot.logger.error("Error: 'Team not full/ordered' window detected, but no 'No' button found. Restarting...");
                 return true;
@@ -3635,7 +3641,14 @@ public class DungeonThread implements Runnable {
             bot.browser.clickOnSeg(seg);
 
             bot.browser.readScreen();
-            seg = MarvinSegment.fromCue(BHBot.cues.get("Accept"), 2 * Misc.Durations.SECOND, bot.browser);
+            Cue acceptTeam;
+            if (bot.settings.useUnityEngine) {
+                // TO DO Unity: check correct due for dungeon
+                acceptTeam = BHBot.cues.get("RaidAccept");
+            } else {
+                acceptTeam = new Cue(BHBot.cues.get("Accept"), Bounds.fromWidthHeight(465, 445, 110, 40));
+            }
+            seg = MarvinSegment.fromCue(acceptTeam, 2 * Misc.Durations.SECOND, bot.browser);
             if (seg == null) {
                 BHBot.logger.error("Error: 'Team not full/ordered' window detected, but no 'Accept' button found. Restarting...");
                 return true;
@@ -3646,7 +3659,7 @@ public class DungeonThread implements Runnable {
             bot.notificationManager.sendErrorNotification("Team auto assigned", message);
 
             //bot.browser.clickOnSeg(seg);
-            bot.browser.closePopupSecurely(BHBot.cues.get("Accept"), BHBot.cues.get("Accept"));
+            bot.browser.closePopupSecurely(acceptTeam, acceptTeam);
 
             BHBot.logger.info(message);
         }

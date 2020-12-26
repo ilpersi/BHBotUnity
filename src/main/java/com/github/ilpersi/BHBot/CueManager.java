@@ -622,6 +622,12 @@ class CueManager {
         addCue("OrangeSelect", "unitycues/blockers/cueOrangeSelect.png", Bounds.fromWidthHeight(455, 410, 95, 30)); // Orange select used to choose the Unity engine
         addCue("Close", "unitycues/common/cueClose.png", null); // close button used with "News" popup, also when defeated in dungeon, etc.
         addCue("X", "unitycues/common/cueX.png", null); // "X" close button used in many different places
+        addCue("YesGreen", "unitycues/common/cueYesGreen.png", null); // used for example when raid has been finished ("Cleared" popup)
+        addCue("Team", "unitycues/common/cueTeam.png", null); // Team text part of pop-ups about teams
+        addCue("TeamNotFull", "unitycues/common/cueTeamNotFull.png", Bounds.fromWidthHeight(254, 205, 298, 114)); // warning popup when some friend left you and your team is not complete anymore
+        addCue("No", "unitycues/common/cueNo.png", null); // cue for a blue "No" button used for example with "Your team is not full" dialog, or for "Replace consumable" dialog, etc. This is why we can't put concrete borders as position varies a lot.
+        addCue("AutoTeam", "unitycues/common/cueAutoTeam.png", null); // "Auto" button that automatically assigns team (in raid, GvG, ...)
+        addCue("Cleared", "unitycues/common/cueCleared.png", Bounds.fromWidthHeight(305, 138, 192, 41)); // used for example when raid has been finished
 
         //Autoshrine
         addCue("Settings", "unitycues/autoShrine/cueSettings.png", Bounds.fromWidthHeight(315, 65, 170, 40)); // settings menu
@@ -632,9 +638,12 @@ class CueManager {
         addCue("RaidLevel", "unitycues/raid/cueRaidLevel.png", Bounds.fromWidthHeight(190, 430, 430, 30)); // selected raid type button cue
         addCue("cueRaidLevelEmpty", "unitycues/raid/cueRaidLevelEmpty.png", Bounds.fromWidthHeight(190, 430, 430, 30)); // unselected raid type button cue
         addCue("Raid1Name", "unitycues/raid/r1Name.png", Bounds.fromWidthHeight(175, 350, 300, 45));// Raid 1 Name, used whe R1 is the only unlocked raid
-        addCue("RaidSummon", "unitycues/raid/cueRaidSummon.png", Bounds.fromWidthHeight(480, 360, 125, 40));
-        addCue("RaidNormal", "unitycues/raid/cueRaidNormal.png", Bounds.fromWidthHeight(140, 215, 135, 40));
-        addCue("RaidHard", "unitycues/raid/cueRaidHard.png", Bounds.fromWidthHeight(330, 215, 135, 40));
-        addCue("RaidHeroic", "unitycues/raid/cueRaidHeroic.png", Bounds.fromWidthHeight(520, 215, 135, 40));
+        addCue("RaidSummon", "unitycues/raid/cueRaidSummon.png", Bounds.fromWidthHeight(480, 360, 125, 40)); // Purple summon button
+        addCue("RaidNormal", "unitycues/raid/cueRaidNormal.png", Bounds.fromWidthHeight(140, 215, 135, 40)); // Normal difficulty Raid
+        addCue("RaidHard", "unitycues/raid/cueRaidHard.png", Bounds.fromWidthHeight(330, 215, 135, 40)); // Hard difficulty Raid
+        addCue("RaidHeroic", "unitycues/raid/cueRaidHeroic.png", Bounds.fromWidthHeight(520, 215, 135, 40)); // Heroic difficulty Raid
+        addCue("RaidClear", "unitycues/raid/cueRaidClear.png", Bounds.fromWidthHeight(313, 447, 108, 42)); //clear team button
+        addCue("RaidAccept", "unitycues/raid/cueRaidAccept.png", Bounds.fromWidthHeight(431, 445, 180, 46)); // raid accept button
+
     }
 }
