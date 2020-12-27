@@ -355,7 +355,7 @@ public class BrowserManager {
      * Moves mouse to position (0,0) in the 'game' element (so that it doesn't trigger any highlight popups or similar
      */
     synchronized void moveMouseAway() {
-        moveMouseToPos(0, 0);
+        moveMouseToPos(790, 510);
     }
 
     //moves mouse to XY location (for triggering hover text)
@@ -392,7 +392,7 @@ public class BrowserManager {
         act.perform();
 
         // so that the mouse doesn't stay on the button, for example. Or else button will be highlighted and cue won't get detected!
-        moveMouseToPos(10, 10);
+        moveMouseAway();
     }
 
     /**
