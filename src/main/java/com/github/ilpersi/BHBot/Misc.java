@@ -360,9 +360,10 @@ public class Misc {
      *  @param img     The BufferedImage to be contributed to the project
      * @param imgName The name the buffered image will have once it is uploaded
      * @param subArea If you only want to specify a sub area of the image, pass the subArea parameter,
+     * @param isUnityEngine set to true if using Unity engine
      * @return true if contribution was successful
      */
-    static boolean contributeImage(BufferedImage img, String imgName, Bounds subArea) {
+    static boolean contributeImage(BufferedImage img, String imgName, Bounds subArea, boolean isUnityEngine) {
 
         // we generate a sub image based on the bounds
         BufferedImage subImg;
@@ -394,6 +395,7 @@ public class Misc {
         data.put("name", nameImgFile.getName());
         data.put("data", encodedContent);
         data.put("MD5", Misc.imgToMD5(subImg));
+        data.put("isUnityEngine", isUnityEngine ? "true" : "false");
 
         String postBody = Misc.formEncode(data);
 
@@ -447,6 +449,8 @@ public class Misc {
      * @return an array of bytes that contains the MD5 hash
      */
     static String imgToMD5(BufferedImage img) {
+        if (img == null) return "";
+
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try {
             ImageIO.write(img, "png", outputStream);
