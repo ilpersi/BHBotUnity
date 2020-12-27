@@ -651,5 +651,13 @@ class CueManager {
         addCue("SkeletonNoKeys", "cues/cueSkeletonNoKeys.png", new Bounds(478, 318, 500, 348)); // red 0
         addCue("Open", "unitycues/treasureChest/cueOpen.png", null); // skeleton treasure open button
         addCue("Decline", "unitycues/treasureChest/cueDecline.png", null); // decline skeleton treasure button (found in dungeons), also with video ad treasures (found in dungeons)
+
+        // Familiar encounters
+        addCue("Persuade", "unitycues/familiarEncounter/cuePersuade.png", Bounds.fromWidthHeight(134, 323, 135, 39));
+        addCue("Bribe", "unitycues/familiarEncounter/cueBribe.png", Bounds.fromWidthHeight(538, 326, 128, 35));
+
+        //Familiar bribing cues
+        addCue("RareFamiliar", "cues/familiars/type/cue02RareFamiliar.png", Bounds.fromWidthHeight(527, 261, 158, 59)); // Rare Bribe cue
+
     }
 }
