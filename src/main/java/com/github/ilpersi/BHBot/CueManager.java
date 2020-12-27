@@ -645,5 +645,11 @@ class CueManager {
         addCue("RaidClear", "unitycues/raid/cueRaidClear.png", Bounds.fromWidthHeight(313, 447, 108, 42)); //clear team button
         addCue("RaidAccept", "unitycues/raid/cueRaidAccept.png", Bounds.fromWidthHeight(431, 445, 180, 46)); // raid accept button
 
+        // Treasure Chest
+        addCue("SkeletonTreasure", "unitycues/treasureChest/cueSkeletonTreasure.png", Bounds.fromWidthHeight(205, 188, 87, 91)); // skeleton treasure found in dungeons (it's a dialog/popup cue)
+        // TODO find the real cue in Unity Engine
+        addCue("SkeletonNoKeys", "cues/cueSkeletonNoKeys.png", new Bounds(478, 318, 500, 348)); // red 0
+        addCue("Open", "unitycues/treasureChest/cueOpen.png", null); // skeleton treasure open button
+        addCue("Decline", "unitycues/treasureChest/cueDecline.png", null); // decline skeleton treasure button (found in dungeons), also with video ad treasures (found in dungeons)
     }
 }

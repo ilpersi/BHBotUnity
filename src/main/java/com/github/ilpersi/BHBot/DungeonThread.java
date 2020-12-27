@@ -2734,9 +2734,9 @@ public class DungeonThread implements Runnable {
         final String declineMessage = seg != null ? "No skeleton keys, skipping.." : "Skeleton treasure found, declining.";
         final String acceptMessage = bot.settings.openSkeleton == 1 ? "Skeleton treasure found, attempting to use key" : "Raid Skeleton treasure found, attempting to use key";
 
-        Bounds declineBounds = Bounds.fromWidthHeight(400, 360, 150, 65);
-        Bounds greenYesBounds = Bounds.fromWidthHeight(245, 335, 155, 55);
-        Bounds openBounds = Bounds.fromWidthHeight(250, 360, 150, 65);
+        Bounds declineBounds = bot.settings.useUnityEngine ? Bounds.fromWidthHeight(411, 373, 134, 39) : Bounds.fromWidthHeight(400, 360, 150, 65);
+        Bounds greenYesBounds = bot.settings.useUnityEngine ? Bounds.fromWidthHeight(258, 373, 133, 39) : Bounds.fromWidthHeight(245, 335, 155, 55);
+        Bounds openBounds = bot.settings.useUnityEngine ? Bounds.fromWidthHeight(276, 340, 114, 43) : Bounds.fromWidthHeight(250, 360, 150, 65);
 
         // we don't have skeleton keys or setting does not allow us to open chests
         if (seg != null || bot.settings.openSkeleton == 0) {
