@@ -2667,10 +2667,16 @@ public class DungeonThread implements Runnable {
             if (bot.getState() == BHBot.State.Gauntlet || bot.getState() == BHBot.State.Invasion || bot.getState() == BHBot.State.GVG) {
                 seg = MarvinSegment.fromCue(BHBot.cues.get("CloseGreen"), 2 * Misc.Durations.SECOND, bot.browser);
             } else {
-                if (bot.getState() == BHBot.State.PVP) {
-                    seg = MarvinSegment.fromCue("Close", 3 * Misc.Durations.SECOND, Bounds.fromWidthHeight(355, 345, 85, 35), bot.browser);
-                } else {
-                    seg = MarvinSegment.fromCue(BHBot.cues.get("Close"), 2 * Misc.Durations.SECOND, bot.browser);
+                switch (bot.getState()) {
+                    case PVP:
+                        seg = MarvinSegment.fromCue("Close", 3 * Misc.Durations.SECOND, Bounds.fromWidthHeight(355, 345, 85, 35), bot.browser);
+                        break;
+                    case Raid:
+                        seg = bot.settings.useUnityEngine ? MarvinSegment.fromCue(BHBot.cues.get("Close"), 2 * Misc.Durations.SECOND, Bounds.fromWidthHeight(331, 341, 140, 42), bot.browser) : null;
+                        break;
+                    default:
+                        seg = MarvinSegment.fromCue(BHBot.cues.get("Close"), 2 * Misc.Durations.SECOND, bot.browser);
+                        break;
                 }
             }
 
