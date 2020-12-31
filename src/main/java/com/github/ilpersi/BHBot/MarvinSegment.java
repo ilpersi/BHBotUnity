@@ -65,19 +65,12 @@ public class MarvinSegment {
 
         if (cue.bounds == null && seg != null && BHBot.debugNullBounds) {
 
-            int margin = 10;
+            Bounds suggestedBounds = Bounds.fromMarvinSegment(seg, 10);
 
-            int suggestedX1 = seg.x1 - margin;
-            while ((suggestedX1 % 5) != 0) suggestedX1 -= 1;
-
-            int suggestedY1 = seg.y1 - margin;
-            while ((suggestedY1 % 5) != 0) suggestedY1 -= 1;
-
-            int suggestedWidth = seg.x2 - suggestedX1 + margin;
-            while ((suggestedWidth % 5) != 0) suggestedWidth += 1;
-
-            int suggestedHeight = seg.y2 - suggestedY1 + margin;
-            while ((suggestedHeight % 5) != 0) suggestedHeight += 1;
+            int suggestedX1 = suggestedBounds.x1;
+            int suggestedY1 = suggestedBounds.y1;
+            int suggestedWidth = suggestedBounds.width;
+            int suggestedHeight = suggestedBounds.height;
 
             // we make sure we dont exceed the src width
             while ((suggestedX1 + suggestedWidth) > src.getWidth()) {
