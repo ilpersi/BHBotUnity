@@ -110,9 +110,7 @@ public class MarvinSegment {
 
                 // Suggested bounds ready for code copy/paste
                 String suggestionBuilder = "Cue " + cue.name + "WithBounds = " +
-                        "new Cue(BHBot.cues.get(\"" + cue.name + "\"), Bounds.fromWidthHeight(" +
-                        suggestedX1 + ", " + suggestedY1 + ", " +
-                        suggestedWidth + ", " + suggestedHeight + "));";
+                        "new Cue(BHBot.cues.get(\"" + cue.name + "\"), " + suggestedBounds.getJavaCode(false, true) + ");";
                 BHBot.logger.debug(suggestionBuilder);
 
                 // As screenshot of the found bounds on the image is saved in a dedicated folder
