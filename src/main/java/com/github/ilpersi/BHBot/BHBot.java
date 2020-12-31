@@ -407,6 +407,21 @@ public class BHBot {
             case "crash": {
                 throw new RuntimeException("CRASH!");
             }
+            case "cues":
+                if (params.length < 2) {
+                    logger.info("available sub commands are reload");
+                    break;
+                }
+
+                if ("reload".equals(params[1])) {
+                    if (params.length < 3) {
+                        logger.error("No relative path has been specified.");
+                    }
+
+                    cues.reloadFromDisk(params[2]);
+                }
+
+                break;
             case "d": { // detect difficulty from screen
                 browser.readScreen();
                 int current = dungeon.detectDifficulty();

@@ -11,6 +11,12 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 class CueManager {
+    /**
+     * To decrease the memory footprint not all the cue are loaded at initialization time so when a cue is originally
+     * added, only its data is saved and the real load is performed later when the cue is accessed for the first time.
+     *
+     * This class takes care of saving oll the required info of a cue before the first access is done
+     */
     private static class CueData {
         private final String cuePath;
         private final Bounds cueBounds;
@@ -21,6 +27,10 @@ class CueManager {
         }
     }
 
+    /**
+     * This class is used when loading multiple Cues from a folder and it acts as a temporary class where to store information
+     * before using the Cues in the folder (to count them, to add them to the global cue list, etc...)
+     */
     static class CueDetails {
         final String name;
         final String path;
@@ -31,7 +41,7 @@ class CueManager {
         }
     }
 
-    private final Map<String, CueData> addedCues = new HashMap<>();
+    private Map<String, CueData> addedCues = new HashMap<>();
     private final Map<String, Cue> loadedCues = new HashMap<>();
     private final ClassLoader classLoader = CueManager.class.getClassLoader();
 
@@ -46,7 +56,23 @@ class CueManager {
     Cue get(String cueKey) {
         if (!loadedCues.containsKey(cueKey)) {
             CueData cueData = addedCues.get(cueKey);
-            loadedCues.put(cueKey, new Cue(cueKey, loadImage(classLoader, cueData.cuePath), cueData.cueBounds));
+
+            // We always try to read the cue from the disk and fall back on resources
+            BufferedImage cueImg;
+            File cueFile = new File(cueData.cuePath);
+
+            if (cueFile.exists() && ! cueFile.isDirectory()) {
+                try {
+                    cueImg = ImageIO.read(cueFile);
+                } catch (IOException e) {
+                    BHBot.logger.error("Error when loading image file in CueManger.get", e);
+                    return null;
+                }
+            } else {
+                cueImg = loadImage(classLoader, cueData.cuePath);
+            }
+
+            loadedCues.put(cueKey, new Cue(cueKey, cueData.cuePath, cueImg, cueData.cueBounds));
 
             // once we loaded the cue, we don't need the data anymore
             addedCues.remove(cueKey);
@@ -661,4 +687,99 @@ class CueManager {
         addCue("RareFamiliar", "cues/familiars/type/cue02RareFamiliar.png", Bounds.fromWidthHeight(527, 261, 158, 59)); // Rare Bribe cue
 
     }
+
+    /**
+     * This method is intended to replace Cue(s) at runtime
+     *
+     * @param cueKey The Cue Key to override
+     * @param cuePath The path to the image of the new Cue
+     * @param cueBounds Bounds of the new Cue (if null, old bounds will be used
+     */
+    void overrideCueFromFile(String cueKey, String cuePath, @SuppressWarnings("SameParameterValue") Bounds cueBounds) {
+
+        Bounds oldBounds;
+        boolean isLoaded = false;
+
+        if (loadedCues.containsKey(cueKey)) {
+            oldBounds = loadedCues.get(cueKey).bounds;
+            isLoaded = true;
+        } else if (addedCues.containsKey(cueKey)) {
+            oldBounds = addedCues.get(cueKey).cueBounds;
+        } else {
+            BHBot.logger.info("No cue found to override, skipping.");
+            return;
+        }
+
+        File newCueImgFile = new File(cuePath);
+        if (!newCueImgFile.exists()) {
+            BHBot.logger.error("New Cue path does not exists.");
+            return;
+        }
+        if (newCueImgFile.isDirectory()) {
+            BHBot.logger.error("New Cue is a directory, skipping.");
+            return;
+        }
+
+        BufferedImage newCueImg;
+        try {
+            newCueImg = ImageIO.read(newCueImgFile);
+        } catch (IOException e) {
+            BHBot.logger.error("Error when loading image file.", e);
+            return;
+        }
+
+        loadedCues.put(cueKey, new Cue(cueKey, null, newCueImg, cueBounds != null ? cueBounds : oldBounds));
+        if (!isLoaded) {
+            addedCues.remove(cueKey);
+        }
+    }
+
+    /**
+     * Simplified version of overrideCueFromFile where no Bounds are required
+     *
+     * @param cueKey The Cue key to override
+     * @param cuePath The Path to the new Cue image file
+     */
+    @SuppressWarnings("unused")
+    void overrideCueFromFile(String cueKey, String cuePath) {
+        overrideCueFromFile(cueKey, cuePath, null);
+    }
+
+    /**
+     * Allows for hot reload of Cues. This is also intended to be used by developers
+     *
+     * @param relativePath The relative path where cues are stored in the disk
+     */
+    void reloadFromDisk(String relativePath) {
+        if (!relativePath.endsWith("\\") || !relativePath.endsWith("/")) relativePath += "/";
+
+        relativePath = relativePath.replace("\\", "/");
+
+        Map<String, CueData> newAddedCues = new HashMap<>();
+
+        for (Map.Entry<String, Cue> loadedCue : loadedCues.entrySet()) {
+            Cue oldCue = loadedCue.getValue();
+
+            String reloadPath = relativePath + oldCue.path;
+            String newPath = new File(reloadPath).exists() ? reloadPath : oldCue.path;
+
+            CueData newDetails = new CueData(newPath, oldCue.bounds);
+            newAddedCues.put(loadedCue.getKey(), newDetails);
+        }
+
+        for (Map.Entry<String, CueData> addedCue : addedCues.entrySet()){
+            CueData oldData = addedCue.getValue();
+
+            String reloadPath = relativePath + oldData.cuePath;
+            String newPath = new File(reloadPath).exists() ? reloadPath : oldData.cuePath;
+
+            CueData newData = new CueData(newPath, oldData.cueBounds);
+
+            newAddedCues.put(addedCue.getKey(), newData);
+        }
+
+        loadedCues.clear();
+        addedCues = newAddedCues;
+    }
+
 }
