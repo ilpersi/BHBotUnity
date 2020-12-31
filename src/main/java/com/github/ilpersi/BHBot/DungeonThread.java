@@ -3639,7 +3639,8 @@ public class DungeonThread implements Runnable {
             bot.browser.clickOnSeg(seg);
             bot.browser.readScreen();
 
-            seg = MarvinSegment.fromCue(BHBot.cues.get("AutoTeam"), 2 * Misc.Durations.SECOND, bot.browser);
+            Bounds autoTeam = bot.settings.useUnityEngine ? Bounds.fromWidthHeight(191, 446, 112, 44) : null;
+            seg = MarvinSegment.fromCue(BHBot.cues.get("AutoTeam"), 2 * Misc.Durations.SECOND, autoTeam, bot.browser);
             if (seg == null) {
                 BHBot.logger.error("Error: 'Team not full/ordered' window detected, but no 'Auto' button found. Restarting...");
                 return true;
