@@ -433,6 +433,7 @@ public class BrowserManager {
             counter++;
             if (counter > 10) {
                 BHBot.logger.error("Error: unable to close popup <" + popup.name + "> securely: either close button has not been detected or popup would not close!");
+                BHBot.logger.error(Misc.getStackTrace());
                 return false;
             }
 
