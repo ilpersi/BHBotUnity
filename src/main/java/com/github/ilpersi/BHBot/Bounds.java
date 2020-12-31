@@ -1,5 +1,7 @@
 package com.github.ilpersi.BHBot;
 
+import java.util.StringJoiner;
+
 /**
  * @author Betalord
  */
@@ -57,5 +59,40 @@ class Bounds {
         if (suggestedY1 < 0) suggestedY1 = 0;
 
         return fromWidthHeight(suggestedX1, suggestedY1, suggestedWidth, suggestedHeight);
+    }
+
+    String getJavaCode(boolean withDeclaration, boolean fromWidthHeight) {
+        StringBuilder result = new StringBuilder();
+        if (withDeclaration) result.append("Bounds bounds = ");
+
+        if (fromWidthHeight) {
+            result.append("Bounds.fromWidthHeight(");
+        } else {
+            result.append("new Bounds(");
+        }
+
+        result.append(x1).append(", ").append(y1).append(", ");
+
+        if (fromWidthHeight) {
+            result.append(width).append(", ").append(height);
+        } else {
+            result.append(x2).append(", ").append(y2);
+        }
+
+        result.append(");");
+
+        return result.toString();
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", Bounds.class.getSimpleName() + "[", "]")
+                .add("x1=" + x1)
+                .add("y1=" + y1)
+                .add("x2=" + x2)
+                .add("y2=" + y2)
+                .add("width=" + width)
+                .add("height=" + height)
+                .toString();
     }
 }
