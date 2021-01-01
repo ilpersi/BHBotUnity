@@ -355,7 +355,7 @@ public class BrowserManager {
      * Moves mouse to position (0,0) in the 'game' element (so that it doesn't trigger any highlight popups or similar
      */
     synchronized void moveMouseAway() {
-        moveMouseToPos(790, 510);
+        moveMouseToPos(5, 5);
     }
 
     //moves mouse to XY location (for triggering hover text)
