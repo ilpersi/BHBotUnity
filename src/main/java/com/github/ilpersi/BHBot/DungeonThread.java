@@ -782,7 +782,7 @@ public class DungeonThread implements Runnable {
                                     }
                                 }
 
-                               Cue dungeonAccept = new Cue(BHBot.cues.get("Accept"), Bounds.fromWidthHeight(465, 445, 110, 45));
+                               Cue dungeonAccept = bot.settings.useUnityEngine ? BHBot.cues.get("RaidAccept") : new Cue(BHBot.cues.get("Accept"), Bounds.fromWidthHeight(465, 445, 110, 45));
                                bot.browser.closePopupSecurely(dungeonAccept, dungeonAccept);
 
                                 if (dungeonSetting.solo) {
