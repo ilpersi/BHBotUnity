@@ -13,6 +13,7 @@ public class CueTest {
                 Bounds suggestedBounds = Bounds.fromMarvinSegment(seg, null);
 
                 System.out.println("Suggested Bounds: " + suggestedBounds.getJavaCode(true, false));
+                System.out.println("Suggested Bounds.fromWidthHeight: " + suggestedBounds.getJavaCode(true, true));
             } else {
                 System.out.println("Sub image not found.");
             }
