@@ -655,8 +655,8 @@ class CueManager {
         addCue("AutoTeam", "unitycues/common/cueAutoTeam.png", null); // "Auto" button that automatically assigns team (in raid, GvG, ...)
         addCue("Cleared", "unitycues/common/cueCleared.png", Bounds.fromWidthHeight(305, 138, 192, 41)); // used for example when raid has been finished
         addCue("Defeat", "unitycues/common/cueDefeat.png", Bounds.fromWidthHeight(323, 131, 150, 54)); // used for example when you have been defeated in a dungeon. Also used when you have been defeated in a gauntlet.
-        addCue("RaidClear", "unitycues/common/cueTeamClear.png", Bounds.fromWidthHeight(313, 447, 108, 42)); //clear team button
-        addCue("RaidAccept", "unitycues/common/cueTeamAccept.png", Bounds.fromWidthHeight(431, 445, 180, 46)); // raid accept button
+        addCue("TeamClear", "unitycues/common/cueTeamClear.png", Bounds.fromWidthHeight(313, 447, 108, 42)); //clear team button
+        addCue("TeamAccept", "unitycues/common/cueTeamAccept.png", Bounds.fromWidthHeight(431, 445, 180, 46)); // raid accept button
 
         //Autoshrine
         addCue("Settings", "unitycues/autoShrine/cueSettings.png", Bounds.fromWidthHeight(315, 65, 170, 40)); // settings menu

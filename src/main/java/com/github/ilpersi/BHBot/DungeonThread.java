@@ -384,7 +384,7 @@ public class DungeonThread implements Runnable {
                                 /* Solo-for-bounty code */
                                 if (raidSetting.solo) { //if the level is soloable then clear the team to complete bounties
                                     bot.browser.readScreen(Misc.Durations.SECOND);
-                                    Cue raidClearCue = bot.settings.useUnityEngine ? BHBot.cues.get("RaidClear") : new Cue(BHBot.cues.get("Clear"), Bounds.fromWidthHeight(310, 440, 110, 50));
+                                    Cue raidClearCue = bot.settings.useUnityEngine ? BHBot.cues.get("TeamClear") : new Cue(BHBot.cues.get("Clear"), Bounds.fromWidthHeight(310, 440, 110, 50));
 
                                     seg = MarvinSegment.fromCue(raidClearCue, Misc.Durations.SECOND * 2, bot.browser);
                                     if (seg != null) {
@@ -397,7 +397,7 @@ public class DungeonThread implements Runnable {
                                     }
                                 }
 
-                                Cue acceptCue = bot.settings.useUnityEngine ? BHBot.cues.get("RaidAccept") :  new Cue(BHBot.cues.get("Accept"), Bounds.fromWidthHeight(465, 445, 110, 40));
+                                Cue acceptCue = bot.settings.useUnityEngine ? BHBot.cues.get("TeamAccept") :  new Cue(BHBot.cues.get("Accept"), Bounds.fromWidthHeight(465, 445, 110, 40));
                                 bot.browser.closePopupSecurely(acceptCue, acceptCue);
 
                                 if (raidSetting.solo) {
@@ -782,7 +782,7 @@ public class DungeonThread implements Runnable {
                                     }
                                 }
 
-                               Cue dungeonAccept = bot.settings.useUnityEngine ? BHBot.cues.get("RaidAccept") : new Cue(BHBot.cues.get("Accept"), Bounds.fromWidthHeight(465, 445, 110, 45));
+                               Cue dungeonAccept = bot.settings.useUnityEngine ? BHBot.cues.get("TeamAccept") : new Cue(BHBot.cues.get("Accept"), Bounds.fromWidthHeight(465, 445, 110, 45));
                                bot.browser.closePopupSecurely(dungeonAccept, dungeonAccept);
 
                                 if (dungeonSetting.solo) {
@@ -3657,7 +3657,7 @@ public class DungeonThread implements Runnable {
             Cue acceptTeam;
             if (bot.settings.useUnityEngine) {
                 // TO DO Unity: check correct due for dungeon
-                acceptTeam = BHBot.cues.get("RaidAccept");
+                acceptTeam = BHBot.cues.get("TeamAccept");
             } else {
                 acceptTeam = new Cue(BHBot.cues.get("Accept"), Bounds.fromWidthHeight(465, 445, 110, 40));
             }
