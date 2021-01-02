@@ -383,10 +383,9 @@ public class DungeonThread implements Runnable {
                                 //team selection screen
                                 /* Solo-for-bounty code */
                                 if (raidSetting.solo) { //if the level is soloable then clear the team to complete bounties
-                                    bot.browser.readScreen(Misc.Durations.SECOND);
                                     Cue raidClearCue = bot.settings.useUnityEngine ? BHBot.cues.get("TeamClear") : new Cue(BHBot.cues.get("Clear"), Bounds.fromWidthHeight(310, 440, 110, 50));
 
-                                    seg = MarvinSegment.fromCue(raidClearCue, Misc.Durations.SECOND * 2, bot.browser);
+                                    seg = MarvinSegment.fromCue(raidClearCue, Misc.Durations.SECOND * 3, bot.browser);
                                     if (seg != null) {
                                         BHBot.logger.info("Attempting solo as per selected raid setting....");
                                         bot.browser.clickOnSeg(seg);
@@ -771,7 +770,9 @@ public class DungeonThread implements Runnable {
                                 //team selection screen
                                 /* Solo-for-bounty code */
                                 if (dungeonSetting.solo) { //if the level is soloable then clear the team to complete bounties
-                                    seg = MarvinSegment.fromCue(BHBot.cues.get("Clear"), Misc.Durations.SECOND * 3, Bounds.fromWidthHeight(305, 435, 120, 60), bot.browser);
+                                    Cue dungClearCue = bot.settings.useUnityEngine ? BHBot.cues.get("TeamClear") : new Cue(BHBot.cues.get("Clear"), Bounds.fromWidthHeight(310, 440, 110, 50));
+
+                                    seg = MarvinSegment.fromCue(dungClearCue, Misc.Durations.SECOND * 3, bot.browser);
                                     if (seg != null) {
                                         BHBot.logger.info("Attempting solo as per selected dungeon setting....");
                                         bot.browser.clickOnSeg(seg);
