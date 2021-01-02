@@ -695,12 +695,12 @@ class CueManager {
         addCue("DungHeroic", "unitycues/dungeon/cueDungHeroic.png", Bounds.fromWidthHeight(520, 225, 135, 40)); // Heroic difficulty Raid
 
         // Dungeon zones
-        addCue("Zone1", "unitycues/dungeon/cueZone1.png", Bounds.fromWidthHeight(252, 53, 299, 39));
-        addCue("Zone2", "unitycues/dungeon/cueZone2.png", Bounds.fromWidthHeight(252, 53, 299, 39));
-        addCue("Zone3", "unitycues/dungeon/cueZone3.png", Bounds.fromWidthHeight(252, 53, 299, 39));
-        addCue("Zone4", "unitycues/dungeon/cueZone4.png", Bounds.fromWidthHeight(252, 53, 299, 39));
-        addCue("Zone5", "unitycues/dungeon/cueZone5.png", Bounds.fromWidthHeight(252, 53, 299, 39));
-        addCue("Zone6", "unitycues/dungeon/cueZone6.png", Bounds.fromWidthHeight(252, 53, 299, 39));
+        addCue("Zone1", "unitycues/dungeon/zones/cueZone1.png", Bounds.fromWidthHeight(252, 53, 299, 39));
+        addCue("Zone2", "unitycues/dungeon/zones/cueZone2.png", Bounds.fromWidthHeight(252, 53, 299, 39));
+        addCue("Zone3", "unitycues/dungeon/zones/cueZone3.png", Bounds.fromWidthHeight(252, 53, 299, 39));
+        addCue("Zone4", "unitycues/dungeon/zones/cueZone4.png", Bounds.fromWidthHeight(252, 53, 299, 39));
+        addCue("Zone5", "unitycues/dungeon/zones/cueZone5.png", Bounds.fromWidthHeight(252, 53, 299, 39));
+        addCue("Zone6", "unitycues/dungeon/zones/cueZone6.png", Bounds.fromWidthHeight(252, 53, 299, 39));
 
     }
 
