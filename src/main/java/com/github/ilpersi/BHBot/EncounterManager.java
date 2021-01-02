@@ -146,6 +146,10 @@ public class EncounterManager {
             // String unkMD5 = bot.saveGameScreen(familiarLevel.toString() + "-unknown-familiar", "unknown-familiars", famNameImg);
             // BHBot.logger.debug("MD5 familiar unknown: '" + famNameMD5 + "' saved as " + unkMD5);
             // we contribute unknown familiars
+
+            // If we could not get the name, we are going to upload the full screen image.
+            if (famNameImg == null) famNameImg = bot.browser.getImg();
+
             if (!Misc.contributeImage(famNameImg, persuasionLog.toString(), null, false)) {
                 Misc.contributeImage(bot.browser.getImg(), persuasionLog.toString(), familiarNameBounds, bot.settings.useUnityEngine);
             }
