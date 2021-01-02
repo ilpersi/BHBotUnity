@@ -655,6 +655,8 @@ class CueManager {
         addCue("AutoTeam", "unitycues/common/cueAutoTeam.png", null); // "Auto" button that automatically assigns team (in raid, GvG, ...)
         addCue("Cleared", "unitycues/common/cueCleared.png", Bounds.fromWidthHeight(305, 138, 192, 41)); // used for example when raid has been finished
         addCue("Defeat", "unitycues/common/cueDefeat.png", Bounds.fromWidthHeight(323, 131, 150, 54)); // used for example when you have been defeated in a dungeon. Also used when you have been defeated in a gauntlet.
+        addCue("RaidClear", "unitycues/common/cueTeamClear.png", Bounds.fromWidthHeight(313, 447, 108, 42)); //clear team button
+        addCue("RaidAccept", "unitycues/common/cueTeamAccept.png", Bounds.fromWidthHeight(431, 445, 180, 46)); // raid accept button
 
         //Autoshrine
         addCue("Settings", "unitycues/autoShrine/cueSettings.png", Bounds.fromWidthHeight(315, 65, 170, 40)); // settings menu
@@ -669,8 +671,6 @@ class CueManager {
         addCue("RaidNormal", "unitycues/raid/cueRaidNormal.png", Bounds.fromWidthHeight(140, 215, 135, 40)); // Normal difficulty Raid
         addCue("RaidHard", "unitycues/raid/cueRaidHard.png", Bounds.fromWidthHeight(330, 215, 135, 40)); // Hard difficulty Raid
         addCue("RaidHeroic", "unitycues/raid/cueRaidHeroic.png", Bounds.fromWidthHeight(520, 215, 135, 40)); // Heroic difficulty Raid
-        addCue("RaidClear", "unitycues/raid/cueRaidClear.png", Bounds.fromWidthHeight(313, 447, 108, 42)); //clear team button
-        addCue("RaidAccept", "unitycues/raid/cueRaidAccept.png", Bounds.fromWidthHeight(431, 445, 180, 46)); // raid accept button
 
         // Treasure Chest
         addCue("SkeletonTreasure", "unitycues/treasureChest/cueSkeletonTreasure.png", Bounds.fromWidthHeight(205, 188, 87, 91)); // skeleton treasure found in dungeons (it's a dialog/popup cue)
@@ -685,6 +685,22 @@ class CueManager {
 
         //Familiar bribing cues
         addCue("RareFamiliar", "cues/familiars/type/cue02RareFamiliar.png", Bounds.fromWidthHeight(527, 261, 158, 59)); // Rare Bribe cue
+
+        // Dungeon cues
+        addCue("EnergyBar", "unitycues/dungeon/cueEnergyBar.png", Bounds.fromWidthHeight(390, 0, 60, 50)); // The energy bar icon
+        addCue("RightArrow", "unitycues/dungeon/cueRightArrow.png", Bounds.fromWidthHeight(720, 255, 40, 50)); // arrow used in quest screen to change zone
+        addCue("LeftArrow", "unitycues/dungeon/cueLeftArrow.png", Bounds.fromWidthHeight(40, 255, 45, 50)); // arrow used in quest screen to change zone
+        addCue("DungNormal", "unitycues/dungeon/cueDungNormal.png", Bounds.fromWidthHeight(140, 225, 135, 40)); // Normal difficulty Raid
+        addCue("DungHard", "unitycues/dungeon/cueDungHard.png.png", Bounds.fromWidthHeight(330, 225, 135, 40)); // Hard difficulty Raid
+        addCue("DungHeroic", "unitycues/dungeon/cueDungHeroic.png", Bounds.fromWidthHeight(520, 225, 135, 40)); // Heroic difficulty Raid
+
+        // Dungeon zones
+        addCue("Zone1", "unitycues/dungeon/cueZone1.png", Bounds.fromWidthHeight(252, 53, 299, 39));
+        addCue("Zone2", "unitycues/dungeon/cueZone2.png", Bounds.fromWidthHeight(252, 53, 299, 39));
+        addCue("Zone3", "unitycues/dungeon/cueZone3.png", Bounds.fromWidthHeight(252, 53, 299, 39));
+        addCue("Zone4", "unitycues/dungeon/cueZone4.png", Bounds.fromWidthHeight(252, 53, 299, 39));
+        addCue("Zone5", "unitycues/dungeon/cueZone5.png", Bounds.fromWidthHeight(252, 53, 299, 39));
+        addCue("Zone6", "unitycues/dungeon/cueZone6.png", Bounds.fromWidthHeight(252, 53, 299, 39));
 
     }
 

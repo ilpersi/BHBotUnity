@@ -638,7 +638,12 @@ public class DungeonThread implements Runnable {
 
                             bot.browser.readScreen();
 
-                            int energy = getEnergy();
+                            final Set<Color> energyBarColors = Set.of(new Color (136, 197, 44), new Color (95, 137, 31), new Color (64, 93, 21),
+                                    new Color (107, 155, 35), new Color (88, 127, 28), new Color (79, 115, 26), new Color (84, 122, 27),
+                                    new Color (75, 109, 24), new Color (105, 152, 34), new Color (66, 95, 21), new Color (73, 105, 24),
+                                    new Color (66, 96, 21), new Color (124, 180, 40), new Color (120, 174, 39), new Color (77, 112, 25),
+                                    new Color (93, 134, 30), new Color (74, 107, 24), new Color (86, 125, 28), new Color (87, 133, 21));
+                            int energy = bot.settings.useUnityEngine ? readResourceBarPercentage(100, BHBot.cues.get("EnergyBar"), 0, 6, 80, energyBarColors) : getEnergy();
                             globalEnergy = energy;
                             BHBot.logger.readout("Energy: " + energy + "%, required: >" + bot.settings.minEnergyPercentage + "%");
 
@@ -678,6 +683,7 @@ public class DungeonThread implements Runnable {
                                 }
 
                                 bot.browser.clickOnSeg(seg);
+                                // TODO This 5 seconds delay is horrible
                                 bot.browser.readScreen(5 * Misc.Durations.SECOND);
 
                                 Settings.AdventureSetting dungeonSetting = decideAdventureRandomly(bot.settings.dungeons);
@@ -705,6 +711,7 @@ public class DungeonThread implements Runnable {
 
                                 int currentZone = readCurrentZone();
                                 int vec = goalZone - currentZone; // movement vector
+                                // TODO Change te logic to remove clikInGame and useless delays
                                 while (vec != 0) { // move to the correct zone
                                     if (vec > 0) {
                                         // note that moving to the right will fail in case player has not unlocked the zone yet!
@@ -736,7 +743,7 @@ public class DungeonThread implements Runnable {
                                     continue;
                                 }
 
-                                bot.browser.clickInGame(p.x, p.y);
+                                bot.browser.clickInGame(p);
 
                                 // select difficulty (If D4 just hit enter):
                                 if ((goalDungeon == 4) || (goalZone == 7 && goalDungeon == 3) || (goalZone == 8 && goalDungeon == 3)) { // D4, or Z7D3/Z8D3
@@ -746,14 +753,14 @@ public class DungeonThread implements Runnable {
                                     Cue cueDifficulty;
                                     switch (dungeonSetting.difficulty) {
                                         case 1:
-                                            cueDifficulty = new Cue(BHBot.cues.get("Normal"), Bounds.fromWidthHeight(155, 225, 110, 40));
+                                            cueDifficulty = bot.settings.useUnityEngine ? BHBot.cues.get("DungNormal") : new Cue(BHBot.cues.get("Normal"), Bounds.fromWidthHeight(155, 225, 110, 40));
                                             break;
                                         case 2:
-                                            cueDifficulty = new Cue(BHBot.cues.get("Hard"), null);
+                                            cueDifficulty = bot.settings.useUnityEngine ? BHBot.cues.get("DungHard") : new Cue(BHBot.cues.get("Hard"), null);
                                             break;
                                         case 3:
                                         default:
-                                            cueDifficulty = new Cue(BHBot.cues.get("Heroic"), Bounds.fromWidthHeight(535, 225, 110, 40));
+                                            cueDifficulty = bot.settings.useUnityEngine ? BHBot.cues.get("DungHeroic") : new Cue(BHBot.cues.get("Heroic"), Bounds.fromWidthHeight(535, 225, 110, 40));
                                             break;
                                     }
 
@@ -2438,14 +2445,13 @@ public class DungeonThread implements Runnable {
                                 XWithBounds = new Cue(BHBot.cues.get("X"), Bounds.fromWidthHeight(640, 75, 60, 60));
                                 break;
                             case Raid:
-                                Bounds xBounds = bot.settings.useUnityEngine ? Bounds.fromWidthHeight(625, 100, 30, 40) : Bounds.fromWidthHeight(610, 90, 60, 60);
+                                Bounds xBounds = bot.settings.useUnityEngine ? Bounds.fromWidthHeight(605, 85, 70, 70) : Bounds.fromWidthHeight(610, 90, 60, 60);
                                 XWithBounds = new Cue(BHBot.cues.get("X"), xBounds);
                                 break;
                             default:
                                 XWithBounds = new Cue(BHBot.cues.get("X"), null);
                                 break;
                         }
-
                         bot.browser.closePopupSecurely(XWithBounds, XWithBounds);
                     }
 
