@@ -643,6 +643,9 @@ class CueManager {
 
         // Blockers
         addCue("News", "unitycues/blockers/cueNewsPopup.png", Bounds.fromWidthHeight(345, 70, 110, 45)); // news popup
+        addCue("UhOh", "unitycues/blockers/cueUhoh.png", Bounds.fromWidthHeight(326, 140, 145, 38)); // UH OH Popup title
+        addCue("Disconnected", "unitycues/blockers/cueDisconnected.png", Bounds.fromWidthHeight(300, 230, 212, 67)); // cue for "You have been disconnected" popup
+        addCue("Reconnect", "unitycues/blockers/cueReconnect.png", Bounds.fromWidthHeight(332, 341, 137, 45)); // used with "You have been disconnected" dialog and also with the "maintenance" dialog
 
         // Common
         addCue("OrangeSelect", "unitycues/blockers/cueOrangeSelect.png", Bounds.fromWidthHeight(455, 410, 95, 30)); // Orange select used to choose the Unity engine
