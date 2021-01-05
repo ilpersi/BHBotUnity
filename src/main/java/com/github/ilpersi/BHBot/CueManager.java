@@ -647,11 +647,12 @@ class CueManager {
         addCue("UhOh", "unitycues/blockers/cueUhoh.png", Bounds.fromWidthHeight(326, 140, 145, 38)); // UH OH Popup title
         addCue("Disconnected", "unitycues/blockers/cueDisconnected.png", Bounds.fromWidthHeight(300, 230, 212, 67)); // cue for "You have been disconnected" popup
         addCue("Reconnect", "unitycues/blockers/cueReconnect.png", Bounds.fromWidthHeight(332, 341, 137, 45)); // used with "You have been disconnected" dialog and also with the "maintenance" dialog
+        addCue("NewsClose", "unitycues/blockers/cueNewsClose.png", Bounds.fromWidthHeight(431, 448, 88, 28)); // close button used with "News" popup
         //endregion
 
         //region Common
         addCue("OrangeSelect", "unitycues/blockers/cueOrangeSelect.png", Bounds.fromWidthHeight(455, 410, 95, 30)); // Orange select used to choose the Unity engine
-        addCue("Close", "unitycues/common/cueClose.png", null); // close button used with "News" popup, also when defeated in dungeon, etc.
+        addCue("Close", "unitycues/common/cueClose.png", null); // close button when defeated in dungeon, etc.
         addCue("X", "unitycues/common/cueX.png", null); // "X" close button used in many different places
         addCue("YesGreen", "unitycues/common/cueYesGreen.png", null); // used for example when raid has been finished ("Cleared" popup)
         addCue("Team", "unitycues/common/cueTeam.png", null); // Team text part of pop-ups about teams

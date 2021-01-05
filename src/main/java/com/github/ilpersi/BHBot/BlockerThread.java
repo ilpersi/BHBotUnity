@@ -237,7 +237,7 @@ public class BlockerThread implements Runnable {
                 // check for "News" popup:
                 seg = MarvinSegment.fromCue(BHBot.cues.get("News"), bot.browser);
                 if (seg != null) {
-                    Cue CloseWithBounds = new Cue(BHBot.cues.get("Close"), Bounds.fromWidthHeight(425, 440, 100, 45));
+                    Cue CloseWithBounds = bot.settings.useUnityEngine ? BHBot.cues.get("NewsClose") : new Cue(BHBot.cues.get("Close"), Bounds.fromWidthHeight(425, 440, 100, 45));
                     seg = MarvinSegment.fromCue(CloseWithBounds, 2 * Misc.Durations.SECOND, bot.browser);
                     bot.browser.clickOnSeg(seg);
                     BHBot.logger.info("News popup dismissed.");
