@@ -130,7 +130,7 @@ public class EncounterManager {
 
         // We save all the errors and persuasions based on settings
         if ((familiarLevel.getValue() >= bot.settings.familiarScreenshot) || familiarLevel == FamiliarType.ERROR) {
-            bot.saveGameScreen(persuasionLog.toString(), "familiars");
+            Misc.saveScreen(persuasionLog.toString(), "familiars", bot.browser.getImg());
         }
 
         // if (bot.settings.contributeFamiliars) {
@@ -150,7 +150,7 @@ public class EncounterManager {
             // If we could not get the name, we are going to upload the full screen image.
             if (famNameImg == null) famNameImg = bot.browser.getImg();
 
-            if (!Misc.contributeImage(famNameImg, persuasionLog.toString(), null, false)) {
+            if (!Misc.contributeImage(famNameImg, persuasionLog.toString(), null, bot.settings.useUnityEngine)) {
                 Misc.contributeImage(bot.browser.getImg(), persuasionLog.toString(), familiarNameBounds, bot.settings.useUnityEngine);
             }
         } else {
@@ -392,14 +392,7 @@ public class EncounterManager {
         else
             nameImgRect = screenImg;
 
-		/*File zoneImgTmp = new File("tmp-NAME-ZONE.png");
-		try {
-			ImageIO.write(nameImgRect, "png", zoneImgTmp);
-		} catch (IOException e) {
-			BHBot.logger.error("", e);
-		}*/
-
-        int minX = nameImgRect.getWidth();
+		int minX = nameImgRect.getWidth();
         int minY = nameImgRect.getHeight();
         int maxY = 0;
         int maxX = 0;
@@ -423,7 +416,14 @@ public class EncounterManager {
         int width = maxX > 0 ? maxX - minX + 1 : 0;
         int height = maxY > 0 ? maxY - minY + 1 : 0;
 
-        return nameImgRect.getSubimage(minX, minY, width, height);
+        BufferedImage result;
+        try {
+            result = nameImgRect.getSubimage(minX, minY, width, height);
+        } catch (Exception e) {
+            result = null;
+        }
+
+        return result;
     }
 
     /**
@@ -475,7 +475,7 @@ public class EncounterManager {
      */
     static void printMD5(String famName) {
         for (Map.Entry<String, EncounterManager.FamiliarDetails> famDetails: EncounterManager.famMD5Table.entrySet()) {
-            if (famName.toLowerCase().equals(famDetails.getValue().name.toLowerCase())) {
+            if (famName.equalsIgnoreCase(famDetails.getValue().name)) {
                 BHBot.logger.debug("MD5 '" + famDetails.getKey() + "' - > " + famDetails.getValue().name);
                 return;
             }
