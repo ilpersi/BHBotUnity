@@ -170,7 +170,7 @@ public class BHBot {
         cues = new CueManager(bot.settings.useUnityEngine);
 
         // As we have initialized the cues successfully we also build familiar MD5 details
-        EncounterManager.buildMD5();
+        EncounterManager.buildMD5(bot.settings.useUnityEngine);
 
         // If any error is present after parsing the config file, we stop the bot
         if (bot.settings.wrongSettingLines.size() > 0) {

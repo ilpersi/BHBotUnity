@@ -1,10 +1,12 @@
 package com.github.ilpersi.BHBot;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.util.*;
+import java.util.List;
 
 public class EncounterManager {
     private final BHBot bot;
@@ -137,7 +139,7 @@ public class EncounterManager {
 
         // We build the MD5 string for the current encounter
         Bounds familiarNameBounds = new Bounds(105, 60, 640, 105);
-        BufferedImage famNameImg = EncounterManager.getFamiliarNameImg(bot.browser.getImg(), familiarLevel, familiarNameBounds);
+        BufferedImage famNameImg = EncounterManager.getFamiliarNameImg(bot.browser.getImg(), familiarLevel, familiarNameBounds, bot.settings.useUnityEngine);
         String famNameMD5 = Misc.imgToMD5(famNameImg);
 
         // We check if the familiar is known
@@ -360,30 +362,38 @@ public class EncounterManager {
      *
      * @param screenImg    A Buffered Image containing the image
      * @param familiarType What is the type of the familiar we are looking to find the name
+     * @param useUnityEngine Are we using Unity Engine?
      * @return A Buffered Image containing just the familiar name
      */
-    static BufferedImage getFamiliarNameImg(BufferedImage screenImg, FamiliarType familiarType, Bounds nameBounds) {
-        int familiarTxtColor;
+    static BufferedImage getFamiliarNameImg(BufferedImage screenImg, FamiliarType familiarType, Bounds nameBounds, boolean useUnityEngine) {
+        // int familiarTxtColor;
+        Color familiarTxtCol;
         switch (familiarType) {
             case COMMON:
-                familiarTxtColor = -6881668;
+                familiarTxtCol = useUnityEngine ? new Color(151, 255, 125) : new Color(150, 254, 124);
+                // familiarTxtColor = -6881668;
                 break;
             case RARE:
-                familiarTxtColor = -7168525;
+                familiarTxtCol = useUnityEngine ? new Color(147, 158, 244) : new Color(146, 157, 243);
+                // familiarTxtColor = -7168525;
                 break;
             case EPIC:
-                familiarTxtColor = -98436;
+                familiarTxtCol = useUnityEngine ? new Color(255, 128, 125) : new Color(254, 127, 124);
+                // familiarTxtColor = -98436;
                 break;
             case LEGENDARY:
-                familiarTxtColor = -66048;
+                familiarTxtCol = useUnityEngine ? new Color(255, 255, 0) : new Color(254, 254, 0);
+                // familiarTxtColor = -66048;
                 break;
             case ERROR:
             default:
-                familiarTxtColor = 0;
+                familiarTxtCol = null;
+                // familiarTxtColor = 0;
                 break;
         }
 
-        if (familiarTxtColor == 0) return null;
+        // if (familiarTxtColor == 0 ) return null;
+        if (familiarTxtCol == null) return null;
 
 
         BufferedImage nameImgRect;
@@ -400,7 +410,8 @@ public class EncounterManager {
         int[][] pixelMatrix = Misc.convertTo2D(nameImgRect);
         for (int y = 0; y < nameImgRect.getHeight(); y++) {
             for (int x = 0; x < nameImgRect.getWidth(); x++) {
-                if (pixelMatrix[x][y] == familiarTxtColor) {
+                // if (pixelMatrix[x][y] == familiarTxtColor) {
+                if (new Color(pixelMatrix[x][y]).equals(familiarTxtCol)) {
                     if (y < minY) minY = y;
                     if (x < minX) minX = x;
                     if (y > maxY) maxY = y;
@@ -429,8 +440,9 @@ public class EncounterManager {
     /**
      * This will build the full list of MD5 for all the known familiars. This list will be used to manage bribing and
      * persuasions during encounters.
+     * @param useUnityEngine Are we using Unity Engine?
      */
-    static void buildMD5() {
+    static void buildMD5(boolean useUnityEngine) {
         final ClassLoader classLoader = EncounterManager.class.getClassLoader();
         int totalMD5Cnt = 0;
 
@@ -447,13 +459,15 @@ public class EncounterManager {
             for (CueManager.CueDetails details : famDetails) {
 
                 BufferedImage famImg = CueManager.loadImage(classLoader, details.path);
-                BufferedImage famNameImg = EncounterManager.getFamiliarNameImg(famImg, cuesPath.getKey(), null);
+                BufferedImage famNameImg = EncounterManager.getFamiliarNameImg(famImg, cuesPath.getKey(), null, useUnityEngine);
 
                 String MD5Str = Misc.imgToMD5(famNameImg);
-
-                EncounterManager.FamiliarDetails familiar = new FamiliarDetails(details.name, cuesPath.getKey());
-                EncounterManager.famMD5Table.put(MD5Str, familiar);
-
+                if (!"".equals(MD5Str)) {
+                    EncounterManager.FamiliarDetails familiar = new FamiliarDetails(details.name, cuesPath.getKey());
+                    EncounterManager.famMD5Table.put(MD5Str, familiar);
+                } else {
+                    totalMD5Cnt--;
+                }
             }
         }
         BHBot.logger.debug("Loaded " + totalMD5Cnt + " familiars MD5.");
