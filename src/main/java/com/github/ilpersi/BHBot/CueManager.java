@@ -717,6 +717,11 @@ class CueManager {
         addCue("Zone5", "unitycues/dungeon/zones/cueZone5.png", Bounds.fromWidthHeight(252, 53, 299, 39));
         addCue("Zone6", "unitycues/dungeon/zones/cueZone6.png", Bounds.fromWidthHeight(252, 53, 299, 39));
         //endregion
+
+        //region Merchant
+        addCue("Merchant", "unitycues/merchant/cueMerchant.png", Bounds.fromWidthHeight(292, 118, 216, 45)); // cue for merchant dialog/popup
+        addCue("MerchantDecline", "unitycues/merchant/cueMerchantDecline.png", Bounds.fromWidthHeight(424, 376, 112, 33)); // cue for merchant dialog/popup
+        //endregion
     }
 
     /**

@@ -2358,13 +2358,13 @@ public class DungeonThread implements Runnable {
         if (activityDuration % 5 == 0 && encounterStatus) {
             seg = MarvinSegment.fromCue(BHBot.cues.get("Merchant"), bot.browser);
             if (seg != null) {
-                seg = MarvinSegment.fromCue(BHBot.cues.get("Decline"), 5 * Misc.Durations.SECOND, bot.browser);
+                seg = bot.settings.useUnityEngine ? MarvinSegment.fromCue(BHBot.cues.get("MerchantDecline"), bot.browser) : MarvinSegment.fromCue(BHBot.cues.get("Decline"), 5 * Misc.Durations.SECOND, bot.browser);
                 if (seg != null) {
                     bot.browser.clickOnSeg(seg);
                 } else BHBot.logger.error("Merchant 'decline' cue not found");
 
                 bot.browser.readScreen(Misc.Durations.SECOND);
-                seg = MarvinSegment.fromCue(BHBot.cues.get("YesGreen"), 5 * Misc.Durations.SECOND, bot.browser);
+                seg = bot.settings.useUnityEngine ? MarvinSegment.fromCue(BHBot.cues.get("YesGreen"), 5 * Misc.Durations.SECOND, Bounds.fromWidthHeight(300, 345, 65, 35), bot.browser) : MarvinSegment.fromCue(BHBot.cues.get("YesGreen"), 5 * Misc.Durations.SECOND, bot.browser);
                 if (seg != null) {
                     bot.browser.clickOnSeg(seg);
                 } else BHBot.logger.error("Merchant 'yes' cue not found");
