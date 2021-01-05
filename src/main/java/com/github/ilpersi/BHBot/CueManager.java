@@ -636,18 +636,20 @@ class CueManager {
      * - flash cues can be overwritten using the same cueKey
      */
     void updateUnityCues() {
-        // Main screen cues
+        //region Main screen cues
         addCue("Main", "unitycues/mainScreen/cueMainScreen.png", Bounds.fromWidthHeight(60, 5, 140, 40)); // Gem cue used to identify the main screen
         addCue("SettingsGear", "unitycues/mainScreen/cueSettingsGear.png", new Bounds(655, 450, 730, 515)); // settings button
         addCue("RaidButton", "unitycues/mainScreen/cueRaidButton.png", Bounds.fromWidthHeight(15, 200, 45, 200)); // Raid button
+        //endregion
 
-        // Blockers
+        //region Blockers
         addCue("News", "unitycues/blockers/cueNewsPopup.png", Bounds.fromWidthHeight(345, 70, 110, 45)); // news popup
         addCue("UhOh", "unitycues/blockers/cueUhoh.png", Bounds.fromWidthHeight(326, 140, 145, 38)); // UH OH Popup title
         addCue("Disconnected", "unitycues/blockers/cueDisconnected.png", Bounds.fromWidthHeight(300, 230, 212, 67)); // cue for "You have been disconnected" popup
         addCue("Reconnect", "unitycues/blockers/cueReconnect.png", Bounds.fromWidthHeight(332, 341, 137, 45)); // used with "You have been disconnected" dialog and also with the "maintenance" dialog
+        //endregion
 
-        // Common
+        //region Common
         addCue("OrangeSelect", "unitycues/blockers/cueOrangeSelect.png", Bounds.fromWidthHeight(455, 410, 95, 30)); // Orange select used to choose the Unity engine
         addCue("Close", "unitycues/common/cueClose.png", null); // close button used with "News" popup, also when defeated in dungeon, etc.
         addCue("X", "unitycues/common/cueX.png", null); // "X" close button used in many different places
@@ -660,12 +662,14 @@ class CueManager {
         addCue("Defeat", "unitycues/common/cueDefeat.png", Bounds.fromWidthHeight(323, 131, 150, 54)); // used for example when you have been defeated in a dungeon. Also used when you have been defeated in a gauntlet.
         addCue("TeamClear", "unitycues/common/cueTeamClear.png", Bounds.fromWidthHeight(313, 447, 108, 42)); //clear team button
         addCue("TeamAccept", "unitycues/common/cueTeamAccept.png", Bounds.fromWidthHeight(431, 445, 180, 46)); // raid accept button
+        //endregion
 
-        //Autoshrine
+        //region Autoshrine
         addCue("Settings", "unitycues/autoShrine/cueSettings.png", Bounds.fromWidthHeight(315, 65, 170, 40)); // settings menu
         addCue("IgnoreCheck", "unitycues/autoShrine/cueIgnoreCheck.png", null); // Green check used on the Ignore options
+        //endregion
 
-        // Raid
+        //region Raid
         addCue("RaidPopup", "unitycues/raid/cueRaidPopup.png", Bounds.fromWidthHeight(310, 45, 60, 45)); // The raid near the bar
         addCue("RaidLevel", "unitycues/raid/cueRaidLevel.png", Bounds.fromWidthHeight(190, 430, 430, 30)); // selected raid type button cue
         addCue("cueRaidLevelEmpty", "unitycues/raid/cueRaidLevelEmpty.png", Bounds.fromWidthHeight(190, 430, 430, 30)); // unselected raid type button cue
@@ -674,38 +678,43 @@ class CueManager {
         addCue("RaidNormal", "unitycues/raid/cueRaidNormal.png", Bounds.fromWidthHeight(140, 215, 135, 40)); // Normal difficulty Raid
         addCue("RaidHard", "unitycues/raid/cueRaidHard.png", Bounds.fromWidthHeight(330, 215, 135, 40)); // Hard difficulty Raid
         addCue("RaidHeroic", "unitycues/raid/cueRaidHeroic.png", Bounds.fromWidthHeight(520, 215, 135, 40)); // Heroic difficulty Raid
+        //endregion
 
-        // Treasure Chest
+        //region Treasure Chest
         addCue("SkeletonTreasure", "unitycues/treasureChest/cueSkeletonTreasure.png", Bounds.fromWidthHeight(205, 188, 87, 91)); // skeleton treasure found in dungeons (it's a dialog/popup cue)
         // TODO find the real cue in Unity Engine
         addCue("SkeletonNoKeys", "cues/cueSkeletonNoKeys.png", new Bounds(478, 318, 500, 348)); // red 0
         addCue("Open", "unitycues/treasureChest/cueOpen.png", null); // skeleton treasure open button
         addCue("Decline", "unitycues/treasureChest/cueDecline.png", null); // decline skeleton treasure button (found in dungeons), also with video ad treasures (found in dungeons)
+        //endregion
 
-        // Familiar encounters
+        //region Familiar encounters
         addCue("Persuade", "unitycues/familiarEncounter/cuePersuade.png", Bounds.fromWidthHeight(134, 323, 135, 39));
         addCue("Bribe", "unitycues/familiarEncounter/cueBribe.png", Bounds.fromWidthHeight(538, 326, 128, 35));
+        //endregion
 
-        //Familiar bribing cues
+        //region Familiar bribing cues
         addCue("DeclineRed", "unitycues/familiarEncounter/cueDeclineRed.png", Bounds.fromWidthHeight(250, 440, 110, 35)); // decline persuation attempts
         addCue("RareFamiliar", "unitycues/familiarEncounter/type/cue02RareFamiliar.png", Bounds.fromWidthHeight(527, 261, 158, 59)); // Rare Bribe cue
+        //endregion
 
-        // Dungeon cues
+        //region Dungeon cues
         addCue("EnergyBar", "unitycues/dungeon/cueEnergyBar.png", Bounds.fromWidthHeight(390, 0, 60, 50)); // The energy bar icon
         addCue("RightArrow", "unitycues/dungeon/cueRightArrow.png", Bounds.fromWidthHeight(720, 255, 40, 50)); // arrow used in quest screen to change zone
         addCue("LeftArrow", "unitycues/dungeon/cueLeftArrow.png", Bounds.fromWidthHeight(40, 255, 45, 50)); // arrow used in quest screen to change zone
         addCue("DungNormal", "unitycues/dungeon/cueDungNormal.png", Bounds.fromWidthHeight(140, 225, 135, 40)); // Normal difficulty Raid
         addCue("DungHard", "unitycues/dungeon/cueDungHard.png.png", Bounds.fromWidthHeight(330, 225, 135, 40)); // Hard difficulty Raid
         addCue("DungHeroic", "unitycues/dungeon/cueDungHeroic.png", Bounds.fromWidthHeight(520, 225, 135, 40)); // Heroic difficulty Raid
+        //endregion
 
-        // Dungeon zones
+        //region Dungeon zones
         addCue("Zone1", "unitycues/dungeon/zones/cueZone1.png", Bounds.fromWidthHeight(252, 53, 299, 39));
         addCue("Zone2", "unitycues/dungeon/zones/cueZone2.png", Bounds.fromWidthHeight(252, 53, 299, 39));
         addCue("Zone3", "unitycues/dungeon/zones/cueZone3.png", Bounds.fromWidthHeight(252, 53, 299, 39));
         addCue("Zone4", "unitycues/dungeon/zones/cueZone4.png", Bounds.fromWidthHeight(252, 53, 299, 39));
         addCue("Zone5", "unitycues/dungeon/zones/cueZone5.png", Bounds.fromWidthHeight(252, 53, 299, 39));
         addCue("Zone6", "unitycues/dungeon/zones/cueZone6.png", Bounds.fromWidthHeight(252, 53, 299, 39));
-
+        //endregion
     }
 
     /**
