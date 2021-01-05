@@ -151,6 +151,8 @@ public class DungeonThread implements Runnable {
                     continue;
                 }
 
+                if (bot.finished || (!bot.running && BHBot.State.Main.equals(bot.getState()))) break;
+
                 // If the current scheduling is no longer valid, as soon as we get in state Main we break so that the
                 // Main Thread can switch to a new valid scheduling without interrupting adventures
                 if (bot.currentScheduling != null && !bot.currentScheduling.isActive() && BHBot.State.Main.equals(bot.getState())) {
@@ -1892,10 +1894,7 @@ public class DungeonThread implements Runnable {
             // well, we got through all the checks. Means that nothing much has happened. So lets sleep for a second in order to not make processing too heavy...
             bot.excManager.numConsecutiveException = 0; // reset exception counter
             bot.scheduler.restoreIdleTime(); // revert changes to idle time
-            if (bot.finished) break; // skip sleeping if finished flag has been set!
-            if (!bot.running && BHBot.State.Main.equals(bot.getState())) {
-                break;
-            }
+            if (bot.finished || (!bot.running && BHBot.State.Main.equals(bot.getState()))) break; // skip sleeping if finished flag has been set or the bot is not running!
 
             BHBot.logger.trace("Dungeon Thread Sleeping");
             if (BHBot.State.Main.equals(bot.getState()) || BHBot.State.Loading.equals(bot.getState())) {
