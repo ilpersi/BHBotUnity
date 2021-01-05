@@ -2440,12 +2440,17 @@ public class DungeonThread implements Runnable {
                         bot.browser.readScreen(3 * Misc.Durations.SECOND); //wait for slide-in animation to finish
 
                         Cue XWithBounds;
+                        Bounds xBounds;
                         switch (bot.getState()) {
                             case WorldBoss:
                                 XWithBounds = new Cue(BHBot.cues.get("X"), Bounds.fromWidthHeight(640, 75, 60, 60));
                                 break;
                             case Raid:
-                                Bounds xBounds = bot.settings.useUnityEngine ? Bounds.fromWidthHeight(605, 85, 70, 70) : Bounds.fromWidthHeight(610, 90, 60, 60);
+                                xBounds = bot.settings.useUnityEngine ? Bounds.fromWidthHeight(605, 85, 70, 70) : Bounds.fromWidthHeight(610, 90, 60, 60);
+                                XWithBounds = new Cue(BHBot.cues.get("X"), xBounds);
+                                break;
+                            case Dungeon:
+                                xBounds = bot.settings.useUnityEngine ? Bounds.fromWidthHeight(695, 40, 70, 75) : null;
                                 XWithBounds = new Cue(BHBot.cues.get("X"), xBounds);
                                 break;
                             default:
