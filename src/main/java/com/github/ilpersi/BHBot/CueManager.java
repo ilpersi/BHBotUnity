@@ -697,6 +697,7 @@ class CueManager {
         //region Familiar bribing cues
         addCue("DeclineRed", "unitycues/familiarEncounter/cueDeclineRed.png", Bounds.fromWidthHeight(250, 440, 110, 35)); // decline persuation attempts
         addCue("RareFamiliar", "unitycues/familiarEncounter/type/cue02RareFamiliar.png", Bounds.fromWidthHeight(527, 261, 158, 59)); // Rare Bribe cue
+        addCue("CommonFamiliar", "unitycues/familiarEncounter/type/cue01CommonFamiliar.png", Bounds.fromWidthHeight(527, 261, 158, 59)); // Common Bribe cue
         //endregion
 
         //region Dungeon cues
