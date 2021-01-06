@@ -700,6 +700,14 @@ class CueManager {
         addCue("CommonFamiliar", "unitycues/familiarEncounter/type/cue01CommonFamiliar.png", Bounds.fromWidthHeight(527, 261, 158, 59)); // Common Bribe cue
         //endregion
 
+        //region Familiar folders
+        int newFamCnt = loadCueFolder("unitycues/familiarEncounter/01 Common", null, false, new Bounds(145, 50, 575, 125));
+        newFamCnt += loadCueFolder("unitycues/familiarEncounter/02 Rare", null, false, new Bounds(145, 50, 575, 125));
+        newFamCnt += loadCueFolder("unitycues/familiarEncounter/03 Epic", null, false, new Bounds(145, 50, 575, 125));
+        newFamCnt += loadCueFolder("unitycues/familiarEncounter/04 Legendary", null, false, new Bounds(145, 50, 575, 125));
+        BHBot.logger.debug("Found " + newFamCnt + " Unity familiar cues.");
+        //endregion
+
         //region Dungeon cues
         addCue("EnergyBar", "unitycues/dungeon/cueEnergyBar.png", Bounds.fromWidthHeight(390, 0, 60, 50)); // The energy bar icon
         addCue("RightArrow", "unitycues/dungeon/cueRightArrow.png", Bounds.fromWidthHeight(720, 255, 40, 50)); // arrow used in quest screen to change zone

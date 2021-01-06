@@ -447,10 +447,18 @@ public class EncounterManager {
         int totalMD5Cnt = 0;
 
         HashMap<EncounterManager.FamiliarType, String> folders = new HashMap<>();
-        folders.put(FamiliarType.COMMON, "cues/familiars/01 Common");
-        folders.put(FamiliarType.RARE, "cues/familiars/02 Rare");
-        folders.put(FamiliarType.EPIC, "cues/familiars/03 Epic");
-        folders.put(FamiliarType.LEGENDARY, "cues/familiars/04 Legendary");
+        if (useUnityEngine) {
+            folders.put(FamiliarType.COMMON, "unitycues/familiarEncounter/01 Common");
+            folders.put(FamiliarType.RARE, "unitycues/familiarEncounter/02 Rare");
+            folders.put(FamiliarType.EPIC, "unitycues/familiarEncounter/03 Epic");
+            folders.put(FamiliarType.LEGENDARY, "unitycues/familiarEncounter/04 Legendary");
+        } else {
+            folders.put(FamiliarType.COMMON, "cues/familiars/01 Common");
+            folders.put(FamiliarType.RARE, "cues/familiars/02 Rare");
+            folders.put(FamiliarType.EPIC, "cues/familiars/03 Epic");
+            folders.put(FamiliarType.LEGENDARY, "cues/familiars/04 Legendary");
+        }
+
 
         for (Map.Entry<EncounterManager.FamiliarType, String> cuesPath : folders.entrySet()) {
             ArrayList<CueManager.CueDetails> famDetails = CueManager.getCueDetailsFromPath(cuesPath.getValue());
