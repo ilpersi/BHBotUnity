@@ -18,13 +18,20 @@ import java.io.IOException;
  * This tool has been created to ease the porting of BHBot to Steam and can be used for other meaning also.
  */
 public class CueCompare {
-    /*
-        cueCompare compares the pixels in the bounds of two images, and divides matching pixels by the area pixel count
-        to return a percent similarity match.
 
-        If the result is more than the sensitivity (decimal percentage) it will return true
+    /**
+     * Compares the pixels in the bounds of two images, and divides matching pixels by the area pixel count
+     * to return a percent similarity match.
+     *
+     * @param img1 First input image
+     * @param img2 Second input image
+     * @param sensitivity threshold of sensitivity
+     * @param x1 X1 Bound
+     * @param x2 X2 Bound
+     * @param y1 Y1 Bound
+     * @param y2 Y2 Bound
+     * @return If the result of the comparison is more than the sensitivity (decimal percentage) it will return true
      */
-
     public static boolean imageDifference(BufferedImage img1, BufferedImage img2, double sensitivity, int x1, int x2, int y1, int y2) {
         int totalPixels = ((x2 - x1) * (y2 - y1));
         double matchingPixels = 0;
@@ -55,6 +62,14 @@ public class CueCompare {
         }
     }
 
+    /**
+     * This method will take care of loading two input images from files and merge them as an output image in a given path.
+     * The merge will only be possible if the two input images share the same width and the same height
+     *
+     * @param img1File File object to first input image
+     * @param img2File File object to second input image
+     * @param imgOutPath Path where to write the merged image
+     */
     static private void createDiffImage(File img1File, File img2File, String imgOutPath) {
         if (img1File != null && img2File != null) {
             BufferedImage img1;
@@ -65,7 +80,6 @@ public class CueCompare {
                 e.printStackTrace();
                 return;
             }
-
 
             BufferedImage img2 = null;
             try {
@@ -79,37 +93,72 @@ public class CueCompare {
                 // To allow the comparison, image cues need to be of the same size
                 if (img1.getWidth() == img2.getWidth() && img1.getHeight() == img2.getHeight()) {
 
-                    // Buffered image to handle the output
-                    BufferedImage img3 = new BufferedImage(img1.getWidth(), img1.getHeight(), BufferedImage.TYPE_INT_ARGB);
+                    BufferedImage img3 = pixelCompare(img1, img2);
 
-                    int[][] pixelMatrix1 = Misc.convertTo2D(img1);
-                    int[][] pixelMatrix2 = Misc.convertTo2D(img2);
-
-                    for (int y = 0; y < img1.getHeight(); y++) {
-                        for (int x = 0; x < img1.getWidth(); x++) {
-                            if (pixelMatrix1[x][y] == pixelMatrix2[x][y]) {
-                                // If both images have the same color in the same pixel, this is copied to the output image
-                                img3.setRGB(x, y, pixelMatrix1[x][y]);
-                            } else {
-                                // If color of the same pixel is different, a transparent pixel is created in the destination image
-                                img3.setRGB(x, y, 0);
-                            }
+                    if (img3 != null) {
+                        File nameImgFile = new File(imgOutPath);
+                        try {
+                            ImageIO.write(img3, "png", nameImgFile);
+                        } catch (IOException e) {
+                            BHBot.logger.error("Error while creating comparison file", e);
                         }
-
-                    }
-
-                    File nameImgFile = new File(imgOutPath);
-                    try {
-                        ImageIO.write(img3, "png", nameImgFile);
-                    } catch (IOException e) {
-                        BHBot.logger.error("Error while creating comparison file", e);
+                    } else {
+                        System.out.println("Invalid merged image in createDiffImage.");
                     }
 
                 } else {
                     System.out.printf("Img 1 %s W:%d H:%d -- Img 2 %s W:%d H:%d\n",
                             img1File.getName(), img1.getWidth(), img1.getHeight(), img2File.getName(), img2.getWidth(), img2.getHeight());
                 }
+            } else {
+                System.out.println("Wrong input images in method createDiffImage.");
             }
+        }
+    }
+
+    /**
+     * Merge two images comparing pixel colors. If different colors are found corresponding pixesls are set as transparent
+     * in the merged image. Merge will only happen if the two images have the same size.
+     *
+     * @param img1 Input image 1
+     * @param img2 Input image 2
+     * @return a merged BufferedImage if merge was successful null otherwise
+     */
+    static BufferedImage pixelCompare(BufferedImage img1, BufferedImage img2) {
+
+        if (img1 != null && img2 != null) {
+            // To allow the comparison, image cues need to be of the same size
+            if (img1.getWidth() == img2.getWidth() && img1.getHeight() == img2.getHeight()) {
+
+                // Buffered image to handle the output
+                BufferedImage img3 = new BufferedImage(img1.getWidth(), img1.getHeight(), BufferedImage.TYPE_INT_ARGB);
+
+                int[][] pixelMatrix1 = Misc.convertTo2D(img1);
+                int[][] pixelMatrix2 = Misc.convertTo2D(img2);
+
+                for (int y = 0; y < img1.getHeight(); y++) {
+                    for (int x = 0; x < img1.getWidth(); x++) {
+                        if (pixelMatrix1[x][y] == pixelMatrix2[x][y]) {
+                            // If both images have the same color in the same pixel, this is copied to the output image
+                            img3.setRGB(x, y, pixelMatrix1[x][y]);
+                        } else {
+                            // If color of the same pixel is different, a transparent pixel is created in the destination image
+                            img3.setRGB(x, y, 0);
+                        }
+                    }
+
+                }
+
+                return img3;
+
+            } else {
+                System.out.printf("Img 1 W:%d H:%d -- Img 2 W:%d H:%d\n",
+                        img1.getWidth(), img1.getHeight(), img2.getWidth(), img2.getHeight());
+                return null;
+            }
+        } else {
+            System.out.println("Invalid input images.");
+            return null;
         }
     }
 
