@@ -643,7 +643,9 @@ public class DungeonThread implements Runnable {
                                     new Color (107, 155, 35), new Color (88, 127, 28), new Color (79, 115, 26), new Color (84, 122, 27),
                                     new Color (75, 109, 24), new Color (105, 152, 34), new Color (66, 95, 21), new Color (73, 105, 24),
                                     new Color (66, 96, 21), new Color (124, 180, 40), new Color (120, 174, 39), new Color (77, 112, 25),
-                                    new Color (93, 134, 30), new Color (74, 107, 24), new Color (86, 125, 28), new Color (87, 133, 21));
+                                    new Color (93, 134, 30), new Color (74, 107, 24), new Color (86, 125, 28), new Color (87, 133, 21),
+                                    new Color (89, 129, 29), new Color (116, 168, 38), new Color (102, 148, 33), new Color (125, 181, 40),
+                                    new Color (97, 141, 32));
                             int energy = bot.settings.useUnityEngine ? readResourceBarPercentage(100, BHBot.cues.get("EnergyBar"), 0, 6, 80, energyBarColors) : getEnergy();
                             globalEnergy = energy;
                             BHBot.logger.readout("Energy: " + energy + "%, required: >" + bot.settings.minEnergyPercentage + "%");
