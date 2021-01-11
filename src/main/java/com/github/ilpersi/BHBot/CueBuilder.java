@@ -197,6 +197,11 @@ public class CueBuilder {
                 Set.of(), "Cleared", "unitycues/common/cueCleared.png", true));
         //endregion
 
+        //region CueX
+        cueLocators.add(new CueLocator("unitycuesources/raid/raid-summon.png", Bounds.fromWidthHeight(616, 97, 48, 48),
+                Set.of(), "X", "unitycues/common/cueX.png", true));
+        //endregion
+
         for (CueLocator cueLoc : cueLocators) {
             cueLoc.generateCue();
         }
