@@ -686,7 +686,7 @@ class CueManager {
         // TODO find the real cue in Unity Engine
         addCue("SkeletonNoKeys", "cues/cueSkeletonNoKeys.png", new Bounds(478, 318, 500, 348)); // red 0
         addCue("Open", "unitycues/treasureChest/cueOpen.png", null); // skeleton treasure open button
-        addCue("Decline", "unitycues/treasureChest/cueDecline.png", null); // decline skeleton treasure button (found in dungeons), also with video ad treasures (found in dungeons)
+        addCue("Decline", "unitycues/treasureChest/cueDecline.png", Bounds.fromWidthHeight(405, 365, 145, 55)); // decline skeleton treasure button (found in dungeons), also with video ad treasures (found in dungeons)
         //endregion
 
         //region Familiar encounters

@@ -195,11 +195,18 @@ public class CueBuilder {
                 Set.of(new Color(255, 255, 255)), "TeamAccept", "unitycues/common/cueTeamAccept.png", false));
         cueLocators.add(new CueLocator("unitycuesources/common/cleared.png", Bounds.fromWidthHeight(330, 132, 139, 56),
                 Set.of(), "Cleared", "unitycues/common/cueCleared.png", true));
+        cueLocators.add(new CueLocator("unitycuesources/common/cleared.png", Bounds.fromWidthHeight(303, 345, 61, 32),
+                Set.of(), "YesGreen", "unitycues/common/cueYesGreen.png", true));
         //endregion
 
         //region CueX
         cueLocators.add(new CueLocator("unitycuesources/raid/raid-summon.png", Bounds.fromWidthHeight(616, 97, 48, 48),
                 Set.of(), "X", "unitycues/common/cueX.png", true));
+        //endregion
+
+        //region Treasure Chest
+        cueLocators.add(new CueLocator("unitycuesources/treasureChest/treasure.png", Bounds.fromWidthHeight(419, 377, 117, 31),
+                Set.of(), "Decline", "unitycues/treasureChest/cueDecline.png", true));
         //endregion
 
         for (CueLocator cueLoc : cueLocators) {
