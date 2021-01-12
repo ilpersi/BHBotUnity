@@ -206,11 +206,11 @@ public class BHBot {
         gitProperties = Misc.getGITInfo();
         logger.info("GIT commit id: " + gitProperties.get("git.commit.id") + "  time: " + gitProperties.get("git.commit.time"));
 
-        if (!"UNKNOWN".equals(BHBotVersion)) {
+        /*if (!"UNKNOWN".equals(BHBotVersion)) {
             checkNewRelease();
         } else {
             logger.warn("Unknown BHBotVersion, impossible to check for updates.");
-        }
+        }*/
 
         logger.info("Settings loaded from file");
 
