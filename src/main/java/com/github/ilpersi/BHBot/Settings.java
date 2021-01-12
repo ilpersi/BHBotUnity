@@ -281,7 +281,7 @@ public class Settings {
     boolean debugDetectionTimes = false; // if true, then each time a cue detection from game screenshot will be attempted, a time taken will be displayed together with a name of the cue
     boolean debugNullBounds = false; // if true, then each time a cue with null bounds is found, details are logged
     boolean useDoNotShareURL = false; // if true, then each time a cue detection from game screenshot will be attempted, a time taken will be displayed together with a name of the cue
-    boolean useUnityEngine = false; // if true, then Unity cues will be loaded
+    boolean useUnityEngine = true; // if true, then Unity cues will be loaded
     boolean dumpReadScreen = false; // if true, everytime a readScreen is performed, the image is saved. Huge performance hog!
     boolean hideWindowOnRestart = false; // if true, game window will be hidden upon driver (re)start
     int reconnectTimer = 60;
@@ -603,7 +603,7 @@ public class Settings {
         tankPosition = 1;
         tankPriority = new ArrayList<>();
         useDoNotShareURL = false;
-        useUnityEngine = false;
+        useUnityEngine = true;
         dumpReadScreen = false;
         useHeadlessMode = false;
         username = "";
