@@ -644,7 +644,7 @@ class CueManager {
 
         //region Blockers
         addCue("News", "unitycues/blockers/cueNewsPopup.png", Bounds.fromWidthHeight(345, 50, 110, 85)); // news popup
-        addCue("UhOh", "unitycues/blockers/cueUhoh.png", Bounds.fromWidthHeight(326, 140, 145, 38)); // UH OH Popup title
+        addCue("UhOh", "unitycues/blockers/cueUhoh.png", Bounds.fromWidthHeight(325, 120, 150, 80)); // UH OH Popup title
         addCue("Disconnected", "unitycues/blockers/cueDisconnected.png", Bounds.fromWidthHeight(300, 230, 212, 67)); // cue for "You have been disconnected" popup
         addCue("Reconnect", "unitycues/blockers/cueReconnect.png", Bounds.fromWidthHeight(332, 341, 137, 45)); // used with "You have been disconnected" dialog and also with the "maintenance" dialog
         addCue("NewsClose", "unitycues/blockers/cueNewsClose.png", Bounds.fromWidthHeight(431, 448, 88, 28)); // close button used with "News" popup
@@ -666,7 +666,7 @@ class CueManager {
         //endregion
 
         //region Autoshrine
-        addCue("Settings", "unitycues/autoShrine/cueSettings.png", Bounds.fromWidthHeight(315, 40, 170, 85)); // settings menu
+        addCue("Settings", "unitycues/autoShrine/cueSettings.png", Bounds.fromWidthHeight(200, 285, 415, 95)); // settings menu
         addCue("IgnoreCheck", "unitycues/autoShrine/cueIgnoreCheck.png", null); // Green check used on the Ignore options
         //endregion
 

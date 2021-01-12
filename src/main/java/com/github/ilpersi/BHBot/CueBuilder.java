@@ -163,16 +163,18 @@ public class CueBuilder {
     public static void main(String[] args) {
         List<CueLocator> cueLocators = new ArrayList<>();
 
-        //region News Popup
+        //region Blockers
         cueLocators.add(new CueLocator("unitycuesources/blockers/news.png", Bounds.fromWidthHeight(358, 64, 83, 58),
-                Set.of(), "News", "unitycues/blockers/cueNewsPopup.png", false));
+                Set.of(), "News", "unitycues/blockers/cueNewsPopup.png", true));
         cueLocators.add(new CueLocator("unitycuesources/blockers/news.png", Bounds.fromWidthHeight(421, 447, 119, 32),
-                Set.of(new Color(255, 255, 255)), "NewsClose", "unitycues/blockers/cueNewsClose.png", false));
+                Set.of(new Color(255, 255, 255)), "NewsClose", "unitycues/blockers/cueNewsClose.png", true));
+        cueLocators.add(new CueLocator("unitycuesources/blockers/reconnect.png", Bounds.fromWidthHeight(336, 131, 129, 58),
+                Set.of(), "UhOh", "unitycues/blockers/cueUhoh.png", true));
         //endregion
 
         //region autoShrine
-        cueLocators.add(new CueLocator("unitycuesources/autoShrine/settings.png", Bounds.fromWidthHeight(326, 54, 146, 57),
-                Set.of(), "Settings", "unitycues/autoShrine/cueSettings.png", false));
+        cueLocators.add(new CueLocator("unitycuesources/autoShrine/settings.png", Bounds.fromWidthHeight(212, 299, 390, 68),
+                Set.of(), "Settings", "unitycues/autoShrine/cueSettings.png", true));
         //endregion
 
         //region raid
