@@ -101,6 +101,7 @@ public class AutoShrineManager {
         if (seg != null) {
             bot.browser.clickOnSeg(seg);
             seg = MarvinSegment.fromCue(BHBot.cues.get("Settings"), delay, bot.browser);
+            if (seg == null) bot.saveGameScreen("open-settings-no-setting-menu", "errors");
             return seg != null;
         } else {
             BHBot.logger.error("Impossible to find the settings button!");
