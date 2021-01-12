@@ -199,6 +199,8 @@ public class CueBuilder {
                 Set.of(), "Cleared", "unitycues/common/cueCleared.png", true));
         cueLocators.add(new CueLocator("unitycuesources/common/cleared.png", Bounds.fromWidthHeight(303, 345, 61, 32),
                 Set.of(), "YesGreen", "unitycues/common/cueYesGreen.png", true));
+        cueLocators.add(new CueLocator("unitycuesources/common/solo.png", Bounds.fromWidthHeight(303, 345, 61, 32),
+                Set.of(), "YesGreen", "unitycues/common/cueYesGreen.png", true));
         //endregion
 
         //region CueX
