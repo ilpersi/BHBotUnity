@@ -713,6 +713,19 @@ public class DungeonThread implements Runnable {
                                 BHBot.logger.info("Attempting " + difficultyName + " z" + goalZone + "d" + goalDungeon);
 
                                 int currentZone = readCurrentZone();
+                                if (currentZone == 0) {
+                                    BHBot.logger.error("Impossible to detect current selected zone!");
+
+                                    seg = MarvinSegment.fromCue("X", bot.browser);
+                                    if (seg != null) {
+                                        bot.browser.clickOnSeg(seg);
+                                    } else {
+                                        BHBot.logger.error("It was impossible to close the dungeon window, restarting...");
+                                        restart();
+                                    }
+
+                                    continue;
+                                }
                                 int vec = goalZone - currentZone; // movement vector
                                 // TODO Change te logic to remove clikInGame and useless delays
                                 while (vec != 0) { // move to the correct zone
@@ -3393,34 +3406,29 @@ public class DungeonThread implements Runnable {
      * Returns 0 in case zone could not be read (in case we are not in the quest window, for example).
     */
     private int readCurrentZone() {
-        if (MarvinSegment.fromCue("Zone1", bot.browser) != null)
-            return 1;
-        else if (MarvinSegment.fromCue("Zone2", bot.browser) != null)
-            return 2;
-        else if (MarvinSegment.fromCue("Zone3", bot.browser) != null)
-            return 3;
-        else if (MarvinSegment.fromCue("Zone4", bot.browser) != null)
-            return 4;
-        else if (MarvinSegment.fromCue("Zone5", bot.browser) != null)
-            return 5;
-        else if (MarvinSegment.fromCue("Zone6", bot.browser) != null)
-            return 6;
-        else if (MarvinSegment.fromCue("Zone7", bot.browser) != null)
-            return 7;
-        else if (MarvinSegment.fromCue("Zone8", bot.browser) != null)
-            return 8;
-        else if (MarvinSegment.fromCue("Zone9", bot.browser) != null)
-            return 9;
-        else if (MarvinSegment.fromCue("Zone10", bot.browser) != null)
-            return 10;
-        else if (MarvinSegment.fromCue("Zone11", bot.browser) != null)
-            return 11;
-        else if (MarvinSegment.fromCue("Zone12", bot.browser) != null)
-            return 12;
-        else if (MarvinSegment.fromCue("Zone13", bot.browser) != null)
-            return 13;
-        else
-            return 0;
+
+        // Signatures are build using the DungeonSignature Class
+        HashMap<String, Integer> zoneSignatures = new HashMap<>();
+        zoneSignatures.put("chfP7xxmYLa6OTFhDNJTfA==", 1);
+        zoneSignatures.put("rKea4zBByo0uDpTCbmSFMQ==", 2);
+        zoneSignatures.put("ns5+x+eTfD4Ow2Bnn7UmJQ==", 3);
+        zoneSignatures.put("NonrIHc80e37cTY/ig3n9Q==", 4);
+        zoneSignatures.put("RKBzsCY4Lb7p0YPfqymmpw==", 5);
+        zoneSignatures.put("9HUUZEJFtRzm+AKAgru7Zw==", 6);
+        zoneSignatures.put("Bgc94G5D1m/ZlGBFIiEt2Q==", 7);
+        zoneSignatures.put("l6mMtwhhgw3pMaAg+tjr+g==", 8);
+        zoneSignatures.put("o3qWxLDy3MNNUrvoMahJeg==", 9);
+        zoneSignatures.put("t7kLTFjBahFUhj2tzb8RCg==", 10);
+        zoneSignatures.put("1NGhsG0v76GPi8FIstuCzw==", 11);
+        zoneSignatures.put("rp85HUcC30LLH3K8Xnd/Ow==", 12);
+        zoneSignatures.put("4yD/Lsj7JMG9vOCsklFrhQ==", 13);
+
+        bot.browser.readScreen();
+
+        BufferedImage zoneSignatureImg = bot.browser.getImg().getSubimage(Misc.SIGNATURE_BOUNDS.x1, Misc.SIGNATURE_BOUNDS.y1, Misc.SIGNATURE_BOUNDS.width, Misc.SIGNATURE_BOUNDS.height);
+        String signature = Misc.imgToMD5(zoneSignatureImg);
+
+        return zoneSignatures.getOrDefault(signature, 0);
     }
 
     void expeditionReadTest() {
