@@ -99,6 +99,8 @@ public class Misc {
         static final int WEEK = 7 * DAY;
     }
 
+    static final Bounds SIGNATURE_BOUNDS = Bounds.fromWidthHeight(87, 108, 1, 350);
+
     /**
      * Return time in milliseconds from the start of the system. Can have a negative value.
      */
