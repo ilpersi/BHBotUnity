@@ -5,10 +5,32 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.LinkedHashSet;
+import java.util.HashSet;
 import java.util.Set;
 
 public class ImageHelper {
+    static Set<Color> getImgColors(BufferedImage Img) {
+        Set<Color> colors = new HashSet<>();
+        for ( int x = 0; x < Img.getWidth(); x++ ) {
+            for( int y = 0; y < Img.getHeight(); y++ ) {
+                colors.add(new Color( Img.getRGB( x, y ) ));
+            }
+        }
+        return colors;
+    }
+
+    static void printColors(Set<Color> raidColors) {
+        StringBuilder colorOutStr = new StringBuilder();
+        for (Color col: raidColors) {
+            if (colorOutStr.length() > 0) colorOutStr.append(", ");
+
+            colorOutStr.append("new Color (").append(col.getRed()).append(", ")
+                    .append(col.getGreen()).append(", ")
+                    .append(col.getBlue()).append(")");
+        }
+        System.out.println(colorOutStr.toString());
+    }
+
     public static void main(String[] args) {
         String usage = "ImageHelp <imagePath>";
 
@@ -36,23 +58,9 @@ public class ImageHelper {
                 return;
             }
 
-            Set<Color> colors = new LinkedHashSet<>();
-            for ( int x = 0; x < image.getWidth(); x++ ) {
-                for( int y = 0; y < image.getHeight(); y++ ) {
-                    colors.add(new Color( image.getRGB( x, y ) ));
-                }
-            }
+            Set<Color> colors = getImgColors(image);
 
-            StringBuilder colorOutStr = new StringBuilder();
-            for (Color col: colors) {
-                if (colorOutStr.length() > 0) colorOutStr.append(", ");
-
-                colorOutStr.append("new Color (").append(col.getRed()).append(", ")
-                        .append(col.getGreen()).append(", ")
-                        .append(col.getBlue()).append(")");
-            }
-
-            System.out.println(colorOutStr.toString());
+            printColors(colors);
 
         }
     }
