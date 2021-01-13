@@ -4,16 +4,37 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * This is a quick and dirty solution aimed at creating multiple Cues from an origin image file.
  * The goal of this class is to be on par with Kongregate changing Cues frequently
  */
 public class CueBuilder {
+    public static class ImageFilter implements FilenameFilter {
+
+        private final Pattern PNGPattern;
+
+        public ImageFilter(String PNGPattern) {
+            if (!PNGPattern.endsWith("\\.png")) PNGPattern += "\\.png";
+
+            this.PNGPattern = Pattern.compile(PNGPattern, Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
+        }
+
+        @Override
+        public boolean accept(File dir, String name) {
+            Matcher pngMatcher = this.PNGPattern.matcher(name);
+            return pngMatcher.matches();
+        }
+
+    }
+
     /**
      * Internal class that has all the details of a Cue that needs to be created
      */
@@ -160,6 +181,21 @@ public class CueBuilder {
 
     }
 
+    static void patternAdd(List<CueLocator> cueLocators, String containingPath, String PNGPattern, Bounds cuePosition, Set<Color> colorWhiteList,
+                           String destinationCueName, String destinationCuePath, boolean merge) {
+        File containingPathFile = new File(containingPath);
+        if (!containingPathFile.exists() || !containingPathFile.isDirectory()) {
+            System.out.println("Invalid containing path: " + containingPath);
+            return;
+        }
+
+        if (!containingPath.endsWith("/")) containingPath += "/";
+
+        for (String PNGImgFileName : containingPathFile.list(new ImageFilter(PNGPattern))) {
+            cueLocators.add(new CueLocator(containingPath + PNGImgFileName, cuePosition, colorWhiteList, destinationCueName, destinationCuePath, merge));
+        }
+    }
+
     public static void main(String[] args) {
         List<CueLocator> cueLocators = new ArrayList<>();
 
@@ -195,8 +231,8 @@ public class CueBuilder {
                 Set.of(new Color(255, 255, 255)), "TeamClear", "unitycues/common/cueTeamClear.png", false));
         cueLocators.add(new CueLocator("cuebuilder/raid/raid-team.png", Bounds.fromWidthHeight(465, 453, 115, 29),
                 Set.of(new Color(255, 255, 255)), "TeamAccept", "unitycues/common/cueTeamAccept.png", false));
-        cueLocators.add(new CueLocator("cuebuilder/common/cleared.png", Bounds.fromWidthHeight(330, 132, 139, 56),
-                Set.of(), "Cleared", "unitycues/common/cueCleared.png", true));
+        patternAdd(cueLocators, "cuebuilder/common", "cleared(.*)\\.png", Bounds.fromWidthHeight(330, 132, 139, 56),
+                Set.of(), "Cleared", "unitycues/common/cueCleared.png", true);
         cueLocators.add(new CueLocator("cuebuilder/common/cleared.png", Bounds.fromWidthHeight(303, 345, 61, 32),
                 Set.of(), "YesGreen", "unitycues/common/cueYesGreen.png", true));
         cueLocators.add(new CueLocator("cuebuilder/common/solo.png", Bounds.fromWidthHeight(303, 345, 61, 32),
