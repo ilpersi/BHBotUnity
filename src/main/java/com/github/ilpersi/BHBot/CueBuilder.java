@@ -204,6 +204,12 @@ public class CueBuilder {
                 Set.of(new Color(255, 255, 255)), "NewsClose", "unitycues/blockers/cueNewsClose.png", true));
         cueLocators.add(new CueLocator("cuebuilder/blockers/reconnect.png", Bounds.fromWidthHeight(336, 131, 129, 58),
                 Set.of(), "UhOh", "unitycues/blockers/cueUhoh.png", true));
+        patternAdd(cueLocators, "cuebuilder/blockers", "daily(.*)\\.png", Bounds.fromWidthHeight(259, 52, 282, 57),
+                Set.of(), "DailyRewards", "unitycues/blockers/cueDailyRewards.png");
+        patternAdd(cueLocators, "cuebuilder/blockers", "daily(.*)\\.png", Bounds.fromWidthHeight(353, 444, 97, 31),
+                Set.of(), "Claim", "unitycues/blockers/cueClaim.png");
+        patternAdd(cueLocators, "cuebuilder/blockers", "items(.*)\\.png", Bounds.fromWidthHeight(339, 117, 119, 58),
+                Set.of(), "Items", "unitycues/blockers/cueItems.png");
         //endregion
 
         //region autoShrine
@@ -230,7 +236,7 @@ public class CueBuilder {
         cueLocators.add(new CueLocator("cuebuilder/raid/raid-team.png", Bounds.fromWidthHeight(465, 453, 115, 29),
                 Set.of(new Color(255, 255, 255)), "TeamAccept", "unitycues/common/cueTeamAccept.png", false));
         patternAdd(cueLocators, "cuebuilder/common", "cleared(.*)\\.png", Bounds.fromWidthHeight(330, 132, 139, 56),
-                Set.of(), "Cleared", "unitycues/common/cueCleared.png", true);
+                Set.of(), "Cleared", "unitycues/common/cueCleared.png");
         cueLocators.add(new CueLocator("cuebuilder/common/cleared.png", Bounds.fromWidthHeight(303, 345, 61, 32),
                 Set.of(), "YesGreen", "unitycues/common/cueYesGreen.png", true));
         cueLocators.add(new CueLocator("cuebuilder/common/solo.png", Bounds.fromWidthHeight(303, 345, 61, 32),
@@ -239,6 +245,8 @@ public class CueBuilder {
 
         //region CueX
         cueLocators.add(new CueLocator("cuebuilder/raid/raid-summon.png", Bounds.fromWidthHeight(616, 97, 48, 48),
+                Set.of(), "X", "unitycues/common/cueX.png", true));
+        cueLocators.add(new CueLocator("cuebuilder/blockers/items_20210112.png", Bounds.fromWidthHeight(566, 129, 48, 48),
                 Set.of(), "X", "unitycues/common/cueX.png", true));
         //endregion
 

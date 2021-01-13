@@ -648,6 +648,9 @@ class CueManager {
         addCue("Disconnected", "unitycues/blockers/cueDisconnected.png", Bounds.fromWidthHeight(300, 230, 212, 67)); // cue for "You have been disconnected" popup
         addCue("Reconnect", "unitycues/blockers/cueReconnect.png", Bounds.fromWidthHeight(332, 341, 137, 45)); // used with "You have been disconnected" dialog and also with the "maintenance" dialog
         addCue("NewsClose", "unitycues/blockers/cueNewsClose.png", Bounds.fromWidthHeight(431, 448, 88, 28)); // close button used with "News" popup
+        addCue("DailyRewards", "unitycues/blockers/cueDailyRewards.png", Bounds.fromWidthHeight(245, 40, 310, 80)); // Daily Reward Claim Screen
+        addCue("Claim", "unitycues/blockers/cueClaim.png", Bounds.fromWidthHeight(340, 430, 120, 55)); // Daily Reward green claim button
+        addCue("Items", "unitycues/blockers/cueItems.png", Bounds.fromWidthHeight(325, 105, 145, 80)); // Imes Cue for daily reward
         //endregion
 
         //region Common
