@@ -12,7 +12,7 @@ public class CueTest {
 
             MarvinSegment seg = MarvinSegment.fromFiles(args[0], args[1]);
 
-            System.out.println("");
+            System.out.println();
             if (seg != null) {
                 Bounds suggestedBounds = Bounds.fromMarvinSegment(seg, null);
                 System.out.println("Cue found at: " + seg);
