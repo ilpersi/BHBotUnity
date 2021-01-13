@@ -15,6 +15,7 @@ public class CueTest {
             System.out.println("");
             if (seg != null) {
                 Bounds suggestedBounds = Bounds.fromMarvinSegment(seg, null);
+                System.out.println("Cue found at: " + seg);
                 System.out.println("Suggested Bounds: " + suggestedBounds.getJavaCode(true, false));
                 System.out.println("Suggested Bounds.fromWidthHeight: " + suggestedBounds.getJavaCode(true, true));
             } else {
