@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -29,8 +28,7 @@ public class CueBuilder {
 
         @Override
         public boolean accept(File dir, String name) {
-            Matcher pngMatcher = this.PNGPattern.matcher(name);
-            return pngMatcher.matches();
+            return this.PNGPattern.matcher(name).matches();
         }
 
     }
@@ -137,7 +135,7 @@ public class CueBuilder {
                 destCueImg = destCueImg.getSubimage(minX, minY, width, height);
             }
 
-            if (merge) {
+            if (destinationCueFile.exists() && merge) {
                 // We load the original screenshot
                 BufferedImage existingCueImg;
                 try {
@@ -154,7 +152,7 @@ public class CueBuilder {
                     // If the merge was successful we override the destination Cue
                     if (mergedCueImg != null) destCueImg = mergedCueImg;
                 } else {
-                    System.out.println("It was impossible to merge " + this.destinationCueName + " due to different cue dimensions.");
+                    System.out.println("It was impossible to merge '" + this.destinationCueName + "' from " + this.containingScreenShotPath + " due to different cue dimensions.");
                 }
             }
 
@@ -182,7 +180,7 @@ public class CueBuilder {
     }
 
     static void patternAdd(List<CueLocator> cueLocators, String containingPath, String PNGPattern, Bounds cuePosition, Set<Color> colorWhiteList,
-                           String destinationCueName, String destinationCuePath, boolean merge) {
+                           String destinationCueName, String destinationCuePath) {
         File containingPathFile = new File(containingPath);
         if (!containingPathFile.exists() || !containingPathFile.isDirectory()) {
             System.out.println("Invalid containing path: " + containingPath);
@@ -192,7 +190,7 @@ public class CueBuilder {
         if (!containingPath.endsWith("/")) containingPath += "/";
 
         for (String PNGImgFileName : containingPathFile.list(new ImageFilter(PNGPattern))) {
-            cueLocators.add(new CueLocator(containingPath + PNGImgFileName, cuePosition, colorWhiteList, destinationCueName, destinationCuePath, merge));
+            cueLocators.add(new CueLocator(containingPath + PNGImgFileName, cuePosition, colorWhiteList, destinationCueName, destinationCuePath, true));
         }
     }
 
