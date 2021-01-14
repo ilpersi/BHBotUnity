@@ -304,7 +304,7 @@ public class DungeonThread implements Runnable {
                             }
 
                             final Set<Color> shardBarColors = Set.of(new Color(199, 79, 175), new Color(199, 79, 176), new Color(147, 47, 118));
-                            int shards = bot.settings.useUnityEngine ? readResourceBarPercentage(bot.settings.maxShards, BHBot.cues.get("RaidPopup"), 1, 10, 80, shardBarColors) : getShards();
+                            int shards = bot.settings.useUnityEngine ? readResourceBarPercentage(seg, bot.settings.maxShards, Misc.BarOffsets.RAID.x, Misc.BarOffsets.RAID.y, 80, shardBarColors, bot.browser.getImg()) : getShards();
 
                             globalShards = shards;
                             BHBot.logger.readout("Shards: " + shards + ", required: >" + bot.settings.minShards);
@@ -646,7 +646,9 @@ public class DungeonThread implements Runnable {
                                     new Color (93, 134, 30), new Color (74, 107, 24), new Color (86, 125, 28), new Color (87, 133, 21),
                                     new Color (89, 129, 29), new Color (116, 168, 38), new Color (102, 148, 33), new Color (125, 181, 40),
                                     new Color (97, 141, 32));
-                            int energy = bot.settings.useUnityEngine ? readResourceBarPercentage(100, BHBot.cues.get("EnergyBar"), 0, 6, 80, energyBarColors) : getEnergy();
+
+                            seg = MarvinSegment.fromCue(BHBot.cues.get("EnergyBar"), bot.browser);
+                            int energy = bot.settings.useUnityEngine ? readResourceBarPercentage(seg, 100, 0, 6, 80, energyBarColors, bot.browser.getImg()) : getEnergy();
                             globalEnergy = energy;
                             BHBot.logger.readout("Energy: " + energy + "%, required: >" + bot.settings.minEnergyPercentage + "%");
 
@@ -2100,21 +2102,17 @@ public class DungeonThread implements Runnable {
         return Math.round(value * (maxTickets / 77.0f)); // scale it to interval [0..10]
     }
 
-    private int readResourceBarPercentage(int maxResourceCnt, Cue barLocator, int xOffset, int yOffset, int barLength, Set<Color> barColors) {
-        MarvinSegment seg;
+    static int readResourceBarPercentage(MarvinSegment barLocator, int maxResourceCnt, int xOffset, int yOffset, int barLength, Set<Color> barColors, BufferedImage barImgRead) {
+        if (barLocator == null) return -1;
 
-        seg = MarvinSegment.fromCue(barLocator, bot.browser);
-
-        if (seg == null) return -1;
-
-        int left = seg.x2 + xOffset;
-        int top = seg.y1 + yOffset;
+        int left = barLocator.x2 + xOffset;
+        int top = barLocator.y1 + yOffset;
 
         int value = 0;
 
         for (int i = 0; i < barLength; i++) {
             value = i;
-            Color col = new Color(bot.browser.getImg().getRGB(left + i, top));
+            Color col = new Color(barImgRead.getRGB(left + i, top));
 
             if (!barColors.contains(col)) break;
         }

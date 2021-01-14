@@ -6,9 +6,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
@@ -179,8 +178,8 @@ public class CueBuilder {
 
     }
 
-    static void patternAdd(List<CueLocator> cueLocators, String containingPath, String PNGPattern, Bounds cuePosition, Set<Color> colorWhiteList,
-                           String destinationCueName, String destinationCuePath) {
+    static void addCueLocatorByPattern(List<CueLocator> cueLocators, String containingPath, String PNGPattern, Bounds cuePosition, Set<Color> colorWhiteList,
+                                       String destinationCueName, String destinationCuePath) {
         File containingPathFile = new File(containingPath);
         if (!containingPathFile.exists() || !containingPathFile.isDirectory()) {
             System.out.println("Invalid containing path: " + containingPath);
@@ -194,7 +193,7 @@ public class CueBuilder {
         }
     }
 
-    public static void main(String[] args) {
+    static void manageCueFiles() {
         List<CueLocator> cueLocators = new ArrayList<>();
 
         //region Blockers
@@ -204,11 +203,11 @@ public class CueBuilder {
                 Set.of(new Color(255, 255, 255)), "NewsClose", "unitycues/blockers/cueNewsClose.png", true));
         cueLocators.add(new CueLocator("cuebuilder/blockers/reconnect.png", Bounds.fromWidthHeight(336, 131, 129, 58),
                 Set.of(), "UhOh", "unitycues/blockers/cueUhoh.png", true));
-        patternAdd(cueLocators, "cuebuilder/blockers", "daily(.*)\\.png", Bounds.fromWidthHeight(259, 52, 282, 57),
+        addCueLocatorByPattern(cueLocators, "cuebuilder/blockers", "daily(.*)\\.png", Bounds.fromWidthHeight(259, 52, 282, 57),
                 Set.of(), "DailyRewards", "unitycues/blockers/cueDailyRewards.png");
-        patternAdd(cueLocators, "cuebuilder/blockers", "daily(.*)\\.png", Bounds.fromWidthHeight(353, 444, 97, 31),
+        addCueLocatorByPattern(cueLocators, "cuebuilder/blockers", "daily(.*)\\.png", Bounds.fromWidthHeight(353, 444, 97, 31),
                 Set.of(), "Claim", "unitycues/blockers/cueClaim.png");
-        patternAdd(cueLocators, "cuebuilder/blockers", "items(.*)\\.png", Bounds.fromWidthHeight(339, 117, 119, 58),
+        addCueLocatorByPattern(cueLocators, "cuebuilder/blockers", "items(.*)\\.png", Bounds.fromWidthHeight(339, 117, 119, 58),
                 Set.of(), "Items", "unitycues/blockers/cueItems.png");
         //endregion
 
@@ -235,7 +234,7 @@ public class CueBuilder {
                 Set.of(new Color(255, 255, 255)), "TeamClear", "unitycues/common/cueTeamClear.png", false));
         cueLocators.add(new CueLocator("cuebuilder/raid/raid-team.png", Bounds.fromWidthHeight(465, 453, 115, 29),
                 Set.of(new Color(255, 255, 255)), "TeamAccept", "unitycues/common/cueTeamAccept.png", false));
-        patternAdd(cueLocators, "cuebuilder/common", "cleared(.*)\\.png", Bounds.fromWidthHeight(330, 132, 139, 56),
+        addCueLocatorByPattern(cueLocators, "cuebuilder/common", "cleared(.*)\\.png", Bounds.fromWidthHeight(330, 132, 139, 56),
                 Set.of(), "Cleared", "unitycues/common/cueCleared.png");
         cueLocators.add(new CueLocator("cuebuilder/common/cleared.png", Bounds.fromWidthHeight(303, 345, 61, 32),
                 Set.of(), "YesGreen", "unitycues/common/cueYesGreen.png", true));
@@ -258,5 +257,58 @@ public class CueBuilder {
         for (CueLocator cueLoc : cueLocators) {
             cueLoc.generateCue();
         }
+    }
+
+    static void manageRaidBar() {
+        // Currently known colors
+        Set<Color> raidColors = new HashSet<>(
+                 Set.of(new Color(199, 79, 175), new Color(199, 79, 176),
+                         new Color(147, 47, 118)));
+
+        // Path to files with raid bar
+        File raidPath = new File("barbuilder/raid");
+
+        BufferedImage raidPopUp;
+        try {
+            raidPopUp = ImageIO.read(new File("src/main/resources/unitycues/raid/cueRaidPopup.png"));
+        } catch (IOException e) {
+            System.out.println("Errow while reading raid pop-up");
+            e.printStackTrace();
+            return;
+        }
+
+        // Loop on all the files
+        for (String raidImgFile : raidPath.list(new ImageFilter("raid-bar(.*)\\.png"))) {
+            File raidBarFile = new File("barbuilder/raid/" + raidImgFile);
+
+            if (!raidBarFile.exists() || raidBarFile.isDirectory()) {
+                System.out.println("File " + raidBarFile.getAbsolutePath() + " is not a valid bar file");
+                continue;
+            }
+
+            BufferedImage raidImg;
+            try {
+                raidImg = ImageIO.read(raidBarFile);
+            } catch (IOException e) {
+                System.out.println("Exception while loading image" + raidBarFile.getAbsolutePath());
+                e.printStackTrace();
+                continue;
+            }
+
+            raidColors.addAll(ImageHelper.getImgColors(raidImg.getSubimage(361, 62, 80, 1)));
+            System.out.println("Found colors for Raid:");
+            ImageHelper.printColors(raidColors);
+
+            MarvinSegment seg = FindSubimage.findImage(raidImg, raidPopUp, 0, 0, 0, 0);
+            // As images can have different shat totals we use 100 so we get the percentage
+            int shard = DungeonThread.readResourceBarPercentage(seg, 100, Misc.BarOffsets.RAID.x, Misc.BarOffsets.RAID.y, 80, raidColors, raidImg);
+            System.out.println("Raid bar is " + shard + "% full for image " + raidBarFile.getAbsolutePath());
+        }
+
+    }
+
+    public static void main(String[] args) {
+        manageCueFiles();
+        manageRaidBar();
     }
 }

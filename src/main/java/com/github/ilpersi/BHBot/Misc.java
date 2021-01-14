@@ -1,6 +1,7 @@
 package com.github.ilpersi.BHBot;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URI;
@@ -17,6 +18,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.List;
 
 /**
  * @author Betalord
@@ -97,6 +99,10 @@ public class Misc {
         static final int HOUR = 60 * MINUTE;
         static final int DAY = 24 * HOUR;
         static final int WEEK = 7 * DAY;
+    }
+
+    static final class BarOffsets {
+        static final Point RAID = new Point(0, 9);
     }
 
     static final Bounds SIGNATURE_BOUNDS = Bounds.fromWidthHeight(87, 108, 1, 350);
