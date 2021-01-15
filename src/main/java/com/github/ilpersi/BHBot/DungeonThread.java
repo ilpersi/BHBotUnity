@@ -55,13 +55,13 @@ public class DungeonThread implements Runnable {
     // Generic counters HashMap
     HashMap<BHBot.State, DungeonCounter> counters = new HashMap<>();
 
-    private long ENERGY_CHECK_INTERVAL = 10 * Misc.Durations.MINUTE;
-    private long XEALS_CHECK_INTERVAL = 10 * Misc.Durations.MINUTE;
-    private long TICKETS_CHECK_INTERVAL = 10 * Misc.Durations.MINUTE;
-    private long TOKENS_CHECK_INTERVAL = 10 * Misc.Durations.MINUTE;
-    private long BADGES_CHECK_INTERVAL = 10 * Misc.Durations.MINUTE;
+    private long ENERGY_CHECK_INTERVAL = 5 * Misc.Durations.MINUTE;
+    private long XEALS_CHECK_INTERVAL = 5 * Misc.Durations.MINUTE;
+    private long TICKETS_CHECK_INTERVAL = 5 * Misc.Durations.MINUTE;
+    private long TOKENS_CHECK_INTERVAL = 5 * Misc.Durations.MINUTE;
+    private long BADGES_CHECK_INTERVAL = 5 * Misc.Durations.MINUTE;
     @SuppressWarnings("FieldCanBeLocal")
-    private final long BONUS_CHECK_INTERVAL = 10 * Misc.Durations.MINUTE;
+    private final long BONUS_CHECK_INTERVAL = 5 * Misc.Durations.MINUTE;
 
     private long timeLastEnergyCheck = 0; // when did we check for Energy the last time?
     private long timeLastXealsCheck = 0; // when did we check for Xeals the last time?
