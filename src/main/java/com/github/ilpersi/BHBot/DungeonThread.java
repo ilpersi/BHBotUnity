@@ -44,7 +44,7 @@ public class DungeonThread implements Runnable {
     //private int potionsUsed = 0;
     private boolean startTimeCheck = false;
     private long activityStartTime;
-    private boolean encounterStatus = true;
+    private boolean isInFight = true;
     private long outOfEncounterTimestamp = 0;
     private long inEncounterTimestamp = 0;
     private boolean specialDungeon; //d4 check for closing properly when no energy
@@ -194,6 +194,9 @@ public class DungeonThread implements Runnable {
                         BHBot.logger.warn("Possible dungeon crash, activating failsafe");
                         bot.saveGameScreen("dungeon-crash-failsafe", "errors");
                         shrineManager.updateShrineSettings(false, false); //in case we are stuck in a dungeon lets enable shrines/boss
+                        setAutoOff(Misc.Durations.SECOND);
+                        bot.browser.readScreen();
+                        setAutoOn(Misc.Durations.SECOND);
                         continue;
                     }
                 }
@@ -2261,11 +2264,11 @@ public class DungeonThread implements Runnable {
 
         if (!startTimeCheck) {
             activityStartTime = TimeUnit.MILLISECONDS.toSeconds(Misc.getTime());
-            BHBot.logger.debug("Start time: " + activityStartTime);
+            BHBot.logger.debug(bot.getState().getName() + " start time: " + activityStartTime);
             outOfEncounterTimestamp = TimeUnit.MILLISECONDS.toSeconds(Misc.getTime());
             inEncounterTimestamp = TimeUnit.MILLISECONDS.toSeconds(Misc.getTime());
             startTimeCheck = true;
-            encounterStatus = false; //true is in encounter, false is out of encounter
+            isInFight = false; //true is in encounter, false is out of encounter
             positionChecker.resetStartPos();
         }
 
@@ -2278,17 +2281,17 @@ public class DungeonThread implements Runnable {
         MarvinSegment guildButtonSeg = MarvinSegment.fromCue(BHBot.cues.get("GuildButton"), bot.browser);
         if (guildButtonSeg != null) {
             outOfEncounterTimestamp = TimeUnit.MILLISECONDS.toSeconds(Misc.getTime());
-            if (encounterStatus) {
+            if (isInFight) {
                 BHBot.logger.trace("Updating idle time (Out of combat)");
                 bot.scheduler.resetIdleTime(true);
-                encounterStatus = false;
+                isInFight = false;
             }
         } else {
             inEncounterTimestamp = TimeUnit.MILLISECONDS.toSeconds(Misc.getTime());
-            if (!encounterStatus) {
+            if (!isInFight) {
                 BHBot.logger.trace("Updating idle time (In combat)");
                 bot.scheduler.resetIdleTime(true);
-                encounterStatus = true;
+                isInFight = true;
                 positionChecker.resetStartPos();
             }
         }
@@ -2304,14 +2307,14 @@ public class DungeonThread implements Runnable {
         /*
          * autoRune Code
          */
-        if (bot.settings.autoBossRune.containsKey(bot.getState().getShortcut()) && !encounterStatus) {
+        if (bot.settings.autoBossRune.containsKey(bot.getState().getShortcut()) && !isInFight) {
             runeManager.handleAutoBossRune(outOfEncounterTimestamp, inEncounterTimestamp);
         }
 
         /*
          * autoShrine Code
          */
-        if (bot.settings.autoShrine.contains(bot.getState().getShortcut()) && !encounterStatus) {
+        if (bot.settings.autoShrine.contains(bot.getState().getShortcut()) && !isInFight) {
             shrineManager.processAutoShrine((outOfEncounterTimestamp - inEncounterTimestamp));
         }
 
@@ -2327,7 +2330,7 @@ public class DungeonThread implements Runnable {
         /*
          * autoBribe/Persuasion code
          */
-        if ((bot.getState() == BHBot.State.Raid || bot.getState() == BHBot.State.Dungeon) && encounterStatus) {
+        if ((bot.getState() == BHBot.State.Raid || bot.getState() == BHBot.State.Dungeon) && isInFight) {
             seg = MarvinSegment.fromCue(BHBot.cues.get("FamiliarEncounter"), bot.browser);
             if (seg != null) {
                 encounterManager.processFamiliarEncounter();
@@ -2349,7 +2352,7 @@ public class DungeonThread implements Runnable {
          *  1x Speed check
          *  We check once per activity, when we're in combat
          */
-        if (activityDuration % 5 == 0 && encounterStatus) { //we check once per activity when we are in encounter
+        if (activityDuration % 5 == 0 && isInFight) { //we check once per activity when we are in encounter
             MarvinSegment speedFull = MarvinSegment.fromCue("Speed_Full", bot.browser);
             MarvinSegment speedLabel = MarvinSegment.fromCue("Speed", bot.browser);
             if (speedLabel != null && speedFull == null) { //if we see speed label but not 3/3 speed
@@ -2368,7 +2371,7 @@ public class DungeonThread implements Runnable {
          *   Merchant offer check
          *   Not super common so we check every 5 seconds
          */
-        if (activityDuration % 5 == 0 && encounterStatus) {
+        if (activityDuration % 5 == 0 && isInFight) {
             seg = MarvinSegment.fromCue(BHBot.cues.get("Merchant"), bot.browser);
             if (seg != null) {
                 seg = bot.settings.useUnityEngine ? MarvinSegment.fromCue(BHBot.cues.get("MerchantDecline"), bot.browser) : MarvinSegment.fromCue(BHBot.cues.get("Decline"), 5 * Misc.Durations.SECOND, bot.browser);
@@ -2389,7 +2392,7 @@ public class DungeonThread implements Runnable {
          *   This is a one time event per account instance, so we don't need to check it very often
          *   encounterStatus is set to true as the dialogue obscures the guild icon
          */
-        if (activityDuration % 10 == 0 && encounterStatus && (bot.getState() == BHBot.State.Dungeon || bot.getState() == BHBot.State.Raid)) {
+        if (activityDuration % 10 == 0 && isInFight && (bot.getState() == BHBot.State.Dungeon || bot.getState() == BHBot.State.Raid)) {
             detectCharacterDialogAndHandleIt();
         }
 
@@ -2765,7 +2768,7 @@ public class DungeonThread implements Runnable {
         final String acceptMessage = bot.settings.openSkeleton == 1 ? "Skeleton treasure found, attempting to use key" : "Raid Skeleton treasure found, attempting to use key";
 
         Bounds declineBounds = bot.settings.useUnityEngine ? Bounds.fromWidthHeight(411, 373, 134, 39) : Bounds.fromWidthHeight(400, 360, 150, 65);
-        Bounds greenYesBounds = bot.settings.useUnityEngine ? Bounds.fromWidthHeight(258, 373, 133, 39) : Bounds.fromWidthHeight(245, 335, 155, 55);
+        Bounds greenYesBounds = bot.settings.useUnityEngine ? Bounds.fromWidthHeight(290, 335, 85, 55) : Bounds.fromWidthHeight(245, 335, 155, 55);
         Bounds openBounds = bot.settings.useUnityEngine ? Bounds.fromWidthHeight(276, 340, 114, 43) : Bounds.fromWidthHeight(250, 360, 150, 65);
 
         // we don't have skeleton keys or setting does not allow us to open chests
@@ -3641,16 +3644,14 @@ public class DungeonThread implements Runnable {
     private boolean handleTeamMalformedWarning() {
 
         // We look for the team text on top of the text pop-up
-        Bounds teamBounds = bot.settings.useUnityEngine ? Bounds.fromWidthHeight(348, 137, 106, 42) : new Bounds(330, 135, 480, 180);
-        MarvinSegment seg = MarvinSegment.fromCue(BHBot.cues.get("Team"), Misc.Durations.SECOND * 3, teamBounds, bot.browser);
+        MarvinSegment seg = MarvinSegment.fromCue(BHBot.cues.get("Team"), Misc.Durations.SECOND * 3, bot.browser);
         if (seg == null) {
             return false;
         }
 
         if (MarvinSegment.fromCue(BHBot.cues.get("TeamNotFull"), Misc.Durations.SECOND, bot.browser) != null || MarvinSegment.fromCue(BHBot.cues.get("TeamNotOrdered"), Misc.Durations.SECOND, bot.browser) != null) {
             bot.browser.readScreen(Misc.Durations.SECOND);
-            Bounds noBounds = bot.settings.useUnityEngine ? Bounds.fromWidthHeight(428, 343, 76, 38) : null;
-            seg = MarvinSegment.fromCue(BHBot.cues.get("No"), 2 * Misc.Durations.SECOND, noBounds, bot.browser);
+            seg = MarvinSegment.fromCue(BHBot.cues.get("No"), 2 * Misc.Durations.SECOND, bot.browser);
             if (seg == null) {
                 BHBot.logger.error("Error: 'Team not full/ordered' window detected, but no 'No' button found. Restarting...");
                 return true;
@@ -3658,8 +3659,7 @@ public class DungeonThread implements Runnable {
             bot.browser.clickOnSeg(seg);
             bot.browser.readScreen();
 
-            Bounds autoTeam = bot.settings.useUnityEngine ? Bounds.fromWidthHeight(191, 446, 112, 44) : null;
-            seg = MarvinSegment.fromCue(BHBot.cues.get("AutoTeam"), 2 * Misc.Durations.SECOND, autoTeam, bot.browser);
+            seg = MarvinSegment.fromCue(BHBot.cues.get("AutoTeam"), 2 * Misc.Durations.SECOND, bot.browser);
             if (seg == null) {
                 BHBot.logger.error("Error: 'Team not full/ordered' window detected, but no 'Auto' button found. Restarting...");
                 return true;
@@ -3667,13 +3667,7 @@ public class DungeonThread implements Runnable {
             bot.browser.clickOnSeg(seg);
 
             bot.browser.readScreen();
-            Cue acceptTeam;
-            if (bot.settings.useUnityEngine) {
-                // TO DO Unity: check correct due for dungeon
-                acceptTeam = BHBot.cues.get("TeamAccept");
-            } else {
-                acceptTeam = new Cue(BHBot.cues.get("Accept"), Bounds.fromWidthHeight(465, 445, 110, 40));
-            }
+            Cue acceptTeam = BHBot.cues.get("TeamAccept");
             seg = MarvinSegment.fromCue(acceptTeam, 2 * Misc.Durations.SECOND, bot.browser);
             if (seg == null) {
                 BHBot.logger.error("Error: 'Team not full/ordered' window detected, but no 'Accept' button found. Restarting...");

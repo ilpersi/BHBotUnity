@@ -658,14 +658,14 @@ class CueManager {
         addCue("Close", "unitycues/common/cueClose.png", null); // close button when defeated in dungeon, etc.
         addCue("X", "unitycues/common/cueX.png", null); // "X" close button used in many different places
         addCue("YesGreen", "unitycues/common/cueYesGreen.png", null); // used for example when raid has been finished ("Cleared" popup)
-        addCue("Team", "unitycues/common/cueTeam.png", null); // Team text part of pop-ups about teams
-        addCue("TeamNotFull", "unitycues/common/cueTeamNotFull.png", Bounds.fromWidthHeight(254, 205, 298, 114)); // warning popup when some friend left you and your team is not complete anymore
-        addCue("No", "unitycues/common/cueNo.png", null); // cue for a blue "No" button used for example with "Your team is not full" dialog, or for "Replace consumable" dialog, etc. This is why we can't put concrete borders as position varies a lot.
+        addCue("Team", "unitycues/common/cueTeam.png", Bounds.fromWidthHeight(340, 120, 120, 80)); // Team text part of pop-ups about teams
+        addCue("TeamNotFull", "unitycues/common/cueTeamNotFull.png", Bounds.fromWidthHeight(265, 205, 280, 120)); // warning popup when some friend left you and your team is not complete anymore
+        addCue("No", "unitycues/common/cueNo.png", Bounds.fromWidthHeight(435, 335, 65, 50)); // cue for a blue "No" button used for example with "Your team is not full" dialog, or for "Replace consumable" dialog, etc. This is why we can't put concrete borders as position varies a lot.
         addCue("AutoTeam", "unitycues/common/cueAutoTeam.png", null); // "Auto" button that automatically assigns team (in raid, GvG, ...)
         addCue("Cleared", "unitycues/common/cueCleared.png", Bounds.fromWidthHeight(320, 120, 160, 80)); // used for example when raid has been finished
         addCue("Defeat", "unitycues/common/cueDefeat.png", Bounds.fromWidthHeight(323, 131, 150, 54)); // used for example when you have been defeated in a dungeon. Also used when you have been defeated in a gauntlet.
         addCue("TeamClear", "unitycues/common/cueTeamClear.png", Bounds.fromWidthHeight(313, 447, 108, 42)); //clear team button
-        addCue("TeamAccept", "unitycues/common/cueTeamAccept.png", Bounds.fromWidthHeight(431, 445, 180, 46)); // raid accept button
+        addCue("TeamAccept", "unitycues/common/cueTeamAccept.png", Bounds.fromWidthHeight(445, 440, 145, 55)); // raid accept button
         //endregion
 
         //region Autoshrine
@@ -679,9 +679,9 @@ class CueManager {
         addCue("cueRaidLevelEmpty", "unitycues/raid/cueRaidLevelEmpty.png", Bounds.fromWidthHeight(190, 430, 430, 30)); // unselected raid type button cue
         addCue("Raid1Name", "unitycues/raid/r1Name.png", Bounds.fromWidthHeight(175, 350, 300, 45));// Raid 1 Name, used whe R1 is the only unlocked raid
         addCue("RaidSummon", "unitycues/raid/cueRaidSummon.png", Bounds.fromWidthHeight(480, 360, 125, 40)); // Purple summon button
-        addCue("RaidNormal", "unitycues/raid/cueRaidNormal.png", Bounds.fromWidthHeight(140, 215, 135, 40)); // Normal difficulty Raid
-        addCue("RaidHard", "unitycues/raid/cueRaidHard.png", Bounds.fromWidthHeight(330, 215, 135, 40)); // Hard difficulty Raid
-        addCue("RaidHeroic", "unitycues/raid/cueRaidHeroic.png", Bounds.fromWidthHeight(520, 215, 135, 40)); // Heroic difficulty Raid
+        addCue("RaidNormal", "unitycues/raid/cueRaidNormal.png", Bounds.fromWidthHeight(135, 210, 145, 50)); // Normal difficulty Raid
+        addCue("RaidHard", "unitycues/raid/cueRaidHard.png", Bounds.fromWidthHeight(330, 210, 145, 50)); // Hard difficulty Raid
+        addCue("RaidHeroic", "unitycues/raid/cueRaidHeroic.png", Bounds.fromWidthHeight(525, 210, 145, 50)); // Heroic difficulty Raid
         //endregion
 
         //region Treasure Chest
@@ -693,15 +693,16 @@ class CueManager {
         //endregion
 
         //region Familiar encounters
-        addCue("Persuade", "unitycues/familiarEncounter/cuePersuade.png", Bounds.fromWidthHeight(134, 323, 135, 39));
-        addCue("Bribe", "unitycues/familiarEncounter/cueBribe.png", Bounds.fromWidthHeight(538, 326, 128, 35));
+        addCue("FamiliarEncounter", "unitycues/familiarEncounter/cueEncounter.png", Bounds.fromWidthHeight(130, 265, 45, 55));
+        addCue("Persuade", "unitycues/familiarEncounter/cuePersuade.png", Bounds.fromWidthHeight(120, 315, 160, 55));
+        addCue("Bribe", "unitycues/familiarEncounter/cueBribe.png", Bounds.fromWidthHeight(540, 315, 120, 55));
+        addCue("DeclineRed", "unitycues/familiarEncounter/cueDeclineRed.png", Bounds.fromWidthHeight(240, 430, 135, 50)); // decline persuation attempts
         //endregion
 
         //region Familiar bribing cues
-        addCue("DeclineRed", "unitycues/familiarEncounter/cueDeclineRed.png", Bounds.fromWidthHeight(250, 440, 110, 35)); // decline persuation attempts
         addCue("RareFamiliar", "unitycues/familiarEncounter/type/cue02RareFamiliar.png", Bounds.fromWidthHeight(527, 261, 158, 59)); // Rare Bribe cue
         addCue("CommonFamiliar", "unitycues/familiarEncounter/type/cue01CommonFamiliar.png", Bounds.fromWidthHeight(527, 261, 158, 59)); // Common Bribe cue
-        addCue("FamiliarEncounter", "unitycues/familiarEncounter/cueEncounter.png", Bounds.fromWidthHeight(114, 262, 563, 56));
+        addCue("EpicFamiliar", "unitycues/familiarEncounter/type/cue03EpicFamiliar.png", Bounds.fromWidthHeight(525, 265, 150, 55));
         //endregion
 
         //region Familiar folders
@@ -716,9 +717,9 @@ class CueManager {
         addCue("EnergyBar", "unitycues/dungeon/cueEnergyBar.png", Bounds.fromWidthHeight(390, 0, 60, 50)); // The energy bar icon
         addCue("RightArrow", "unitycues/dungeon/cueRightArrow.png", Bounds.fromWidthHeight(720, 255, 40, 50)); // arrow used in quest screen to change zone
         addCue("LeftArrow", "unitycues/dungeon/cueLeftArrow.png", Bounds.fromWidthHeight(40, 255, 45, 50)); // arrow used in quest screen to change zone
-        addCue("DungNormal", "unitycues/dungeon/cueDungNormal.png", Bounds.fromWidthHeight(140, 225, 135, 40)); // Normal difficulty Raid
-        addCue("DungHard", "unitycues/dungeon/cueDungHard.png.png", Bounds.fromWidthHeight(330, 225, 135, 40)); // Hard difficulty Raid
-        addCue("DungHeroic", "unitycues/dungeon/cueDungHeroic.png", Bounds.fromWidthHeight(520, 225, 135, 40)); // Heroic difficulty Raid
+        addCue("DungNormal", "unitycues/dungeon/cueDungNormal.png", Bounds.fromWidthHeight(135, 220, 145, 50));
+        addCue("DungHard", "unitycues/dungeon/cueDungHard.png", Bounds.fromWidthHeight(330, 220, 145, 50));
+        addCue("DungHeroic", "unitycues/dungeon/cueDungHeroic.png", Bounds.fromWidthHeight(525, 220, 145, 50));
         //endregion
 
         //region Dungeon zones

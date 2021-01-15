@@ -170,7 +170,7 @@ public class CueBuilder {
 
                 String boundsStr = suggestedBounds.getJavaCode(false, true).replace(";", "");
 
-                String cueManager = "addCue(\"" + this.destinationCueName + "\", \"" + this.destinationCuePath + "\", " + boundsStr + ");";
+                String cueManager = "addCue(\"" + this.destinationCueName + "\", \"" + this.destinationCuePath + "\", " + boundsStr + "); // " + this.containingScreenShotPath;
 
                 System.out.println(cueManager);
             }
@@ -197,8 +197,8 @@ public class CueBuilder {
         List<CueLocator> cueLocators = new ArrayList<>();
 
         //region Blockers
-        cueLocators.add(new CueLocator("cuebuilder/blockers/news.png", Bounds.fromWidthHeight(358, 64, 83, 58),
-                Set.of(), "News", "unitycues/blockers/cueNewsPopup.png", true));
+        addCueLocatorByPattern(cueLocators, "cuebuilder/blockers", "news(.*)\\.png", Bounds.fromWidthHeight(358, 64, 83, 58),
+                Set.of(), "News", "unitycues/blockers/cueNewsPopup.png");
         cueLocators.add(new CueLocator("cuebuilder/blockers/news.png", Bounds.fromWidthHeight(421, 447, 119, 32),
                 Set.of(new Color(255, 255, 255)), "NewsClose", "unitycues/blockers/cueNewsClose.png", true));
         cueLocators.add(new CueLocator("cuebuilder/blockers/reconnect.png", Bounds.fromWidthHeight(336, 131, 129, 58),
@@ -219,12 +219,21 @@ public class CueBuilder {
         //region raid
         cueLocators.add(new CueLocator("cuebuilder/raid/raid-summon.png", Bounds.fromWidthHeight(485, 361, 112, 34),
                 Set.of(new Color(255, 255, 255)), "RaidSummon", "unitycues/raid/cueRaidSummon.png", false));
-        cueLocators.add(new CueLocator("cuebuilder/raid/raid-diff.png", Bounds.fromWidthHeight(147, 222, 122, 27),
-                Set.of(new Color(255, 255, 255)), "RaidNormal", "unitycues/raid/cueRaidNormal.png", false));
-        cueLocators.add(new CueLocator("cuebuilder/raid/raid-diff.png", Bounds.fromWidthHeight(340, 222, 122, 27),
-                Set.of(new Color(255, 255, 255)), "RaidHard", "unitycues/raid/cueRaidHard.png", false));
-        cueLocators.add(new CueLocator("cuebuilder/raid/raid-diff.png", Bounds.fromWidthHeight(535, 222, 122, 27),
-                Set.of(new Color(255, 255, 255)), "RaidHeroic", "unitycues/raid/cueRaidHeroic.png", false));
+        addCueLocatorByPattern(cueLocators, "cuebuilder/raid", "raid-diff(.*)\\.png", Bounds.fromWidthHeight(147, 222, 122, 27),
+                Set.of(), "RaidNormal", "unitycues/raid/cueRaidNormal.png");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/raid", "raid-diff(.*)\\.png", Bounds.fromWidthHeight(340, 222, 122, 27),
+                Set.of(), "RaidHard", "unitycues/raid/cueRaidHard.png");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/raid", "raid-diff(.*)\\.png", Bounds.fromWidthHeight(535, 222, 122, 27),
+                Set.of(), "RaidHeroic", "unitycues/raid/cueRaidHeroic.png");
+        //endregion
+
+        //region dungeon
+        addCueLocatorByPattern(cueLocators, "cuebuilder/dungeon", "dung-diff(.*)\\.png", Bounds.fromWidthHeight(147, 232, 122, 27),
+                Set.of(), "DungNormal", "unitycues/dungeon/cueDungNormal.png");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/dungeon", "dung-diff(.*)\\.png", Bounds.fromWidthHeight(340, 232, 122, 27),
+                Set.of(), "DungHard", "unitycues/dungeon/cueDungHard.png");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/dungeon", "dung-diff(.*)\\.png", Bounds.fromWidthHeight(535, 232, 122, 27),
+                Set.of(), "DungHeroic", "unitycues/dungeon/cueDungHeroic.png");
         //endregion
 
         //region common
@@ -240,6 +249,18 @@ public class CueBuilder {
                 Set.of(), "YesGreen", "unitycues/common/cueYesGreen.png", true));
         cueLocators.add(new CueLocator("cuebuilder/common/solo.png", Bounds.fromWidthHeight(303, 345, 61, 32),
                 Set.of(), "YesGreen", "unitycues/common/cueYesGreen.png", true));
+        cueLocators.add(new CueLocator("cuebuilder/treasureChest/confirm-decline.png", Bounds.fromWidthHeight(303, 345, 61, 32),
+                Set.of(), "YesGreen", "unitycues/common/cueYesGreen.png", true));
+        addCueLocatorByPattern(cueLocators, "cuebuilder/common", "not-full(.*)\\.png", Bounds.fromWidthHeight(350, 130, 99, 58),
+                Set.of(), "Team", "unitycues/common/cueTeam.png");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/common", "not-full(.*)\\.png", Bounds.fromWidthHeight(275, 217, 256, 97),
+                Set.of(), "TeamNotFull", "unitycues/common/cueTeamNotFull.png");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/common", "not-full(.*)\\.png", Bounds.fromWidthHeight(445, 349, 45, 26),
+                Set.of(), "No", "unitycues/common/cueNo.png");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/raid", "raid-team(.*)\\.png", Bounds.fromWidthHeight(204, 450, 84, 35),
+                Set.of(), "AutoTeam", "unitycues/common/cueAutoTeam.png");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/raid", "raid-team(.*)\\.png", Bounds.fromWidthHeight(456, 451, 124, 32),
+                Set.of(), "TeamAccept", "unitycues/common/cueTeamAccept.png");
         //endregion
 
         //region CueX
@@ -247,11 +268,30 @@ public class CueBuilder {
                 Set.of(), "X", "unitycues/common/cueX.png", true));
         cueLocators.add(new CueLocator("cuebuilder/blockers/items_20210112.png", Bounds.fromWidthHeight(566, 129, 48, 48),
                 Set.of(), "X", "unitycues/common/cueX.png", true));
+        cueLocators.add(new CueLocator("cuebuilder/dungeon/dung-zone_20210115.png", Bounds.fromWidthHeight(706, 53, 48, 48),
+                Set.of(), "X", "unitycues/common/cueX.png", true));
         //endregion
 
         //region Treasure Chest
         cueLocators.add(new CueLocator("cuebuilder/treasureChest/treasure.png", Bounds.fromWidthHeight(419, 377, 117, 31),
                 Set.of(), "Decline", "unitycues/treasureChest/cueDecline.png", true));
+        //endregion
+
+        //region Familiar encounters
+        addCueLocatorByPattern(cueLocators, "cuebuilder/familiarEncounter", "encounter(.*)\\.png", Bounds.fromWidthHeight(141, 275, 23, 31),
+                Set.of(), "FamiliarEncounter", "unitycues/familiarEncounter/cueEncounter.png");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/familiarEncounter", "encounter(.*)\\.png", Bounds.fromWidthHeight(134, 327, 133, 30),
+                Set.of(), "Persuade", "unitycues/familiarEncounter/cuePersuade.png");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/familiarEncounter", "encounter(.*)\\.png", Bounds.fromWidthHeight(553, 326, 94, 31),
+                Set.of(), "Bribe", "unitycues/familiarEncounter/cueBribe.png");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/familiarEncounter", "encounter(.*)\\.png", Bounds.fromWidthHeight(253, 444, 108, 26),
+                Set.of(), "DeclineRed", "unitycues/familiarEncounter/cueDeclineRed.png");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/familiarEncounter", "encounter_common(.*)\\.png", Bounds.fromWidthHeight(539, 276, 124, 30),
+                Set.of(), "CommonFamiliar", "unitycues/familiarEncounter/type/cue01CommonFamiliar.png");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/familiarEncounter", "encounter_rare(.*)\\.png", Bounds.fromWidthHeight(539, 276, 124, 30),
+                Set.of(), "RareFamiliar", "unitycues/familiarEncounter/type/cue02RareFamiliar.png");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/familiarEncounter", "encounter_epic(.*)\\.png", Bounds.fromWidthHeight(539, 276, 124, 30),
+                Set.of(), "EpicFamiliar", "unitycues/familiarEncounter/type/cue03EpicFamiliar.png");
         //endregion
 
         for (CueLocator cueLoc : cueLocators) {
