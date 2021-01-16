@@ -170,6 +170,7 @@ public class CueBuilder {
 
                 String boundsStr = suggestedBounds.getJavaCode(false, true).replace(";", "");
 
+                // We output the line of code to be used in CueManager so that i can be easily copy-pasted
                 String cueManager = "addCue(\"" + this.destinationCueName + "\", \"" + this.destinationCuePath + "\", " + boundsStr + "); // " + this.containingScreenShotPath;
 
                 System.out.println(cueManager);
@@ -178,6 +179,18 @@ public class CueBuilder {
 
     }
 
+    /**
+     * Use this method when you want to use multiple input files to generate the same Cue. The logic
+     * will walk the containing path and add to the hashmap all the files matching the PNGPattern
+     *
+     * @param cueLocators The destination array list where to add the matching cueLocators
+     * @param containingPath The path where the screenshots to build the Cue are located
+     * @param PNGPattern The pattern used to walk containingPath to find relevant source screenshots
+     * @param cuePosition Where to search for the Cue in the origin screenshots
+     * @param colorWhiteList The color whitelist
+     * @param destinationCueName The destination Cue name as used in CueManager
+     * @param destinationCuePath Where the output Cue should be created
+     */
     static void addCueLocatorByPattern(List<CueLocator> cueLocators, String containingPath, String PNGPattern, Bounds cuePosition, Set<Color> colorWhiteList,
                                        String destinationCueName, String destinationCuePath) {
         File containingPathFile = new File(containingPath);
@@ -193,6 +206,9 @@ public class CueBuilder {
         }
     }
 
+    /**
+     * This method is where Cues to be created must be added.
+     */
     static void manageCueFiles() {
         List<CueLocator> cueLocators = new ArrayList<>();
         HashMap<String, List<CueLocator>> cueLocatorsByFile = new HashMap<>();
