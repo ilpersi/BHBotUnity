@@ -163,7 +163,7 @@ public class CueBuilder {
                 return;
             }
 
-            MarvinSegment seg = MarvinSegment.fromFiles(screenShotFile, destinationCueFile);
+            MarvinSegment seg = MarvinSegment.fromFiles(screenShotFile, destinationCueFile, this.cuePosition);
 
             if (seg != null) {
                 Bounds suggestedBounds = Bounds.fromMarvinSegment(seg, null);
@@ -195,6 +195,7 @@ public class CueBuilder {
 
     static void manageCueFiles() {
         List<CueLocator> cueLocators = new ArrayList<>();
+        HashMap<String, List<CueLocator>> cueLocatorsByFile = new HashMap<>();
 
         //region Blockers
         addCueLocatorByPattern(cueLocators, "cuebuilder/blockers", "news(.*)\\.png", Bounds.fromWidthHeight(358, 64, 83, 58),
@@ -295,8 +296,13 @@ public class CueBuilder {
         //endregion
 
         for (CueLocator cueLoc : cueLocators) {
-            cueLoc.generateCue();
+            // cueLoc.generateCue();
+            if (!cueLocatorsByFile.containsKey(cueLoc.destinationCuePath)) cueLocatorsByFile.put(cueLoc.destinationCuePath, new ArrayList<>());
+
+            cueLocatorsByFile.get(cueLoc.destinationCuePath).add(cueLoc);
         }
+        // cueLocators.parallelStream().forEach(CueLocator::generateCue);
+        cueLocatorsByFile.entrySet().parallelStream().forEach((clList) -> clList.getValue().forEach((CueLocator::generateCue)));
     }
 
     static void manageRaidBar() {
