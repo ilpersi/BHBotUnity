@@ -33,7 +33,7 @@ public class AutoShrineManager {
             return true;
         }
 
-        if (openSettings(Misc.Durations.SECOND * 3)) {
+        if (openSettings(Misc.Durations.SECOND * 5)) {
             if (!initialized || ignoreBoss != this.ignoreBoss) {
                 Bounds ignoreBossBounds = bot.settings.useUnityEngine ? Bounds.fromWidthHeight(171, 334, 44, 39) : Bounds.fromWidthHeight(175, 339, 38, 35);
                 MarvinSegment ignoreBossCheck = MarvinSegment.fromCue(BHBot.cues.get("IgnoreCheck"), 0, ignoreBossBounds, bot.browser);
