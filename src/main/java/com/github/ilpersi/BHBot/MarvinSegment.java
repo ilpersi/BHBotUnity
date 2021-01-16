@@ -190,9 +190,10 @@ public class MarvinSegment {
      *
      * @param imageInFile The main image that will be used to search the Cue
      * @param subImageFile The Cue image you are looking for
+     * @param bounds The bounds where to look for the sub Image
      * @return The first found Marvin Segment
      */
-    static MarvinSegment fromFiles(File imageInFile, File subImageFile) {
+    static MarvinSegment fromFiles(File imageInFile, File subImageFile, Bounds bounds) {
         BufferedImage imageIn = null, subImage = null;
 
         try {
@@ -207,7 +208,16 @@ public class MarvinSegment {
             BHBot.logger.error("Error when loading sub-image file.", e);
         }
 
-        return FindSubimage.findImage(imageIn, subImage, 0, 0, 0, 0);
+        int startX = bounds == null ? 0 : bounds.x1;
+        int startY = bounds == null ? 0 : bounds.y1;
+        int endX = bounds == null ? 0 : bounds.x2;
+        int endY = bounds == null ? 0 : bounds.y2;
+
+        return FindSubimage.findImage(imageIn, subImage, startX, startY, endX, endY);
+    }
+
+    static MarvinSegment fromFiles(File imageInFile, File subImageFile) {
+        return fromFiles(imageInFile, subImageFile, null);
     }
 
     static  MarvinSegment fromFiles(String imageInPath, String subImagePath) {

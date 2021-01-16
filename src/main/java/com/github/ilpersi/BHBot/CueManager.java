@@ -640,6 +640,7 @@ class CueManager {
         addCue("Main", "unitycues/mainScreen/cueMainScreen.png", Bounds.fromWidthHeight(60, 5, 140, 40)); // Gem cue used to identify the main screen
         addCue("SettingsGear", "unitycues/mainScreen/cueSettingsGear.png", new Bounds(655, 450, 730, 515)); // settings button
         addCue("RaidButton", "unitycues/mainScreen/cueRaidButton.png", Bounds.fromWidthHeight(15, 200, 45, 200)); // Raid button
+        addCue("GorMenu", "unitycues/mainScreen/cueGorMenu.png", Bounds.fromWidthHeight(95, 465, 55, 60)); // Permagor menu close to the Character menu
         //endregion
 
         //region Blockers
@@ -666,6 +667,8 @@ class CueManager {
         addCue("Defeat", "unitycues/common/cueDefeat.png", Bounds.fromWidthHeight(323, 131, 150, 54)); // used for example when you have been defeated in a dungeon. Also used when you have been defeated in a gauntlet.
         addCue("TeamClear", "unitycues/common/cueTeamClear.png", Bounds.fromWidthHeight(313, 447, 108, 42)); //clear team button
         addCue("TeamAccept", "unitycues/common/cueTeamAccept.png", Bounds.fromWidthHeight(445, 440, 145, 55)); // raid accept button
+        addCue("AreYouThere", "unitycues/common/cueAreYouThere.png", Bounds.fromWidthHeight(295, 225, 220, 80)); // Are you there popup
+        addCue("Yes", "unitycues/common/cueYes.png", Bounds.fromWidthHeight(355, 335, 90, 55)); // Yes button on Are you there popup
         //endregion
 
         //region Autoshrine
@@ -734,6 +737,12 @@ class CueManager {
         //region Merchant
         addCue("Merchant", "unitycues/merchant/cueMerchant.png", Bounds.fromWidthHeight(292, 118, 216, 45)); // cue for merchant dialog/popup
         addCue("MerchantDecline", "unitycues/merchant/cueMerchantDecline.png", Bounds.fromWidthHeight(424, 376, 112, 33)); // cue for merchant dialog/popup
+        //endregion
+
+        //region Weekly Rewards
+        addCue("PVP_Rewards", "unitycues/weeklyRewards/pvp.png", Bounds.fromWidthHeight(350, 110, 100, 75));
+        addCue("Trials_Rewards", "unitycues/weeklyRewards/trials.png", Bounds.fromWidthHeight(325, 110, 145, 75));
+        addCue("GVG_Rewards", "unitycues/weeklyRewards/gvg.png", Bounds.fromWidthHeight(325, 110, 145, 75));
         //endregion
     }
 

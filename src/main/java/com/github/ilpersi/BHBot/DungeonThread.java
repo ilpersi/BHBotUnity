@@ -5656,15 +5656,16 @@ public class DungeonThread implements Runnable {
      * @return true if it was not possible to open the character menu
      */
     boolean openCharacterMenu() {
-        MarvinSegment seg = MarvinSegment.fromCue(BHBot.cues.get("CharacterMenu"), 5 * Misc.Durations.SECOND, bot.browser);
+        // As it is not possible to build a cue for the character menu, we aim at the Gor menu that is the closest thing to it
+        MarvinSegment seg = MarvinSegment.fromCue(BHBot.cues.get("GorMenu"), 5 * Misc.Durations.SECOND, bot.browser);
         if (seg == null) {
-            Misc.saveScreen("no-character-menu", "errors", bot.browser.getImg());
-            BHBot.logger.warn("Error: unable to detect character menu button! Skipping...");
+            Misc.saveScreen("no-gormenu-menu", "errors", bot.browser.getImg());
+            BHBot.logger.warn("Error: unable to detect gor menu button! Skipping...");
             BHBot.logger.debug(Misc.getStackTrace());
             return true;
         }
 
-        bot.browser.clickOnSeg(seg);
+        bot.browser.clickInGame(seg.x1 - 80, seg.y1 + 20);
 
         return false;
     }
