@@ -419,6 +419,8 @@ public class BHBot {
                     }
 
                     cues.reloadFromDisk(params[2]);
+
+                    BHBot.logger.info("Reloaded Cues from " + params[2]);
                 }
 
                 break;
