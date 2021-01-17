@@ -2210,12 +2210,6 @@ public class DungeonThread implements Runnable {
 
         long activityDuration = (TimeUnit.MILLISECONDS.toSeconds(Misc.getTime()) - activityStartTime);
 
-        // Sometimes, due to Kong bug, the character is stuck in a motion loop
-        // We return after 10 minutes to make trigger the idle time exception
-        if (activityDuration > (60*10)) {
-            BHBot.logger.debug("Activity is taking longer than 10 minutes");
-        }
-
         /*
          * Encounter detection code
          * We use guild button visibility to detect whether we are in combat
@@ -3381,9 +3375,7 @@ public class DungeonThread implements Runnable {
 
         bot.browser.readScreen();
 
-        int signatureY = System.getProperty("os.name") == "Linux" ? Misc.SIGNATURE_BOUNDS.y1 - 1 : Misc.SIGNATURE_BOUNDS.y1;
-
-        BufferedImage zoneSignatureImg = bot.browser.getImg().getSubimage(Misc.SIGNATURE_BOUNDS.x1, signatureY, Misc.SIGNATURE_BOUNDS.width, Misc.SIGNATURE_BOUNDS.height);
+        BufferedImage zoneSignatureImg = bot.browser.getImg().getSubimage(Misc.SIGNATURE_BOUNDS.x1, Misc.SIGNATURE_BOUNDS.y1, Misc.SIGNATURE_BOUNDS.width, Misc.SIGNATURE_BOUNDS.height);
         String signature = Misc.imgToMD5(zoneSignatureImg);
 
         return zoneSignatures.getOrDefault(signature, 0);
