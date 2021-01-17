@@ -221,6 +221,8 @@ public class CueBuilder {
         //endregion
 
         //region Blockers
+        addCueLocatorByPattern(cueLocators, "cuebuilder/blockers", "reconnect(.*)\\.png", Bounds.fromWidthHeight(338, 346, 127, 32),
+                Set.of(), "Reconnect", "unitycues/blockers/cueReconnect.png");
         addCueLocatorByPattern(cueLocators, "cuebuilder/blockers", "news(.*)\\.png", Bounds.fromWidthHeight(358, 64, 83, 58),
                 Set.of(), "News", "unitycues/blockers/cueNewsPopup.png");
         cueLocators.add(new CueLocator("cuebuilder/blockers/news.png", Bounds.fromWidthHeight(421, 447, 119, 32),
