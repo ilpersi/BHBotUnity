@@ -35,7 +35,7 @@ public class AutoShrineManager {
 
         if (openSettings(Misc.Durations.SECOND * 5)) {
             if (!initialized || ignoreBoss != this.ignoreBoss) {
-                Bounds ignoreBossBounds = bot.settings.useUnityEngine ? Bounds.fromWidthHeight(171, 334, 44, 39) : Bounds.fromWidthHeight(175, 339, 38, 35);
+                Bounds ignoreBossBounds = Bounds.fromWidthHeight(168, 333, 46, 44);
                 MarvinSegment ignoreBossCheck = MarvinSegment.fromCue(BHBot.cues.get("IgnoreCheck"), 0, ignoreBossBounds, bot.browser);
 
                 if (ignoreBoss && ignoreBossCheck == null) {
@@ -49,8 +49,12 @@ public class AutoShrineManager {
                 this.ignoreBoss = ignoreBoss;
             }
 
+            // Sometimes if clicks are too close in time, the second one is ignored
+            // thus we allow a small time delay between the two clicks
+            Misc.sleep(100);
+
             if (!initialized || ignoreShrines != this.ignoreShrines) {
-                Bounds ignoreShrineBounds = bot.settings.useUnityEngine ? Bounds.fromWidthHeight(171, 377, 44, 39) : Bounds.fromWidthHeight(174, 382, 37, 32);
+                Bounds ignoreShrineBounds = Bounds.fromWidthHeight(167, 377, 46, 44);
                 MarvinSegment ignoreShrineCheck = MarvinSegment.fromCue(BHBot.cues.get("IgnoreCheck"), 0, ignoreShrineBounds, bot.browser);
 
                 if (ignoreShrines && ignoreShrineCheck == null) {
