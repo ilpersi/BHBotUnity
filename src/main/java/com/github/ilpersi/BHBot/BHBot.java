@@ -17,6 +17,7 @@ import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.text.MessageFormat;
 import java.util.*;
 import java.util.List;
 
@@ -204,8 +205,8 @@ public class BHBot {
         }
 
         gitProperties = Misc.getGITInfo();
-        logger.info("GIT commit id: " + gitProperties.get("git.commit.id") + "  time: " + gitProperties.get("git.commit.time"));
-        logger.info("Hosting OS: " + System.getProperty("os.name"));
+        logger.info(MessageFormat.format("GIT commit id: {0}  time: {1}", gitProperties.get("git.commit.id"), gitProperties.get("git.commit.time")));
+        logger.info(String.format("Hosting OS: '%s'", System.getProperty("os.name")));
 
         /*if (!"UNKNOWN".equals(BHBotVersion)) {
             checkNewRelease();
