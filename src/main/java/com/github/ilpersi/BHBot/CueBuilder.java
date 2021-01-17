@@ -354,6 +354,7 @@ public class CueBuilder {
         for (String raidImgFile : raidPath.list(new ImageFilter("raid-bar(.*)\\.png"))) {
             File raidBarFile = new File("barbuilder/raid/" + raidImgFile);
 
+            //noinspection DuplicatedCode
             if (!raidBarFile.exists() || raidBarFile.isDirectory()) {
                 System.out.println("File " + raidBarFile.getAbsolutePath() + " is not a valid bar file");
                 continue;
@@ -374,14 +375,64 @@ public class CueBuilder {
 
             MarvinSegment seg = FindSubimage.findImage(raidImg, raidPopUp, 0, 0, 0, 0);
             // As images can have different shat totals we use 100 so we get the percentage
-            int shard = DungeonThread.readResourceBarPercentage(seg, 100, Misc.BarOffsets.RAID.x, Misc.BarOffsets.RAID.y, 80, raidColors, raidImg);
+            int shard = DungeonThread.readResourceBarPercentage(seg, 100, Misc.BarOffsets.RAID.x, Misc.BarOffsets.RAID.y, raidColors, raidImg);
             System.out.println("Raid bar is " + shard + "% full for image " + raidBarFile.getAbsolutePath());
         }
 
     }
 
+    static void manageEnergyBar () {
+        Set<Color> energyColors = new HashSet<>();
+        Set<Color> blackColors = new HashSet<>(Set.of(new Color (50, 51, 52)));
+
+        // Path to files with raid bar
+        File dungPath = new File("barbuilder/dungeon");
+
+        BufferedImage energyPopUp;
+        try {
+            energyPopUp = ImageIO.read(new File("src/main/resources/unitycues/dungeon/cueEnergyBar.png"));
+        } catch (IOException e) {
+            System.out.println("Errow while reading energy pop-up");
+            e.printStackTrace();
+            return;
+        }
+
+        // Loop on all the files
+        for (String dungImgFile : dungPath.list(new ImageFilter("energy-bar(.*)\\.png"))) {
+            File dungBarFile = new File("barbuilder/dungeon/" + dungImgFile);
+
+            //noinspection DuplicatedCode
+            if (!dungBarFile.exists() || dungBarFile.isDirectory()) {
+                System.out.println("File " + dungBarFile.getAbsolutePath() + " is not a valid bar file");
+                continue;
+            }
+
+            BufferedImage dungImg;
+            try {
+                dungImg = ImageIO.read(dungBarFile);
+            } catch (IOException e) {
+                System.out.println("Exception while loading image" + dungBarFile.getAbsolutePath());
+                e.printStackTrace();
+                continue;
+            }
+
+            ImageHelper.getImgColors(dungImg.getSubimage(438, 31, 80, 1)).forEach((col) -> { if(!blackColors.contains(col)) energyColors.add(col); }  );
+
+            System.out.println("Found colors for Energy:");
+            ImageHelper.printColors(energyColors);
+
+            MarvinSegment seg = FindSubimage.findImage(dungImg, energyPopUp, 0, 0, 0, 0);
+            // As images can have different shat totals we use 100 so we get the percentage
+            int energy = DungeonThread.readResourceBarPercentage(seg, 100, Misc.BarOffsets.DUNGEON.x, Misc.BarOffsets.DUNGEON.y, energyColors, dungImg);
+            System.out.println("Energy bar is " + energy + "% full for image " + dungBarFile.getAbsolutePath());
+        }
+    }
+
     public static void main(String[] args) {
         manageCueFiles();
+        System.out.println("====== Raid bar ======");
         manageRaidBar();
+        System.out.println("====== Dung bar ======");
+        manageEnergyBar();
     }
 }
