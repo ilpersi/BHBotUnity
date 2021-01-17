@@ -213,13 +213,22 @@ public class CueBuilder {
         List<CueLocator> cueLocators = new ArrayList<>();
         HashMap<String, List<CueLocator>> cueLocatorsByFile = new HashMap<>();
 
+        //region AutoConsume
+        addCueLocatorByPattern(cueLocators, "cuebuilder/autoConsume", "inventory-1(.*)\\.png", Bounds.fromWidthHeight(472, 124, 164, 26),
+                Set.of(), "FilterConsumables", "unitycues/characterMenu/cueFilterConsumables.png");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/autoConsume", "inventory-filter(.*)\\.png", Bounds.fromWidthHeight(472, 124, 164, 26),
+                Set.of(), "StripItemsTitle", "unitycues/characterMenu/cueStripItemsTitle.png");
+        //endregion
+
         //region Blockers
         addCueLocatorByPattern(cueLocators, "cuebuilder/blockers", "news(.*)\\.png", Bounds.fromWidthHeight(358, 64, 83, 58),
                 Set.of(), "News", "unitycues/blockers/cueNewsPopup.png");
         cueLocators.add(new CueLocator("cuebuilder/blockers/news.png", Bounds.fromWidthHeight(421, 447, 119, 32),
                 Set.of(new Color(255, 255, 255)), "NewsClose", "unitycues/blockers/cueNewsClose.png", true));
-        cueLocators.add(new CueLocator("cuebuilder/blockers/reconnect.png", Bounds.fromWidthHeight(336, 131, 129, 58),
-                Set.of(), "UhOh", "unitycues/blockers/cueUhoh.png", true));
+        addCueLocatorByPattern(cueLocators, "cuebuilder/blockers", "reconnect(.*)\\.png", Bounds.fromWidthHeight(336, 131, 129, 58),
+                Set.of(), "UhOh", "unitycues/blockers/cueUhoh.png");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/blockers", "reconnect(.*)\\.png", Bounds.fromWidthHeight(300, 230, 212, 67),
+                Set.of(), "Disconnected", "unitycues/blockers/cueDisconnected.png");
         addCueLocatorByPattern(cueLocators, "cuebuilder/blockers", "daily(.*)\\.png", Bounds.fromWidthHeight(259, 52, 282, 57),
                 Set.of(), "DailyRewards", "unitycues/blockers/cueDailyRewards.png");
         addCueLocatorByPattern(cueLocators, "cuebuilder/blockers", "daily(.*)\\.png", Bounds.fromWidthHeight(353, 444, 97, 31),
@@ -262,6 +271,8 @@ public class CueBuilder {
                 Set.of(), "YesGreen", "unitycues/common/cueYesGreen.png", true));
         cueLocators.add(new CueLocator("cuebuilder/common/solo.png", Bounds.fromWidthHeight(303, 345, 61, 32),
                 Set.of(), "YesGreen", "unitycues/common/cueYesGreen.png", true));
+        cueLocators.add(new CueLocator("cuebuilder/common/solo_2.png", Bounds.fromWidthHeight(303, 345, 61, 32),
+                Set.of(), "YesGreen", "unitycues/common/cueYesGreen.png", true));
         cueLocators.add(new CueLocator("cuebuilder/treasureChest/confirm-decline.png", Bounds.fromWidthHeight(303, 345, 61, 32),
                 Set.of(), "YesGreen", "unitycues/common/cueYesGreen.png", true));
         addCueLocatorByPattern(cueLocators, "cuebuilder/common", "not-full(.*)\\.png", Bounds.fromWidthHeight(350, 130, 99, 58),
@@ -292,8 +303,8 @@ public class CueBuilder {
         //endregion
 
         //region Treasure Chest
-        cueLocators.add(new CueLocator("cuebuilder/treasureChest/treasure.png", Bounds.fromWidthHeight(419, 377, 117, 31),
-                Set.of(), "Decline", "unitycues/treasureChest/cueDecline.png", true));
+        addCueLocatorByPattern(cueLocators, "cuebuilder/treasureChest", "treasure(.*)\\.png", Bounds.fromWidthHeight(416, 375, 127, 37),
+                Set.of(), "Decline", "unitycues/treasureChest/cueDecline.png");
         //endregion
 
         //region Familiar encounters

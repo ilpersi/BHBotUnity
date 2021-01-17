@@ -343,7 +343,7 @@ class CueManager {
         addCue("ReviveAverage", "cues/cueReviveAverage.png", null);
         addCue("Purchase", "cues/cuePurchase.png", new Bounds(240, 240, 390, 280));
 
-        addCue("GuildButton", "cues/cueGuildButton.png", new Bounds(500, 420, 590, 520));
+        addCue("GuildButton", "cues/cueGuildButton.png", new Bounds(500, 420, 590, 518));
         addCue("IgnoreCheck", "cues/cueIgnoreCheck.png", null);
 
         addCue("Quest", "cues/cueQuest.png", new Bounds(0, 0, 40, 40)); // cue for quest (dungeons) button
@@ -636,22 +636,33 @@ class CueManager {
      * - flash cues can be overwritten using the same cueKey
      */
     void updateUnityCues() {
-        //region Main screen cues
-        addCue("Main", "unitycues/mainScreen/cueMainScreen.png", Bounds.fromWidthHeight(60, 5, 140, 40)); // Gem cue used to identify the main screen
-        addCue("SettingsGear", "unitycues/mainScreen/cueSettingsGear.png", new Bounds(655, 450, 730, 515)); // settings button
-        addCue("RaidButton", "unitycues/mainScreen/cueRaidButton.png", Bounds.fromWidthHeight(15, 200, 45, 200)); // Raid button
-        addCue("GorMenu", "unitycues/mainScreen/cueGorMenu.png", Bounds.fromWidthHeight(95, 465, 55, 60)); // Permagor menu close to the Character menu
+        //region Autoshrine
+        addCue("Settings", "unitycues/autoShrine/cueSettings.png", Bounds.fromWidthHeight(200, 285, 415, 95)); // settings menu
+        addCue("IgnoreCheck", "unitycues/autoShrine/cueIgnoreCheck.png", null); // Green check used on the Ignore options
+        //endregion
+
+        //region AutoConsume
+        addCue("BonusExp", "unitycues/autoConsume/cueBonusExp.png", Bounds.fromWidthHeight(200, 470, 190, 45)); // consumable icon in the main menu (when it's being used)
+        addCue("BonusItem", "unitycues/autoConsume/cueBonusItem.png", Bounds.fromWidthHeight(200, 470, 190, 45));
+        addCue("BonusGold", "unitycues/autoConsume/cueBonusGold.png", Bounds.fromWidthHeight(200, 470, 190, 45));
+        addCue("BonusSpeed", "unitycues/autoConsume/cueBonusSpeed.png", Bounds.fromWidthHeight(200, 470, 190, 45));
         //endregion
 
         //region Blockers
         addCue("News", "unitycues/blockers/cueNewsPopup.png", Bounds.fromWidthHeight(345, 50, 110, 85)); // news popup
         addCue("UhOh", "unitycues/blockers/cueUhoh.png", Bounds.fromWidthHeight(325, 120, 150, 80)); // UH OH Popup title
-        addCue("Disconnected", "unitycues/blockers/cueDisconnected.png", Bounds.fromWidthHeight(300, 230, 212, 67)); // cue for "You have been disconnected" popup
+        addCue("Disconnected", "unitycues/blockers/cueDisconnected.png", Bounds.fromWidthHeight(290, 220, 235, 90)); // cue for "You have been disconnected" popup
         addCue("Reconnect", "unitycues/blockers/cueReconnect.png", Bounds.fromWidthHeight(332, 341, 137, 45)); // used with "You have been disconnected" dialog and also with the "maintenance" dialog
         addCue("NewsClose", "unitycues/blockers/cueNewsClose.png", Bounds.fromWidthHeight(431, 448, 88, 28)); // close button used with "News" popup
         addCue("DailyRewards", "unitycues/blockers/cueDailyRewards.png", Bounds.fromWidthHeight(245, 40, 310, 80)); // Daily Reward Claim Screen
         addCue("Claim", "unitycues/blockers/cueClaim.png", Bounds.fromWidthHeight(340, 430, 120, 55)); // Daily Reward green claim button
         addCue("Items", "unitycues/blockers/cueItems.png", Bounds.fromWidthHeight(325, 105, 145, 80)); // Imes Cue for daily reward
+        //endregion
+
+        //region Character Menu
+        addCue("StripSelectorButton", "unitycues/characterMenu/cueStripSelectorButton.png", Bounds.fromWidthHeight(445, 105, 255, 65));
+        addCue("FilterConsumables", "unitycues/characterMenu/cueFilterConsumables.png", Bounds.fromWidthHeight(460, 110, 190, 50));
+        addCue("StripItemsTitle", "unitycues/characterMenu/cueStripItemsTitle.png", Bounds.fromWidthHeight(460, 110, 190, 50));
         //endregion
 
         //region Common
@@ -671,9 +682,57 @@ class CueManager {
         addCue("Yes", "unitycues/common/cueYes.png", Bounds.fromWidthHeight(355, 335, 90, 55)); // Yes button on Are you there popup
         //endregion
 
-        //region Autoshrine
-        addCue("Settings", "unitycues/autoShrine/cueSettings.png", Bounds.fromWidthHeight(200, 285, 415, 95)); // settings menu
-        addCue("IgnoreCheck", "unitycues/autoShrine/cueIgnoreCheck.png", null); // Green check used on the Ignore options
+        //region Dungeon
+        //region Dungeon cues
+        addCue("EnergyBar", "unitycues/dungeon/cueEnergyBar.png", Bounds.fromWidthHeight(390, 0, 60, 50)); // The energy bar icon
+        addCue("RightArrow", "unitycues/dungeon/cueRightArrow.png", Bounds.fromWidthHeight(720, 255, 40, 50)); // arrow used in quest screen to change zone
+        addCue("LeftArrow", "unitycues/dungeon/cueLeftArrow.png", Bounds.fromWidthHeight(40, 255, 45, 50)); // arrow used in quest screen to change zone
+        addCue("DungNormal", "unitycues/dungeon/cueDungNormal.png", Bounds.fromWidthHeight(135, 220, 145, 50));
+        addCue("DungHard", "unitycues/dungeon/cueDungHard.png", Bounds.fromWidthHeight(330, 220, 145, 50));
+        addCue("DungHeroic", "unitycues/dungeon/cueDungHeroic.png", Bounds.fromWidthHeight(525, 220, 145, 50));
+        //endregion
+
+        //region Dungeon zones
+        addCue("Zone1", "unitycues/dungeon/zones/cueZone1.png", Bounds.fromWidthHeight(252, 53, 299, 39));
+        addCue("Zone2", "unitycues/dungeon/zones/cueZone2.png", Bounds.fromWidthHeight(252, 53, 299, 39));
+        addCue("Zone3", "unitycues/dungeon/zones/cueZone3.png", Bounds.fromWidthHeight(252, 53, 299, 39));
+        addCue("Zone4", "unitycues/dungeon/zones/cueZone4.png", Bounds.fromWidthHeight(252, 53, 299, 39));
+        addCue("Zone5", "unitycues/dungeon/zones/cueZone5.png", Bounds.fromWidthHeight(252, 53, 299, 39));
+        addCue("Zone6", "unitycues/dungeon/zones/cueZone6.png", Bounds.fromWidthHeight(252, 53, 299, 39));
+        //endregion
+        //endregion
+
+        //region Familiar
+        // region Familiar encounters
+        addCue("FamiliarEncounter", "unitycues/familiarEncounter/cueEncounter.png", Bounds.fromWidthHeight(130, 265, 45, 55));
+        addCue("Persuade", "unitycues/familiarEncounter/cuePersuade.png", Bounds.fromWidthHeight(120, 315, 160, 55));
+        addCue("Bribe", "unitycues/familiarEncounter/cueBribe.png", Bounds.fromWidthHeight(540, 315, 120, 55));
+        addCue("DeclineRed", "unitycues/familiarEncounter/cueDeclineRed.png", Bounds.fromWidthHeight(240, 430, 135, 50)); // decline persuation attempts
+        //endregion
+        //region Familiar bribing cues
+        addCue("RareFamiliar", "unitycues/familiarEncounter/type/cue02RareFamiliar.png", Bounds.fromWidthHeight(527, 261, 158, 59)); // Rare Bribe cue
+        addCue("CommonFamiliar", "unitycues/familiarEncounter/type/cue01CommonFamiliar.png", Bounds.fromWidthHeight(527, 261, 158, 59)); // Common Bribe cue
+        addCue("EpicFamiliar", "unitycues/familiarEncounter/type/cue03EpicFamiliar.png", Bounds.fromWidthHeight(525, 265, 150, 55));
+        //endregion
+        //region Familiar folders
+        int newFamCnt = loadCueFolder("unitycues/familiarEncounter/01 Common", null, false, new Bounds(145, 50, 575, 125));
+        newFamCnt += loadCueFolder("unitycues/familiarEncounter/02 Rare", null, false, new Bounds(145, 50, 575, 125));
+        newFamCnt += loadCueFolder("unitycues/familiarEncounter/03 Epic", null, false, new Bounds(145, 50, 575, 125));
+        newFamCnt += loadCueFolder("unitycues/familiarEncounter/04 Legendary", null, false, new Bounds(145, 50, 575, 125));
+        BHBot.logger.debug("Found " + newFamCnt + " Unity familiar cues.");
+        //endregion
+        //endregion
+
+        //region Merchant
+        addCue("Merchant", "unitycues/merchant/cueMerchant.png", Bounds.fromWidthHeight(292, 118, 216, 45)); // cue for merchant dialog/popup
+        addCue("MerchantDecline", "unitycues/merchant/cueMerchantDecline.png", Bounds.fromWidthHeight(424, 376, 112, 33)); // cue for merchant dialog/popup
+        //endregion
+
+        //region Main screen cues
+        addCue("Main", "unitycues/mainScreen/cueMainScreen.png", Bounds.fromWidthHeight(60, 5, 140, 40)); // Gem cue used to identify the main screen
+        addCue("SettingsGear", "unitycues/mainScreen/cueSettingsGear.png", new Bounds(655, 450, 730, 515)); // settings button
+        addCue("RaidButton", "unitycues/mainScreen/cueRaidButton.png", Bounds.fromWidthHeight(15, 200, 45, 200)); // Raid button
+        addCue("GorMenu", "unitycues/mainScreen/cueGorMenu.png", Bounds.fromWidthHeight(95, 465, 55, 60)); // Permagor menu close to the Character menu
         //endregion
 
         //region Raid
@@ -693,50 +752,6 @@ class CueManager {
         addCue("SkeletonNoKeys", "cues/cueSkeletonNoKeys.png", new Bounds(478, 318, 500, 348)); // red 0
         addCue("Open", "unitycues/treasureChest/cueOpen.png", null); // skeleton treasure open button
         addCue("Decline", "unitycues/treasureChest/cueDecline.png", Bounds.fromWidthHeight(405, 365, 145, 55)); // decline skeleton treasure button (found in dungeons), also with video ad treasures (found in dungeons)
-        //endregion
-
-        //region Familiar encounters
-        addCue("FamiliarEncounter", "unitycues/familiarEncounter/cueEncounter.png", Bounds.fromWidthHeight(130, 265, 45, 55));
-        addCue("Persuade", "unitycues/familiarEncounter/cuePersuade.png", Bounds.fromWidthHeight(120, 315, 160, 55));
-        addCue("Bribe", "unitycues/familiarEncounter/cueBribe.png", Bounds.fromWidthHeight(540, 315, 120, 55));
-        addCue("DeclineRed", "unitycues/familiarEncounter/cueDeclineRed.png", Bounds.fromWidthHeight(240, 430, 135, 50)); // decline persuation attempts
-        //endregion
-
-        //region Familiar bribing cues
-        addCue("RareFamiliar", "unitycues/familiarEncounter/type/cue02RareFamiliar.png", Bounds.fromWidthHeight(527, 261, 158, 59)); // Rare Bribe cue
-        addCue("CommonFamiliar", "unitycues/familiarEncounter/type/cue01CommonFamiliar.png", Bounds.fromWidthHeight(527, 261, 158, 59)); // Common Bribe cue
-        addCue("EpicFamiliar", "unitycues/familiarEncounter/type/cue03EpicFamiliar.png", Bounds.fromWidthHeight(525, 265, 150, 55));
-        //endregion
-
-        //region Familiar folders
-        int newFamCnt = loadCueFolder("unitycues/familiarEncounter/01 Common", null, false, new Bounds(145, 50, 575, 125));
-        newFamCnt += loadCueFolder("unitycues/familiarEncounter/02 Rare", null, false, new Bounds(145, 50, 575, 125));
-        newFamCnt += loadCueFolder("unitycues/familiarEncounter/03 Epic", null, false, new Bounds(145, 50, 575, 125));
-        newFamCnt += loadCueFolder("unitycues/familiarEncounter/04 Legendary", null, false, new Bounds(145, 50, 575, 125));
-        BHBot.logger.debug("Found " + newFamCnt + " Unity familiar cues.");
-        //endregion
-
-        //region Dungeon cues
-        addCue("EnergyBar", "unitycues/dungeon/cueEnergyBar.png", Bounds.fromWidthHeight(390, 0, 60, 50)); // The energy bar icon
-        addCue("RightArrow", "unitycues/dungeon/cueRightArrow.png", Bounds.fromWidthHeight(720, 255, 40, 50)); // arrow used in quest screen to change zone
-        addCue("LeftArrow", "unitycues/dungeon/cueLeftArrow.png", Bounds.fromWidthHeight(40, 255, 45, 50)); // arrow used in quest screen to change zone
-        addCue("DungNormal", "unitycues/dungeon/cueDungNormal.png", Bounds.fromWidthHeight(135, 220, 145, 50));
-        addCue("DungHard", "unitycues/dungeon/cueDungHard.png", Bounds.fromWidthHeight(330, 220, 145, 50));
-        addCue("DungHeroic", "unitycues/dungeon/cueDungHeroic.png", Bounds.fromWidthHeight(525, 220, 145, 50));
-        //endregion
-
-        //region Dungeon zones
-        addCue("Zone1", "unitycues/dungeon/zones/cueZone1.png", Bounds.fromWidthHeight(252, 53, 299, 39));
-        addCue("Zone2", "unitycues/dungeon/zones/cueZone2.png", Bounds.fromWidthHeight(252, 53, 299, 39));
-        addCue("Zone3", "unitycues/dungeon/zones/cueZone3.png", Bounds.fromWidthHeight(252, 53, 299, 39));
-        addCue("Zone4", "unitycues/dungeon/zones/cueZone4.png", Bounds.fromWidthHeight(252, 53, 299, 39));
-        addCue("Zone5", "unitycues/dungeon/zones/cueZone5.png", Bounds.fromWidthHeight(252, 53, 299, 39));
-        addCue("Zone6", "unitycues/dungeon/zones/cueZone6.png", Bounds.fromWidthHeight(252, 53, 299, 39));
-        //endregion
-
-        //region Merchant
-        addCue("Merchant", "unitycues/merchant/cueMerchant.png", Bounds.fromWidthHeight(292, 118, 216, 45)); // cue for merchant dialog/popup
-        addCue("MerchantDecline", "unitycues/merchant/cueMerchantDecline.png", Bounds.fromWidthHeight(424, 376, 112, 33)); // cue for merchant dialog/popup
         //endregion
 
         //region Weekly Rewards
