@@ -715,6 +715,10 @@ public class DungeonThread implements Runnable {
                                 if (currentZone == 0) {
                                     BHBot.logger.error("Impossible to detect current selected zone!");
 
+                                    BufferedImage zoneSignatureImg = bot.browser.getImg().getSubimage(Misc.SIGNATURE_BOUNDS.x1, Misc.SIGNATURE_BOUNDS.y1, Misc.SIGNATURE_BOUNDS.width, Misc.SIGNATURE_BOUNDS.height);
+                                    String signature = Misc.imgToMD5(zoneSignatureImg);
+                                    BHBot.logger.error("Found signature: " + signature);
+
                                     seg = MarvinSegment.fromCue("X", bot.browser);
                                     if (seg != null) {
                                         bot.browser.clickOnSeg(seg);
