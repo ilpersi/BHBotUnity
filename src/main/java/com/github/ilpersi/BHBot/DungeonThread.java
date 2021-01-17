@@ -2210,6 +2210,12 @@ public class DungeonThread implements Runnable {
 
         long activityDuration = (TimeUnit.MILLISECONDS.toSeconds(Misc.getTime()) - activityStartTime);
 
+        // Sometimes, due to Kong bug, the character is stuck in a motion loop
+        // We return after 10 minutes to make trigger the idle time exception
+        if (activityDuration > (60*10)) {
+            BHBot.logger.debug("Activity is taking longer than 10 minutes");
+        }
+
         /*
          * Encounter detection code
          * We use guild button visibility to detect whether we are in combat
@@ -3346,23 +3352,38 @@ public class DungeonThread implements Runnable {
 
         // Signatures are build using the DungeonSignature Class
         HashMap<String, Integer> zoneSignatures = new HashMap<>();
-        zoneSignatures.put("chfP7xxmYLa6OTFhDNJTfA==", 1);
-        zoneSignatures.put("rKea4zBByo0uDpTCbmSFMQ==", 2);
-        zoneSignatures.put("ns5+x+eTfD4Ow2Bnn7UmJQ==", 3);
-        zoneSignatures.put("NonrIHc80e37cTY/ig3n9Q==", 4);
-        zoneSignatures.put("RKBzsCY4Lb7p0YPfqymmpw==", 5);
-        zoneSignatures.put("9HUUZEJFtRzm+AKAgru7Zw==", 6);
-        zoneSignatures.put("Bgc94G5D1m/ZlGBFIiEt2Q==", 7);
-        zoneSignatures.put("l6mMtwhhgw3pMaAg+tjr+g==", 8);
-        zoneSignatures.put("o3qWxLDy3MNNUrvoMahJeg==", 9);
-        zoneSignatures.put("t7kLTFjBahFUhj2tzb8RCg==", 10);
-        zoneSignatures.put("1NGhsG0v76GPi8FIstuCzw==", 11);
-        zoneSignatures.put("rp85HUcC30LLH3K8Xnd/Ow==", 12);
-        zoneSignatures.put("4yD/Lsj7JMG9vOCsklFrhQ==", 13);
+        zoneSignatures.put("chfP7xxmYLa6OTFhDNJTfA==", 1); // z01.png
+        zoneSignatures.put("IpiXktecDQ+X+N5WC7vReg==", 1); // z01_20210117.png
+        zoneSignatures.put("rKea4zBByo0uDpTCbmSFMQ==", 2); // z02.png
+        zoneSignatures.put("Rny2darLY1XRHP3HbQxBDw==", 2); // z02_20210117.png
+        zoneSignatures.put("ns5+x+eTfD4Ow2Bnn7UmJQ==", 3); // z03.png
+        zoneSignatures.put("kvNiBIgvg0WEfKvzBtPRCg==", 3); // z03_20210117.png
+        zoneSignatures.put("NonrIHc80e37cTY/ig3n9Q==", 4); // z04.png
+        zoneSignatures.put("J5DYpGIJuZgKehmnN+u7pQ==", 4); // z04_20210117.png
+        zoneSignatures.put("RKBzsCY4Lb7p0YPfqymmpw==", 5); // z05.png
+        zoneSignatures.put("QLQhE6MxeAM9PSrPQUenzQ==", 5); // z05_20210117.png
+        zoneSignatures.put("9HUUZEJFtRzm+AKAgru7Zw==", 6); // z06.png
+        zoneSignatures.put("Mhe7QN/lmXpE2WUA4pZlCQ==", 6); // z06_20210117.png
+        zoneSignatures.put("Bgc94G5D1m/ZlGBFIiEt2Q==", 7); // z07.png
+        zoneSignatures.put("g2WZid72AkJHeiVcO13jqw==", 7); // z07_20210117.png
+        zoneSignatures.put("l6mMtwhhgw3pMaAg+tjr+g==", 8); // z08.png
+        zoneSignatures.put("vfjBgTfi+iqjhdMSGGImMw==", 8); // z08_20210117.png
+        zoneSignatures.put("o3qWxLDy3MNNUrvoMahJeg==", 9); // z09.png
+        zoneSignatures.put("zunG86d9hHwHYEaL9BR3NQ==", 9); // z09_20210117.png
+        zoneSignatures.put("t7kLTFjBahFUhj2tzb8RCg==", 10); // z10.png
+        zoneSignatures.put("9eKi8/qUqsNeusbm+u4p6w==", 10); // z10_20210117.png
+        zoneSignatures.put("1NGhsG0v76GPi8FIstuCzw==", 11); // z11.png
+        zoneSignatures.put("Vl7xYUlERMfpU/b5v8eH9Q==", 11); // z11_20210117.png
+        zoneSignatures.put("rp85HUcC30LLH3K8Xnd/Ow==", 12); // z12.png
+        zoneSignatures.put("4UDwb7mMWLSOSBrXvY/jFQ==", 12); // z12_20210117.png
+        zoneSignatures.put("4yD/Lsj7JMG9vOCsklFrhQ==", 13); // z13.png
+        zoneSignatures.put("e92kyzIDPocxX9hQODzK1Q==", 13); // z13_20210117.png
 
         bot.browser.readScreen();
 
-        BufferedImage zoneSignatureImg = bot.browser.getImg().getSubimage(Misc.SIGNATURE_BOUNDS.x1, Misc.SIGNATURE_BOUNDS.y1, Misc.SIGNATURE_BOUNDS.width, Misc.SIGNATURE_BOUNDS.height);
+        int signatureY = System.getProperty("os.name") == "Linux" ? Misc.SIGNATURE_BOUNDS.y1 - 1 : Misc.SIGNATURE_BOUNDS.y1;
+
+        BufferedImage zoneSignatureImg = bot.browser.getImg().getSubimage(Misc.SIGNATURE_BOUNDS.x1, signatureY, Misc.SIGNATURE_BOUNDS.width, Misc.SIGNATURE_BOUNDS.height);
         String signature = Misc.imgToMD5(zoneSignatureImg);
 
         return zoneSignatures.getOrDefault(signature, 0);
