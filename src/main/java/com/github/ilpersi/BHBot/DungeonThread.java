@@ -181,7 +181,7 @@ public class DungeonThread implements Runnable {
                 }
                 bot.scheduler.resetIdleTime();
 
-                bot.browser.moveMouseAway(); // just in case. Sometimes we weren't able to claim daily reward because mouse was in center and popup window obfuscated the claim button (see screenshot of that error!)
+                // bot.browser.moveMouseAway(); // just in case. Sometimes we weren't able to claim daily reward because mouse was in center and popup window obfuscated the claim button (see screenshot of that error!)
                 MarvinSegment seg;
                 bot.browser.readScreen();
 
