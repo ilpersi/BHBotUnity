@@ -4757,7 +4757,7 @@ public class DungeonThread implements Runnable {
         boolean gold = MarvinSegment.fromCue(BHBot.cues.get("BonusGold"), bot.browser) != null;
 
         // Special consumables
-        if (MarvinSegment.fromCue(BHBot.cues.get("ConsumablePumkgor"), bot.browser) != null || MarvinSegment.fromCue(BHBot.cues.get("ConsumableBroccoli"), bot.browser) != null
+        /*if (MarvinSegment.fromCue(BHBot.cues.get("ConsumablePumkgor"), bot.browser) != null || MarvinSegment.fromCue(BHBot.cues.get("ConsumableBroccoli"), bot.browser) != null
                 || MarvinSegment.fromCue(BHBot.cues.get("ConsumableGreatFeast"), bot.browser) != null || MarvinSegment.fromCue(BHBot.cues.get("ConsumableGingernaut"), bot.browser) != null
                 || MarvinSegment.fromCue(BHBot.cues.get("ConsumableCoco"), bot.browser) != null) {
             exp = true;
@@ -4765,7 +4765,7 @@ public class DungeonThread implements Runnable {
             speed = true;
             gold = true;
             // BHBot.logger.info("Special consumable detected, skipping all the rest...");
-        }
+        }*/
 
         EnumSet<ConsumableType> duplicateConsumables = EnumSet.noneOf(ConsumableType.class); // here we store consumables that we wanted to consume now but we have detected they are already active, so we skipped them (used for error reporting)
         EnumSet<ConsumableType> consumables = EnumSet.noneOf(ConsumableType.class); // here we store consumables that we want to consume now
