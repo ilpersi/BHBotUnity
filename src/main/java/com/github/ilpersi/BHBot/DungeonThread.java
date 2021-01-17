@@ -52,6 +52,8 @@ public class DungeonThread implements Runnable {
     private int expeditionFailsafeDifficulty = 0;
     private boolean rerunCurrentActivity = false;
 
+    private long kongMotionBugNexCheck;
+
     // Generic counters HashMap
     HashMap<BHBot.State, DungeonCounter> counters = new HashMap<>();
 
@@ -2206,6 +2208,18 @@ public class DungeonThread implements Runnable {
             startTimeCheck = true;
             isInFight = false; //true is in encounter, false is out of encounter
             positionChecker.resetStartPos();
+
+            // Every 7 minutes we check for the Kongregate motion bug
+            kongMotionBugNexCheck = Misc.getTime() + (Misc.Durations.MINUTE * 7);
+        }
+
+        if (Misc.getTime() >= kongMotionBugNexCheck) {
+            BHBot.logger.warn("Potential Kongregate bug detected, refreshing page.");
+            bot.browser.refresh();
+            kongMotionBugNexCheck = Misc.getTime() + (Misc.Durations.MINUTE * 7);
+            Misc.sleep(Misc.Durations.MINUTE);
+            outOfEncounterTimestamp = TimeUnit.MILLISECONDS.toSeconds(Misc.getTime());
+            return;
         }
 
         long activityDuration = (TimeUnit.MILLISECONDS.toSeconds(Misc.getTime()) - activityStartTime);

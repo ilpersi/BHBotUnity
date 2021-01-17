@@ -522,4 +522,8 @@ public class BrowserManager {
             return new Point(x, y);
         }
     }
+
+    void refresh() {
+        driver.navigate().refresh();
+    }
 }
