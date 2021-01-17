@@ -205,6 +205,7 @@ public class BHBot {
 
         gitProperties = Misc.getGITInfo();
         logger.info("GIT commit id: " + gitProperties.get("git.commit.id") + "  time: " + gitProperties.get("git.commit.time"));
+        logger.info("Hosting OS: " + System.getProperty("os.name"));
 
         /*if (!"UNKNOWN".equals(BHBotVersion)) {
             checkNewRelease();
