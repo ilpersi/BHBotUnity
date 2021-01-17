@@ -11,7 +11,7 @@ public class DunegeonSignature {
     @SuppressWarnings("DuplicatedCode")
     public static void main(String[] args) {
 
-        final String zonesPath = "src/main/resources/" + "unitycuesources/dungeon/zones";
+        final String zonesPath = "cuebuilder/dungeon/zones/";
 
         File zonesPathFile = new File(zonesPath);
 
@@ -25,7 +25,7 @@ public class DunegeonSignature {
             return;
         }
 
-        Pattern zoneName = Pattern.compile("z(\\d{1,2})\\.png");
+        Pattern zoneName = Pattern.compile("z(\\d{1,2})[^.]*\\.png");
 
         for (final File zoneFile : zonesPathFile.listFiles()) {
 
@@ -45,7 +45,7 @@ public class DunegeonSignature {
 
                 BufferedImage zoneSignatureImg = zoneFullImg.getSubimage(Misc.SIGNATURE_BOUNDS.x1, Misc.SIGNATURE_BOUNDS.y1, Misc.SIGNATURE_BOUNDS.width, Misc.SIGNATURE_BOUNDS.height);
                 String signature = Misc.imgToMD5(zoneSignatureImg);
-                System.out.println("zoneSignatures.put(\"" + signature + "\", " + zoneNumber + ");");
+                System.out.println("zoneSignatures.put(\"" + signature + "\", " + zoneNumber + "); // " +zoneFile.getName());
             } else {
                 System.out.println("Invalid file name "  + zoneFile.getName());
             }
