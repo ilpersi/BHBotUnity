@@ -240,7 +240,7 @@ public class CueBuilder {
         //endregion
 
         //region autoShrine
-        addCueLocatorByPattern(cueLocators, "cuebuilder/autoShrine", "settings(.*)\\.png", Bounds.fromWidthHeight(212, 299, 390, 68),
+        addCueLocatorByPattern(cueLocators, "cuebuilder/autoShrine", "settings(.*)\\.png", Bounds.fromWidthHeight(376, 115, 39, 58),
                 Set.of(), "Settings", "unitycues/autoShrine/cueSettings.png");
         //endregion
 
