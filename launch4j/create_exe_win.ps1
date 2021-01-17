@@ -47,7 +47,7 @@ jlink.exe --no-header-files --no-man-pages --add-modules java.base,java.compiler
 # we pack everything together
 Write-Host "Creating BHBot zip"
 $compress = @{
-	Path= $JavaRunTimePath, $BHBotExe, $ChromeDriverPath, $BHBotJar #, $BHBotBatPath, $InitBatPath, $SettingsIniPath
+	Path= $JavaRunTimePath, $BHBotExe, $BHBotJar #, $ChromeDriverPath, $BHBotBatPath, $InitBatPath, $SettingsIniPath
 	CompressionLevel = "Optimal"
 	DestinationPath = $BHBotZip
 }
