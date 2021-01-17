@@ -132,7 +132,13 @@ class FindSubimage {
                 }
             }
         } catch (java.lang.ArrayIndexOutOfBoundsException e) {
-            BHBot.logger.debug("ArrayIndexOutOfBoundsException in FindSubimage", e);
+            BHBot.logger.debug("ArrayIndexOutOfBounds Exception in FindSubimage", e);
+            Misc.saveScreen("ArrayIndexOutOfBounds-In", "find-errors", imageIn);
+            Misc.saveScreen("ArrayIndexOutOfBounds-Sub", "find-errors", subimage);
+            BHBot.logger.debug(String.format("Image In  -> W: %d H: %d", imageIn.getWidth(), imageIn.getWidth()));
+            BHBot.logger.debug(String.format("Image Sub -> W: %d H: %d", subimage.getWidth(), subimage.getWidth()));
+            BHBot.logger.debug(String.format("startX: %d, startY: %d, endX: %d, endY: %d", startX, startY, endX, endY));
+            BHBot.logger.debug(Misc.getStackTrace());
         }
 
         return segments;
