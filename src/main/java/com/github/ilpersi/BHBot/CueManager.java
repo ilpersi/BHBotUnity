@@ -713,6 +713,7 @@ class CueManager {
         addCue("RareFamiliar", "unitycues/familiarEncounter/type/cue02RareFamiliar.png", Bounds.fromWidthHeight(527, 261, 158, 59)); // Rare Bribe cue
         addCue("CommonFamiliar", "unitycues/familiarEncounter/type/cue01CommonFamiliar.png", Bounds.fromWidthHeight(527, 261, 158, 59)); // Common Bribe cue
         addCue("EpicFamiliar", "unitycues/familiarEncounter/type/cue03EpicFamiliar.png", Bounds.fromWidthHeight(525, 265, 150, 55));
+        addCue("LegendaryFamiliar", "unitycues/familiarEncounter/type/cue04LegendaryFamiliar.png", Bounds.fromWidthHeight(525, 265, 150, 55));
         //endregion
         //region Familiar folders
         int newFamCnt = loadCueFolder("unitycues/familiarEncounter/01 Common", null, false, new Bounds(145, 50, 575, 125));

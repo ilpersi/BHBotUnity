@@ -363,9 +363,9 @@ public class BrowserManager {
 
     synchronized void moveMouseToPos(int x, int y) {
         try {
-            Actions act = new Actions(driver);
             Point movePos = getChromeOffset(x, y);
 
+            Actions act = new Actions(driver);
             act.moveToElement(game, movePos.x, movePos.y);
             act.perform();
         } catch (Exception e) {
@@ -386,9 +386,12 @@ public class BrowserManager {
 
     synchronized void clickInGame(int x, int y) {
         Point clickCoordinates = getChromeOffset(x, y);
-        Actions act = new Actions(driver);
 
+        Actions act = new Actions(driver);
         act.moveToElement(game, clickCoordinates.x, clickCoordinates.y);
+        act.perform();
+
+        act = new Actions(driver);
         act.click();
         act.perform();
 
