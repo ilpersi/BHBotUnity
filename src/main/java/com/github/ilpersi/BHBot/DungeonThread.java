@@ -811,7 +811,7 @@ public class DungeonThread implements Runnable {
                                 if (dungeonSetting.solo) {
                                     Cue yesGreen = new Cue(BHBot.cues.get("YesGreen"), Bounds.fromWidthHeight(290, 330, 85, 60));
 
-                                    if (!bot.browser.closePopupSecurely(yesGreen, BHBot.cues.get("TeamNotFull")) ) {
+                                    if (!bot.browser.closePopupSecurely(BHBot.cues.get("TeamNotFull"), yesGreen) ) {
                                         BHBot.logger.error("Impossible to find Yes button in Dungeon Team!");
                                         restart();
                                     }
