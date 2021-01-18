@@ -809,10 +809,9 @@ public class DungeonThread implements Runnable {
                                bot.browser.closePopupSecurely(dungeonAccept, dungeonAccept);
 
                                 if (dungeonSetting.solo) {
-                                    seg = MarvinSegment.fromCue(BHBot.cues.get("YesGreen"), 5 * Misc.Durations.SECOND, Bounds.fromWidthHeight(290, 340, 70, 45), bot.browser);
-                                    if (seg != null) {
-                                        bot.browser.clickOnSeg(seg);
-                                    } else {
+                                    Cue yesGreen = new Cue(BHBot.cues.get("YesGreen"), Bounds.fromWidthHeight(290, 330, 85, 60));
+
+                                    if (!bot.browser.closePopupSecurely(yesGreen, BHBot.cues.get("TeamNotFull")) ) {
                                         BHBot.logger.error("Impossible to find Yes button in Dungeon Team!");
                                         restart();
                                     }
@@ -2402,7 +2401,7 @@ public class DungeonThread implements Runnable {
                     //close 'cleared' popup
                     Bounds yesGreenBounds = null;
                     if (BHBot.State.Raid.equals(bot.getState())) {
-                        yesGreenBounds = bot.settings.useUnityEngine ? Bounds.fromWidthHeight(279, 344, 117, 37) : Bounds.fromWidthHeight(290, 345, 70, 45);
+                        yesGreenBounds = Bounds.fromWidthHeight(279, 344, 117, 37);
                     }
 
                     bot.browser.closePopupSecurely(BHBot.cues.get("Cleared"), new Cue(BHBot.cues.get("YesGreen"), yesGreenBounds));
@@ -2430,10 +2429,8 @@ public class DungeonThread implements Runnable {
                                 break;
                         }
                         bot.browser.closePopupSecurely(XWithBounds, XWithBounds);
-                    }
-
-                    //For Expedition we need to close 3 windows (Exped/Portal/Team) to return to main screen
-                    if (bot.getState() == BHBot.State.Expedition) {
+                    } else {
+                        //For Expedition we need to close 3 windows (Exped/Portal/Team) to return to main screen
                         bot.browser.closePopupSecurely(BHBot.cues.get("Enter"), BHBot.cues.get("X"));
                         bot.browser.closePopupSecurely(BHBot.cues.get("PortalBorderLeaves"), BHBot.cues.get("X"));
                         bot.browser.closePopupSecurely(BHBot.cues.get("BadgeBar"), BHBot.cues.get("X"));
