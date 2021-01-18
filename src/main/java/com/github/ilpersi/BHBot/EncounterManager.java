@@ -183,9 +183,9 @@ public class EncounterManager {
         } else {
             seg = MarvinSegment.fromCue(BHBot.cues.get("DeclineRed"), 0, Bounds.fromWidthHeight(205, 420, 200, 65), bot.browser);
             if (seg != null) {
-                bot.browser.clickOnSeg(seg); // seg = detectCue(cues.get("Persuade"))
+                bot.browser.closePopupSecurely(BHBot.cues.get("FamiliarEncounter"), BHBot.cues.get("DeclineRed"));
 
-                seg = MarvinSegment.fromCue(BHBot.cues.get("YesGreen"), Misc.Durations.SECOND * 5, Bounds.fromWidthHeight(245, 330, 165, 65), bot.browser);
+                seg = MarvinSegment.fromCue(BHBot.cues.get("YesGreen"), Misc.Durations.SECOND * 5, Bounds.fromWidthHeight(290, 330, 85, 60), bot.browser);
                 if (seg != null) {
                     bot.browser.clickOnSeg(seg);
                     BHBot.logger.autobribe(familiarLevel.toString().toUpperCase() + " persuasion declined.");
