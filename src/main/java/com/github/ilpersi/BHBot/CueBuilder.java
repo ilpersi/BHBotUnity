@@ -291,8 +291,13 @@ public class CueBuilder {
                 Set.of(), "AreYouThere", "unitycues/common/cueAreYouThere.png");
         addCueLocatorByPattern(cueLocators, "cuebuilder/common", "are-you-there(.*)\\.png", Bounds.fromWidthHeight(367, 346, 66, 31),
                 Set.of(), "Yes", "unitycues/common/cueYes.png");
+        //endregion
+
+        //region Main Menu
         addCueLocatorByPattern(cueLocators, "cuebuilder/mainScreen", "gor-menu(.*)\\.png", Bounds.fromWidthHeight(107, 477, 33, 34),
                 Set.of(), "GorMenu", "unitycues/mainScreen/cueGorMenu.png");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/mainScreen", "gor-menu(.*)\\.png", Bounds.fromWidthHeight(676, 464, 34, 37),
+                Set.of(), "SettingsGear", "unitycues/mainScreen/cueSettingsGear.png");
         //endregion
 
         //region CueX
