@@ -2213,7 +2213,7 @@ public class DungeonThread implements Runnable {
             kongMotionBugNexCheck = Misc.getTime() + (Misc.Durations.MINUTE * 7);
         }
 
-        if (Misc.getTime() >= kongMotionBugNexCheck) {
+        if (Misc.getTime() >= kongMotionBugNexCheck && !isInFight) {
             BHBot.logger.warn("Potential Kongregate bug detected, refreshing page.");
             bot.browser.refresh();
             kongMotionBugNexCheck = Misc.getTime() + (Misc.Durations.MINUTE * 7);
@@ -2235,6 +2235,9 @@ public class DungeonThread implements Runnable {
                 BHBot.logger.trace("Updating idle time (Out of combat)");
                 bot.scheduler.resetIdleTime(true);
                 isInFight = false;
+
+                // as we got into a fight we also update the kong bug counter
+                kongMotionBugNexCheck = Misc.getTime() + (Misc.Durations.MINUTE * 7);
             }
         } else {
             inEncounterTimestamp = TimeUnit.MILLISECONDS.toSeconds(Misc.getTime());
@@ -2243,6 +2246,9 @@ public class DungeonThread implements Runnable {
                 bot.scheduler.resetIdleTime(true);
                 isInFight = true;
                 positionChecker.resetStartPos();
+
+                // as we got out of a fight we also update the kong bug counter
+                kongMotionBugNexCheck = Misc.getTime() + (Misc.Durations.MINUTE * 7);
             }
         }
 
