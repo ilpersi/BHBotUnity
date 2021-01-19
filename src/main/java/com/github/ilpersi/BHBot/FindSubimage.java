@@ -52,6 +52,11 @@ class FindSubimage {
         if (endX == 0) endX = imageIn.getWidth(); // endX was not set
         if (endY == 0) endY = imageIn.getHeight(); // endY was not set
 
+        // It may be possible, using Bounds.fromWidthHeight that images close to the
+        // sides, get over them. This is making sure that this never happens
+        if (endX > imageIn.getWidth()) endX = imageIn.getWidth();
+        if (endY > imageIn.getHeight()) endY = imageIn.getHeight();
+
         int subImagePixels = subimage.getWidth() * subimage.getHeight();
         boolean[][] processed = new boolean[imageIn.getWidth()][imageIn.getHeight()];
 
