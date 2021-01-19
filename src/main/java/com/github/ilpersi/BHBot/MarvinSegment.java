@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.List;
 
 /**
  * This class has been copied from <br>
@@ -58,7 +59,33 @@ public class MarvinSegment {
             y2 = cue.bounds != null ? cue.bounds.y2 : 0;
         }
 
-        seg = FindSubimage.findImage(src, cue.im, x1, y1, x2, y2);
+        if (BHBot.debugFindImage) {
+            List<MarvinSegment> foundSegs = FindSubimage.findSubimage(src, cue.im, 1.0, false, false, x1, y1, x2, y2);
+            seg = foundSegs.isEmpty() ? null : foundSegs.get(0);
+
+            final int OFFSET = 5;
+            final int newWidth = cue.im.getWidth() + src.getWidth() + OFFSET;
+            final int newHeight = Math.max(cue.im.getHeight(), src.getHeight()) + OFFSET;
+            Color highlight = foundSegs.isEmpty() ? Color.RED : Color.GREEN;
+            String match = foundSegs.isEmpty() ? "NO-MATCH" : "MATCH";
+
+            BufferedImage mergeImg = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_RGB);
+            Graphics g = mergeImg.getGraphics();
+
+            g.drawImage(cue.im, OFFSET, OFFSET, null);
+            g.drawImage(src, OFFSET + cue.im.getWidth(), OFFSET, null);
+
+            foundSegs = FindSubimage.findSubimage(mergeImg, cue.im, 1.0, true, false, x1, y1, x2, y2);
+
+            MarvinImage mainMarvinImg = new MarvinImage(mergeImg);
+            foundSegs.forEach((foundSeg) -> mainMarvinImg.drawRect(foundSeg.x1, foundSeg.y1, foundSeg.width, foundSeg.height, 2, highlight));
+            mainMarvinImg.update();
+
+            Misc.saveScreen("" + cue.name + "-" + match, "debugFindImage", mainMarvinImg.getBufferedImage());
+
+        } else {
+            seg = FindSubimage.findImage(src, cue.im, x1, y1, x2, y2);
+        }
 
         //source.drawRect(seg.x1, seg.y1, seg.x2-seg.x1, seg.y2-seg.y1, Color.blue);
         //MarvinImageIO.saveImage(source, "window_out.png");

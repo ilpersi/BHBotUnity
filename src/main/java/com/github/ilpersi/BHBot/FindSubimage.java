@@ -27,10 +27,7 @@ class FindSubimage {
 
     static MarvinSegment findImage(BufferedImage imageIn, BufferedImage subimage, int startX, int startY, int endX, int endY) {
         List<MarvinSegment> r = findSubimage(imageIn, subimage, 1.0, false, false, startX, startY, endX, endY);
-        if (r.isEmpty())
-            return null;
-        else
-            return r.get(0);
+        return r.isEmpty() ? null : r.get(0);
     }
 
     /**
