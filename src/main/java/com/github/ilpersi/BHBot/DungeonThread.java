@@ -407,12 +407,9 @@ public class DungeonThread implements Runnable {
                                 bot.browser.closePopupSecurely(acceptCue, acceptCue);
 
                                 if (raidSetting.solo) {
-                                    Bounds yesGreenBounds = bot.settings.useUnityEngine ? Bounds.fromWidthHeight(290, 345, 95, 35) : Bounds.fromWidthHeight(290, 340, 70, 45);
-                                    Cue YesGreenBounds = new Cue(BHBot.cues.get("YesGreen"), yesGreenBounds);
-                                    seg = MarvinSegment.fromCue(YesGreenBounds, 4 * Misc.Durations.SECOND, bot.browser);
-                                    if (seg != null) {
-                                        bot.browser.clickOnSeg(seg);
-                                    } else {
+                                    Cue yesGreen = new Cue(BHBot.cues.get("YesGreen"), Bounds.fromWidthHeight(290, 330, 85, 60));
+
+                                    if (!bot.browser.closePopupSecurely(BHBot.cues.get("TeamNotFull"), yesGreen) ) {
                                         BHBot.logger.error("Impossible to find Yes button in Raid Team!");
                                         restart();
                                     }
