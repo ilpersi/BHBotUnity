@@ -2213,6 +2213,16 @@ public class DungeonThread implements Runnable {
         }
 
         if (Misc.getTime() >= kongMotionBugNexCheck && !isInFight) {
+            bot.saveGameScreen("motion-error", "errors");
+            Cue dungCueX = new Cue(BHBot.cues.get("X"), Bounds.fromWidthHeight(735, 0, 70, 75));
+            seg = MarvinSegment.fromCue(dungCueX, Misc.Durations.SECOND * 2, bot.browser);
+            if (seg == null) {
+                bot.saveGameScreen("motion-error-no-x", "errors");
+                BHBot.logger.error("You have been ported out of a dungeon. Restarting...");
+                restart();
+                return;
+            }
+
             BHBot.logger.warn("Potential Kongregate bug detected, refreshing page.");
             bot.browser.refresh();
             kongMotionBugNexCheck = Misc.getTime() + (Misc.Durations.MINUTE * 7);
