@@ -307,6 +307,8 @@ public class CueBuilder {
                 Set.of(), "X", "unitycues/common/cueX.png", true));
         cueLocators.add(new CueLocator("cuebuilder/dungeon/dung-zone_20210115.png", Bounds.fromWidthHeight(706, 53, 48, 48),
                 Set.of(), "X", "unitycues/common/cueX.png", true));
+        cueLocators.add(new CueLocator("cuebuilder/common/dung-x_20210119.png", Bounds.fromWidthHeight(746, 8, 48, 48),
+                Set.of(), "X", "unitycues/common/cueX.png", true));
         //endregion
 
         //region Treasure Chest
