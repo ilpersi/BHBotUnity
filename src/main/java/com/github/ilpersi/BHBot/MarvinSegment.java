@@ -78,6 +78,7 @@ public class MarvinSegment {
             foundSegs = FindSubimage.findSubimage(mergeImg, cue.im, 1.0, true, false, x1, y1, x2, y2);
 
             MarvinImage mainMarvinImg = new MarvinImage(mergeImg);
+            mainMarvinImg.drawRect(x1, y1, x2 - x1, y2 - y1, Color.BLUE);
             foundSegs.forEach((foundSeg) -> mainMarvinImg.drawRect(foundSeg.x1, foundSeg.y1, foundSeg.width, foundSeg.height, 2, highlight));
             mainMarvinImg.update();
 
