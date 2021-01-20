@@ -187,7 +187,6 @@ public class EncounterManager {
 
                 Cue yesGreen = new Cue(BHBot.cues.get("YesGreen"), Bounds.fromWidthHeight(290, 330, 85, 60));
                 if (bot.browser.closePopupSecurely(yesGreen, yesGreen)) {
-                    bot.browser.clickOnSeg(seg);
                     BHBot.logger.autobribe(familiarLevel.toString().toUpperCase() + " persuasion declined.");
                 } else {
                     BHBot.logger.error("Impossible to find the yes-green button after decline, restarting...");
