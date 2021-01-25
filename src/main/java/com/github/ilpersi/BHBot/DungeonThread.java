@@ -3397,6 +3397,7 @@ public class DungeonThread implements Runnable {
         zoneSignatures.put("4UDwb7mMWLSOSBrXvY/jFQ==", 12); // z12_20210117.png
         zoneSignatures.put("4yD/Lsj7JMG9vOCsklFrhQ==", 13); // z13.png
         zoneSignatures.put("e92kyzIDPocxX9hQODzK1Q==", 13); // z13_20210117.png
+        zoneSignatures.put("95OWAzATFRQAf5yaJdxqjQ==", 14); // z14_20210125.png
 
         bot.browser.readScreen();
 
