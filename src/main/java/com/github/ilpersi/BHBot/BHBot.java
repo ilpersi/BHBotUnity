@@ -47,9 +47,9 @@ public class BHBot {
     Scheduler scheduler = new Scheduler();
     NotificationManager notificationManager;
     ExceptionManager excManager;
-    String chromeDriverAddress = "127.0.0.1:9515";
-    String chromiumExePath = "C:\\Users\\" + System.getProperty("user.name") + "\\AppData\\Local\\Chromium\\Application\\chrome.exe";
-    String chromeDriverExePath = "./chromedriver.exe";
+    String browserDriverAddress = "127.0.0.1:9515";
+    String browserExePath = settings.useFirefox ? "C:\\Program Files\\Mozilla Firefox\\firefox.exe" : "C:\\Users\\" + System.getProperty("user.name") + "\\AppData\\Local\\Chromium\\Application\\chrome.exe";
+    String browserDriverExePath = settings.useFirefox ? "./geckodriver" : "./chromedriver.exe";
     private Thread dungeonThread;
     private Thread blockerThread;
 
@@ -77,7 +77,7 @@ public class BHBot {
         bot.notificationManager = new NotificationManager(bot);
         bot.excManager = new ExceptionManager(bot);
 
-        String userDataDir = "./chrome_profile";
+        String browserProfile = bot.settings.useFirefox ? "default" : "./chrome_profile";
 
         // We make sure that our configurationFactory is added to the list of configuration factories.
         System.setProperty("log4j.configurationFactory", "com.github.ilpersi.BHBot.BHBotConfigurationFactory");
@@ -90,18 +90,24 @@ public class BHBot {
                 case "chromedriver":
                 case "chromedriverpath":
                 case "chromeDriverExePath":
-                    bot.chromeDriverExePath = args[i + 1];
+                case "geckoDriverExePath":
+                case "browserDriverExePath":
+                    bot.browserDriverExePath = args[i + 1];
                     i++;
                     continue;
                 case "chromedriveraddress":  //change chrome driver port
                 case "chromeDriverAddress":
-                    bot.chromeDriverAddress = args[i + 1];
+                case "geckoDriverAddress":
+                case "browserDriverAddress":
+                    bot.browserDriverAddress = args[i + 1];
                     i++;
                     continue;
                 case "chromium":
                 case "chromiumpath":
                 case "chromiumExePath":
-                    bot.chromiumExePath = args[i + 1];
+                case "firefoxExePath":
+                case "browserExePath":
+                    bot.browserExePath = args[i + 1];
                     i++;
                     continue;
                 case "init":  //start bot in idle mode
@@ -115,7 +121,8 @@ public class BHBot {
                     continue;
                 case "userdatadir":
                 case "userDataDir":
-                    userDataDir = args[i + 1];
+                case "browserProfile":
+                    browserProfile = args[i + 1];
                     i++;
             }
         }
@@ -270,7 +277,7 @@ public class BHBot {
             if (!bot.running) {
                 if (bot.settings.activitiesSchedule.isEmpty()) {
                     BHBot.logger.debug("Scheduling is empty, using default configuration.");
-                    bot.browser = new BrowserManager(bot, userDataDir);
+                    bot.browser = new BrowserManager(bot, browserProfile);
                     bot.running = true;
                     bot.scheduler.resetIdleTime(true);
                     bot.processCommand("start");
@@ -282,7 +289,7 @@ public class BHBot {
                         if (s.isActive()) {
 
                             // We check what Chrome Profile path to use
-                            String chromeProfilePath = "".equals(s.chromeProfilePath) ? userDataDir : s.chromeProfilePath;
+                            String chromeProfilePath = "".equals(s.chromeProfilePath) ? browserProfile : s.chromeProfilePath;
 
                             // We check what setting plan to use
                             if (!"".equals(s.settingsPlan)) {
@@ -793,30 +800,30 @@ public class BHBot {
     private boolean checkPaths() {
         String cuesPath = "./cues/";
 
-        File chromiumExe = new File(chromiumExePath);
-        File chromeDriverExe = new File(chromeDriverExePath);
+        File browserExe = new File(browserExePath);
+        File browserDriverExe = new File(browserDriverExePath);
         File cuePath = new File(cuesPath);
         File screenPath = new File(screenshotPath);
 
-        if (!chromiumExe.exists()) {
-            logger.fatal("Impossible to find Chromium executable in path " + chromiumExePath + ". Bot will be stopped!");
+        if (!browserExe.exists()) {
+            logger.fatal("Impossible to find browser executable in path " + browserExePath + ". Bot will be stopped!");
             return false;
         } else {
             try {
-                logger.debug("Found Chromium in " + chromiumExe.getCanonicalPath());
+                logger.debug("Found Browsers in " + browserExe.getCanonicalPath());
             } catch (IOException e) {
                 logger.error("Error while getting Canonical Path for Chromium", e);
             }
         }
 
-        if (!chromeDriverExe.exists()) {
-            logger.fatal("Impossible to find chromedriver executable in path " + chromeDriverExePath + ". Bot will be stopped!");
+        if (!browserDriverExe.exists()) {
+            logger.fatal("Impossible to find browser driver executable in path " + browserDriverExePath + ". Bot will be stopped!");
             return false;
         } else {
             try {
-                logger.debug("Found chromedriver in " + chromeDriverExe.getCanonicalPath());
+                logger.debug("Found browser driver in " + browserDriverExe.getCanonicalPath());
             } catch (IOException e) {
-                logger.error("Error while getting Canonical Path for chromedriver", e);
+                logger.error("Error while getting Canonical Path for browser driver", e);
             }
         }
 
@@ -1078,8 +1085,6 @@ public class BHBot {
             }
             return;
         }
-
-        browser.detectSignInFormAndHandleIt(); // just in case (happens seldom though)
 
         browser.scrollGameIntoView();
 

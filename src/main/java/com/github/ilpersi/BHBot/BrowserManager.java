@@ -5,6 +5,7 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.logging.LogEntry;
 import org.openqa.selenium.logging.LogType;
@@ -19,8 +20,6 @@ import java.awt.image.BufferedImage;
 import java.awt.image.RasterFormatException;
 import java.io.*;
 import java.net.*;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -38,11 +37,11 @@ public class BrowserManager {
     private BufferedImage img; // latest screen capture
     private final BHBot bot;
 
-    private final String userDataDir;
+    private final String browserProfile;
 
-    BrowserManager(BHBot bot, String UserDataDir) {
+    BrowserManager(BHBot bot, String browserProfile) {
         this.bot = bot;
-        this.userDataDir = UserDataDir;
+        this.browserProfile = browserProfile;
     }
 
     boolean isDoNotShareUrl() {
@@ -50,65 +49,125 @@ public class BrowserManager {
     }
 
     private synchronized void connect()  {
-        ChromeOptions options = new ChromeOptions();
+        if (!bot.settings.useFirefox) {
+            ChromeOptions options = new ChromeOptions();
 
-        // will create this profile folder where chromedriver.exe is located!
-        options.addArguments("user-data-dir=" + userDataDir);
+            // will create this profile folder where chromedriver.exe is located!
+            options.addArguments("user-data-dir=" + browserProfile);
 
-        //set Chromium binary location
-        options.setBinary(bot.chromiumExePath);
+            //set Chromium binary location
+            options.setBinary(bot.browserExePath);
 
-        if (bot.settings.autoStartChromeDriver) {
-            System.setProperty("webdriver.chrome.driver", bot.chromeDriverExePath);
+            if (bot.settings.autoStartChromeDriver) {
+                System.setProperty("webdriver.chrome.driver", bot.browserDriverExePath);
+            } else {
+                BHBot.logger.info("chromedriver auto start is off, make sure it is started before running BHBot");
+                if (System.getProperty("webdriver.chrome.driver", null) != null) {
+                    System.clearProperty("webdriver.chrome.driver");
+                }
+            }
+
+            /*
+            * When we connect the driver, if we don't know the do_not_share_url and if the configs require it,
+            * the bot will enable the logging of network events so that when it is fully loaded, it will be possible
+            * to analyze them searching for the magic URL
+            * */
+
+            if (!isDoNotShareUrl() && bot.settings.useDoNotShareURL) {
+                LoggingPreferences logPrefs = new LoggingPreferences();
+                logPrefs.enable(LogType.PERFORMANCE, Level.ALL);
+                // https://stackoverflow.com/a/56536604/1280443
+                options.setCapability("goog:loggingPrefs", logPrefs);
+                options.setCapability(CapabilityType.LOGGING_PREFS, logPrefs);
+            }
+
+            DesiredCapabilities capabilities = DesiredCapabilities.chrome();
+            capabilities.setCapability("chrome.verbose", false);
+            capabilities.setCapability(ChromeOptions.CAPABILITY, options);
+
+            if (bot.settings.autoStartChromeDriver) {
+                driver = new ChromeDriver(options);
+                caps = ((ChromeDriver) driver).getCapabilities();
+            } else {
+                URL driverAddress = null;
+                try {
+                    driverAddress = new URL("http://" + bot.browserDriverAddress);
+                } catch (MalformedURLException e) {
+                    BHBot.logger.error("Malformed URL when connecting to Web driver: ", e);
+                }
+                driver = new RemoteWebDriver(driverAddress, capabilities);
+                caps = ((RemoteWebDriver) driver).getCapabilities();
+            }
         } else {
-            BHBot.logger.info("chromedriver auto start is off, make sure it is started before running BHBot");
-            if (System.getProperty("webdriver.chrome.driver", null) != null) {
-                System.clearProperty("webdriver.chrome.driver");
+            ProfilesIni profileIni = new ProfilesIni();
+            FirefoxProfile profile = profileIni.getProfile(browserProfile);
+
+            FirefoxOptions options = new FirefoxOptions();
+//            options.setProfile(profile);
+
+            // Geckodriver is quite verbose so we redirect the log to null
+            if (System.getProperty("os.name").contains("Windows"))
+                System.setProperty(FirefoxDriver.SystemProperty.BROWSER_LOGFILE, "NUL");
+            else if (System.getProperty("os.name").contains("Linux"))
+                System.setProperty(FirefoxDriver.SystemProperty.BROWSER_LOGFILE, "/dev/null");
+            else
+                System.setProperty(FirefoxDriver.SystemProperty.BROWSER_LOGFILE, "logs/geckodriver.log");
+
+            // We also try to minimize all the possible logs
+            LoggingPreferences pref = new LoggingPreferences();
+            pref.enable(LogType.BROWSER, Level.WARNING);
+            pref.enable(LogType.CLIENT, Level.WARNING);
+            pref.enable(LogType.DRIVER, Level.WARNING);
+            pref.enable(LogType.PERFORMANCE, Level.WARNING);
+            pref.enable(LogType.PROFILER, Level.WARNING);
+            pref.enable(LogType.SERVER, Level.WARNING);
+
+            //set Chromium binary location
+            options.setBinary(bot.browserExePath);
+            options.setCapability(CapabilityType.LOGGING_PREFS, pref);
+
+            if (bot.settings.autoStartChromeDriver) {
+                System.setProperty(GeckoDriverService.GECKO_DRIVER_EXE_PROPERTY, bot.browserDriverExePath);
+            } else {
+                BHBot.logger.info("geckodriver auto start is off, make sure it is started before running BHBot");
+                if (System.getProperty(GeckoDriverService.GECKO_DRIVER_EXE_PROPERTY, null) != null) {
+                    System.clearProperty(GeckoDriverService.GECKO_DRIVER_EXE_PROPERTY);
+                }
+            }
+
+            /*
+             * When we connect the driver, if we don't know the do_not_share_url and if the configs require it,
+             * the bot will enable the logging of network events so that when it is fully loaded, it will be possible
+             * to analyze them searching for the magic URL
+             * */
+
+            if (!isDoNotShareUrl() && bot.settings.useDoNotShareURL) {
+                LoggingPreferences logPrefs = new LoggingPreferences();
+                logPrefs.enable(LogType.PERFORMANCE, Level.ALL);
+                // https://stackoverflow.com/a/56536604/1280443
+                options.setCapability("goog:loggingPrefs", logPrefs);
+                options.setCapability(CapabilityType.LOGGING_PREFS, logPrefs);
+            }
+
+            DesiredCapabilities capabilities = DesiredCapabilities.firefox();
+            capabilities.setCapability(FirefoxOptions.FIREFOX_OPTIONS, options);
+
+            if (bot.settings.autoStartChromeDriver) {
+                driver = new FirefoxDriver(options);
+                caps = ((FirefoxDriver) driver).getCapabilities();
+            } else {
+                URL driverAddress = null;
+                try {
+                    driverAddress = new URL("http://" + bot.browserDriverAddress);
+                } catch (MalformedURLException e) {
+                    BHBot.logger.error("Malformed URL when connecting to Web driver: ", e);
+                }
+                driver = new RemoteWebDriver(driverAddress, capabilities);
+                caps = ((RemoteWebDriver) driver).getCapabilities();
             }
         }
 
-        // disable ephemeral flash permissions flag
-        options.addArguments("--disable-features=EnableEphemeralFlashPermission");
-        options.addArguments("disable-infobars");
-        options.addArguments("--disable-features=VizDisplayCompositor");
-
-        Map<String, Object> prefs = new HashMap<>();
-        // Enable flash for all sites for Chrome 69
-        prefs.put("profile.content_settings.exceptions.plugins.*,*.setting", 1);
-        options.setExperimentalOption("prefs", prefs);
-
-        DesiredCapabilities capabilities = DesiredCapabilities.chrome();
-
-        /* When we connect the driver, if we don't know the do_not_share_url and if the configs require it,
-         * the bot will enable the logging of network events so that when it is fully loaded, it will be possible
-         * to analyze them searching for the magic URL
-         */
-        if (!isDoNotShareUrl() && bot.settings.useDoNotShareURL) {
-            LoggingPreferences logPrefs = new LoggingPreferences();
-            logPrefs.enable(LogType.PERFORMANCE, Level.ALL);
-            // https://stackoverflow.com/a/56536604/1280443
-            options.setCapability("goog:loggingPrefs", logPrefs);
-            options.setCapability(CapabilityType.LOGGING_PREFS, logPrefs);
-        }
-
-        capabilities.setCapability("chrome.verbose", false);
-        capabilities.setCapability(ChromeOptions.CAPABILITY, options);
-
-        if (bot.settings.autoStartChromeDriver) {
-            driver = new ChromeDriver(options);
-            caps = ((ChromeDriver) driver).getCapabilities();
-        } else {
-            URL driverAddress = null;
-            try {
-                driverAddress = new URL("http://" + bot.chromeDriverAddress);
-            } catch (MalformedURLException e) {
-                BHBot.logger.error("Malformed URL when connecting to Web driver: ", e);
-            }
-            driver = new RemoteWebDriver(driverAddress, capabilities);
-            caps = ((RemoteWebDriver) driver).getCapabilities();
-        }
         jsExecutor = (JavascriptExecutor) driver;
-
 
     }
 
@@ -194,50 +253,6 @@ public class BrowserManager {
     }
 
     /**
-     * This form opens only seldom (haven't figured out what triggers it exactly - perhaps some cookie expired?). We need to handle it!
-     */
-    synchronized void detectSignInFormAndHandleIt() {
-        // close the popup "create new account" form (that hides background):
-        WebElement btnClose;
-        try {
-            btnClose = driver.findElement(By.cssSelector("#kongregate_lightbox_wrapper > div.header_bar > a"));
-        } catch (NoSuchElementException e) {
-            return;
-        }
-        btnClose.click();
-
-        // fill in username and password:
-        WebElement weUsername;
-        try {
-            weUsername = driver.findElement(By.xpath("//*[@id='username']"));
-        } catch (NoSuchElementException e) {
-            return;
-        }
-        weUsername.clear();
-        weUsername.sendKeys(bot.settings.username);
-
-        WebElement wePassword;
-        try {
-            wePassword = driver.findElement(By.xpath("//*[@id='password']"));
-        } catch (NoSuchElementException e) {
-            return;
-        }
-        wePassword.clear();
-        wePassword.sendKeys(bot.settings.password);
-
-        // press the "sign-in" button:
-        WebElement btnSignIn;
-        try {
-            btnSignIn = driver.findElement(By.id("sessions_new_form_spinner"));
-        } catch (NoSuchElementException e) {
-            return;
-        }
-        btnSignIn.click();
-
-        BHBot.logger.info("Signed-in manually (sign-in prompt was open).");
-    }
-
-    /**
      * Handles login screen (it shows seldom though. Perhaps because some cookie expired or something... anyway, we must handle it or else bot can't play the game anymore).
      */
     synchronized void detectLoginFormAndHandleIt(MarvinSegment seg) {
@@ -303,12 +318,22 @@ public class BrowserManager {
                 "return '' + parseInt(rect.left) + ',' + parseInt(rect.top) + ',' + parseInt(rect.width) + ',' + parseInt(rect.height)", game);
                 String[] list = listStr.split(",");
 
-                final int x = Integer.parseInt(list[0]);
-                final int y = Integer.parseInt(list[1]);
+                final int x = Math.max(Integer.parseInt(list[0]), 0);
+                final int y = Math.max(Integer.parseInt(list[1]), 0);
                 final int width = Integer.parseInt(list[2]);
                 final int height = Integer.parseInt(list[3]);
 
-                return bImageFromConvert.getSubimage(x, y, width, height);
+                BufferedImage result;
+                try {
+                    result = bImageFromConvert.getSubimage(x, y, width, height);
+                } catch (java.awt.image.RasterFormatException e) {
+                    jsExecutor.executeScript("arguments[0].scrollIntoView(true);", game);
+                    BHBot.logger.warn("Error when taking screenshot based on getBoundingClientRect()");
+                    e.printStackTrace();
+                    return new BufferedImage(800, 520, BufferedImage.TYPE_INT_RGB);
+                }
+
+                return result;
             }
             else
                 return bImageFromConvert;
@@ -528,5 +553,52 @@ public class BrowserManager {
 
     void refresh() {
         driver.navigate().refresh();
+    }
+
+    void manageLogin() {
+        WebElement btnClose;
+        try {
+            btnClose = driver.findElement(By.cssSelector("div#kongregate_lightbox_wrapper > div.header_bar > a.close_link"));
+        } catch (NoSuchElementException e) {
+            return;
+        }
+
+        if (bot.settings.username.length() > 0 && !bot.settings.username.equalsIgnoreCase("yourusername"))
+            btnClose.click();
+        else {
+            BHBot.logger.warn("Login form detected and no username provided in the settings!");
+            return;
+        }
+
+        // fill in username and password:
+        WebElement weUsername;
+        try {
+            weUsername = driver.findElement(By.id("welcome_username"));
+        } catch (NoSuchElementException e) {
+            return;
+        }
+        weUsername.clear();
+        weUsername.sendKeys(bot.settings.username);
+
+        WebElement wePassword;
+        try {
+            wePassword = driver.findElement(By.id("welcome_password"));
+        } catch (NoSuchElementException e) {
+            return;
+        }
+        wePassword.clear();
+        wePassword.sendKeys(bot.settings.password);
+
+        // press the "sign-in" button:
+        WebElement btnSignIn;
+        try {
+            btnSignIn = driver.findElement(By.id("welcome_box_sign_in_button"));
+        } catch (NoSuchElementException e) {
+            return;
+        }
+        btnSignIn.click();
+
+        BHBot.logger.info("Signed-in manually (sign-in prompt was open).");
+
     }
 }

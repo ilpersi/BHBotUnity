@@ -47,6 +47,8 @@ public class BlockerThread implements Runnable {
 
                 bot.notificationManager.sendAliveNotification();
 
+                bot.browser.manageLogin();
+
                 seg = MarvinSegment.fromCue("Selector", bot.browser);
                 if (seg != null) {
                     String engineName = bot.settings.useUnityEngine ? "Unity" : "Flash";
