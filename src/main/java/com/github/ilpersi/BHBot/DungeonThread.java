@@ -87,6 +87,7 @@ public class DungeonThread implements Runnable {
     AutoRuneManager runeManager;
     EncounterManager encounterManager;
     DungeonPositionChecker positionChecker;
+    SettingsManager settings;
 
     private Iterator<String> activitysIterator;
 
@@ -278,9 +279,9 @@ public class DungeonThread implements Runnable {
                         handleConsumables();
                     }
 
+                    settings.initialize();
                     shrineManager.initialize();
                     runeManager.initialize();
-
 
                     String currentActivity = activitySelector(); //else select the activity to attempt
                     if (currentActivity != null) {

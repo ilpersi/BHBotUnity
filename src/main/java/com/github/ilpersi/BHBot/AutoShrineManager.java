@@ -35,7 +35,7 @@ public class AutoShrineManager {
 
         final int CHECK_DELAY = Misc.Durations.SECOND;
 
-        if (openSettings(Misc.Durations.SECOND * 5)) {
+        if (bot.dungeon.settings.openSettings(Misc.Durations.SECOND * 5)) {
             if (!initialized || ignoreBoss != this.ignoreBoss) {
                 Bounds ignoreBossBounds =  Bounds.fromWidthHeight(165, 325, 55, 50);
                 MarvinSegment ignoreBossCheck = MarvinSegment.fromCue(BHBot.cues.get("IgnoreCheck"), 0, ignoreBossBounds, bot.browser);
@@ -83,7 +83,9 @@ public class AutoShrineManager {
             }
 
             bot.browser.readScreen(Misc.Durations.SECOND);
-            bot.browser.closePopupSecurely(BHBot.cues.get("Settings"), new Cue(BHBot.cues.get("X"), new Bounds(608, 39, 711, 131)));
+            if (!bot.dungeon.settings.closeSettings()) {
+                BHBot.logger.warn("It was impossible to close settings menu when updating autoShrine settings.");
+            }
 
             return true;
         } else {
@@ -112,22 +114,6 @@ public class AutoShrineManager {
             bot.notificationManager.sendErrorNotification("Auto Shrine Error", "Impossible to find Auto On button");
         }
     }*/
-
-    private boolean openSettings(@SuppressWarnings("SameParameterValue") int delay) {
-        bot.browser.readScreen();
-
-        MarvinSegment seg = MarvinSegment.fromCue(BHBot.cues.get("SettingsGear"), delay, bot.browser);
-        if (seg != null) {
-            bot.browser.clickOnSeg(seg);
-            seg = MarvinSegment.fromCue(BHBot.cues.get("Settings"), delay, bot.browser);
-            if (seg == null) bot.saveGameScreen("open-settings-no-setting-menu", "errors");
-            return seg != null;
-        } else {
-            BHBot.logger.error("Impossible to find the settings button!");
-            bot.saveGameScreen("open-settings-no-btn", "errors");
-            return false;
-        }
-    }
 
     void processAutoShrine(long battleDelay) {
         MarvinSegment guildButtonSeg;

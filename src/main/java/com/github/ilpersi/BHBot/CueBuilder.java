@@ -344,6 +344,22 @@ public class CueBuilder {
                 Set.of(), "GVG_Rewards", "unitycues/weeklyRewards/gvg.png");
         //endregion
 
+        //region settings
+        addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "settings_01(.*)\\.png", Bounds.fromWidthHeight(354, 188, 9, 31),
+                Set.of(), "settingsMusic", "unitycues/settings/cueSettingsMusic.png");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "settings_01(.*)\\.png", Bounds.fromWidthHeight(354, 254, 9, 31),
+                Set.of(), "settingsSound", "unitycues/settings/cueSettingsSound.png");
+        //endregion settings
+
+        //region scrollBar
+        addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "settings_01(.*)\\.png", Bounds.fromWidthHeight(614, 191, 18, 21),
+                Set.of(), "ScrollerAtTop", "unitycues/scrollBars/cueScrollerAtTop.png");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "settings_21(.*)\\.png", Bounds.fromWidthHeight(614, 373, 18, 21),
+                Set.of(), "ScrollerAtBottom", "unitycues/scrollBars/cueScrollerAtBottom.png");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "settings_01(.*)\\.png", Bounds.fromWidthHeight(616, 379, 14, 14),
+                Set.of(), "DropDownDown", "unitycues/scrollBars/cueDropDownDown.png");
+        //endregion
+
         for (CueLocator cueLoc : cueLocators) {
             // cueLoc.generateCue();
             if (!cueLocatorsByFile.containsKey(cueLoc.destinationCuePath)) cueLocatorsByFile.put(cueLoc.destinationCuePath, new ArrayList<>());

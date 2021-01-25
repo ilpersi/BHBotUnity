@@ -760,6 +760,17 @@ class CueManager {
         addCue("Trials_Rewards", "unitycues/weeklyRewards/trials.png", Bounds.fromWidthHeight(325, 110, 145, 75));
         addCue("GVG_Rewards", "unitycues/weeklyRewards/gvg.png", Bounds.fromWidthHeight(325, 110, 145, 75));
         //endregion
+
+        //region Settings
+        addCue("settingsMusic", "unitycues/settings/cueSettingsMusic.png", Bounds.fromWidthHeight(340, 175, 35, 55));
+        addCue("settingsSound", "unitycues/settings/cueSettingsSound.png", Bounds.fromWidthHeight(340, 240, 35, 55));
+        //end region
+
+        //region scrollBar
+        addCue("ScrollerAtTop", "unitycues/scrollBars/cueScrollerAtTop.png", null);
+        addCue("ScrollerAtBottom", "unitycues/scrollBars/cueScrollerAtBottom.png", null);
+        addCue("DropDownDown", "unitycues/scrollBars/cueDropDownDown.png", null); // down arrow in difficulty drop down menu (found in trials/gauntlet, for example)
+        //endregion
     }
 
     /**
