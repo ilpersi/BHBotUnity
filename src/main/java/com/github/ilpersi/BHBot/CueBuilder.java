@@ -348,6 +348,18 @@ public class CueBuilder {
                 Set.of(), "settingsMusic", "unitycues/settings/cueSettingsMusic.png");
         addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "settings_01(.*)\\.png", Bounds.fromWidthHeight(354, 254, 9, 31),
                 Set.of(), "settingsSound", "unitycues/settings/cueSettingsSound.png");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "settings_03(.*)\\.png", Bounds.fromWidthHeight(171, 345, 228, 43),
+                Set.of(), "settingsNotification", "unitycues/settings/cueSettingsNotification.png");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "settings_06(.*)\\.png", Bounds.fromWidthHeight(166, 290, 345, 45),
+                Set.of(), "settingsWBReq", "unitycues/settings/cueSettingsWBReq.png");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "settings_08(.*)\\.png", Bounds.fromWidthHeight(169, 345, 272, 41),
+                Set.of(), "settingsReducedFX", "unitycues/settings/cueSettingsReducedFX.png");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "settings_09(.*)\\.png", Bounds.fromWidthHeight(168, 279, 226, 49),
+                Set.of(), "settingsBattleTXT", "unitycues/settings/cueSettingsBattleTXT.png");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "settings_10(.*)\\.png", Bounds.fromWidthHeight(167, 306, 196, 50),
+                Set.of(), "settingsAnimations", "unitycues/settings/cueSettingsAnimations.png");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "settings_19(.*)\\.png", Bounds.fromWidthHeight(170, 329, 307, 46),
+                Set.of(), "settingsMerchants", "unitycues/settings/cueSettingsMerchants.png");
         //endregion settings
 
         //region scrollBar

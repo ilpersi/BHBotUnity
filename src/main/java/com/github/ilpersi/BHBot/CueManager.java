@@ -764,6 +764,12 @@ class CueManager {
         //region Settings
         addCue("settingsMusic", "unitycues/settings/cueSettingsMusic.png", Bounds.fromWidthHeight(340, 175, 35, 55));
         addCue("settingsSound", "unitycues/settings/cueSettingsSound.png", Bounds.fromWidthHeight(340, 240, 35, 55));
+        addCue("settingsNotification", "unitycues/settings/cueSettingsNotification.png", Bounds.fromWidthHeight(160, 335, 250, 65));
+        addCue("settingsWBReq", "unitycues/settings/cueSettingsWBReq.png", Bounds.fromWidthHeight(155, 280, 370, 65));
+        addCue("settingsReducedFX", "unitycues/settings/cueSettingsReducedFX.png", Bounds.fromWidthHeight(155, 335, 300, 65));
+        addCue("settingsBattleTXT", "unitycues/settings/cueSettingsBattleTXT.png", Bounds.fromWidthHeight(155, 265, 250, 75));
+        addCue("settingsAnimations", "unitycues/settings/cueSettingsAnimations.png", Bounds.fromWidthHeight(155, 295, 220, 75));
+        addCue("settingsMerchants", "unitycues/settings/cueSettingsMerchants.png", Bounds.fromWidthHeight(160, 315, 330, 70));
         //end region
 
         //region scrollBar

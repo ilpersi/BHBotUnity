@@ -324,6 +324,7 @@ public class Misc {
      */
     static void findScrollBarPositions(BHBot bot, boolean takeScreen) {
         int lastPosition = -1;
+
         ArrayList<Integer> positions = new ArrayList<>();
 
         bot.browser.readScreen(0);

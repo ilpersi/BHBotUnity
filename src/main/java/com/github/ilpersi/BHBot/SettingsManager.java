@@ -26,7 +26,6 @@ public class SettingsManager {
             BHBot.logger.info("Initializing settings to desired configurations");
             checkBotSettings();
             initialized = true;
-            closeSettings();
         }
     }
 
@@ -49,15 +48,23 @@ public class SettingsManager {
             // rel is for relative clicks and the x and y coords are relative to the coordinates where cue is found
             // abs is for absolute clicks and the x and y coords are absolute on the screen
             HashMap<String, String> settingConfigs = new HashMap<>();
-            settingConfigs.put("settingsMusic", "rel:4;5");
-            settingConfigs.put("settingsSound", "rel:4;5");
+            settingConfigs.put("settingsMusic", "rel:4;5:1");
+            settingConfigs.put("settingsSound", "rel:4;5:1");
+            settingConfigs.put("settingsNotification", "rel:20;20:3");
+            settingConfigs.put("settingsWBReq", "rel:24;24:6");
+            settingConfigs.put("settingsReducedFX", "rel:22;22:8");
+            settingConfigs.put("settingsBattleTXT", "rel:23;25:9");
+            settingConfigs.put("settingsAnimations", "rel:21;25:10");
+            settingConfigs.put("settingsMerchants", "rel:20;22:19");
 
             // Regular expression to understand how the bot should click on settings based on the previous hashmap
-            Pattern clickRegex = Pattern.compile("(?<click>rel|abs):(?<x>\\d+);(?<y>\\d+)");
+            Pattern clickRegex = Pattern.compile("(?<click>rel|abs):(?<x>\\d+);(?<y>\\d+):(?<barPosition>\\d{1,2})");
 
             HashSet<String> alreadyFound = new HashSet<>();
 
             MarvinSegment bottomSeg;
+            int menuPos = 1;
+
             // we search for all the setting in all bar positions (so we don't hard code positions)
             outer:
             do {
@@ -83,6 +90,9 @@ public class SettingsManager {
                         String clickType = clickMatcher.group("click");
                         int xPos = Integer.parseInt(clickMatcher.group("x"));
                         int yPos = Integer.parseInt(clickMatcher.group("y"));
+                        int barPosition = Integer.parseInt(clickMatcher.group("barPosition"));
+
+                        if (menuPos != barPosition) continue;
 
                         // we search for the cue and if we find it, we click based on the settings
                         MarvinSegment settingSeg = MarvinSegment.fromCue(BHBot.cues.get(cueName), bot.browser);
@@ -120,6 +130,7 @@ public class SettingsManager {
                 bot.browser.clickOnSeg(downArrowSeg);
                 bottomSeg = MarvinSegment.fromCue(scrolAtBottomCue, Misc.Durations.SECOND / 2, bot.browser);
                 bot.browser.readScreen();
+                menuPos += 1;
             } while (bottomSeg == null);
 
             closeSettings();
