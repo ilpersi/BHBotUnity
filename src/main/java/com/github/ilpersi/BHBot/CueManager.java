@@ -770,6 +770,8 @@ class CueManager {
         addCue("ScrollerAtTop", "unitycues/scrollBars/cueScrollerAtTop.png", null);
         addCue("ScrollerAtBottom", "unitycues/scrollBars/cueScrollerAtBottom.png", null);
         addCue("DropDownDown", "unitycues/scrollBars/cueDropDownDown.png", null); // down arrow in difficulty drop down menu (found in trials/gauntlet, for example)
+        addCue("StripScrollerTopPos", "unitycues/scrollBars/cueStripScrollerTopPos.png", null); // Scroll bar top position for strip menu
+        addCue("SettingsScrollerTopPos", "unitycues/scrollBars/cueSettingsScrollerTopPos.png", null); // Scroll bar top position for settings menu
         //endregion
     }
 

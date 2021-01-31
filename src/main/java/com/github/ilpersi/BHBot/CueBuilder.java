@@ -357,6 +357,13 @@ public class CueBuilder {
                 Set.of(), "ScrollerAtBottom", "unitycues/scrollBars/cueScrollerAtBottom.png");
         addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "settings_01(.*)\\.png", Bounds.fromWidthHeight(616, 379, 14, 14),
                 Set.of(), "DropDownDown", "unitycues/scrollBars/cueDropDownDown.png");
+
+        addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "settings_01(.*)\\.png", Bounds.fromWidthHeight(614, 216, 18, 14),
+                Set.of(), "SettingsScrollerTopPos", "unitycues/scrollBars/cueSettingsScrollerTopPos.png");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "settings_02(.*)\\.png", Bounds.fromWidthHeight(614, 216, 18, 14),
+                Set.of(), "SettingsScrollerTopPos", "unitycues/scrollBars/cueSettingsScrollerTopPos.png");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/scrollBars", "strip_01(.*)\\.png", Bounds.fromWidthHeight(532, 147, 18, 14),
+                Set.of(), "StripScrollerTopPos", "unitycues/scrollBars/cueStripScrollerTopPos.png");
         //endregion
 
         for (CueLocator cueLoc : cueLocators) {

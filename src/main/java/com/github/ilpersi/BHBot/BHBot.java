@@ -539,6 +539,23 @@ public class BHBot {
                 settings.sanitizeSetting();
                 reloadLogger();
                 break;
+            case "menu":
+                if (params.length <= 1) {
+                    BHBot.logger.error("Not enough parameters for menu command");
+                    break;
+                }
+
+                switch (params[1]) {
+                    case "pos":
+                    case "positions":
+                        Misc.findScrollBarPositions(dungeon.bot, false);
+                        break;
+                    case  "screen":
+                        Misc.findScrollBarPositions(dungeon.bot, true);
+                        break;
+                }
+
+                break;
             case "pause":
                 if (params.length > 1) {
                     int pauseDuration = Integer.parseInt(params[1]) * Misc.Durations.MINUTE;
@@ -783,9 +800,6 @@ public class BHBot {
                         break;
                     case "runes":
                         dungeon.runeManager.detectEquippedMinorRunes(true, true);
-                        break;
-                    case "scrollbar":
-                        Misc.findScrollBarPositions(dungeon.bot);
                         break;
                     default:
                         break;

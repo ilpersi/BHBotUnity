@@ -319,35 +319,49 @@ public class Misc {
      * This can be used when new content is released and there is the need to re-calculate bar positions
      *
      * @param bot An initialized BHBot instance
+     * @param takeScreen should we take a screen of the current bar position?
      * @author ilpersi
      */
-    static void findScrollBarPositions(BHBot bot) {
+    static void findScrollBarPositions(BHBot bot, boolean takeScreen) {
         int lastPosition = -1;
         ArrayList<Integer> positions = new ArrayList<>();
 
-        while (true) {
-            MarvinSegment seg = MarvinSegment.fromCue(BHBot.cues.get("StripScrollerTopPos"), 2 * Misc.Durations.SECOND, bot.browser);
+        bot.browser.readScreen(0);
 
-            if (seg == null) {
+        MarvinSegment segDropDown = MarvinSegment.fromCue("DropDownDown", 5 * Misc.Durations.SECOND, null, bot.browser);
+        if (segDropDown == null) {
+            BHBot.logger.error("Error: unable to find down arrow findScrollBarPositions!");
+            return;
+        }
+
+        MarvinSegment seg = MarvinSegment.fromCue(BHBot.cues.get("StripScrollerTopPos"), 2 * Misc.Durations.SECOND, bot.browser);
+        Cue topPos = seg == null ? BHBot.cues.get("SettingsScrollerTopPos") : BHBot.cues.get("StripScrollerTopPos");
+
+        int posCnt = 0;
+
+        while (true) {
+            MarvinSegment scrollTopSeg = MarvinSegment.fromCue(topPos, 2 * Misc.Durations.SECOND, bot.browser);
+
+            if (scrollTopSeg == null) {
                 BHBot.logger.error("Error: unable to find scroller in findScrollBarPositions!");
                 return;
             }
 
-            if (seg.y1 == lastPosition) {
+            if (scrollTopSeg.y1 == lastPosition) {
                 break;
             } else {
-                lastPosition = seg.y1;
-                positions.add(seg.y1);
+                lastPosition = scrollTopSeg.y1;
+                positions.add(scrollTopSeg.y1);
+                posCnt += 1;
 
-                seg = MarvinSegment.fromCue("DropDownDown", 5 * Misc.Durations.SECOND, Bounds.fromWidthHeight(515, 415, 50, 50), bot.browser);
-                if (seg == null) {
-                    BHBot.logger.error("Error: unable to scroll down in findScrollBarPositions!");
-                    return;
+                if (takeScreen) {
+                    String screenName = String.format("scroller_%02d", posCnt);
+                    Misc.saveScreen(screenName, "ScrollBarPositions", bot.browser.getImg());
                 }
 
-                bot.browser.clickOnSeg(seg);
+                bot.browser.clickOnSeg(segDropDown);
                 bot.browser.moveMouseAway();
-                bot.browser.readScreen(Durations.SECOND);
+                bot.browser.readScreen(Durations.SECOND / 2);
             }
         }
 
@@ -359,6 +373,10 @@ public class Misc {
         }
         posOutput.append("}");
         BHBot.logger.info(posOutput.toString());
+
+        if (takeScreen) {
+            BHBot.logger.info("Saved " + posCnt + " screens for scrollbar positions");
+        }
 
     }
 
