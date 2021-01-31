@@ -328,8 +328,7 @@ public class BrowserManager {
                     result = bImageFromConvert.getSubimage(x, y, width, height);
                 } catch (java.awt.image.RasterFormatException e) {
                     jsExecutor.executeScript("arguments[0].scrollIntoView(true);", game);
-                    BHBot.logger.warn("Error when taking screenshot based on getBoundingClientRect()");
-                    e.printStackTrace();
+                    BHBot.logger.debug("Error when taking screenshot based on getBoundingClientRect()", e);
                     return new BufferedImage(800, 520, BufferedImage.TYPE_INT_RGB);
                 }
 
