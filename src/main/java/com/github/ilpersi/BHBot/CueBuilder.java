@@ -140,9 +140,8 @@ public class CueBuilder {
                 try {
                     existingCueImg = ImageIO.read(destinationCueFile);
                 } catch (IOException e) {
-                    System.out.println("Error while loading existing Cue image");
-                    e.printStackTrace();
-                    return;
+                    System.out.println("Error while loading existing Cue image: " + destinationCueFile.getAbsolutePath());
+                    existingCueImg = new BufferedImage(destCueImg.getWidth(), destCueImg.getHeight(), BufferedImage.TYPE_INT_RGB);
                 }
 
                 if (destCueImg.getHeight() == existingCueImg.getHeight() && destCueImg.getHeight() == existingCueImg.getHeight()) {
