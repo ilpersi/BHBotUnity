@@ -290,6 +290,8 @@ public class CueBuilder {
                 Set.of(), "AreYouThere", "unitycues/common/cueAreYouThere.png");
         addCueLocatorByPattern(cueLocators, "cuebuilder/common", "are-you-there(.*)\\.png", Bounds.fromWidthHeight(367, 346, 66, 31),
                 Set.of(), "Yes", "unitycues/common/cueYes.png");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/common", "defeat_(.*)\\.png", Bounds.fromWidthHeight(335, 130, 130, 58),
+                Set.of(), "Defeat", "unitycues/common/cueDefeat.png");
         //endregion
 
         //region Main Menu

@@ -675,7 +675,7 @@ class CueManager {
         addCue("No", "unitycues/common/cueNo.png", Bounds.fromWidthHeight(435, 335, 65, 50)); // cue for a blue "No" button used for example with "Your team is not full" dialog, or for "Replace consumable" dialog, etc. This is why we can't put concrete borders as position varies a lot.
         addCue("AutoTeam", "unitycues/common/cueAutoTeam.png", null); // "Auto" button that automatically assigns team (in raid, GvG, ...)
         addCue("Cleared", "unitycues/common/cueCleared.png", Bounds.fromWidthHeight(320, 120, 160, 80)); // used for example when raid has been finished
-        addCue("Defeat", "unitycues/common/cueDefeat.png", Bounds.fromWidthHeight(323, 131, 150, 54)); // used for example when you have been defeated in a dungeon. Also used when you have been defeated in a gauntlet.
+        addCue("Defeat", "unitycues/common/cueDefeat.png", Bounds.fromWidthHeight(325, 120, 150, 80)); // used for example when you have been defeated in a dungeon. Also used when you have been defeated in a gauntlet.
         addCue("TeamClear", "unitycues/common/cueTeamClear.png", Bounds.fromWidthHeight(313, 447, 108, 42)); //clear team button
         addCue("TeamAccept", "unitycues/common/cueTeamAccept.png", Bounds.fromWidthHeight(445, 440, 145, 55)); // raid accept button
         addCue("AreYouThere", "unitycues/common/cueAreYouThere.png", Bounds.fromWidthHeight(295, 225, 220, 80)); // Are you there popup
