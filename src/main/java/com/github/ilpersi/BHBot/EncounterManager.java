@@ -439,45 +439,57 @@ public class EncounterManager {
     /**
      * This will build the full list of MD5 for all the known familiars. This list will be used to manage bribing and
      * persuasions during encounters.
-     * @param useUnityEngine Are we using Unity Engine?
      */
-    static void buildMD5(boolean useUnityEngine) {
-        final ClassLoader classLoader = EncounterManager.class.getClassLoader();
-        int totalMD5Cnt = 0;
+    static void buildMD5() {
 
-        HashMap<EncounterManager.FamiliarType, String> folders = new HashMap<>();
-        if (useUnityEngine) {
-            folders.put(FamiliarType.COMMON, "unitycues/familiarEncounter/01 Common");
-            folders.put(FamiliarType.RARE, "unitycues/familiarEncounter/02 Rare");
-            folders.put(FamiliarType.EPIC, "unitycues/familiarEncounter/03 Epic");
-            folders.put(FamiliarType.LEGENDARY, "unitycues/familiarEncounter/04 Legendary");
-        } else {
-            folders.put(FamiliarType.COMMON, "cues/familiars/01 Common");
-            folders.put(FamiliarType.RARE, "cues/familiars/02 Rare");
-            folders.put(FamiliarType.EPIC, "cues/familiars/03 Epic");
-            folders.put(FamiliarType.LEGENDARY, "cues/familiars/04 Legendary");
-        }
+        //region Familiars MD5 Values
+        EncounterManager.famMD5Table.put("kQbnDNT+WQ5WG0N412+CYQ==", new FamiliarDetails("Gak", FamiliarType.COMMON));
+        EncounterManager.famMD5Table.put("fgzFQqY5npamn4sJpX9qUQ==", new FamiliarDetails("Grampz", FamiliarType.RARE));
+        EncounterManager.famMD5Table.put("EgLFmoFWj16J/Ycx2nFKwA==", new FamiliarDetails("Driffin", FamiliarType.EPIC));
+        EncounterManager.famMD5Table.put("lj+l9bUYHn6MCb76q8pVAg==", new FamiliarDetails("Violace", FamiliarType.EPIC));
+        EncounterManager.famMD5Table.put("4QLlgvnJ8c6Hi79o09SXEA==", new FamiliarDetails("Booboo", FamiliarType.COMMON));
+        EncounterManager.famMD5Table.put("SBynK4RkNSIIBvK0EdfGPQ==", new FamiliarDetails("Violace", FamiliarType.EPIC));
+        EncounterManager.famMD5Table.put("UNPCHOxJynGzDrS2PbfO4Q==", new FamiliarDetails("Batty", FamiliarType.COMMON));
+        EncounterManager.famMD5Table.put("OyDlQ/0AwFrAK+Mg8tAOJQ==", new FamiliarDetails("Tubbo", FamiliarType.COMMON));
+        EncounterManager.famMD5Table.put("TXKBBLJjAS0wPRHUMvmFuw==", new FamiliarDetails("Shrump", FamiliarType.RARE));
+        EncounterManager.famMD5Table.put("JUt00pm9AwcvyqLqfwzbUw==", new FamiliarDetails("Bob", FamiliarType.RARE));
+        EncounterManager.famMD5Table.put("43CT1fQvk6K5pIyJJox5cQ==", new FamiliarDetails("ProfOak", FamiliarType.COMMON));
+        EncounterManager.famMD5Table.put("xkGTdGo7Ne8I+Cv0q72h6A==", new FamiliarDetails("Stumpie", FamiliarType.COMMON));
+        EncounterManager.famMD5Table.put("C7dwGQo8jCNHskBzJJf53Q==", new FamiliarDetails("Opo", FamiliarType.RARE));
+        EncounterManager.famMD5Table.put("39U/7JaT1Z5x0pd+FzbEFQ==", new FamiliarDetails("Chewy", FamiliarType.RARE));
+        EncounterManager.famMD5Table.put("+VDI0b+EoGCyyJiABpxt6A==", new FamiliarDetails("Blemb", FamiliarType.EPIC));
+        EncounterManager.famMD5Table.put("KgW1thZ28vh7zcA1+68nfQ==", new FamiliarDetails("Krackers", FamiliarType.EPIC));
+        EncounterManager.famMD5Table.put("MB3W6wapyV3mO49iDdJPfw==", new FamiliarDetails("Findle", FamiliarType.RARE));
+        EncounterManager.famMD5Table.put("80W8hPDRABjAn4y/au7XAg==", new FamiliarDetails("Candelabors", FamiliarType.COMMON));
+        EncounterManager.famMD5Table.put("Rww5h5df+e7o6Sv8rLDWBQ==", new FamiliarDetails("Marm", FamiliarType.RARE));
+        EncounterManager.famMD5Table.put("hoB3qmpDjEEB0hBy+rwz8g==", new FamiliarDetails("Findle", FamiliarType.RARE));
+        EncounterManager.famMD5Table.put("8yYWadHRp5IsKm77wVbUJw==", new FamiliarDetails("Marm", FamiliarType.RARE));
+        EncounterManager.famMD5Table.put("DUNhKhOqiFQgezxe/oAGfQ==", new FamiliarDetails("Candelabros", FamiliarType.COMMON));
+        EncounterManager.famMD5Table.put("Vv6/Cyuyo8PdNKthFvvmNg==", new FamiliarDetails("Oevor", FamiliarType.EPIC));
+        EncounterManager.famMD5Table.put("zgK2KCaQiV4x72EwXx1d8g==", new FamiliarDetails("Tecoatl", FamiliarType.EPIC));
+        EncounterManager.famMD5Table.put("MCrv+ZZAH+UqslKeF//fVA==", new FamiliarDetails("Terra", FamiliarType.COMMON));
+        EncounterManager.famMD5Table.put("pbhAbGekMoIvtGVZ6MjEGQ==", new FamiliarDetails("Roy", FamiliarType.RARE));
+        EncounterManager.famMD5Table.put("qqE+XKOmcjQawhMNpytVgg==", new FamiliarDetails("Uggs", FamiliarType.COMMON));
+        EncounterManager.famMD5Table.put("KnIJ6EDLzKLFJOKEqzguWA==", new FamiliarDetails("Robomax-6000", FamiliarType.EPIC));
+        EncounterManager.famMD5Table.put("NOUFs1j5cnbMCMsYXkiBsg==", new FamiliarDetails("Rexie", FamiliarType.EPIC));
+        EncounterManager.famMD5Table.put("vMWrwkdHhpm2ITVJe62uGQ==", new FamiliarDetails("Sugg", FamiliarType.COMMON));
+        EncounterManager.famMD5Table.put("DjjvE7I59OrRj3MBIwMtUw==", new FamiliarDetails("Grampz", FamiliarType.RARE));
+        EncounterManager.famMD5Table.put("wj/v0X2ZV8L2F3VIAu4Deg==", new FamiliarDetails("Blubber", FamiliarType.EPIC));
+        EncounterManager.famMD5Table.put("uU9W2WbL3/jXdEoLkE3R+Q==", new FamiliarDetails("Terra", FamiliarType.COMMON));
+        EncounterManager.famMD5Table.put("MHskvmKyjvIgcsoU6EGVxg==", new FamiliarDetails("Uggs", FamiliarType.COMMON));
+        EncounterManager.famMD5Table.put("mIXAzButHqxTteoZpRsPGQ==", new FamiliarDetails("Sugg", FamiliarType.COMMON));
+        EncounterManager.famMD5Table.put("ZLlgL/yqgmemx4eL03QNFQ==", new FamiliarDetails("Gak", FamiliarType.COMMON));
+        EncounterManager.famMD5Table.put("i90mq777qYo7MT6NmG1GVA==", new FamiliarDetails("Gobby", FamiliarType.LEGENDARY));
+        EncounterManager.famMD5Table.put("1TCVHeYpIVX7J/zaYvxR0g==", new FamiliarDetails("J3-17", FamiliarType.EPIC));
+        EncounterManager.famMD5Table.put("8S62YdT81N04H71JUbS9Fw==", new FamiliarDetails("TheTriology", FamiliarType.EPIC));
+        EncounterManager.famMD5Table.put("x1B19CH026b+aVgx+VwS2Q==", new FamiliarDetails("Violace", FamiliarType.EPIC));
+        EncounterManager.famMD5Table.put("BrjMMli0nsrVH6QW7pJiBA==", new FamiliarDetails("Krackers", FamiliarType.EPIC));
+        EncounterManager.famMD5Table.put("bcGEVDy79nBcVk26nitM7w==", new FamiliarDetails("Neistall", FamiliarType.EPIC));
+        EncounterManager.famMD5Table.put("UPQAH/bYXdEEpVdzuJtRQA==", new FamiliarDetails("Hanfarin", FamiliarType.EPIC));
+        EncounterManager.famMD5Table.put("29mjb3Ov6JP2jvivqSKBTg==", new FamiliarDetails("Ferumar", FamiliarType.EPIC));
+        //endregion
 
-
-        for (Map.Entry<EncounterManager.FamiliarType, String> cuesPath : folders.entrySet()) {
-            ArrayList<CueManager.CueDetails> famDetails = CueManager.getCueDetailsFromPath(cuesPath.getValue());
-            totalMD5Cnt += famDetails.size();
-
-            for (CueManager.CueDetails details : famDetails) {
-
-                BufferedImage famImg = CueManager.loadImage(classLoader, details.path);
-                BufferedImage famNameImg = EncounterManager.getFamiliarNameImg(famImg, cuesPath.getKey(), null, useUnityEngine);
-
-                String MD5Str = Misc.imgToMD5(famNameImg);
-                if (!"".equals(MD5Str)) {
-                    EncounterManager.FamiliarDetails familiar = new FamiliarDetails(details.name, cuesPath.getKey());
-                    EncounterManager.famMD5Table.put(MD5Str, familiar);
-                } else {
-                    totalMD5Cnt--;
-                }
-            }
-        }
-        BHBot.logger.debug("Loaded " + totalMD5Cnt + " familiars MD5.");
+        BHBot.logger.debug("Loaded " + EncounterManager.famMD5Table.size() + " familiars MD5.");
     }
 
     /**
