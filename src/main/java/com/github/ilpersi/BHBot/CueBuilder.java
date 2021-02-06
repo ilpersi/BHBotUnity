@@ -219,6 +219,11 @@ public class CueBuilder {
                 Set.of(), "StripItemsTitle", "unitycues/characterMenu/cueStripItemsTitle.png");
         //endregion
 
+        //region Auto Shrine
+        addCueLocatorByPattern(cueLocators, "cuebuilder/autoShrine", "settings(.*)\\.png", Bounds.fromWidthHeight(376, 115, 39, 58),
+                Set.of(), "Settings", "unitycues/autoShrine/cueSettings.png");
+        //endregion
+
         //region Blockers
         addCueLocatorByPattern(cueLocators, "cuebuilder/blockers", "reconnect(.*)\\.png", Bounds.fromWidthHeight(338, 346, 127, 32),
                 Set.of(), "Reconnect", "unitycues/blockers/cueReconnect.png");
@@ -238,32 +243,7 @@ public class CueBuilder {
                 Set.of(), "Items", "unitycues/blockers/cueItems.png");
         //endregion
 
-        //region autoShrine
-        addCueLocatorByPattern(cueLocators, "cuebuilder/autoShrine", "settings(.*)\\.png", Bounds.fromWidthHeight(376, 115, 39, 58),
-                Set.of(), "Settings", "unitycues/autoShrine/cueSettings.png");
-        //endregion
-
-        //region raid
-        cueLocators.add(new CueLocator("cuebuilder/raid/raid-summon.png", Bounds.fromWidthHeight(485, 361, 112, 34),
-                Set.of(new Color(255, 255, 255)), "RaidSummon", "unitycues/raid/cueRaidSummon.png", false));
-        addCueLocatorByPattern(cueLocators, "cuebuilder/raid", "raid-diff(.*)\\.png", Bounds.fromWidthHeight(147, 222, 122, 27),
-                Set.of(), "RaidNormal", "unitycues/raid/cueRaidNormal.png");
-        addCueLocatorByPattern(cueLocators, "cuebuilder/raid", "raid-diff(.*)\\.png", Bounds.fromWidthHeight(340, 222, 122, 27),
-                Set.of(), "RaidHard", "unitycues/raid/cueRaidHard.png");
-        addCueLocatorByPattern(cueLocators, "cuebuilder/raid", "raid-diff(.*)\\.png", Bounds.fromWidthHeight(535, 222, 122, 27),
-                Set.of(), "RaidHeroic", "unitycues/raid/cueRaidHeroic.png");
-        //endregion
-
-        //region dungeon
-        addCueLocatorByPattern(cueLocators, "cuebuilder/dungeon", "dung-diff(.*)\\.png", Bounds.fromWidthHeight(147, 232, 122, 27),
-                Set.of(), "DungNormal", "unitycues/dungeon/cueDungNormal.png");
-        addCueLocatorByPattern(cueLocators, "cuebuilder/dungeon", "dung-diff(.*)\\.png", Bounds.fromWidthHeight(340, 232, 122, 27),
-                Set.of(), "DungHard", "unitycues/dungeon/cueDungHard.png");
-        addCueLocatorByPattern(cueLocators, "cuebuilder/dungeon", "dung-diff(.*)\\.png", Bounds.fromWidthHeight(535, 232, 122, 27),
-                Set.of(), "DungHeroic", "unitycues/dungeon/cueDungHeroic.png");
-        //endregion
-
-        //region common
+        //region Common
         cueLocators.add(new CueLocator("cuebuilder/raid/raid-team.png", Bounds.fromWidthHeight(326, 453, 87, 29),
                 Set.of(new Color(255, 255, 255)), "TeamClear", "unitycues/common/cueTeamClear.png", false));
         addCueLocatorByPattern(cueLocators, "cuebuilder/common", "cleared(.*)\\.png", Bounds.fromWidthHeight(330, 132, 139, 56),
@@ -292,13 +272,8 @@ public class CueBuilder {
                 Set.of(), "Yes", "unitycues/common/cueYes.png");
         addCueLocatorByPattern(cueLocators, "cuebuilder/common", "defeat_(.*)\\.png", Bounds.fromWidthHeight(335, 130, 130, 58),
                 Set.of(), "Defeat", "unitycues/common/cueDefeat.png");
-        //endregion
-
-        //region Main Menu
-        addCueLocatorByPattern(cueLocators, "cuebuilder/mainScreen", "gor-menu(.*)\\.png", Bounds.fromWidthHeight(107, 477, 33, 34),
-                Set.of(), "GorMenu", "unitycues/mainScreen/cueGorMenu.png");
-        addCueLocatorByPattern(cueLocators, "cuebuilder/mainScreen", "gor-menu(.*)\\.png", Bounds.fromWidthHeight(676, 464, 34, 37),
-                Set.of(), "SettingsGear", "unitycues/mainScreen/cueSettingsGear.png");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/common", "speed_(.*)\\.png", Bounds.fromWidthHeight(10, 465, 54, 38),
+                Set.of(), "SpeedBar", "unitycues/common/cueSpeedBar.png");
         //endregion
 
         //region CueX
@@ -312,12 +287,16 @@ public class CueBuilder {
                 Set.of(), "X", "unitycues/common/cueX.png", true));
         //endregion
 
-        //region Treasure Chest
-        addCueLocatorByPattern(cueLocators, "cuebuilder/treasureChest", "treasure(.*)\\.png", Bounds.fromWidthHeight(416, 375, 127, 37),
-                Set.of(), "Decline", "unitycues/treasureChest/cueDecline.png");
+        //region Dungeon
+        addCueLocatorByPattern(cueLocators, "cuebuilder/dungeon", "dung-diff(.*)\\.png", Bounds.fromWidthHeight(147, 232, 122, 27),
+                Set.of(), "DungNormal", "unitycues/dungeon/cueDungNormal.png");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/dungeon", "dung-diff(.*)\\.png", Bounds.fromWidthHeight(340, 232, 122, 27),
+                Set.of(), "DungHard", "unitycues/dungeon/cueDungHard.png");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/dungeon", "dung-diff(.*)\\.png", Bounds.fromWidthHeight(535, 232, 122, 27),
+                Set.of(), "DungHeroic", "unitycues/dungeon/cueDungHeroic.png");
         //endregion
 
-        //region Familiar encounters
+        //region Familiar Encounters
         addCueLocatorByPattern(cueLocators, "cuebuilder/familiarEncounter", "encounter(.*)\\.png", Bounds.fromWidthHeight(141, 275, 23, 31),
                 Set.of(), "FamiliarEncounter", "unitycues/familiarEncounter/cueEncounter.png");
         addCueLocatorByPattern(cueLocators, "cuebuilder/familiarEncounter", "encounter(.*)\\.png", Bounds.fromWidthHeight(134, 327, 133, 30),
@@ -336,16 +315,41 @@ public class CueBuilder {
                 Set.of(), "LegendaryFamiliar", "unitycues/familiarEncounter/type/cue04LegendaryFamiliar.png");
         //endregion
 
-        //region weekly Rewards
-        addCueLocatorByPattern(cueLocators, "cuebuilder/weeklyRewards", "pvp(.*)\\.png", Bounds.fromWidthHeight(361, 120, 75, 54),
-                Set.of(), "PVP_Rewards", "unitycues/weeklyRewards/pvp.png");
-        addCueLocatorByPattern(cueLocators, "cuebuilder/weeklyRewards", "trials(.*)\\.png", Bounds.fromWidthHeight(336, 120, 123, 54),
-                Set.of(), "Trials_Rewards", "unitycues/weeklyRewards/trials.png");
-        addCueLocatorByPattern(cueLocators, "cuebuilder/weeklyRewards", "gvg(.*)\\.png", Bounds.fromWidthHeight(336, 120, 123, 54),
-                Set.of(), "GVG_Rewards", "unitycues/weeklyRewards/gvg.png");
+        //region Main Menu
+        addCueLocatorByPattern(cueLocators, "cuebuilder/mainScreen", "gor-menu(.*)\\.png", Bounds.fromWidthHeight(107, 477, 33, 34),
+                Set.of(), "GorMenu", "unitycues/mainScreen/cueGorMenu.png");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/mainScreen", "gor-menu(.*)\\.png", Bounds.fromWidthHeight(676, 464, 34, 37),
+                Set.of(), "SettingsGear", "unitycues/mainScreen/cueSettingsGear.png");
         //endregion
 
-        //region settings
+        //region Raid
+        cueLocators.add(new CueLocator("cuebuilder/raid/raid-summon.png", Bounds.fromWidthHeight(485, 361, 112, 34),
+                Set.of(new Color(255, 255, 255)), "RaidSummon", "unitycues/raid/cueRaidSummon.png", false));
+        addCueLocatorByPattern(cueLocators, "cuebuilder/raid", "raid-diff(.*)\\.png", Bounds.fromWidthHeight(147, 222, 122, 27),
+                Set.of(), "RaidNormal", "unitycues/raid/cueRaidNormal.png");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/raid", "raid-diff(.*)\\.png", Bounds.fromWidthHeight(340, 222, 122, 27),
+                Set.of(), "RaidHard", "unitycues/raid/cueRaidHard.png");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/raid", "raid-diff(.*)\\.png", Bounds.fromWidthHeight(535, 222, 122, 27),
+                Set.of(), "RaidHeroic", "unitycues/raid/cueRaidHeroic.png");
+        //endregion
+
+        //region Scroll Bars
+        addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "settings_01(.*)\\.png", Bounds.fromWidthHeight(614, 191, 18, 21),
+                Set.of(), "ScrollerAtTop", "unitycues/scrollBars/cueScrollerAtTop.png");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "settings_21(.*)\\.png", Bounds.fromWidthHeight(614, 373, 18, 21),
+                Set.of(), "ScrollerAtBottom", "unitycues/scrollBars/cueScrollerAtBottom.png");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "settings_01(.*)\\.png", Bounds.fromWidthHeight(616, 379, 14, 14),
+                Set.of(), "DropDownDown", "unitycues/scrollBars/cueDropDownDown.png");
+
+        addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "settings_01(.*)\\.png", Bounds.fromWidthHeight(614, 216, 18, 14),
+                Set.of(), "SettingsScrollerTopPos", "unitycues/scrollBars/cueSettingsScrollerTopPos.png");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "settings_02(.*)\\.png", Bounds.fromWidthHeight(614, 216, 18, 14),
+                Set.of(), "SettingsScrollerTopPos", "unitycues/scrollBars/cueSettingsScrollerTopPos.png");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/scrollBars", "strip_01(.*)\\.png", Bounds.fromWidthHeight(532, 147, 18, 14),
+                Set.of(), "StripScrollerTopPos", "unitycues/scrollBars/cueStripScrollerTopPos.png");
+        //endregion
+
+        //region Settings
         addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "settings_01(.*)\\.png", Bounds.fromWidthHeight(354, 188, 9, 31),
                 Set.of(), "settingsMusic", "unitycues/settings/cueSettingsMusic.png");
         addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "settings_01(.*)\\.png", Bounds.fromWidthHeight(354, 254, 9, 31),
@@ -364,21 +368,20 @@ public class CueBuilder {
                 Set.of(), "settingsMerchants", "unitycues/settings/cueSettingsMerchants.png");
         //endregion settings
 
-        //region scrollBar
-        addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "settings_01(.*)\\.png", Bounds.fromWidthHeight(614, 191, 18, 21),
-                Set.of(), "ScrollerAtTop", "unitycues/scrollBars/cueScrollerAtTop.png");
-        addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "settings_21(.*)\\.png", Bounds.fromWidthHeight(614, 373, 18, 21),
-                Set.of(), "ScrollerAtBottom", "unitycues/scrollBars/cueScrollerAtBottom.png");
-        addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "settings_01(.*)\\.png", Bounds.fromWidthHeight(616, 379, 14, 14),
-                Set.of(), "DropDownDown", "unitycues/scrollBars/cueDropDownDown.png");
-
-        addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "settings_01(.*)\\.png", Bounds.fromWidthHeight(614, 216, 18, 14),
-                Set.of(), "SettingsScrollerTopPos", "unitycues/scrollBars/cueSettingsScrollerTopPos.png");
-        addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "settings_02(.*)\\.png", Bounds.fromWidthHeight(614, 216, 18, 14),
-                Set.of(), "SettingsScrollerTopPos", "unitycues/scrollBars/cueSettingsScrollerTopPos.png");
-        addCueLocatorByPattern(cueLocators, "cuebuilder/scrollBars", "strip_01(.*)\\.png", Bounds.fromWidthHeight(532, 147, 18, 14),
-                Set.of(), "StripScrollerTopPos", "unitycues/scrollBars/cueStripScrollerTopPos.png");
+        //region Treasure Chest
+        addCueLocatorByPattern(cueLocators, "cuebuilder/treasureChest", "treasure(.*)\\.png", Bounds.fromWidthHeight(416, 375, 127, 37),
+                Set.of(), "Decline", "unitycues/treasureChest/cueDecline.png");
         //endregion
+
+        //region Weekly Rewards
+        addCueLocatorByPattern(cueLocators, "cuebuilder/weeklyRewards", "pvp(.*)\\.png", Bounds.fromWidthHeight(361, 120, 75, 54),
+                Set.of(), "PVP_Rewards", "unitycues/weeklyRewards/pvp.png");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/weeklyRewards", "trials(.*)\\.png", Bounds.fromWidthHeight(336, 120, 123, 54),
+                Set.of(), "Trials_Rewards", "unitycues/weeklyRewards/trials.png");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/weeklyRewards", "gvg(.*)\\.png", Bounds.fromWidthHeight(336, 120, 123, 54),
+                Set.of(), "GVG_Rewards", "unitycues/weeklyRewards/gvg.png");
+        //endregion
+
 
         for (CueLocator cueLoc : cueLocators) {
             // cueLoc.generateCue();
