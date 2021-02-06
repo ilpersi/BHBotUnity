@@ -489,7 +489,7 @@ public class EncounterManager {
         EncounterManager.famMD5Table.put("29mjb3Ov6JP2jvivqSKBTg==", new FamiliarDetails("Ferumar", FamiliarType.EPIC));
         //endregion
 
-        BHBot.logger.debug("Loaded " + EncounterManager.famMD5Table.size() + " familiars MD5.");
+        BHBot.logger.debug("Loaded " + EncounterManager.famMD5Table.size() + " familiars MD5 hashes.");
     }
 
     /**
