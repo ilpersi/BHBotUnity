@@ -241,6 +241,8 @@ public class CueBuilder {
                 Set.of(), "Claim", "unitycues/blockers/cueClaim.png");
         addCueLocatorByPattern(cueLocators, "cuebuilder/blockers", "items(.*)\\.png", Bounds.fromWidthHeight(339, 117, 119, 58),
                 Set.of(), "Items", "unitycues/blockers/cueItems.png");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/blockers", "recently_disc_(.*)\\.png", Bounds.fromWidthHeight(270, 208, 258, 109),
+                Set.of(), "RecentlyDisconnected", "unitycues/blockers/cueRecentlyDisconnected.png");
         //endregion
 
         //region Common

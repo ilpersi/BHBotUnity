@@ -657,6 +657,7 @@ class CueManager {
         addCue("DailyRewards", "unitycues/blockers/cueDailyRewards.png", Bounds.fromWidthHeight(245, 40, 310, 80)); // Daily Reward Claim Screen
         addCue("Claim", "unitycues/blockers/cueClaim.png", Bounds.fromWidthHeight(340, 430, 120, 55)); // Daily Reward green claim button
         addCue("Items", "unitycues/blockers/cueItems.png", Bounds.fromWidthHeight(325, 105, 145, 80)); // Imes Cue for daily reward
+        addCue("RecentlyDisconnected", "unitycues/blockers/cueRecentlyDisconnected.png", Bounds.fromWidthHeight(260, 195, 280, 135));
         //endregion
 
         //region Character Menu
