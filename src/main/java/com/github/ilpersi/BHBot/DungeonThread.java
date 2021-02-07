@@ -53,6 +53,7 @@ public class DungeonThread implements Runnable {
     private boolean rerunCurrentActivity = false;
 
     private long kongMotionBugNexCheck;
+    boolean isMaxSpeed = false;
 
     // Generic counters HashMap
     HashMap<BHBot.State, DungeonCounter> counters = new HashMap<>();
@@ -2197,6 +2198,7 @@ public class DungeonThread implements Runnable {
         MarvinSegment seg;
         bot.browser.readScreen();
 
+        //region Stattime checks
         if (!startTimeCheck) {
             activityStartTime = TimeUnit.MILLISECONDS.toSeconds(Misc.getTime());
             BHBot.logger.debug(bot.getState().getName() + " start time: " + activityStartTime);
@@ -2209,7 +2211,9 @@ public class DungeonThread implements Runnable {
             // Every 7 minutes we check for the Kongregate motion bug
             kongMotionBugNexCheck = Misc.getTime() + (Misc.Durations.MINUTE * 7);
         }
+        //endregion
 
+        //region Kongregate motion bug
         if (Misc.getTime() >= kongMotionBugNexCheck && !isInFight) {
             bot.saveGameScreen("motion-error", "errors");
             Cue dungCueX = new Cue(BHBot.cues.get("X"), Bounds.fromWidthHeight(735, 0, 70, 75));
@@ -2228,6 +2232,7 @@ public class DungeonThread implements Runnable {
             outOfEncounterTimestamp = TimeUnit.MILLISECONDS.toSeconds(Misc.getTime());
             return;
         }
+        //endregion
 
         long activityDuration = (TimeUnit.MILLISECONDS.toSeconds(Misc.getTime()) - activityStartTime);
 
@@ -2235,6 +2240,7 @@ public class DungeonThread implements Runnable {
          * Encounter detection code
          * We use guild button visibility to detect whether we are in combat
          */
+        //region Encounter Detection
         MarvinSegment guildButtonSeg = MarvinSegment.fromCue(BHBot.cues.get("GuildButton"), bot.browser);
         if (guildButtonSeg != null) {
             outOfEncounterTimestamp = TimeUnit.MILLISECONDS.toSeconds(Misc.getTime());
@@ -2258,64 +2264,92 @@ public class DungeonThread implements Runnable {
                 kongMotionBugNexCheck = Misc.getTime() + (Misc.Durations.MINUTE * 7);
             }
         }
+        //endregion
 
         /*
          *  handleLoot code
          *  It's enabled in these activities to try and catch real-time loot drops, as the loot window automatically closes
          */
+        //region Handle Loot
         if (bot.getState() == BHBot.State.Raid || bot.getState() == BHBot.State.Dungeon || bot.getState() == BHBot.State.Expedition || bot.getState() == BHBot.State.Trials) {
             handleLoot();
         }
+        //endregion
 
         /*
          * autoRune Code
          */
+        //region Auto Rune
         if (bot.settings.autoBossRune.containsKey(bot.getState().getShortcut()) && !isInFight) {
             runeManager.handleAutoBossRune(outOfEncounterTimestamp, inEncounterTimestamp);
         }
+        //endregion
 
         /*
          * autoShrine Code
          */
+        //region Auto Shrine
         if (bot.settings.autoShrine.contains(bot.getState().getShortcut()) && !isInFight) {
             shrineManager.processAutoShrine((outOfEncounterTimestamp - inEncounterTimestamp));
         }
+        //endregion
 
         /*
          * autoRevive code
          * This also handles re-enabling auto
          */
+        //region Auto Revive
         seg = MarvinSegment.fromCue(BHBot.cues.get("AutoOff"), bot.browser);
         if (seg != null) {
             handleAutoOff();
         }
+        //endregion
 
         /*
          * autoBribe/Persuasion code
          */
+        //region Encounter
         if ((bot.getState() == BHBot.State.Raid || bot.getState() == BHBot.State.Dungeon) && isInFight) {
             seg = MarvinSegment.fromCue(BHBot.cues.get("FamiliarEncounter"), bot.browser);
             if (seg != null) {
                 encounterManager.processFamiliarEncounter();
             }
         }
+        //endregion
 
         /*
          *  Skeleton key code
          *  encounterStatus is set to true as the window obscures the guild icon
          */
+        //region Skeleton Key
         seg = MarvinSegment.fromCue(BHBot.cues.get("SkeletonTreasure"), bot.browser);
         if (seg != null) {
             if (handleSkeletonKey()) {
                 restart();
             }
         }
+        //endregion
+
+        // If you use Firefox, as there is no way to use an existing profile,
+        // speed is set to 1x everytime you (re-)start the browser
+        //region Speed check
+        seg = MarvinSegment.fromCue(BHBot.cues.get("SpeedBar"), bot.browser);
+        if (seg != null && bot.settings.useFirefox && isInFight && !isMaxSpeed) {
+
+            // Click in game is the only possible alternative as the speed cue is somehow transparent and the
+            // yellow arrows are of a different color on every run
+            bot.browser.clickInGame(35, 485);
+            bot.browser.readScreen(Misc.Durations.SECOND);
+            bot.browser.clickInGame(35, 485);
+            isMaxSpeed = true;
+        }
+        //endregion
 
         /*
          *  1x Speed check
          *  We check once per activity, when we're in combat
          */
-        if (activityDuration % 5 == 0 && isInFight) { //we check once per activity when we are in encounter
+        /*if (activityDuration % 5 == 0 && isInFight) { //we check once per activity when we are in encounter
             MarvinSegment speedFull = MarvinSegment.fromCue("Speed_Full", bot.browser);
             MarvinSegment speedLabel = MarvinSegment.fromCue("Speed", bot.browser);
             if (speedLabel != null && speedFull == null) { //if we see speed label but not 3/3 speed
@@ -2328,12 +2362,13 @@ public class DungeonThread implements Runnable {
             } else {
                 BHBot.logger.debug("Speed settings checked.");
             }
-        }
+        }*/
 
         /*
          *   Merchant offer check
          *   Not super common so we check every 5 seconds
          */
+        //region Merchant Offer
         if (activityDuration % 5 == 0 && isInFight) {
             seg = MarvinSegment.fromCue(BHBot.cues.get("Merchant"), bot.browser);
             if (seg != null) {
@@ -2349,20 +2384,24 @@ public class DungeonThread implements Runnable {
                 } else BHBot.logger.error("Merchant 'yes' cue not found");
             }
         }
+        //endregion
 
         /*
          *   Character dialogue check
          *   This is a one time event per account instance, so we don't need to check it very often
          *   encounterStatus is set to true as the dialogue obscures the guild icon
          */
+        //region Character dialouge
         if (activityDuration % 10 == 0 && isInFight && (bot.getState() == BHBot.State.Dungeon || bot.getState() == BHBot.State.Raid)) {
             detectCharacterDialogAndHandleIt();
         }
+        //endregion
 
 
         /*
          *  Check for the 'Cleared' dialogue and handle post-activity tasks
          */
+        //region Cleared
         if (bot.getState() == BHBot.State.Raid || bot.getState() == BHBot.State.Dungeon
                 || bot.getState() == BHBot.State.Expedition|| bot.getState() == BHBot.State.Trials) {
             seg = MarvinSegment.fromCue(BHBot.cues.get("Cleared"), bot.browser);
@@ -2450,10 +2489,12 @@ public class DungeonThread implements Runnable {
                 return;
             }
         }
+        //endregion
 
         /*
          *  Check for the 'Victory' screen and handle post-activity tasks
          */
+        //region Victory
         if (bot.getState() == BHBot.State.WorldBoss || bot.getState() == BHBot.State.Gauntlet
                 || bot.getState() == BHBot.State.Invasion|| bot.getState() == BHBot.State.PVP
                 || bot.getState() == BHBot.State.GVG) {
@@ -2540,11 +2581,13 @@ public class DungeonThread implements Runnable {
                 return;
             }
         }
+        //endregion
 
         /*
          *  Check for the 'Defeat' dialogue and handle post-activity tasks
          *  Most activities have custom tasks on defeat
          */
+        //region Defeat
         seg = MarvinSegment.fromCue(BHBot.cues.get("Defeat"), bot.browser);
         if (seg != null) {
 
@@ -2708,6 +2751,7 @@ public class DungeonThread implements Runnable {
             bot.setState(BHBot.State.Main); // reset state
             return;
         }
+        //endregion
 
         // at the end of processDungeon, we revert idle time change (in order for idle detection to function properly):
         bot.scheduler.restoreIdleTime();

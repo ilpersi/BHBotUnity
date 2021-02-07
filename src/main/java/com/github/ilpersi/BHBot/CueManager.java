@@ -373,7 +373,6 @@ class CueManager {
         addCue("DialogRight", "cues/cueDialogRight.png", new Bounds(675, 205, 690, 250)); // cue for the dialog window (when arrow is at the right side of the window)
         addCue("DialogLeft", "cues/cueDialogLeft.png", new Bounds(100, 205, 125, 250)); // cue for the dialog window (when arrow is at the left side of the window)
 
-        addCue("SpeedCheck", "cues/cueSpeedCheck.png", new Bounds(0, 450, 100, 520));
         addCue("Switch", "cues/cueSwitch.png", new Bounds(0, 450, 100, 520)); //unused
 
         // GVG related:
@@ -681,6 +680,7 @@ class CueManager {
         addCue("TeamAccept", "unitycues/common/cueTeamAccept.png", Bounds.fromWidthHeight(445, 440, 145, 55)); // raid accept button
         addCue("AreYouThere", "unitycues/common/cueAreYouThere.png", Bounds.fromWidthHeight(295, 225, 220, 80)); // Are you there popup
         addCue("Yes", "unitycues/common/cueYes.png", Bounds.fromWidthHeight(355, 335, 90, 55)); // Yes button on Are you there popup
+        addCue("SpeedBar", "unitycues/common/cueSpeedBar.png", Bounds.fromWidthHeight(0, 455, 75, 60)); // Speed selection bar when you are in encounters
         //endregion
 
         //region Dungeon
