@@ -382,6 +382,8 @@ public class CueBuilder {
                 Set.of(), "Trials_Rewards", "unitycues/weeklyRewards/trials.png");
         addCueLocatorByPattern(cueLocators, "cuebuilder/weeklyRewards", "gvg(.*)\\.png", Bounds.fromWidthHeight(336, 120, 123, 54),
                 Set.of(), "GVG_Rewards", "unitycues/weeklyRewards/gvg.png");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/weeklyRewards", "invasion(.*)\\.png", Bounds.fromWidthHeight(315, 129, 165, 35),
+                Set.of(), "Invasion_Rewards", "unitycues/weeklyRewards/invasion.png");
         //endregion
 
 

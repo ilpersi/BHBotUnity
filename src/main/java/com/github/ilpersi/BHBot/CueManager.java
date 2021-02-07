@@ -760,6 +760,7 @@ class CueManager {
         addCue("PVP_Rewards", "unitycues/weeklyRewards/pvp.png", Bounds.fromWidthHeight(350, 110, 100, 75));
         addCue("Trials_Rewards", "unitycues/weeklyRewards/trials.png", Bounds.fromWidthHeight(325, 110, 145, 75));
         addCue("GVG_Rewards", "unitycues/weeklyRewards/gvg.png", Bounds.fromWidthHeight(325, 110, 145, 75));
+        addCue("Invasion_Rewards", "unitycues/weeklyRewards/invasion.png", Bounds.fromWidthHeight(305, 115, 185, 60));
         //endregion
 
         //region Settings

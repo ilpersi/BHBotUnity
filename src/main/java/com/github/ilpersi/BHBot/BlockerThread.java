@@ -173,8 +173,7 @@ public class BlockerThread implements Runnable {
                         continue; // may happen every while, rarely though
                     }
 
-                    bot.browser.readScreen(5 * Misc.Durations.SECOND);
-                    seg = MarvinSegment.fromCue(BHBot.cues.get("Items"), Misc.Durations.SECOND, bot.browser);
+                    seg = MarvinSegment.fromCue(BHBot.cues.get("Items"), Misc.Durations.SECOND * 5, bot.browser);
                     if (seg == null) {
                         // we must terminate this thread... something happened that should not (unexpected). We must restart the thread!
                         BHBot.logger.error("Error: there is no 'Items' dialog open upon clicking on the 'Claim' button. Restarting...");
