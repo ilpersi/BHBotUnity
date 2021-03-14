@@ -185,8 +185,8 @@ public class BHBot {
         // If any error is present after parsing the config file, we stop the bot
         if (bot.settings.wrongSettingLines.size() > 0) {
             for (String wrongLine : bot.settings.wrongSettingLines) {
-                logger.fatal("It was impossible to parse the following setting line and it has been skipped: '" + wrongLine + "!" +
-                        "Please review your settings.ini file'");
+                logger.fatal("It was impossible to parse the following setting line and it has been skipped: '" + wrongLine + "'! " +
+                        "Please review your settings.ini file");
             }
             return;
         }
