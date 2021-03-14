@@ -166,7 +166,7 @@ public class BlockerThread implements Runnable {
                             BufferedImage reward = bot.browser.getImg().getSubimage(131, 136, 513, 283);
                             Misc.saveScreen("daily_reward", "rewards", reward);
                         }
-                        bot.browser.clickOnSeg(seg);
+                        bot.browser.closePopupSecurely(BHBot.cues.get("DailyRewards"), BHBot.cues.get("Claim"));
                     } else {
                         BHBot.logger.error("Problem: 'Daily reward' popup detected, however could not detect the 'claim' button. Restarting...");
                         bot.restart(true, false);
