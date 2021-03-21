@@ -217,6 +217,17 @@ public class CueBuilder {
                 Set.of(), "FilterConsumables", "unitycues/characterMenu/cueFilterConsumables.png");
         addCueLocatorByPattern(cueLocators, "cuebuilder/autoConsume", "inventory-filter(.*)\\.png", Bounds.fromWidthHeight(472, 124, 164, 26),
                 Set.of(), "StripItemsTitle", "unitycues/characterMenu/cueStripItemsTitle.png");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/autoConsume", "ConsumableTitle(.*)\\.png", Bounds.fromWidthHeight(318, 142, 171, 32),
+                Set.of(), "ConsumableTitle", "unitycues/autoConsume/cueConsumableTitle.png");
+
+        addCueLocatorByPattern(cueLocators, "cuebuilder/autoConsume", "consumables-minor(.*)\\.png", Bounds.fromWidthHeight(599, 203, 60, 33),
+                Set.of(), "ConsumableExpMinor", "unitycues/autoConsume/consumables/cueConsumableExpMinor.png");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/autoConsume", "consumables-minor(.*)\\.png", Bounds.fromWidthHeight(463, 205, 60, 30),
+                Set.of(), "ConsumableSpeedMinor", "unitycues/autoConsume/consumables/cueConsumableSpeedMinor.png");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/autoConsume", "consumables-minor(.*)\\.png", Bounds.fromWidthHeight(531, 205, 60, 31),
+                Set.of(), "ConsumableGoldMinor", "unitycues/autoConsume/consumables/cueConsumableGoldMinor.png");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/autoConsume", "consumables-minor(.*)\\.png", Bounds.fromWidthHeight(463, 273, 60, 31),
+                Set.of(), "ConsumableItemMinor", "unitycues/autoConsume/consumables/cueConsumableItemMinor.png");
         //endregion
 
         //region Auto Shrine
@@ -340,9 +351,10 @@ public class CueBuilder {
                 Set.of(), "ScrollerAtTop", "unitycues/scrollBars/cueScrollerAtTop.png");
         addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "settings_21(.*)\\.png", Bounds.fromWidthHeight(614, 373, 18, 21),
                 Set.of(), "ScrollerAtBottom", "unitycues/scrollBars/cueScrollerAtBottom.png");
+        cueLocators.add(new CueLocator("cuebuilder/autoConsume/consumables-minor_20210321.png", Bounds.fromWidthHeight(666, 426, 18, 21),
+                Set.of(), "ScrollerAtBottom", "unitycues/scrollBars/cueScrollerAtBottom.png", true));
         addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "settings_01(.*)\\.png", Bounds.fromWidthHeight(616, 379, 14, 14),
                 Set.of(), "DropDownDown", "unitycues/scrollBars/cueDropDownDown.png");
-
         addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "settings_01(.*)\\.png", Bounds.fromWidthHeight(614, 216, 18, 14),
                 Set.of(), "SettingsScrollerTopPos", "unitycues/scrollBars/cueSettingsScrollerTopPos.png");
         addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "settings_02(.*)\\.png", Bounds.fromWidthHeight(614, 216, 18, 14),

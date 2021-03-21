@@ -645,6 +645,12 @@ class CueManager {
         addCue("BonusItem", "unitycues/autoConsume/cueBonusItem.png", Bounds.fromWidthHeight(200, 470, 190, 45));
         addCue("BonusGold", "unitycues/autoConsume/cueBonusGold.png", Bounds.fromWidthHeight(200, 470, 190, 45));
         addCue("BonusSpeed", "unitycues/autoConsume/cueBonusSpeed.png", Bounds.fromWidthHeight(200, 470, 190, 45));
+        addCue("ConsumableTitle", "unitycues/autoConsume/cueConsumableTitle.png", Bounds.fromWidthHeight(305, 130, 195, 55));
+
+        addCue("ConsumableExpMinor", "unitycues/autoConsume/consumables/cueConsumableExpMinor.png", null);
+        addCue("ConsumableSpeedMinor", "unitycues/autoConsume/consumables/cueConsumableSpeedMinor.png", null);
+        addCue("ConsumableGoldMinor", "unitycues/autoConsume/consumables/cueConsumableGoldMinor.png", null);
+        addCue("ConsumableItemMinor", "unitycues/autoConsume/consumables/cueConsumableItemMinor.png", null);
         //endregion
 
         //region Blockers

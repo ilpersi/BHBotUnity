@@ -4804,11 +4804,11 @@ public class DungeonThread implements Runnable {
         bot.browser.readScreen();
         BufferedImage consumableTest = bot.browser.getImg().getSubimage(258, 218, 311, 107);
 
-        Color green = new Color(150, 254, 124);
-        Color blue = new Color(146, 157, 243);
-        Color redFaded = new Color(254, 127, 124); //faded red on 75% boosts
-        Color yellow = new Color(254, 254, 0);
-        Color red = new Color(254, 0, 71);
+        Color green = new Color(151, 255, 125);
+        Color blue = new Color(147, 158, 244);
+        Color redFaded = new Color(255, 128, 125); //faded red on 75% boosts
+        Color yellow = new Color(255, 255, 0);
+        Color red = new Color(255, 0, 72);
 
         for (int y = 0; y < consumableTest.getHeight(); y++) {
             for (int x = 0; x < consumableTest.getWidth(); x++) {
@@ -4963,6 +4963,8 @@ public class DungeonThread implements Runnable {
         bot.browser.readScreen(500); // to stabilize window a bit
         Bounds bounds = new Bounds(450, 165, 670, 460); // detection area (where consumables icons are visible)
 
+        MarvinSegment DropDownDown = null;
+
         while (!consumables.isEmpty()) {
             waitForInventoryIconsToLoad(); // first of all, lets make sure that all icons are loaded
             for (Iterator<ConsumableType> i = consumables.iterator(); i.hasNext(); ) {
@@ -5001,10 +5003,11 @@ public class DungeonThread implements Runnable {
                 if (seg != null)
                     break; // there is nothing we can do anymore... we've scrolled to the bottom and haven't found the icon(s). We obviously don't have the required consumable(s)!
 
-                // lets scroll down:
-                seg = MarvinSegment.fromCue(BHBot.cues.get("DropDownDown"), 5 * Misc.Durations.SECOND, bot.browser);
+                // lets scroll down, we only search for the arrow once
+                if (DropDownDown == null)  DropDownDown = MarvinSegment.fromCue(BHBot.cues.get("DropDownDown"), 5 * Misc.Durations.SECOND, bot.browser);
+
                 for (int i = 0; i < 4; i++) { //the menu has 4 rows so we move to the next four rows and check again
-                    bot.browser.clickOnSeg(seg);
+                    bot.browser.clickOnSeg(DropDownDown);
                 }
 
                 bot.browser.readScreen(Misc.Durations.SECOND); // so that the scroller stabilizes a bit
