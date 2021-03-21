@@ -3417,31 +3417,45 @@ public class DungeonThread implements Runnable {
         HashMap<String, Integer> zoneSignatures = new HashMap<>();
         zoneSignatures.put("chfP7xxmYLa6OTFhDNJTfA==", 1); // z01.png
         zoneSignatures.put("IpiXktecDQ+X+N5WC7vReg==", 1); // z01_20210117.png
+        zoneSignatures.put("PqWK0LCJuMMrgW69kBdrpg==", 1); // z01_20210321.png
         zoneSignatures.put("rKea4zBByo0uDpTCbmSFMQ==", 2); // z02.png
         zoneSignatures.put("Rny2darLY1XRHP3HbQxBDw==", 2); // z02_20210117.png
+        zoneSignatures.put("a+O6KYbqnspejSd+LGnKyg==", 2); // z02_20210321.png
         zoneSignatures.put("ns5+x+eTfD4Ow2Bnn7UmJQ==", 3); // z03.png
         zoneSignatures.put("kvNiBIgvg0WEfKvzBtPRCg==", 3); // z03_20210117.png
+        zoneSignatures.put("okydLnCqjb1LWmM09T2Jlg==", 3); // z03_20210321.png
         zoneSignatures.put("NonrIHc80e37cTY/ig3n9Q==", 4); // z04.png
         zoneSignatures.put("J5DYpGIJuZgKehmnN+u7pQ==", 4); // z04_20210117.png
+        zoneSignatures.put("HqZSqyH3DJ7LRwjoB1r1rw==", 4); // z04_20210321.png
         zoneSignatures.put("RKBzsCY4Lb7p0YPfqymmpw==", 5); // z05.png
         zoneSignatures.put("QLQhE6MxeAM9PSrPQUenzQ==", 5); // z05_20210117.png
+        zoneSignatures.put("6UjjxnZ9Rj0ckIfop0yDgA==", 5); // z05_20210321.png
         zoneSignatures.put("9HUUZEJFtRzm+AKAgru7Zw==", 6); // z06.png
         zoneSignatures.put("Mhe7QN/lmXpE2WUA4pZlCQ==", 6); // z06_20210117.png
+        zoneSignatures.put("xBYtrrWIQJFYBp72z6VAuA==", 6); // z06_20210321.png
         zoneSignatures.put("Bgc94G5D1m/ZlGBFIiEt2Q==", 7); // z07.png
         zoneSignatures.put("g2WZid72AkJHeiVcO13jqw==", 7); // z07_20210117.png
+        zoneSignatures.put("b/t0cX8F06tRm0wqnQQSng==", 7); // z07_20210321.png
         zoneSignatures.put("l6mMtwhhgw3pMaAg+tjr+g==", 8); // z08.png
         zoneSignatures.put("vfjBgTfi+iqjhdMSGGImMw==", 8); // z08_20210117.png
+        zoneSignatures.put("eYOkMxCgkgKCvUZHH6kK2w==", 8); // z08_20210321.png
         zoneSignatures.put("o3qWxLDy3MNNUrvoMahJeg==", 9); // z09.png
         zoneSignatures.put("zunG86d9hHwHYEaL9BR3NQ==", 9); // z09_20210117.png
+        zoneSignatures.put("vDxGYJsMPFP0YxYtda2Eew==", 9); // z09_20210321.png
         zoneSignatures.put("t7kLTFjBahFUhj2tzb8RCg==", 10); // z10.png
         zoneSignatures.put("9eKi8/qUqsNeusbm+u4p6w==", 10); // z10_20210117.png
+        zoneSignatures.put("mLh4W8tcV9NRYZFwYonaag==", 10); // z10_20210321.png
         zoneSignatures.put("1NGhsG0v76GPi8FIstuCzw==", 11); // z11.png
         zoneSignatures.put("Vl7xYUlERMfpU/b5v8eH9Q==", 11); // z11_20210117.png
+        zoneSignatures.put("1AQWBQN9Dyrr/Bfeo5X8VA==", 11); // z11_20210321.png
         zoneSignatures.put("rp85HUcC30LLH3K8Xnd/Ow==", 12); // z12.png
         zoneSignatures.put("4UDwb7mMWLSOSBrXvY/jFQ==", 12); // z12_20210117.png
+        zoneSignatures.put("e0uybNgS5ZVycJyN8o5Qew==", 12); // z12_20210321.png
         zoneSignatures.put("4yD/Lsj7JMG9vOCsklFrhQ==", 13); // z13.png
         zoneSignatures.put("e92kyzIDPocxX9hQODzK1Q==", 13); // z13_20210117.png
+        zoneSignatures.put("oNjbcA6EpMvDHVBpctxRiQ==", 13); // z13_20210321.png
         zoneSignatures.put("95OWAzATFRQAf5yaJdxqjQ==", 14); // z14_20210125.png
+        zoneSignatures.put("aqqVAwA52D4kadUvCDp7QA==", 14); // z14_20210321.png
 
         bot.browser.readScreen();
 
