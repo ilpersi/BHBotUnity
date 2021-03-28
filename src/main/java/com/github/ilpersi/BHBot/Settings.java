@@ -287,6 +287,7 @@ public class Settings {
     boolean dumpReadScreen = false; // if true, everytime a readScreen is performed, the image is saved. Huge performance hog!
     boolean hideWindowOnRestart = false; // if true, game window will be hidden upon driver (re)start
     int reconnectTimer = 60;
+    int tooManyLoginsTimer = 60;
     boolean idleMode = false;
     // chromedriver autostart
     boolean autoStartChromeDriver = true; // if true, BHBot will automatically run chromedriver at startup
@@ -605,6 +606,7 @@ public class Settings {
         successThreshold = new HashMap<>();
         tankPosition = 1;
         tankPriority = new ArrayList<>();
+        tooManyLoginsTimer = 60;
         useDoNotShareURL = false;
         useFirefox = false;
         useUnityEngine = true;
@@ -1499,6 +1501,7 @@ public class Settings {
         resetTimersOnBattleEnd = lastUsedMap.getOrDefault("resetTimersOnBattleEnd", resetTimersOnBattleEnd ? "1" : "0").equals("1");
         autoStartChromeDriver = lastUsedMap.getOrDefault("autoStartChromeDriver", autoStartChromeDriver ? "1" : "0").equals("1");
         reconnectTimer = Integer.parseInt(lastUsedMap.getOrDefault("reconnectTimer", "" + reconnectTimer));
+        tooManyLoginsTimer = Integer.parseInt(lastUsedMap.getOrDefault("tooManyLoginsTimer", "" + tooManyLoginsTimer));
         setScreenshotsFromString(lastUsedMap.getOrDefault("screenshots", getScreenshotsAsString()));
 
         setactivitiesEnabledFromString(lastUsedMap.getOrDefault("activitiesEnabled", getactivitiesEnabledAsString()));

@@ -597,7 +597,23 @@ public class BrowserManager {
         }
         btnSignIn.click();
 
-        BHBot.logger.info("Signed-in manually (sign-in prompt was open).");
+        // To make sure that "loogin too many times" is correctly detected we need to pause for a while
+        Misc.sleep(Misc.Durations.SECOND * 3);
+
+        WebElement tooManyLogins;
+        try {
+            tooManyLogins = driver.findElement(By.xpath("//*[@id=\"lightboxlogin_message\"]"));
+        } catch (NoSuchElementException e)  {
+            BHBot.logger.info("Signed-in manually (sign-in prompt was open).");
+            return;
+        }
+
+        BHBot.logger.debug("tooManyLogins != null TEXT: " + tooManyLogins.getText());
+        if (tooManyLogins.getText().contains("login too many times")) {
+            BHBot.logger.warn("Too many login attempts, pausing for 30 minutes");
+            bot.scheduler.pause(Misc.Durations.MINUTE * bot.settings.tooManyLoginsTimer);
+            driver.navigate().refresh();
+        }
 
     }
 }
