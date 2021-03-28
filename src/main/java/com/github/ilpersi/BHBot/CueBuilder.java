@@ -287,6 +287,10 @@ public class CueBuilder {
                 Set.of(), "Defeat", "unitycues/common/cueDefeat.png");
         addCueLocatorByPattern(cueLocators, "cuebuilder/common", "speed_(.*)\\.png", Bounds.fromWidthHeight(10, 465, 54, 38),
                 Set.of(), "SpeedBar", "unitycues/common/cueSpeedBar.png");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/autoConsume", "consumables-minor(.*)\\.png", Bounds.fromWidthHeight(148, 462, 73, 26),
+                Set.of(), "Runes", "unitycues/characterMenu/cueRunes.png");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/autoConsume", "inventory-1(.*)\\.png", Bounds.fromWidthHeight(148, 462, 73, 26),
+                Set.of(), "Runes", "unitycues/characterMenu/cueRunes.png");
         //endregion
 
         //region CueX

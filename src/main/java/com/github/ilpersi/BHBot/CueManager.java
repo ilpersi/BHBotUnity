@@ -669,6 +669,7 @@ class CueManager {
         addCue("StripSelectorButton", "unitycues/characterMenu/cueStripSelectorButton.png", Bounds.fromWidthHeight(445, 105, 255, 65));
         addCue("FilterConsumables", "unitycues/characterMenu/cueFilterConsumables.png", Bounds.fromWidthHeight(460, 110, 190, 50));
         addCue("StripItemsTitle", "unitycues/characterMenu/cueStripItemsTitle.png", Bounds.fromWidthHeight(460, 110, 190, 50));
+        addCue("Runes", "unitycues/characterMenu/cueRunes.png", Bounds.fromWidthHeight(135, 450, 100, 50));
         //endregion
 
         //region Common

@@ -5692,16 +5692,24 @@ public class DungeonThread implements Runnable {
      * @return true if it was not possible to open the character menu
      */
     boolean openCharacterMenu() {
-        // As it is not possible to build a cue for the character menu, we aim at the Gor menu that is the closest thing to it
-        MarvinSegment seg = MarvinSegment.fromCue(BHBot.cues.get("GorMenu"), 5 * Misc.Durations.SECOND, bot.browser);
+        // As it is not possible to build a cue for the character menu, we aim at the Raid icon that is the closest thing to it
+        MarvinSegment seg = MarvinSegment.fromCue(BHBot.cues.get("RaidButton"), bot.browser);
         if (seg == null) {
-            Misc.saveScreen("no-gormenu-menu", "errors", bot.browser.getImg());
-            BHBot.logger.warn("Error: unable to detect gor menu button! Skipping...");
+            Misc.saveScreen("opnecharmenu-no-raid-menu", "errors", bot.browser.getImg());
+            BHBot.logger.warn("Error: unable to detect raid! Skipping...");
             BHBot.logger.debug(Misc.getStackTrace());
             return true;
         }
 
-        bot.browser.clickInGame(seg.x1 - 80, seg.y1 + 20);
+        bot.browser.clickInGame(seg.x1 + 20, seg.y1 + 130);
+
+        seg = MarvinSegment.fromCue(BHBot.cues.get("Runes"), 5 * Misc.Durations.SECOND, bot.browser);
+        if (seg == null) {
+            Misc.saveScreen("opnecharmenu-no-rune-button", "errors", bot.browser.getImg());
+            BHBot.logger.warn("Error: unable to detect runes button, char menu not opened! Skipping...");
+            BHBot.logger.debug(Misc.getStackTrace());
+            return true;
+        }
 
         return false;
     }
