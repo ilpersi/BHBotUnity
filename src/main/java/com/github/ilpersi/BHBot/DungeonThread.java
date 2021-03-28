@@ -274,15 +274,15 @@ public class DungeonThread implements Runnable {
                         Misc.saveScreen("daily-gems", "gems", gems); //else screenshot daily count
                     }
 
+                    settings.initialize();
+                    shrineManager.initialize();
+                    runeManager.initialize();
+
                     // check for bonuses:
                     if (bot.settings.autoConsume && (Misc.getTime() - timeLastBonusCheck > BONUS_CHECK_INTERVAL)) {
                         timeLastBonusCheck = Misc.getTime();
                         handleConsumables();
                     }
-
-                    settings.initialize();
-                    shrineManager.initialize();
-                    runeManager.initialize();
 
                     String currentActivity = activitySelector(); //else select the activity to attempt
                     if (currentActivity != null) {
