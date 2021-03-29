@@ -487,6 +487,11 @@ public class EncounterManager {
         EncounterManager.famMD5Table.put("bcGEVDy79nBcVk26nitM7w==", new FamiliarDetails("Neistall", FamiliarType.EPIC));
         EncounterManager.famMD5Table.put("UPQAH/bYXdEEpVdzuJtRQA==", new FamiliarDetails("Hanfarin", FamiliarType.EPIC));
         EncounterManager.famMD5Table.put("29mjb3Ov6JP2jvivqSKBTg==", new FamiliarDetails("Ferumar", FamiliarType.EPIC));
+        EncounterManager.famMD5Table.put("WMfqJ7gWJwmZto6GKIbiQA==", new FamiliarDetails("Abernario", FamiliarType.LEGENDARY));
+        EncounterManager.famMD5Table.put("hyTPJaC9xhfDieiz8pY50g==", new FamiliarDetails("Neistall", FamiliarType.EPIC));
+        EncounterManager.famMD5Table.put("jaicWubS+gA5KDJHsxPHGQ==", new FamiliarDetails("Neistall", FamiliarType.EPIC));
+        EncounterManager.famMD5Table.put("UJqZrK1NwzmYFu3Enyvngw==", new FamiliarDetails("Candelabros", FamiliarType.RARE));
+        EncounterManager.famMD5Table.put("tx8GZ0uVHcQa952MbWJptw==", new FamiliarDetails("Marm", FamiliarType.RARE));
         //endregion
 
         BHBot.logger.debug("Loaded " + EncounterManager.famMD5Table.size() + " familiars MD5 hashes.");
