@@ -469,7 +469,9 @@ public class DungeonThread implements Runnable {
                             detectCharacterDialogAndHandleIt();
 
                             bot.browser.readScreen();
-                            int tokens = getTokens();
+                            seg = MarvinSegment.fromCue("TokenBar", 5 * Misc.Durations.SECOND, bot.browser);
+                            final Set<Color> tokenBarColors = Set.of(new Color (17, 208, 226), new Color (1, 133, 146), new Color (1, 145, 158));
+                            int tokens = readResourceBarPercentage(seg, bot.settings.maxTokens, Misc.BarOffsets.TG.x, Misc.BarOffsets.TG.y, tokenBarColors, bot.browser.getImg());
                             globalTokens = tokens;
                             BHBot.logger.readout("Tokens: " + tokens + ", required: >" + bot.settings.minTokens + ", " +
                                     (trials ? "Trials" : "Gauntlet") + " cost: " + (trials ? bot.settings.costTrials : bot.settings.costGauntlet));

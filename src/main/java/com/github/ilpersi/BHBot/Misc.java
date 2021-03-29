@@ -104,6 +104,7 @@ public class Misc {
     static final class BarOffsets {
         static final Point RAID = new Point(0, 9);
         static final Point DUNGEON = new Point(0, 21);
+        static final Point TG = new Point(0, 23);
     }
 
     static final Bounds SIGNATURE_BOUNDS = Bounds.fromWidthHeight(87, 108, 1, 350);

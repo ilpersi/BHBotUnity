@@ -386,6 +386,11 @@ public class CueBuilder {
                 Set.of(), "settingsMerchants", "unitycues/settings/cueSettingsMerchants.png");
         //endregion settings
 
+        //region T/G
+        addCueLocatorByPattern(cueLocators, "cuebuilder/tierGauntlet", "tokens-bar(.*)\\.png", Bounds.fromWidthHeight(325, 54, 36, 30),
+                Set.of(), "TokenBar", "unitycues/tierGauntlet/cueTokenBar.png");
+        //endregion
+
         //region Treasure Chest
         addCueLocatorByPattern(cueLocators, "cuebuilder/treasureChest", "treasure(.*)\\.png", Bounds.fromWidthHeight(416, 375, 127, 37),
                 Set.of(), "Decline", "unitycues/treasureChest/cueDecline.png");
@@ -509,11 +514,60 @@ public class CueBuilder {
         }
     }
 
+    static void manageTokenBar() {
+        Set<Color> tokenColors = new HashSet<>();
+        Set<Color> blackColors = new HashSet<>(Set.of(new Color (50, 51, 52)));
+
+        // Path to files with raid bar
+        File tokenPath = new File("barbuilder/token");
+
+        BufferedImage tokenPopUp;
+        try {
+            tokenPopUp = ImageIO.read(new File("src/main/resources/unitycues/tierGauntlet/cueTokenBar.png"));
+        } catch (IOException e) {
+            System.out.println("Errow while reading token pop-up");
+            e.printStackTrace();
+            return;
+        }
+
+        // Loop on all the files
+        for (String TGImgFile : tokenPath.list(new ImageFilter("token-bar(.*)\\.png"))) {
+            File TGBarFile = new File("barbuilder/token/" + TGImgFile);
+
+            //noinspection DuplicatedCode
+            if (!TGBarFile.exists() || TGBarFile.isDirectory()) {
+                System.out.println("File " + TGBarFile.getAbsolutePath() + " is not a valid bar file");
+                continue;
+            }
+
+            BufferedImage dungImg;
+            try {
+                dungImg = ImageIO.read(TGBarFile);
+            } catch (IOException e) {
+                System.out.println("Exception while loading image" + TGBarFile.getAbsolutePath());
+                e.printStackTrace();
+                continue;
+            }
+
+            ImageHelper.getImgColors(dungImg.getSubimage(361, 77, 80, 1)).forEach((col) -> { if(!blackColors.contains(col)) tokenColors.add(col); }  );
+
+            System.out.println("Found colors for Energy:");
+            ImageHelper.printColors(tokenColors);
+
+            MarvinSegment seg = FindSubimage.findImage(dungImg, tokenPopUp, 0, 0, 0, 0);
+            // As images can have different shat totals we use 100 so we get the percentage
+            int energy = DungeonThread.readResourceBarPercentage(seg, 100, Misc.BarOffsets.TG.x, Misc.BarOffsets.TG.y, tokenColors, dungImg);
+            System.out.println("Energy bar is " + energy + "% full for image " + TGBarFile.getAbsolutePath());
+        }
+    }
+
     public static void main(String[] args) {
         manageCueFiles();
         System.out.println("====== Raid bar ======");
         manageRaidBar();
         System.out.println("====== Dung bar ======");
         manageEnergyBar();
+        System.out.println("====== Tokn bar ======");
+        manageTokenBar();
     }
 }

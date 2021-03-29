@@ -750,6 +750,10 @@ class CueManager {
         addCue("RaidHeroic", "unitycues/raid/cueRaidHeroic.png", Bounds.fromWidthHeight(525, 210, 145, 50)); // Heroic difficulty Raid
         //endregion
 
+        //region T/G
+        addCue("TokenBar", "unitycues/tierGauntlet/cueTokenBar.png", Bounds.fromWidthHeight(315, 40, 60, 55));
+        //endregion
+
         //region Treasure Chest
         addCue("SkeletonTreasure", "unitycues/treasureChest/cueSkeletonTreasure.png", Bounds.fromWidthHeight(205, 188, 87, 91)); // skeleton treasure found in dungeons (it's a dialog/popup cue)
         // TODO find the real cue in Unity Engine
