@@ -211,6 +211,30 @@ public class Settings {
 
             return result.toString();
         }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof ActivitiesScheduleSetting)) return false;
+
+            ActivitiesScheduleSetting that = (ActivitiesScheduleSetting) o;
+
+            if (!weekDay.equals(that.weekDay)) return false;
+            if (!startTime.equals(that.startTime)) return false;
+            if (!endTime.equals(that.endTime)) return false;
+            if (!Objects.equals(settingsPlan, that.settingsPlan)) return false;
+            return Objects.equals(chromeProfilePath, that.chromeProfilePath);
+        }
+
+        @Override
+        public int hashCode() {
+            int result = weekDay.hashCode();
+            result = 31 * result + startTime.hashCode();
+            result = 31 * result + endTime.hashCode();
+            result = 31 * result + (settingsPlan != null ? settingsPlan.hashCode() : 0);
+            result = 31 * result + (chromeProfilePath != null ? chromeProfilePath.hashCode() : 0);
+            return result;
+        }
     }
 
     /**

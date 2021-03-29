@@ -604,18 +604,16 @@ public class BHBot {
                         else
                             BHBot.logger.warn("USAGE: print fam-md5 [familiarName]");
                         break;
+                    case "schedule":
                     case "scheduling":
                         if (settings.activitiesSchedule.size() == 0) {
                             BHBot.logger.info("No scheduling are present at the moment.");
                         } else {
                             StringBuilder schedulingStr = new StringBuilder("Current available schedules are:\n");
-                            for (Settings.ActivitiesScheduleSetting activeScheduling : settings.activitiesSchedule) {
-                                schedulingStr.append(activeScheduling.toString()).append("\n");
-                            }
 
-                            if (currentScheduling != null) {
-                                schedulingStr.append("\n")
-                                        .append("Current scheduling is: ").append(currentScheduling);
+                            for (Settings.ActivitiesScheduleSetting activityScheduling : settings.activitiesSchedule) {
+                                schedulingStr.append(activityScheduling.equals(currentScheduling) ? "[X] " : "[ ] ")
+                                        .append(activityScheduling.toString()).append("\n");
                             }
 
                             BHBot.logger.info(schedulingStr.toString());
