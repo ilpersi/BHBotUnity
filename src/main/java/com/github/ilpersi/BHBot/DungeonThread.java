@@ -289,7 +289,7 @@ public class DungeonThread implements Runnable {
                     if (currentActivity != null) {
                         BHBot.logger.debug("Checking activity: " + currentActivity);
 
-                        // check for shards:
+                        //region Raid/Shards
                         if ("r".equals(currentActivity)) {
                             timeLastShardsCheck = Misc.getTime();
 
@@ -431,9 +431,9 @@ public class DungeonThread implements Runnable {
 
                             }
                             continue;
-                        } // shards
+                        } //endregion Raid/Shards
 
-                        // check for tokens (trials and gauntlet):
+                        //region T/G/Tokens
                         if (bot.scheduler.doTrialsImmediately || bot.scheduler.doGauntletImmediately ||
                                 ("t".equals(currentActivity)) || ("g".equals(currentActivity))) {
                             if ("t".equals(currentActivity)) timeLastTrialsTokensCheck = Misc.getTime();
@@ -636,9 +636,9 @@ public class DungeonThread implements Runnable {
                                 }
                             }
                             continue;
-                        } // tokens (trials and gauntlet)
+                        } //endregion T/G/Tokens
 
-                        // check for energy:
+                        //region Dungeon/Energy
                         if ("d".equals(currentActivity)) {
                             timeLastEnergyCheck = Misc.getTime();
 
@@ -833,9 +833,9 @@ public class DungeonThread implements Runnable {
                                 BHBot.logger.info("Dungeon <z" + goalZone + "d" + goalDungeon + "> " + (dungeonSetting.difficulty == 1 ? "normal" : dungeonSetting.difficulty == 2 ? "hard" : "heroic") + " initiated!");
                             }
                             continue;
-                        } // energy
+                        } //endregion Dungeon/Energy
 
-                        // check for Tickets (PvP):
+                        //region PVP/Tickets
                         if ("p".equals(currentActivity)) {
                             timeLastTicketsCheck = Misc.getTime();
 
@@ -947,9 +947,9 @@ public class DungeonThread implements Runnable {
                                 }
                             }
                             continue;
-                        } // PvP
+                        } //endregion PVP/Tickets
 
-                        // check for badges (for GVG/Invasion/Expedition):
+                        //region Badges
                         if (("v".equals(currentActivity)) || ("i".equals(currentActivity)) || ("e".equals(currentActivity))) {
 
                             String checkedActivity = currentActivity;
@@ -1008,7 +1008,7 @@ public class DungeonThread implements Runnable {
                                 continue;
                             }
 
-                            // check GVG:
+                            //region GVG
                             if (badgeEvent == BadgeEvent.GVG) {
                                 if ((!bot.scheduler.doGVGImmediately && (badges <= bot.settings.minBadges)) || (badges < bot.settings.costGVG)) {
 
@@ -1126,8 +1126,8 @@ public class DungeonThread implements Runnable {
                                     }
                                 }
                                 continue;
-                            } // GvG
-                            // check invasion:
+                            } //endregion GVG
+                            //region Invasion
                             else if (badgeEvent == BadgeEvent.Invasion) {
                                 if ((!bot.scheduler.doInvasionImmediately && (badges <= bot.settings.minBadges)) || (badges < bot.settings.costInvasion)) {
 
@@ -1210,9 +1210,8 @@ public class DungeonThread implements Runnable {
                                     }
                                 }
                                 continue;
-                            } // invasion
-
-                            // check Expedition
+                            } //endregion Invasion
+                            //region Expedition
                             else if (badgeEvent == BadgeEvent.Expedition) {
 
                                 if ((!bot.scheduler.doExpeditionImmediately && (badges <= bot.settings.minBadges)) || (badges < bot.settings.costExpedition)) {
@@ -1426,16 +1425,18 @@ public class DungeonThread implements Runnable {
                                     }
                                 }
                                 continue;
-                            } else {
+                            }
+                            //endregion Expedition
+                            else {
                                 // do neither gvg nor invasion
                                 seg = MarvinSegment.fromCue(BHBot.cues.get("X"), bot.browser);
                                 bot.browser.clickOnSeg(seg);
                                 Misc.sleep(2 * Misc.Durations.SECOND);
                                 continue;
                             }
-                        } // badges
+                        } //endregion Badges
 
-                        // Check worldBoss:
+                        //region WorldBoss
                         if ("w".equals(currentActivity)) {
                             timeLastXealsCheck = Misc.getTime();
 
@@ -1796,9 +1797,9 @@ public class DungeonThread implements Runnable {
                                 }
                             }
                             continue;
-                        } // World Boss
+                        } //endregion WorldBoss
 
-                        //bounties activity
+                        //region Bounties activity
                         if ("b".equals(currentActivity)) {
                             timeLastBountyCheck = Misc.getTime();
 
@@ -1854,9 +1855,9 @@ public class DungeonThread implements Runnable {
                             }
                             bot.browser.readScreen(Misc.Durations.SECOND * 2);
                             continue;
-                        }
+                        } //endregion Bounties
 
-                        //fishing baits
+                        //region Baits
                         if ("a".equals(currentActivity)) {
                             timeLastFishingBaitsCheck = Misc.getTime();
 
@@ -1869,9 +1870,9 @@ public class DungeonThread implements Runnable {
                             // handleFishingBaits() changes the State to FishingBaits
                             bot.setState(BHBot.State.Main);
                             continue;
-                        }
+                        } //endregion Baits
 
-                        //fishing
+                        //region Fishing
                         if ("f".equals(currentActivity)) {
                             timeLastFishingCheck = Misc.getTime();
 
@@ -1896,7 +1897,7 @@ public class DungeonThread implements Runnable {
                                 handleFishing();
                             }
                             continue;
-                        }
+                        } //endregion Fishing
 
                     } else {
                         // If we don't have any activity to perform, we reset the idle timer check
