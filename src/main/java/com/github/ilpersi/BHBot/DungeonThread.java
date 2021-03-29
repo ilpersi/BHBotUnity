@@ -201,6 +201,7 @@ public class DungeonThread implements Runnable {
                         setAutoOff(Misc.Durations.SECOND);
                         bot.browser.readScreen();
                         setAutoOn(Misc.Durations.SECOND);
+                        kongMotionBugNexCheck = Misc.getTime() + (Misc.Durations.MINUTE * 7);
                         continue;
                     }
                 }
@@ -2227,8 +2228,8 @@ public class DungeonThread implements Runnable {
 
             BHBot.logger.warn("Potential Kongregate bug detected, refreshing page.");
             bot.browser.refresh();
-            kongMotionBugNexCheck = Misc.getTime() + (Misc.Durations.MINUTE * 7);
             Misc.sleep(Misc.Durations.MINUTE);
+            kongMotionBugNexCheck = Misc.getTime() + (Misc.Durations.MINUTE * 7);
             outOfEncounterTimestamp = TimeUnit.MILLISECONDS.toSeconds(Misc.getTime());
             return;
         }
