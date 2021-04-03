@@ -446,6 +446,9 @@ public class DungeonThread implements Runnable {
                             if (seg == null) seg = MarvinSegment.fromCue(BHBot.cues.get("Trials2"), bot.browser);
                             trials = seg != null; // if false, then we will do gauntlet instead of trials
 
+                            if (("g".equals(currentActivity) && trials) || ("t".equals(currentActivity) && !trials))
+                                continue;
+
                             if (seg == null)
                                 seg = MarvinSegment.fromCue(BHBot.cues.get("Gauntlet"), bot.browser);
                             if (seg == null) {
@@ -456,10 +459,6 @@ public class DungeonThread implements Runnable {
                                 bot.scheduler.restoreIdleTime();
                                 continue;
                             }
-
-                            if (("g".equals(currentActivity) && trials) || ("t".equals(currentActivity) && !trials))
-                                continue;
-
 
                             bot.browser.clickOnSeg(seg);
                             MarvinSegment trialBTNSeg = seg;
