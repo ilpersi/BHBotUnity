@@ -2094,38 +2094,8 @@ public class DungeonThread implements Runnable {
         // the i index is 0 based
         value += 1;
 
+        // the bar length is 80 pixels
         return (value * maxResourceCnt) / 80;
-    }
-
-    /**
-     * Returns number of tokens we have. Works only if trials/gauntlet window is open. Returns -1 in case it cannot read number of tokens for some reason.
-     */
-    private int getTokens() {
-        MarvinSegment seg;
-
-        seg = MarvinSegment.fromCue(BHBot.cues.get("TokenBar"), bot.browser);
-
-        if (seg == null) // this should probably not happen
-            return -1;
-
-        int left = seg.x2;
-        int top = seg.y1 + 6;
-
-        final Color full = new Color(17, 208, 226);
-
-        int value = 0;
-        int maxTokens = bot.settings.maxTokens;
-
-        // tokens bar is 78 pixels wide (however last two pixels will have "medium" color and not full color (it's so due to shading))
-        for (int i = 0; i < 76; i++) {
-            value = i + 1;
-            Color col = new Color(bot.browser.getImg().getRGB(left + i, top));
-
-            if (!col.equals(full))
-                break;
-        }
-
-        return Math.round(value * (maxTokens / 76.0f)); // scale it to interval [0..10]
     }
 
     /**
@@ -4010,7 +3980,7 @@ public class DungeonThread implements Runnable {
         }
         if (seg == null) {
             BHBot.logger.error("Error: unable to detect difficulty selection box!");
-            bot.saveGameScreen("difficulty_error", "errors");
+            bot.saveGameScreen("difficulty_error_" + bot.getState().getShortcut(), "errors");
             return 0; // error
         }
 
