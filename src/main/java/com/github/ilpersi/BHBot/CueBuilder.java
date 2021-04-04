@@ -313,6 +313,8 @@ public class CueBuilder {
                 Set.of(), "DungHard", "unitycues/dungeon/cueDungHard.png");
         addCueLocatorByPattern(cueLocators, "cuebuilder/dungeon", "dung-diff(.*)\\.png", Bounds.fromWidthHeight(535, 232, 122, 27),
                 Set.of(), "DungHeroic", "unitycues/dungeon/cueDungHeroic.png");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/dungeon/zones", "z\\d{2}(.*)\\.png", Bounds.fromWidthHeight(104, 67, 102, 30),
+                Set.of(), "DungeonZones", "unitycues/dungeon/cueDungeonZones.png");
         //endregion
 
         //region Familiar Encounters

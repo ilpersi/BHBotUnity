@@ -811,11 +811,13 @@ public class BHBot {
 
     private boolean checkPaths() {
         String cuesPath = "./cues/";
+        String dataPath = "./data/";
 
         File browserExe = new File(browserExePath);
         File browserDriverExe = new File(browserDriverExePath);
         File cuePath = new File(cuesPath);
         File screenPath = new File(screenshotPath);
+        File dataFolder = new File(dataPath);
 
         if (!browserExe.exists()) {
             logger.fatal("Impossible to find browser executable in path " + browserExePath + ". Bot will be stopped!");
@@ -864,6 +866,25 @@ public class BHBot {
                         "'. This folder is no longer required as all the cues are now part of the jar file.");
             } catch (IOException e) {
                 logger.error("Error while checking cues folder", e);
+            }
+        }
+
+        if (!dataFolder.exists()) {
+            if (!dataFolder.mkdir()) {
+                logger.fatal("Impossible to create data folder in " + dataPath);
+                return false;
+            } else {
+                try {
+                    logger.info("Created data folder in " + dataFolder.getCanonicalPath());
+                } catch (IOException e) {
+                    logger.error("Error while getting Canonical Path for newly created data path", e);
+                }
+            }
+        } else {
+            try {
+                logger.debug("Found data in " + dataFolder.getCanonicalPath());
+            } catch (IOException e) {
+                logger.error("Error while getting Canonical Path for data", e);
             }
         }
 

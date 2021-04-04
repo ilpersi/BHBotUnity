@@ -356,8 +356,6 @@ class CueManager {
         addCue("Zone11", "cues/cueZone11.png", null);
         addCue("Zone12", "cues/cueZone12.png", null);
         addCue("Zone13", "cues/cueZone13.png", Bounds.fromWidthHeight(250, 50, 300, 40));
-        addCue("RightArrow", "cues/cueRightArrow.png", null); // arrow used in quest screen to change zone
-        addCue("LeftArrow", "cues/cueLeftArrow.png", null); // arrow used in quest screen to change zone
         addCue("Enter", "cues/cueEnter.png", null); // "Enter" button found on d4 window
         addCue("NotEnoughEnergy", "cues/cueNotEnoughEnergy.png", new Bounds(260, 210, 290, 235)); // "Not enough Energy" popup cue
 
@@ -694,6 +692,7 @@ class CueManager {
         addCue("DungNormal", "unitycues/dungeon/cueDungNormal.png", Bounds.fromWidthHeight(135, 220, 145, 50));
         addCue("DungHard", "unitycues/dungeon/cueDungHard.png", Bounds.fromWidthHeight(330, 220, 145, 50));
         addCue("DungHeroic", "unitycues/dungeon/cueDungHeroic.png", Bounds.fromWidthHeight(525, 220, 145, 50));
+        addCue("DungeonZones", "unitycues/dungeon/cueDungeonZones.png", Bounds.fromWidthHeight(90, 55, 130, 55));
         //endregion
 
         //region Dungeon zones
