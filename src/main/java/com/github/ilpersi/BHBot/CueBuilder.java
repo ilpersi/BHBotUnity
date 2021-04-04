@@ -291,6 +291,8 @@ public class CueBuilder {
                 Set.of(), "Runes", "unitycues/characterMenu/cueRunes.png");
         addCueLocatorByPattern(cueLocators, "cuebuilder/autoConsume", "inventory-1(.*)\\.png", Bounds.fromWidthHeight(148, 462, 73, 26),
                 Set.of(), "Runes", "unitycues/characterMenu/cueRunes.png");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/common", "speed-1x(.*)\\.png", Bounds.fromWidthHeight(31, 476, 16, 14),
+                Set.of(new Color(255, 255, 255)), "Speed1X", "unitycues/common/cueSpeed1X.png");
         //endregion
 
         //region CueX

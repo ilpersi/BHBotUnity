@@ -53,7 +53,6 @@ public class DungeonThread implements Runnable {
     private boolean rerunCurrentActivity = false;
 
     private long kongMotionBugNexCheck;
-    boolean isMaxSpeed = false;
 
     // Generic counters HashMap
     HashMap<BHBot.State, DungeonCounter> counters = new HashMap<>();
@@ -2306,36 +2305,16 @@ public class DungeonThread implements Runnable {
         // If you use Firefox, as there is no way to use an existing profile,
         // speed is set to 1x everytime you (re-)start the browser
         //region Speed check
-        seg = MarvinSegment.fromCue(BHBot.cues.get("SpeedBar"), bot.browser);
-        if (seg != null && bot.settings.useFirefox && isInFight && !isMaxSpeed) {
+        seg = MarvinSegment.fromCue(BHBot.cues.get("Speed1X"), bot.browser);
+        if (seg != null && isInFight) {
 
             // Click in game is the only possible alternative as the speed cue is somehow transparent and the
             // yellow arrows are of a different color on every run
             bot.browser.clickInGame(35, 485);
             bot.browser.readScreen(Misc.Durations.SECOND);
             bot.browser.clickInGame(35, 485);
-            isMaxSpeed = true;
         }
         //endregion
-
-        /*
-         *  1x Speed check
-         *  We check once per activity, when we're in combat
-         */
-        /*if (activityDuration % 5 == 0 && isInFight) { //we check once per activity when we are in encounter
-            MarvinSegment speedFull = MarvinSegment.fromCue("Speed_Full", bot.browser);
-            MarvinSegment speedLabel = MarvinSegment.fromCue("Speed", bot.browser);
-            if (speedLabel != null && speedFull == null) { //if we see speed label but not 3/3 speed
-                BHBot.logger.warn("1x speed detected, fixing..");
-                seg = MarvinSegment.fromCue("Speed", bot.browser);
-                if (seg != null) {
-                    bot.browser.clickOnSeg(seg);
-                    return;
-                }
-            } else {
-                BHBot.logger.debug("Speed settings checked.");
-            }
-        }*/
 
         /*
          *   Merchant offer check

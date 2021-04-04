@@ -683,6 +683,7 @@ class CueManager {
         addCue("AreYouThere", "unitycues/common/cueAreYouThere.png", Bounds.fromWidthHeight(295, 225, 220, 80)); // Are you there popup
         addCue("Yes", "unitycues/common/cueYes.png", Bounds.fromWidthHeight(355, 335, 90, 55)); // Yes button on Are you there popup
         addCue("SpeedBar", "unitycues/common/cueSpeedBar.png", Bounds.fromWidthHeight(0, 455, 75, 60)); // Speed selection bar when you are in encounters
+        addCue("Speed1X", "unitycues/common/cueSpeed1X.png", Bounds.fromWidthHeight(20, 465, 40, 35)); // 1X Speed cue
         //endregion
 
         //region Dungeon
