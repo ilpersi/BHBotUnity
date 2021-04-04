@@ -2,6 +2,7 @@ package com.github.ilpersi.BHBot;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 
 import javax.imageio.ImageIO;
@@ -59,7 +60,8 @@ public class DungeonSignature {
 
             try {
                 reader = new JsonReader(new FileReader(JSON_FILE_PATH));
-                this.zoneSignatures = gson.fromJson(reader, LinkedHashMap.class);
+
+                this.zoneSignatures = gson.fromJson(reader, new TypeToken<LinkedHashMap<String, Integer>>(){}.getType());
             } catch (FileNotFoundException e) {
                 BHBot.logger.error("It was impossible to read dungeon signatures from JSON file.", e);
             }
