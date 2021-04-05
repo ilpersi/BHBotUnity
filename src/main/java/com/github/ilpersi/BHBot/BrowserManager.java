@@ -436,34 +436,35 @@ public class BrowserManager {
      */
     synchronized boolean closePopupSecurely(Cue popup, Cue close) {
         MarvinSegment seg1, seg2;
-        int counter;
+        final int timeOutDuration = Misc.Durations.SECOND * 10;
         seg1 = MarvinSegment.fromCue(close, bot.browser);
         seg2 = MarvinSegment.fromCue(popup, bot.browser);
 
         // make sure popup window is on the screen (or else wait until it appears):
-        counter = 0;
+        long timeOut = Misc.getTime() + timeOutDuration;
         while (seg2 == null) {
-            counter++;
-            if (counter > 10) {
+            if (Misc.getTime() > timeOut) {
                 BHBot.logger.error("Error: unable to close popup <" + popup.name + "> securely: popup cue not detected!");
                 return false;
             }
+
+            bot.browser.readScreen(100);
             seg2 = MarvinSegment.fromCue(popup, Misc.Durations.SECOND, bot.browser);
         }
 
-        counter = 0;
+        timeOut = Misc.getTime() + timeOutDuration;
         // there is no more popup window, so we're finished!
         while (seg2 != null) {
             if (seg1 != null)
                 bot.browser.clickOnSeg(seg1);
 
-            counter++;
-            if (counter > 10) {
+            if (Misc.getTime() > timeOut) {
                 BHBot.logger.error("Error: unable to close popup <" + popup.name + "> securely: either close button has not been detected or popup would not close!");
                 BHBot.logger.error(Misc.getStackTrace());
                 return false;
             }
 
+            bot.browser.readScreen(100);
             seg1 = MarvinSegment.fromCue(close, Misc.Durations.SECOND, bot.browser);
             seg2 = MarvinSegment.fromCue(popup, Misc.Durations.SECOND, bot.browser);
         }
