@@ -38,7 +38,7 @@ public class SettingsManager {
             final Cue scrolAtBottomCue = new Cue(BHBot.cues.get("ScrollerAtBottom"), scrolAtBottomBounds);
             final Cue downArrowCue = new Cue(BHBot.cues.get("DropDownDown"), downArrowBounds);
 
-            MarvinSegment downArrowSeg = MarvinSegment.fromCue(downArrowCue, bot.browser);
+            MarvinSegment downArrowSeg = MarvinSegment.fromCue(downArrowCue, Misc.Durations.SECOND, bot.browser);
             if (downArrowSeg == null) {
                 BHBot.logger.error("Impossible to find arrow down button in settings manager!");
                 closeSettings();
