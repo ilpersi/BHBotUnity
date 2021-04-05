@@ -48,10 +48,10 @@ public class AutoShrineManager {
                     }
                 } else if (!ignoreBoss && ignoreBossCheck != null) {
                     BHBot.logger.debug("Disabling Ignore Boss");
-                    while (ignoreBossCheck != null) {
+                    ignoreBossCheck = MarvinSegment.fromCue(BHBot.cues.get("IgnoreEmptyBox"), 0, ignoreBossBounds, bot.browser);
+                    while (ignoreBossCheck == null) {
                         bot.browser.clickInGame(194, 366);
-                        bot.browser.readScreen(CHECK_DELAY);
-                        ignoreBossCheck = MarvinSegment.fromCue(BHBot.cues.get("IgnoreCheck"), 0, ignoreBossBounds, bot.browser);
+                        ignoreBossCheck = MarvinSegment.fromCue(BHBot.cues.get("IgnoreEmptyBox"), CHECK_DELAY, ignoreBossBounds, bot.browser);
                     }
                 }
                 this.ignoreBoss = ignoreBoss;
@@ -73,10 +73,10 @@ public class AutoShrineManager {
                     }
                 } else if (!ignoreShrines && ignoreShrineCheck != null) {
                     BHBot.logger.debug("Disabling Ignore Shrine");
-                    while (ignoreShrineCheck != null) {
+                    ignoreShrineCheck = MarvinSegment.fromCue(BHBot.cues.get("ignoreEmptyBox"), 0, ignoreShrineBounds, bot.browser);
+                    while (ignoreShrineCheck == null) {
                         bot.browser.clickInGame(194, 402);
-                        bot.browser.readScreen(CHECK_DELAY);
-                        ignoreShrineCheck = MarvinSegment.fromCue(BHBot.cues.get("IgnoreCheck"), 0, ignoreShrineBounds, bot.browser);
+                        ignoreShrineCheck = MarvinSegment.fromCue(BHBot.cues.get("ignoreEmptyBox"), CHECK_DELAY, ignoreShrineBounds, bot.browser);
                     }
                 }
                 this.ignoreShrines = ignoreShrines;

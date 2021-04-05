@@ -233,6 +233,8 @@ public class CueBuilder {
         //region Auto Shrine
         addCueLocatorByPattern(cueLocators, "cuebuilder/autoShrine", "settings(.*)\\.png", Bounds.fromWidthHeight(376, 115, 39, 58),
                 Set.of(), "Settings", "unitycues/autoShrine/cueSettings.png");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "settings_01(.*)\\.png", Bounds.fromWidthHeight(173, 383, 36, 22),
+                Set.of(), "IgnoreEmptyBox", "unitycues/autoShrine/cueIgnoreEmptyBox.png");
         //endregion
 
         //region Blockers
