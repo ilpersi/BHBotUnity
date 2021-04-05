@@ -188,6 +188,44 @@ public class MarvinSegment {
         return seg;
     }
 
+    /**
+     * Will wait util a cue is no longer on screen
+     *
+     * @param cue The cue to search
+     * @param timeout maximum time to wait until cue is null
+     * @param browserManager The browser manager uset to perform the searc
+     * @return true if cue was not found otherwise false
+     */
+    static boolean waitForNull(Cue cue, int timeout, BrowserManager browserManager) {
+        return waitForNull(cue, timeout, false, browserManager);
+    }
+
+    static boolean waitForNull(Cue cue, int timeout, @SuppressWarnings("SameParameterValue") boolean game, BrowserManager browserManager) {
+        long timer = Misc.getTime();
+        MarvinSegment seg = findSubimage(browserManager.getImg(), cue, browserManager);
+
+        int maxDelay = 500;
+        double delay = 0.0;
+        double attemptCnt = 1.0;
+        final double COEFFICIENT = 25;
+
+        while (seg != null) {
+            if ((Misc.getTime() - timer) >= timeout)
+                return false;
+
+            browserManager.readScreen((int) delay, game);
+            seg = findSubimage(browserManager.getImg(), cue, browserManager);
+
+            attemptCnt += 1.0;
+            delay += Math.pow(2.0, attemptCnt) * COEFFICIENT;
+
+            if (delay > maxDelay) delay = maxDelay;
+
+        }
+
+        return true;
+    }
+
     static MarvinSegment fromCue(Cue cue, BrowserManager browserManager) {
         return fromCue(cue, 0, true, browserManager);
     }
