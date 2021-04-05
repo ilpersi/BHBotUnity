@@ -308,7 +308,6 @@ class CueManager {
         addCue("DeclineRed", "cues/cueDeclineRed.png", null); // decline persuation attempts
         addCue("Merchant", "cues/cueMerchant.png", null); // cue for merchant dialog/popup
         addCue("SettingsGear", "cues/cueSettingsGear.png", new Bounds(655, 450, 730, 515)); // settings button
-        addCue("Settings", "cues/cueSettings.png", new Bounds(249, 61, 558, 102)); // settings menu
 
         addCue("Team", "cues/cueTeam.png", null); // Team text part of pop-ups about teams
         addCue("TeamNotFull", "cues/cueTeamNotFull.png", new Bounds(230, 200, 330, 250)); // warning popup when some friend left you and your team is not complete anymore
