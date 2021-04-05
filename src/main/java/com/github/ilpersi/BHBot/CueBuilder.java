@@ -420,6 +420,17 @@ public class CueBuilder {
 
             cueLocatorsByFile.get(cueLoc.destinationCuePath).add(cueLoc);
         }
+
+        // We reset the cues when we build them
+        for (String cuePath : cueLocatorsByFile.keySet()) {
+            File cueFile = new File(cuePath);
+
+            if (cueFile.exists() && !cueFile.delete()) {
+                System.out.println("It was impossible to delete file \"" + cueFile.getAbsolutePath() +"\". Cue generation interrupted");
+                return;
+            }
+        }
+
         // cueLocators.parallelStream().forEach(CueLocator::generateCue);
         cueLocatorsByFile.entrySet().parallelStream().forEach((clList) -> clList.getValue().forEach((CueLocator::generateCue)));
     }
