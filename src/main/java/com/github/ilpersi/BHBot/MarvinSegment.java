@@ -167,8 +167,9 @@ public class MarvinSegment {
         MarvinSegment seg = findSubimage(browserManager.getImg(), cue, browserManager);
 
         int maxDelay = 500;
-        double delay = 250.0;
+        double delay = 0.0;
         double attemptCnt = 1.0;
+        final double COEFFICIENT = 25;
 
         while (seg == null) {
             if ((Misc.getTime() - timer) >= timeout)
@@ -178,7 +179,7 @@ public class MarvinSegment {
             seg = findSubimage(browserManager.getImg(), cue, browserManager);
 
             attemptCnt += 1.0;
-            delay += Math.pow(2.0, attemptCnt) * 12.5;
+            delay += Math.pow(2.0, attemptCnt) * COEFFICIENT;
 
             if (delay > maxDelay) delay = maxDelay;
 
