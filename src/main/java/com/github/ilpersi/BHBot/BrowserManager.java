@@ -448,8 +448,7 @@ public class BrowserManager {
                 BHBot.logger.error("Error: unable to close popup <" + popup.name + "> securely: popup cue not detected!");
                 return false;
             }
-            bot.browser.readScreen(Misc.Durations.SECOND);
-            seg2 = MarvinSegment.fromCue(popup, bot.browser);
+            seg2 = MarvinSegment.fromCue(popup, Misc.Durations.SECOND, bot.browser);
         }
 
         counter = 0;
@@ -465,9 +464,8 @@ public class BrowserManager {
                 return false;
             }
 
-            bot.browser.readScreen(Misc.Durations.SECOND);
-            seg1 = MarvinSegment.fromCue(close, bot.browser);
-            seg2 = MarvinSegment.fromCue(popup, bot.browser);
+            seg1 = MarvinSegment.fromCue(close, Misc.Durations.SECOND, bot.browser);
+            seg2 = MarvinSegment.fromCue(popup, Misc.Durations.SECOND, bot.browser);
         }
 
         return true;
