@@ -8,7 +8,7 @@ public class AutoShrineManager {
     boolean ignoreShrines;
     private boolean initialized;
 
-    AutoShrineManager (BHBot bot, boolean skipInitialization) {
+    AutoShrineManager(BHBot bot, boolean skipInitialization) {
         this.bot = bot;
 
         if (skipInitialization) {
@@ -37,7 +37,7 @@ public class AutoShrineManager {
 
         if (bot.dungeon.settings.openSettings(Misc.Durations.SECOND * 5)) {
             if (!initialized || ignoreBoss != this.ignoreBoss) {
-                Bounds ignoreBossBounds =  Bounds.fromWidthHeight(165, 325, 55, 50);
+                Bounds ignoreBossBounds = Bounds.fromWidthHeight(165, 325, 55, 50);
                 MarvinSegment ignoreBossCheck = MarvinSegment.fromCue(BHBot.cues.get("IgnoreCheck"), 0, ignoreBossBounds, bot.browser);
 
                 if (ignoreBoss && ignoreBossCheck == null) {
@@ -46,20 +46,22 @@ public class AutoShrineManager {
                         bot.browser.clickInGame(194, 366);
                         ignoreBossCheck = MarvinSegment.fromCue(BHBot.cues.get("IgnoreCheck"), CHECK_DELAY, ignoreBossBounds, bot.browser);
                     }
+                    this.ignoreBoss = true;
                 } else if (!ignoreBoss && ignoreBossCheck != null) {
                     BHBot.logger.debug("Disabling Ignore Boss");
-                    ignoreBossCheck = MarvinSegment.fromCue(BHBot.cues.get("IgnoreEmptyBox"), 0, ignoreBossBounds, bot.browser);
-                    while (ignoreBossCheck == null) {
-                        bot.browser.clickInGame(194, 366);
-                        ignoreBossCheck = MarvinSegment.fromCue(BHBot.cues.get("IgnoreEmptyBox"), CHECK_DELAY, ignoreBossBounds, bot.browser);
-                    }
+
+                    do {
+                        bot.browser.clickOnSeg(ignoreBossCheck);
+                        MarvinSegment.waitForNull(BHBot.cues.get("IgnoreCheck"), CHECK_DELAY * 2, ignoreBossBounds, bot.browser);
+                        ignoreBossCheck = MarvinSegment.fromCue(BHBot.cues.get("IgnoreCheck"), 0, ignoreBossBounds, bot.browser);
+                    } while (ignoreBossCheck != null);
+                    this.ignoreBoss = false;
                 }
-                this.ignoreBoss = ignoreBoss;
             }
 
             // Sometimes if clicks are too close in time, the second one is ignored
             // thus we allow a small time delay between the two clicks
-            Misc.sleep(100);
+            bot.browser.readScreen(500);
 
             if (!initialized || ignoreShrines != this.ignoreShrines) {
                 Bounds ignoreShrineBounds = Bounds.fromWidthHeight(165, 370, 55, 50);
@@ -71,15 +73,20 @@ public class AutoShrineManager {
                         bot.browser.clickInGame(194, 402);
                         ignoreShrineCheck = MarvinSegment.fromCue(BHBot.cues.get("IgnoreCheck"), CHECK_DELAY, ignoreShrineBounds, bot.browser);
                     }
+
+                    this.ignoreShrines = true;
                 } else if (!ignoreShrines && ignoreShrineCheck != null) {
                     BHBot.logger.debug("Disabling Ignore Shrine");
-                    ignoreShrineCheck = MarvinSegment.fromCue(BHBot.cues.get("IgnoreEmptyBox"), 0, ignoreShrineBounds, bot.browser);
-                    while (ignoreShrineCheck == null) {
-                        bot.browser.clickInGame(194, 402);
-                        ignoreShrineCheck = MarvinSegment.fromCue(BHBot.cues.get("IgnoreEmptyBox"), CHECK_DELAY, ignoreShrineBounds, bot.browser);
-                    }
+
+                    do {
+                        bot.browser.clickOnSeg(ignoreShrineCheck);
+                        MarvinSegment.waitForNull(BHBot.cues.get("IgnoreCheck"), CHECK_DELAY * 2, ignoreShrineBounds, bot.browser);
+                        ignoreShrineCheck = MarvinSegment.fromCue(BHBot.cues.get("IgnoreCheck"), 0, ignoreShrineBounds, bot.browser);
+
+                    } while (ignoreShrineCheck != null);
+
+                    this.ignoreShrines = false;
                 }
-                this.ignoreShrines = ignoreShrines;
             }
 
             bot.browser.readScreen(Misc.Durations.SECOND);
@@ -94,39 +101,15 @@ public class AutoShrineManager {
         }
     }
 
-    /*private void resetAutoButton() {
-        // We disable and re-enable the auto feature
-        MarvinSegment autoSeg = MarvinSegment.fromCue(BHBot.cues.get("AutoOn"), 500, bot.browser);
-
-        if (autoSeg != null) {
-            bot.browser.clickOnSeg(autoSeg);
-
-            autoSeg = MarvinSegment.fromCue(BHBot.cues.get("AutoOff"), 5000, bot.browser);
-            if (autoSeg != null) {
-                bot.browser.clickOnSeg(autoSeg);
-            } else {
-                BHBot.logger.error("Impossible to find Auto Off button");
-                bot.notificationManager.sendErrorNotification("Auto Shrine Error", "Impossible to find Auto Off button");
-            }
-
-        } else {
-            BHBot.logger.error("Impossible to find Auto On button!");
-            bot.notificationManager.sendErrorNotification("Auto Shrine Error", "Impossible to find Auto On button");
-        }
-    }*/
-
     void processAutoShrine(long battleDelay) {
         MarvinSegment guildButtonSeg;
 
         /* All the flags are already disabled, this means that the current dungeon has already
-        *  used the autoShrine feature */
-        if (!ignoreBoss && !ignoreShrines) {
-            return;
-        }
+         *  used the autoShrine feature */
 
         if ((bot.getState() == BHBot.State.Raid && bot.settings.autoShrine.contains("r")) ||
                 (bot.getState() == BHBot.State.Trials && bot.settings.autoShrine.contains("t")) ||
-                (bot.getState() == BHBot.State.Expedition && bot.settings.autoShrine.contains("e"))  ||
+                (bot.getState() == BHBot.State.Expedition && bot.settings.autoShrine.contains("e")) ||
                 (bot.getState() == BHBot.State.Dungeon && bot.settings.autoShrine.contains("d"))) {
 
             BHBot.logger.debug("Autoshrine battle delay: " + battleDelay);
@@ -166,7 +149,7 @@ public class AutoShrineManager {
                         (bot.getState() == BHBot.State.Expedition && bot.settings.autoBossRune.containsKey("e")) || (bot.getState() == BHBot.State.Dungeon && bot.settings.autoBossRune.containsKey("d"))) {
 
                     // TODO de-spagettify the boss rune feature
-                     bot.dungeon.runeManager.handleMinorBossRunes();
+                    bot.dungeon.runeManager.handleMinorBossRunes();
                 }
 
                 while (Misc.getTime() < timeToWait) {

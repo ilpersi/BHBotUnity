@@ -200,6 +200,11 @@ public class MarvinSegment {
         return waitForNull(cue, timeout, false, browserManager);
     }
 
+    static boolean waitForNull(Cue cue, int timeout, Bounds bounds, BrowserManager browserManager) {
+        cue = new Cue(cue, bounds);
+        return waitForNull(cue, timeout, false, browserManager);
+    }
+
     static boolean waitForNull(Cue cue, int timeout, @SuppressWarnings("SameParameterValue") boolean game, BrowserManager browserManager) {
         long timer = Misc.getTime();
         MarvinSegment seg = findSubimage(browserManager.getImg(), cue, browserManager);

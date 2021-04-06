@@ -180,6 +180,7 @@ public class BlockerThread implements Runnable {
                         bot.restart(true, false);
                         continue;
                     }
+                    // TODO Add bounds
                     seg = MarvinSegment.fromCue(BHBot.cues.get("X"), bot.browser);
                     bot.browser.clickOnSeg(seg);
                     BHBot.logger.info("Daily reward claimed successfully.");

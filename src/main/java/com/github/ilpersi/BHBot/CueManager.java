@@ -630,7 +630,6 @@ class CueManager {
         //region Autoshrine
         addCue("Settings", "unitycues/autoShrine/cueSettings.png", Bounds.fromWidthHeight(365, 105, 60, 80)); // settings menu
         addCue("IgnoreCheck", "unitycues/autoShrine/cueIgnoreCheck.png", null); // Green check used on the Ignore options
-        addCue("IgnoreEmptyBox", "unitycues/autoShrine/cueIgnoreEmptyBox.png", null); // Empty checkbox
         //endregion
 
         //region AutoConsume
