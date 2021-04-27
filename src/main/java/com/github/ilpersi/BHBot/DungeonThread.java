@@ -42,7 +42,7 @@ public class DungeonThread implements Runnable {
 
     //private final boolean[] revived = {false, false, false, false, false};
     //private int potionsUsed = 0;
-    private boolean startTimeCheck = false;
+    private boolean isAdventureStarted = false;
     private long activityStartTime;
     private boolean isInFight = true;
     private long outOfEncounterTimestamp = 0;
@@ -402,7 +402,7 @@ public class DungeonThread implements Runnable {
                                         BHBot.logger.info("Attempting solo as per selected raid setting....");
                                         bot.browser.clickOnSeg(seg);
                                     } else {
-                                        BHBot.logger.error("Impossible to find clear button in Dungeon Team!");
+                                        BHBot.logger.error("Impossible to find clear button in Raid Team!");
                                         restart();
                                         continue;
                                     }
@@ -731,7 +731,7 @@ public class DungeonThread implements Runnable {
                                     signature = Misc.imgToMD5(zoneSignatureImg);
                                     BHBot.logger.error("Found signature: " + signature);
 
-                                    seg = MarvinSegment.fromCue("X", bot.browser);
+                                    seg = MarvinSegment.fromCue("X", Bounds.fromWidthHeight(695, 40, 70, 70), bot.browser);
                                     if (seg != null) {
                                         bot.browser.clickOnSeg(seg);
                                     } else {
@@ -802,9 +802,8 @@ public class DungeonThread implements Runnable {
                                 //team selection screen
                                 /* Solo-for-bounty code */
                                 if (dungeonSetting.solo) { //if the level is soloable then clear the team to complete bounties
-                                    Cue dungClearCue = bot.settings.useUnityEngine ? BHBot.cues.get("TeamClear") : new Cue(BHBot.cues.get("Clear"), Bounds.fromWidthHeight(310, 440, 110, 50));
 
-                                    seg = MarvinSegment.fromCue(dungClearCue, Misc.Durations.SECOND * 3, bot.browser);
+                                    seg = MarvinSegment.fromCue("TeamClear", Misc.Durations.SECOND * 3, bot.browser);
                                     if (seg != null) {
                                         BHBot.logger.info("Attempting solo as per selected dungeon setting....");
                                         bot.browser.clickOnSeg(seg);
@@ -2180,15 +2179,16 @@ public class DungeonThread implements Runnable {
         MarvinSegment seg;
         bot.browser.readScreen();
 
-        //region Stattime checks
-        if (!startTimeCheck) {
+        //region Start Time checks
+        if (!isAdventureStarted) {
             activityStartTime = TimeUnit.MILLISECONDS.toSeconds(Misc.getTime());
             BHBot.logger.debug(bot.getState().getName() + " start time: " + activityStartTime);
             outOfEncounterTimestamp = TimeUnit.MILLISECONDS.toSeconds(Misc.getTime());
             inEncounterTimestamp = TimeUnit.MILLISECONDS.toSeconds(Misc.getTime());
-            startTimeCheck = true;
             isInFight = false; //true is in encounter, false is out of encounter
             positionChecker.resetStartPos();
+            shrineManager.resetUsedInAdventure();
+            isAdventureStarted = true;
 
             // Every 7 minutes we check for the Kongregate motion bug
             kongMotionBugNexCheck = Misc.getTime() + (Misc.Durations.MINUTE * 7);
@@ -4991,7 +4991,7 @@ public class DungeonThread implements Runnable {
     /* This saves cycling through the list of all activities to run every time we finish one */
     /* It's also useful for other related settings to be reset on activity finish */
     private void resetAppropriateTimers() {
-        startTimeCheck = false;
+        isAdventureStarted = false;
         specialDungeon = false;
 
         /*
