@@ -160,27 +160,31 @@ public class DungeonSignature {
 
         Pattern zoneName = Pattern.compile("z(\\d{1,2})[^.]*\\.png");
 
-        for (final File zoneFile : zonesPathFile.listFiles()) {
+        File[] signatureFiles = zonesPathFile.listFiles();
 
-            Matcher zoneMatcher = zoneName.matcher(zoneFile.getName());
+        if (null != signatureFiles) {
+            for (final File zoneFile : signatureFiles) {
 
-            if (zoneMatcher.find()) {
-                int zoneNumber = Integer.parseInt(zoneMatcher.group(1));
+                Matcher zoneMatcher = zoneName.matcher(zoneFile.getName());
 
-                BufferedImage zoneFullImg;
-                try {
-                    zoneFullImg = ImageIO.read(zoneFile);
-                } catch (IOException e) {
-                    System.out.println("Error while loading image file: " + zoneFile.getAbsolutePath());
-                    e.printStackTrace();
-                    continue;
+                if (zoneMatcher.find()) {
+                    int zoneNumber = Integer.parseInt(zoneMatcher.group(1));
+
+                    BufferedImage zoneFullImg;
+                    try {
+                        zoneFullImg = ImageIO.read(zoneFile);
+                    } catch (IOException e) {
+                        System.out.println("Error while loading image file: " + zoneFile.getAbsolutePath());
+                        e.printStackTrace();
+                        continue;
+                    }
+
+                    BufferedImage zoneSignatureImg = zoneFullImg.getSubimage(Misc.SIGNATURE_BOUNDS.x1, Misc.SIGNATURE_BOUNDS.y1, Misc.SIGNATURE_BOUNDS.width, Misc.SIGNATURE_BOUNDS.height);
+                    String signature = Misc.imgToMD5(zoneSignatureImg);
+                    System.out.println("zoneSignatures.put(\"" + signature + "\", " + zoneNumber + "); // " + zoneFile.getName());
+                } else {
+                    System.out.println("Invalid file name " + zoneFile.getName());
                 }
-
-                BufferedImage zoneSignatureImg = zoneFullImg.getSubimage(Misc.SIGNATURE_BOUNDS.x1, Misc.SIGNATURE_BOUNDS.y1, Misc.SIGNATURE_BOUNDS.width, Misc.SIGNATURE_BOUNDS.height);
-                String signature = Misc.imgToMD5(zoneSignatureImg);
-                System.out.println("zoneSignatures.put(\"" + signature + "\", " + zoneNumber + "); // " + zoneFile.getName());
-            } else {
-                System.out.println("Invalid file name " + zoneFile.getName());
             }
         }
     }
