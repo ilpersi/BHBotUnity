@@ -17,13 +17,17 @@ import java.util.List;
  */
 public class MarvinSegment {
 
-    public int width;
-    public int height;
+    int width;
+    int height;
     int x1,
             x2,
             y1,
             y2;
     private final int area;
+
+    private final static double INITIAL_DELAY = 100.0;
+    private final static int MAX_DELAY = 350;
+    private final static double COEFFICIENT = 24;
 
     private static final HashSet<String> debugBoundsSet = new HashSet<>();
 
@@ -166,10 +170,8 @@ public class MarvinSegment {
         long timer = Misc.getTime();
         MarvinSegment seg = findSubimage(browserManager.getImg(), cue, browserManager);
 
-        int maxDelay = 500;
-        double delay = 0.0;
+        double delay = INITIAL_DELAY;
         double attemptCnt = 1.0;
-        final double COEFFICIENT = 25;
 
         while (seg == null) {
             if ((Misc.getTime() - timer) >= timeout)
@@ -181,7 +183,7 @@ public class MarvinSegment {
             attemptCnt += 1.0;
             delay += Math.pow(2.0, attemptCnt) * COEFFICIENT;
 
-            if (delay > maxDelay) delay = maxDelay;
+            if (delay > MAX_DELAY) delay = MAX_DELAY;
 
         }
 
@@ -196,10 +198,12 @@ public class MarvinSegment {
      * @param browserManager The browser manager uset to perform the searc
      * @return true if cue was not found otherwise false
      */
+    @SuppressWarnings("SameParameterValue")
     static boolean waitForNull(Cue cue, int timeout, BrowserManager browserManager) {
         return waitForNull(cue, timeout, false, browserManager);
     }
 
+    @SuppressWarnings("SameParameterValue")
     static boolean waitForNull(Cue cue, int timeout, Bounds bounds, BrowserManager browserManager) {
         cue = new Cue(cue, bounds);
         return waitForNull(cue, timeout, false, browserManager);
@@ -209,10 +213,8 @@ public class MarvinSegment {
         long timer = Misc.getTime();
         MarvinSegment seg = findSubimage(browserManager.getImg(), cue, browserManager);
 
-        int maxDelay = 500;
-        double delay = 0.0;
+        double delay = INITIAL_DELAY;
         double attemptCnt = 1.0;
-        final double COEFFICIENT = 25;
 
         while (seg != null) {
             if ((Misc.getTime() - timer) >= timeout)
@@ -224,7 +226,7 @@ public class MarvinSegment {
             attemptCnt += 1.0;
             delay += Math.pow(2.0, attemptCnt) * COEFFICIENT;
 
-            if (delay > maxDelay) delay = maxDelay;
+            if (delay > MAX_DELAY) delay = MAX_DELAY;
 
         }
 
@@ -254,6 +256,10 @@ public class MarvinSegment {
 
     static MarvinSegment fromCue(String cueName, int timeout, BrowserManager browserManager) {
         return fromCue(BHBot.cues.get(cueName), timeout, true, browserManager);
+    }
+
+    static MarvinSegment fromCue(String cueName, Bounds bounds, BrowserManager browserManager) {
+        return fromCue(new Cue(BHBot.cues.get(cueName), bounds), 0, true, browserManager);
     }
 
     /**
