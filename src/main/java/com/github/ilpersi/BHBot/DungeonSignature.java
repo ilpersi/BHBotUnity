@@ -28,12 +28,16 @@ public class DungeonSignature {
      * @return An integer with the zone number
      */
     int zoneFromSignature(String signature) {
-        if (this.zoneSignatures.size() == 0) loadFromJSON();
+        if (this.zoneSignatures.size() == 0) {
+            BHBot.logger.debug("Loading signatures from JSON.");
+            loadFromJSON();
+        }
 
         Integer zone = this.zoneSignatures.getOrDefault(signature, 0);
 
         // JSON exists, but signatures changed
         if (zone == 0) {
+            BHBot.logger.debug("Signatures not up to date, rebuilding.");
             buildSignatures();
             this.saveToJson();
 
@@ -52,6 +56,7 @@ public class DungeonSignature {
         File signaturesFile = new File(JSON_FILE_PATH);
 
         if (!signaturesFile.exists()) {
+            BHBot.logger.debug("JSON file does not exist, creating it.");
             buildSignatures();
             this.saveToJson();
         } else {
@@ -60,8 +65,9 @@ public class DungeonSignature {
 
             try {
                 reader = new JsonReader(new FileReader(JSON_FILE_PATH));
-
                 this.zoneSignatures = gson.fromJson(reader, new TypeToken<LinkedHashMap<String, Integer>>(){}.getType());
+
+                BHBot.logger.debug("Loaded " + this.zoneSignatures.size() + " signatures from JSON.");
             } catch (FileNotFoundException e) {
                 BHBot.logger.error("It was impossible to read dungeon signatures from JSON file.", e);
             }
@@ -103,6 +109,7 @@ public class DungeonSignature {
             String signature = Misc.imgToMD5(zoneSignatureImg);
 
             this.zoneSignatures.put(signature, zoneCount);
+            BHBot.logger.debug(signature + " -> " + zoneCount);
 
             if (seg != null) {
                 bot.browser.clickOnSeg(seg);
