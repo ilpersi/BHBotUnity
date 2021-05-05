@@ -336,6 +336,13 @@ public class CueBuilder {
                 Set.of(), "LegendaryFamiliar", "unitycues/familiarEncounter/type/cue04LegendaryFamiliar.png");
         //endregion
 
+        //region Merchant
+        addCueLocatorByPattern(cueLocators, "cuebuilder/merchant", "merchant-title(.*)\\.png", Bounds.fromWidthHeight(311, 116, 175, 49),
+                Set.of(), "Merchant", "unitycues/merchant/cueMerchant.png");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/merchant", "merchant-title(.*)\\.png", Bounds.fromWidthHeight(422, 378, 109, 29),
+                Set.of(), "MerchantDecline", "unitycues/merchant/cueMerchantDecline.png");
+        //endregion
+
         //region Main Menu
         addCueLocatorByPattern(cueLocators, "cuebuilder/mainScreen", "gor-menu(.*)\\.png", Bounds.fromWidthHeight(107, 477, 33, 34),
                 Set.of(), "GorMenu", "unitycues/mainScreen/cueGorMenu.png");

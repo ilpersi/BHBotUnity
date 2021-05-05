@@ -727,8 +727,8 @@ class CueManager {
         //endregion
 
         //region Merchant
-        addCue("Merchant", "unitycues/merchant/cueMerchant.png", Bounds.fromWidthHeight(292, 118, 216, 45)); // cue for merchant dialog/popup
-        addCue("MerchantDecline", "unitycues/merchant/cueMerchantDecline.png", Bounds.fromWidthHeight(424, 376, 112, 33)); // cue for merchant dialog/popup
+        addCue("Merchant", "unitycues/merchant/cueMerchant.png", Bounds.fromWidthHeight(300, 105, 200, 70)); // cue for merchant dialog/popup
+        addCue("MerchantDecline", "unitycues/merchant/cueMerchantDecline.png", Bounds.fromWidthHeight(410, 365, 135, 55)); // cue for merchant dialog/popup
         //endregion
 
         //region Main screen cues
