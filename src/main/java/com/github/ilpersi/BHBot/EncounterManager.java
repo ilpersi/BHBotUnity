@@ -490,8 +490,13 @@ public class EncounterManager {
         EncounterManager.famMD5Table.put("WMfqJ7gWJwmZto6GKIbiQA==", new FamiliarDetails("Abernario", FamiliarType.LEGENDARY));
         EncounterManager.famMD5Table.put("hyTPJaC9xhfDieiz8pY50g==", new FamiliarDetails("Neistall", FamiliarType.EPIC));
         EncounterManager.famMD5Table.put("jaicWubS+gA5KDJHsxPHGQ==", new FamiliarDetails("Neistall", FamiliarType.EPIC));
-        EncounterManager.famMD5Table.put("UJqZrK1NwzmYFu3Enyvngw==", new FamiliarDetails("Candelabros", FamiliarType.RARE));
+        EncounterManager.famMD5Table.put("UJqZrK1NwzmYFu3Enyvngw==", new FamiliarDetails("Candelabros", FamiliarType.COMMON));
         EncounterManager.famMD5Table.put("tx8GZ0uVHcQa952MbWJptw==", new FamiliarDetails("Marm", FamiliarType.RARE));
+        EncounterManager.famMD5Table.put("yCtNI92TX05nLb2YC/9ZIA==", new FamiliarDetails("Marm", FamiliarType.RARE));
+        EncounterManager.famMD5Table.put("ZTL9uESJonec/1JHbqTrkw==", new FamiliarDetails("Candelabros", FamiliarType.COMMON));
+        EncounterManager.famMD5Table.put("UkqkqMPXNrIrkmIIa1uuAw==", new FamiliarDetails("TheTriology", FamiliarType.EPIC));
+        EncounterManager.famMD5Table.put("DJGsWnnnxVHETufD0eIgBg==", new FamiliarDetails("Findle", FamiliarType.RARE));
+        EncounterManager.famMD5Table.put("IYuGa2ky9DEyXsRD9iq3/w==", new FamiliarDetails("Gobby", FamiliarType.LEGENDARY));
         //endregion
 
         BHBot.logger.debug("Loaded " + EncounterManager.famMD5Table.size() + " familiars MD5 hashes.");
