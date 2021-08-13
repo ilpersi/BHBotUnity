@@ -101,11 +101,8 @@ public class EncounterManager {
 
         // Checking familiars setting takes time and a lot of cues verifications. We try to minimize the number of times
         // this is done
-        boolean skipBribeNames = false;
-        if ((bot.settings.bribeLevel > 0 && familiarLevel.getValue() >= bot.settings.bribeLevel) ||
-                (bot.settings.familiars.size() == 0)) {
-            skipBribeNames = true;
-        }
+        boolean skipBribeNames = (bot.settings.bribeLevel > 0 && familiarLevel.getValue() >= bot.settings.bribeLevel) ||
+                (bot.settings.familiars.size() == 0);
 
         if (!skipBribeNames) {
             bribeInfo = verifyBribeNames();
