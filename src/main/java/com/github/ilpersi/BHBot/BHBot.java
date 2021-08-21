@@ -77,7 +77,7 @@ public class BHBot {
         bot.notificationManager = new NotificationManager(bot);
         bot.excManager = new ExceptionManager(bot);
 
-        String browserProfile = bot.settings.useFirefox ? "default" : "./chrome_profile";
+        String browserProfile = "";
 
         // We make sure that our configurationFactory is added to the list of configuration factories.
         System.setProperty("log4j.configurationFactory", "com.github.ilpersi.BHBot.BHBotConfigurationFactory");
@@ -173,6 +173,8 @@ public class BHBot {
         logBaseDir = bot.settings.logBaseDir;
         logMaxDays = bot.settings.logMaxDays;
         logLevel = bot.settings.logLevel;
+
+        browserProfile = bot.settings.useFirefox ? "default" : "./chrome_profile";
 
         logger = BHBotLogger.create();
 
