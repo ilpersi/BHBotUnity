@@ -2361,94 +2361,100 @@ public class DungeonThread implements Runnable {
 
 
         /*
-         *  Check for the 'Cleared' dialogue and handle post-activity tasks
+         * The recap screen is also appearing during all the encounters, so to make sure that we are facing the final one,
+         * we also search for the "Rerun" button
          */
         //region Cleared
         if (bot.getState() == BHBot.State.Raid || bot.getState() == BHBot.State.Dungeon
-                || bot.getState() == BHBot.State.Expedition|| bot.getState() == BHBot.State.Trials) {
-            seg = MarvinSegment.fromCue(BHBot.cues.get("Cleared"), bot.browser);
+                || bot.getState() == BHBot.State.Expedition || bot.getState() == BHBot.State.Trials) {
+
+            seg = MarvinSegment.fromCue(BHBot.cues.get("Rerun"), bot.browser);
             if (seg != null) {
 
-                //Calculate activity stats
-                counters.get(bot.getState()).increaseVictories();
-                long activityRuntime = Misc.getTime() - activityStartTime * 1000; //get elapsed time in milliseconds
-                String runtime = Misc.millisToHumanForm(activityRuntime);
-                counters.get(bot.getState()).increaseVictoriesDuration(activityRuntime);
-                String runtimeAvg = Misc.millisToHumanForm(counters.get(bot.getState()).getVictoryAverageDuration());
-                //return stats
-                BHBot.logger.info(bot.getState().getName() + " #" + counters.get(bot.getState()).getTotal() + " completed. Result: Victory");
-                BHBot.logger.stats(bot.getState().getName() + " " + counters.get(bot.getState()).successRateDesc());
-                BHBot.logger.stats("Victory run time: " + runtime + ". Average: " + runtimeAvg + ".");
+                seg = MarvinSegment.fromCue(BHBot.cues.get("ClearedRecap"), bot.browser);
+                if (seg != null) {
 
-                //handle SuccessThreshold
-                handleSuccessThreshold(bot.getState());
+                    //Calculate activity stats
+                    counters.get(bot.getState()).increaseVictories();
+                    long activityRuntime = Misc.getTime() - activityStartTime * 1000; //get elapsed time in milliseconds
+                    String runtime = Misc.millisToHumanForm(activityRuntime);
+                    counters.get(bot.getState()).increaseVictoriesDuration(activityRuntime);
+                    String runtimeAvg = Misc.millisToHumanForm(counters.get(bot.getState()).getVictoryAverageDuration());
+                    //return stats
+                    BHBot.logger.info(bot.getState().getName() + " #" + counters.get(bot.getState()).getTotal() + " completed. Result: Victory");
+                    BHBot.logger.stats(bot.getState().getName() + " " + counters.get(bot.getState()).successRateDesc());
+                    BHBot.logger.stats("Victory run time: " + runtime + ". Average: " + runtimeAvg + ".");
 
-                resetAppropriateTimers();
-                reviveManager.reset();
+                    //handle SuccessThreshold
+                    handleSuccessThreshold(bot.getState());
 
-                if (BHBot.State.Raid.equals(bot.getState()) && rerunCurrentActivity ) {
-                    setAutoOff(1000);
+                    resetAppropriateTimers();
+                    reviveManager.reset();
 
-                    Cue raidRerun = new Cue(BHBot.cues.get("Rerun"), Bounds.fromWidthHeight(425, 345, 95, 35));
+                    if (BHBot.State.Raid.equals(bot.getState()) && rerunCurrentActivity) {
+                        setAutoOff(1000);
 
-                    bot.browser.closePopupSecurely(BHBot.cues.get("Cleared"), raidRerun);
+                        Cue raidRerun = new Cue(BHBot.cues.get("Rerun"), Bounds.fromWidthHeight(285, 455, 110, 50));
 
-                    // We are out of shards, so we get back to Main
-                    seg = MarvinSegment.fromCue("NotEnoughShards", Misc.Durations.SECOND * 3, bot.browser);
-                    if (seg != null) {
+                        bot.browser.closePopupSecurely(BHBot.cues.get("ClearedRecap"), raidRerun);
 
-                        bot.browser.closePopupSecurely(BHBot.cues.get("NotEnoughShards"), BHBot.cues.get("No"));
+                        // We are out of shards, so we get back to Main
+                        seg = MarvinSegment.fromCue("NotEnoughShards", Misc.Durations.SECOND * 3, bot.browser);
+                        if (seg != null) {
 
-                        rerunCurrentActivity = false;
-                        bot.setState(BHBot.State.Main);
-                        return;
-                    }
+                            bot.browser.closePopupSecurely(BHBot.cues.get("NotEnoughShards"), BHBot.cues.get("No"));
 
-                    bot.setState(BHBot.State.RerunRaid);
-                } else {
-
-                    //close 'cleared' popup
-                    Bounds yesGreenBounds = null;
-                    if (BHBot.State.Raid.equals(bot.getState())) {
-                        yesGreenBounds = Bounds.fromWidthHeight(279, 344, 117, 37);
-                    }
-
-                    bot.browser.closePopupSecurely(BHBot.cues.get("Cleared"), new Cue(BHBot.cues.get("YesGreen"), yesGreenBounds));
-
-                    // close the activity window to return us to the main screen
-                    if (bot.getState() != BHBot.State.Expedition) {
-                        bot.browser.readScreen(3 * Misc.Durations.SECOND); //wait for slide-in animation to finish
-
-                        Cue XWithBounds;
-                        Bounds xBounds;
-                        switch (bot.getState()) {
-                            case WorldBoss:
-                                XWithBounds = new Cue(BHBot.cues.get("X"), Bounds.fromWidthHeight(640, 75, 60, 60));
-                                break;
-                            case Raid:
-                                xBounds = bot.settings.useUnityEngine ? Bounds.fromWidthHeight(605, 85, 70, 70) : Bounds.fromWidthHeight(610, 90, 60, 60);
-                                XWithBounds = new Cue(BHBot.cues.get("X"), xBounds);
-                                break;
-                            case Dungeon:
-                                xBounds = bot.settings.useUnityEngine ? Bounds.fromWidthHeight(695, 40, 70, 75) : null;
-                                XWithBounds = new Cue(BHBot.cues.get("X"), xBounds);
-                                break;
-                            default:
-                                XWithBounds = new Cue(BHBot.cues.get("X"), null);
-                                break;
+                            rerunCurrentActivity = false;
+                            bot.setState(BHBot.State.Main);
+                            return;
                         }
-                        bot.browser.closePopupSecurely(XWithBounds, XWithBounds);
+
+                        bot.setState(BHBot.State.RerunRaid);
                     } else {
-                        //For Expedition we need to close 3 windows (Exped/Portal/Team) to return to main screen
-                        bot.browser.closePopupSecurely(BHBot.cues.get("Enter"), BHBot.cues.get("X"));
-                        bot.browser.closePopupSecurely(BHBot.cues.get("PortalBorderLeaves"), BHBot.cues.get("X"));
-                        bot.browser.closePopupSecurely(BHBot.cues.get("BadgeBar"), BHBot.cues.get("X"));
+
+                        //close 'cleared' popup
+                        Bounds TownBounds = null;
+                        if (BHBot.State.Raid.equals(bot.getState()) || BHBot.State.Dungeon.equals(bot.getState())) {
+                            TownBounds = Bounds.fromWidthHeight(440, 455, 95, 50);
+                        }
+
+                        bot.browser.closePopupSecurely(BHBot.cues.get("ClearedRecap"), new Cue(BHBot.cues.get("Town"), TownBounds));
+
+                        // close the activity window to return us to the main screen
+                        if (bot.getState() != BHBot.State.Expedition) {
+                            bot.browser.readScreen(3 * Misc.Durations.SECOND); //wait for slide-in animation to finish
+
+                            Cue XWithBounds;
+                            Bounds xBounds;
+                            switch (bot.getState()) {
+                                case WorldBoss:
+                                    XWithBounds = new Cue(BHBot.cues.get("X"), Bounds.fromWidthHeight(640, 75, 60, 60));
+                                    break;
+                                case Raid:
+                                    xBounds = bot.settings.useUnityEngine ? Bounds.fromWidthHeight(605, 85, 70, 70) : Bounds.fromWidthHeight(610, 90, 60, 60);
+                                    XWithBounds = new Cue(BHBot.cues.get("X"), xBounds);
+                                    break;
+                                case Dungeon:
+                                    xBounds = bot.settings.useUnityEngine ? Bounds.fromWidthHeight(695, 40, 70, 75) : null;
+                                    XWithBounds = new Cue(BHBot.cues.get("X"), xBounds);
+                                    break;
+                                default:
+                                    XWithBounds = new Cue(BHBot.cues.get("X"), null);
+                                    break;
+                            }
+                            bot.browser.closePopupSecurely(XWithBounds, XWithBounds);
+                        } else {
+                            //For Expedition we need to close 3 windows (Exped/Portal/Team) to return to main screen
+                            bot.browser.closePopupSecurely(BHBot.cues.get("Enter"), BHBot.cues.get("X"));
+                            bot.browser.closePopupSecurely(BHBot.cues.get("PortalBorderLeaves"), BHBot.cues.get("X"));
+                            bot.browser.closePopupSecurely(BHBot.cues.get("BadgeBar"), BHBot.cues.get("X"));
+                        }
+
+                        bot.setState(BHBot.State.Main); // reset state
                     }
 
-                    bot.setState(BHBot.State.Main); // reset state
+                    return;
                 }
-
-                return;
             }
         }
         //endregion

@@ -681,6 +681,9 @@ class CueManager {
         addCue("Yes", "unitycues/common/cueYes.png", Bounds.fromWidthHeight(355, 335, 90, 55)); // Yes button on Are you there popup
         addCue("SpeedBar", "unitycues/common/cueSpeedBar.png", Bounds.fromWidthHeight(0, 455, 75, 60)); // Speed selection bar when you are in encounters
         addCue("Speed1X", "unitycues/common/cueSpeed1X.png", Bounds.fromWidthHeight(20, 465, 40, 35)); // 1X Speed cue
+        addCue("ClearedRecap", "unitycues/common/cueClearedRecap.png", Bounds.fromWidthHeight(320, 55, 165, 50)); // Cleared message on top of the victory recap screen
+        addCue("Rerun", "unitycues/common/cueRerun.png", Bounds.fromWidthHeight(86, 445, 641, 57)); // Green "Rerun" button on the victory recap screen
+        addCue("Town", "unitycues/common/cueTown.png", Bounds.fromWidthHeight(440, 455, 95, 50)); // The Red "Town" button on the victory/defeat recap screen
         //endregion
 
         //region Dungeon
