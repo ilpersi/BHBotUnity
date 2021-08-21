@@ -40,7 +40,6 @@ public class DungeonThread implements Runnable {
     @SuppressWarnings("FieldCanBeLocal")
     private final long MAX_IDLE_TIME = 15 * Misc.Durations.MINUTE;
 
-    //private final boolean[] revived = {false, false, false, false, false};
     //private int potionsUsed = 0;
     private boolean isAdventureStarted = false;
     private long activityStartTime;
@@ -408,13 +407,13 @@ public class DungeonThread implements Runnable {
                                     }
                                 }
 
-                                Cue acceptCue = bot.settings.useUnityEngine ? BHBot.cues.get("TeamAccept") :  new Cue(BHBot.cues.get("Accept"), Bounds.fromWidthHeight(465, 445, 110, 40));
+                                Cue acceptCue = bot.settings.useUnityEngine ? BHBot.cues.get("TeamAccept") : new Cue(BHBot.cues.get("Accept"), Bounds.fromWidthHeight(465, 445, 110, 40));
                                 bot.browser.closePopupSecurely(acceptCue, acceptCue);
 
                                 if (raidSetting.solo) {
                                     Cue yesGreen = new Cue(BHBot.cues.get("YesGreen"), Bounds.fromWidthHeight(290, 330, 85, 60));
 
-                                    if (!bot.browser.closePopupSecurely(BHBot.cues.get("TeamNotFull"), yesGreen) ) {
+                                    if (!bot.browser.closePopupSecurely(BHBot.cues.get("TeamNotFull"), yesGreen)) {
                                         BHBot.logger.error("Impossible to find Yes button in Raid Team!");
                                         restart();
                                     }
@@ -471,7 +470,7 @@ public class DungeonThread implements Runnable {
 
                             bot.browser.readScreen();
                             seg = MarvinSegment.fromCue("TokenBar", 5 * Misc.Durations.SECOND, bot.browser);
-                            final Set<Color> tokenBarColors = Set.of(new Color (17, 208, 226), new Color (1, 133, 146), new Color (1, 145, 158));
+                            final Set<Color> tokenBarColors = Set.of(new Color(17, 208, 226), new Color(1, 133, 146), new Color(1, 145, 158));
                             int tokens = readResourceBarPercentage(seg, bot.settings.maxTokens, Misc.BarOffsets.TG.x, Misc.BarOffsets.TG.y, tokenBarColors, bot.browser.getImg());
                             globalTokens = tokens;
                             BHBot.logger.readout("Tokens: " + tokens + ", required: >" + bot.settings.minTokens + ", " +
@@ -606,7 +605,6 @@ public class DungeonThread implements Runnable {
                                 // dismiss character dialog if it pops up:
                                 detectCharacterDialogAndHandleIt();
 
-                                //seg = MarvinSegment.fromCue(BHBot.cues.get("Accept"), 5 * Misc.Durations.SECOND, bot.browser);
                                 //bot.browser.clickOnSeg(seg);
                                 Cue AcceptWithBounds = new Cue(BHBot.cues.get("Accept"), Bounds.fromWidthHeight(465, 445, 110, 40));
                                 bot.browser.closePopupSecurely(AcceptWithBounds, AcceptWithBounds);
@@ -647,7 +645,7 @@ public class DungeonThread implements Runnable {
 
                             bot.browser.readScreen();
 
-                            final Set<Color> energyBarColors = Set.of(new Color (87, 133, 21), new Color (136, 197, 44));
+                            final Set<Color> energyBarColors = Set.of(new Color(87, 133, 21), new Color(136, 197, 44));
 
                             seg = MarvinSegment.fromCue(BHBot.cues.get("EnergyBar"), bot.browser);
                             int energy = readResourceBarPercentage(seg, 100, Misc.BarOffsets.DUNGEON.x, Misc.BarOffsets.DUNGEON.y, energyBarColors, bot.browser.getImg());
@@ -791,12 +789,21 @@ public class DungeonThread implements Runnable {
                                             break;
                                         case 3:
                                         default:
-                                            cueDifficulty = bot.settings.useUnityEngine ? BHBot.cues.get("DungHeroic") : new Cue(BHBot.cues.get("Heroic"), Bounds.fromWidthHeight(535, 225, 110, 40));
+                                            cueDifficulty = bot.settings.useUnityEngine ? BHBot.cues.get("DungHeroic") : new Cue(BHBot.cues.get("Heroic"), Bounds.fromWidthHeight(525, 225, 140, 40));
                                             break;
                                     }
 
                                     seg = MarvinSegment.fromCue(cueDifficulty, 5 * Misc.Durations.SECOND, bot.browser);
                                 }
+
+                                if (seg == null) {
+                                    bot.settings.activitiesEnabled.remove("d");
+                                    BHBot.logger.error("It was impossible to get difficulty button of dungeon z" + goalZone + "d" + goalDungeon + ". Dungeons are now disabled!");
+                                    bot.notificationManager.sendErrorNotification("Dungeon error", "It was impossible to get difficulty button of dungeon z" + goalZone + "d" + goalDungeon + ". Dungeons are now disabled!");
+                                    bot.browser.closePopupSecurely(BHBot.cues.get("X"), BHBot.cues.get("X"));
+                                    continue;
+                                }
+
                                 bot.browser.clickOnSeg(seg);
 
                                 //team selection screen
@@ -814,13 +821,13 @@ public class DungeonThread implements Runnable {
                                     }
                                 }
 
-                               Cue dungeonAccept = bot.settings.useUnityEngine ? BHBot.cues.get("TeamAccept") : new Cue(BHBot.cues.get("Accept"), Bounds.fromWidthHeight(465, 445, 110, 45));
-                               bot.browser.closePopupSecurely(dungeonAccept, dungeonAccept);
+                                Cue dungeonAccept = bot.settings.useUnityEngine ? BHBot.cues.get("TeamAccept") : new Cue(BHBot.cues.get("Accept"), Bounds.fromWidthHeight(465, 445, 110, 45));
+                                bot.browser.closePopupSecurely(dungeonAccept, dungeonAccept);
 
                                 if (dungeonSetting.solo) {
                                     Cue yesGreen = new Cue(BHBot.cues.get("YesGreen"), Bounds.fromWidthHeight(290, 330, 85, 60));
 
-                                    if (!bot.browser.closePopupSecurely(BHBot.cues.get("TeamNotFull"), yesGreen) ) {
+                                    if (!bot.browser.closePopupSecurely(BHBot.cues.get("TeamNotFull"), yesGreen)) {
                                         BHBot.logger.error("Impossible to find Yes button in Dungeon Team!");
                                         restart();
                                     }
@@ -1243,13 +1250,13 @@ public class DungeonThread implements Runnable {
                                     if (bot.scheduler.doExpeditionImmediately)
                                         bot.scheduler.doExpeditionImmediately = false; // reset it
 
-                                    if (bot.settings.costExpedition > badges) {
-                                        BHBot.logger.info("Target cost " + bot.settings.costExpedition + " is higher than available badges " + badges + ". Expedition will be skipped.");
-                                        seg = MarvinSegment.fromCue(BHBot.cues.get("X"), bot.browser);
-                                        bot.browser.clickOnSeg(seg);
-                                        Misc.sleep(2 * Misc.Durations.SECOND);
-                                        continue;
-                                    }
+//                                    if (bot.settings.costExpedition > badges) {
+//                                        BHBot.logger.info("Target cost " + bot.settings.costExpedition + " is higher than available badges " + badges + ". Expedition will be skipped.");
+//                                        seg = MarvinSegment.fromCue(BHBot.cues.get("X"), bot.browser);
+//                                        bot.browser.clickOnSeg(seg);
+//                                        Misc.sleep(2 * Misc.Durations.SECOND);
+//                                        continue;
+//                                    }
 
                                     // set up autoRune and autoShrine
                                     handleAdventureConfiguration(BHBot.State.Expedition, true, null);
@@ -1923,7 +1930,8 @@ public class DungeonThread implements Runnable {
             // well, we got through all the checks. Means that nothing much has happened. So lets sleep for a second in order to not make processing too heavy...
             bot.excManager.numConsecutiveException = 0; // reset exception counter
             bot.scheduler.restoreIdleTime(); // revert changes to idle time
-            if (bot.finished || (!bot.running && BHBot.State.Main.equals(bot.getState()))) break; // skip sleeping if finished flag has been set or the bot is not running!
+            if (bot.finished || (!bot.running && BHBot.State.Main.equals(bot.getState())))
+                break; // skip sleeping if finished flag has been set or the bot is not running!
 
             BHBot.logger.trace("Dungeon Thread Sleeping");
             if (BHBot.State.Main.equals(bot.getState()) || BHBot.State.Loading.equals(bot.getState())) {
@@ -2464,7 +2472,7 @@ public class DungeonThread implements Runnable {
          */
         //region Victory
         if (bot.getState() == BHBot.State.WorldBoss || bot.getState() == BHBot.State.Gauntlet
-                || bot.getState() == BHBot.State.Invasion|| bot.getState() == BHBot.State.PVP
+                || bot.getState() == BHBot.State.Invasion || bot.getState() == BHBot.State.PVP
                 || bot.getState() == BHBot.State.GVG) {
 
             if (bot.getState() == BHBot.State.Gauntlet || bot.getState() == BHBot.State.GVG) {
@@ -2589,7 +2597,7 @@ public class DungeonThread implements Runnable {
             }
 
             // Difficulty failsafe logic
-            if (bot.getState().equals(BHBot.State.Expedition) &&  bot.settings.difficultyFailsafe.containsKey("e")) {
+            if (bot.getState().equals(BHBot.State.Expedition) && bot.settings.difficultyFailsafe.containsKey("e")) {
                 //Handle difficultyFailsafe for Expedition
                 // The key is the difficulty decrease, the value is the minimum level
                 Map.Entry<Integer, Integer> expedDifficultyFailsafe = bot.settings.difficultyFailsafe.get("e");
@@ -3359,14 +3367,14 @@ public class DungeonThread implements Runnable {
 
         // We create a random collection that is specific for the current day
         String todayNum = new SimpleDateFormat("u").format(new Date());
-        for (Settings.AdventureSetting setting: startList) {
+        for (Settings.AdventureSetting setting : startList) {
             if (setting.weekDay.contains(todayNum)) randomRaid.add(setting.chanceToRun, setting);
         }
 
         if (randomRaid.size() > 0) return randomRaid.next();
 
         // We create a random collection
-        for (Settings.AdventureSetting setting: startList) {
+        for (Settings.AdventureSetting setting : startList) {
             if (setting.weekDay.contains("*")) randomRaid.add(setting.chanceToRun, setting);
         }
 
@@ -3966,6 +3974,7 @@ public class DungeonThread implements Runnable {
 
     /**
      * This method takes care of managing the correct WB tier selection
+     *
      * @param targetTier The desired tier for the World Boss
      * @return true for success, false if an error happens
      */
@@ -4504,7 +4513,7 @@ public class DungeonThread implements Runnable {
         }
     }
 
-    private void tryClosingAdventureWindow (Bounds xButtonBounds) {
+    private void tryClosingAdventureWindow(Bounds xButtonBounds) {
         bot.browser.readScreen();
         MarvinSegment seg = MarvinSegment.fromCue(BHBot.cues.get("X"), Misc.Durations.SECOND * 2, xButtonBounds, bot.browser);
 
@@ -4914,7 +4923,8 @@ public class DungeonThread implements Runnable {
                     break; // there is nothing we can do anymore... we've scrolled to the bottom and haven't found the icon(s). We obviously don't have the required consumable(s)!
 
                 // lets scroll down, we only search for the arrow once
-                if (DropDownDown == null)  DropDownDown = MarvinSegment.fromCue(BHBot.cues.get("DropDownDown"), 5 * Misc.Durations.SECOND, bot.browser);
+                if (DropDownDown == null)
+                    DropDownDown = MarvinSegment.fromCue(BHBot.cues.get("DropDownDown"), 5 * Misc.Durations.SECOND, bot.browser);
 
                 for (int i = 0; i < 4; i++) { //the menu has 4 rows so we move to the next four rows and check again
                     bot.browser.clickOnSeg(DropDownDown);
@@ -5427,12 +5437,12 @@ public class DungeonThread implements Runnable {
         private final int partySize;
 
         /**
-         * @param letter             the shortcut letter used in settings.ini
-         * @param Name               the real name of the World Boss
-         * @param number             the World Boss number counting from left to right starting at 1
-         * @param minTier            the minimum tier required to join the World Boss
-         * @param maxTier            the maximum tier you are allowed to join for the World Boss
-         * @param partySize          the party size of the World Boss
+         * @param letter    the shortcut letter used in settings.ini
+         * @param Name      the real name of the World Boss
+         * @param number    the World Boss number counting from left to right starting at 1
+         * @param minTier   the minimum tier required to join the World Boss
+         * @param maxTier   the maximum tier you are allowed to join for the World Boss
+         * @param partySize the party size of the World Boss
          */
         WorldBoss(String letter, String Name, int number, int minTier, int maxTier, int partySize) {
             this.letter = letter;
