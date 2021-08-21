@@ -1,6 +1,8 @@
 # Maven packaging files
 /target/
-BHBot\.jar
+
+# jar files
+*\.jar
 
 # Run time folders
 chrome_*/
@@ -14,7 +16,7 @@ BHBot\.iml
 \.idea
 
 # External executables
-chromedriver\.exe
+chromedriver*\.exe
 geckodriver*\.exe
 fisher-v1\.2\.4\.exe
 fishing\.exe
