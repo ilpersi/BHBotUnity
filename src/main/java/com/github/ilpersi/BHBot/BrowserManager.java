@@ -504,7 +504,7 @@ public class BrowserManager {
         img = takeScreenshot(game);
 
         // This setting should only be enabled for development purpose. Performance impact is very high.
-        if (bot.settings.dumpReadScreen) Misc.saveScreen("screen-dump", "screen-dump", img);
+        if (bot.settings.dumpReadScreen) Misc.saveScreen("screen-dump", "screen-dump", BHBot.includeMachineNameInScreenshots, img);
     }
 
     /**

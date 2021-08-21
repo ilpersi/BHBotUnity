@@ -259,7 +259,7 @@ class AutoRuneManager {
 
         MarvinSegment seg = MarvinSegment.fromCue(BHBot.cues.get("Runes"), 5 * Misc.Durations.SECOND, bot.browser);
         if (seg == null) {
-            Misc.saveScreen("no-rune-button", "errors", bot.browser.getImg());
+            Misc.saveScreen("no-rune-button", "errors", BHBot.includeMachineNameInScreenshots, bot.browser.getImg());
             BHBot.logger.warn("Error: unable to detect runes button! Skipping...");
             BHBot.logger.debug(Misc.getStackTrace());
             return true;
@@ -271,7 +271,7 @@ class AutoRuneManager {
         seg = MarvinSegment.fromCue(BHBot.cues.get("RunesLayout"), 5 * Misc.Durations.SECOND, bot.browser);
         if (seg == null) {
             BHBot.logger.warn("Error: unable to detect rune layout! Skipping...");
-            Misc.saveScreen("no-rune-layout", "errors", bot.browser.getImg());
+            Misc.saveScreen("no-rune-layout", "errors", BHBot.includeMachineNameInScreenshots, bot.browser.getImg());
             seg = MarvinSegment.fromCue(BHBot.cues.get("X"), 5 * Misc.Durations.SECOND, bot.browser);
             if (seg != null) {
                 bot.browser.clickOnSeg(seg);

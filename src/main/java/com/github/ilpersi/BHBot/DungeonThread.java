@@ -249,7 +249,7 @@ public class DungeonThread implements Runnable {
                             timeLastWeeklyGem = Misc.getTime();
 
                             BufferedImage gems = bot.browser.getImg().getSubimage(133, 16, 80, 14);
-                            Misc.saveScreen("weekly-gems", "gems", gems);
+                            Misc.saveScreen("weekly-gems", "gems", BHBot.includeMachineNameInScreenshots, gems);
                         } else {
                             // Less than a week has passed, we check if it is Sunday
                             if ("7".equals(new SimpleDateFormat("u").format(new Date()))) {
@@ -262,7 +262,7 @@ public class DungeonThread implements Runnable {
                                     sundayScreenshots.put(sundayKey, true);
 
                                     BufferedImage gems = bot.browser.getImg().getSubimage(133, 16, 80, 14);
-                                    Misc.saveScreen("weekly-gems", "gems", gems);
+                                    Misc.saveScreen("weekly-gems", "gems", BHBot.includeMachineNameInScreenshots, gems);
                                 }
                             }
                         }
@@ -273,7 +273,7 @@ public class DungeonThread implements Runnable {
                         timeLastDailyGem = Misc.getTime();
 
                         BufferedImage gems = bot.browser.getImg().getSubimage(133, 16, 80, 14);
-                        Misc.saveScreen("daily-gems", "gems", gems); //else screenshot daily count
+                        Misc.saveScreen("daily-gems", "gems", BHBot.includeMachineNameInScreenshots, gems); //else screenshot daily count
                     }
 
                     settings.initialize();
@@ -682,7 +682,7 @@ public class DungeonThread implements Runnable {
 
                                 seg = MarvinSegment.fromCue(BHBot.cues.get("Quest"), Misc.Durations.SECOND * 3, bot.browser);
                                 if (seg == null) {
-                                    Misc.saveScreen("no-quest-btn", "errors", bot.browser.getImg());
+                                    Misc.saveScreen("no-quest-btn", "errors", BHBot.includeMachineNameInScreenshots, bot.browser.getImg());
                                     BHBot.logger.error("Impposible to find the quest button!");
                                     continue;
                                 }
@@ -2668,7 +2668,7 @@ public class DungeonThread implements Runnable {
             resetAppropriateTimers();
             reviveManager.reset();
 
-            Misc.saveScreen("defeat-pop-up-" + bot.getState(), "debug", bot.browser.getImg());
+            Misc.saveScreen("defeat-pop-up-" + bot.getState(), "debug", BHBot.includeMachineNameInScreenshots, bot.browser.getImg());
 
             //in Gauntlet/Invasion/GVG the close button is green, everywhere else its blue
             if (bot.getState() == BHBot.State.Gauntlet || bot.getState() == BHBot.State.Invasion || bot.getState() == BHBot.State.GVG) {
@@ -2762,13 +2762,13 @@ public class DungeonThread implements Runnable {
                 if (seg != null) {
                     bot.browser.clickOnSeg(seg);
                 } else {
-                    Misc.saveScreen("treasure-decline-no-yes", "errors", bot.browser.getImg());
+                    Misc.saveScreen("treasure-decline-no-yes", "errors", BHBot.includeMachineNameInScreenshots, bot.browser.getImg());
                     BHBot.logger.error("Impossible to find yes button after decline in handleSkeletonKey");
                     bot.notificationManager.sendErrorNotification("Treasure chest error", "Skeleton Chest gump without YES button");
                     return true;
                 }
             } else {
-                Misc.saveScreen("treasure-no-decline", "errors", bot.browser.getImg());
+                Misc.saveScreen("treasure-no-decline", "errors", BHBot.includeMachineNameInScreenshots, bot.browser.getImg());
                 BHBot.logger.error("Impossible to find Decline button in handleSkeletonKey");
                 bot.notificationManager.sendErrorNotification("Treasure chest error", "Skeleton Chest gump without DECLINE button");
                 return true;
@@ -2810,13 +2810,13 @@ public class DungeonThread implements Runnable {
                     bot.browser.clickOnSeg(seg);
                     return false;
                 } else {
-                    Misc.saveScreen("treasure-no-settings-decline-no-yes", "errors", bot.browser.getImg());
+                    Misc.saveScreen("treasure-no-settings-decline-no-yes", "errors", BHBot.includeMachineNameInScreenshots, bot.browser.getImg());
                     BHBot.logger.error("Impossible to find yes button after decline with no settings in handleSkeletonKey");
                     bot.notificationManager.sendErrorNotification("Treasure chest error", "Skeleton Chest gump without YES button");
                     return true;
                 }
             } else {
-                Misc.saveScreen("treasure-no-settings-no-decline", "errors", bot.browser.getImg());
+                Misc.saveScreen("treasure-no-settings-no-decline", "errors", BHBot.includeMachineNameInScreenshots, bot.browser.getImg());
                 BHBot.logger.error("Impossible to find decline with no settings button in handleSkeletonKey");
                 bot.notificationManager.sendErrorNotification("Treasure chest error", "Skeleton Chest gump without DECLINE button");
                 return true;
@@ -5217,7 +5217,7 @@ public class DungeonThread implements Runnable {
                         droppedItemMessage = tierName + " item dropped!";
                         BHBot.logger.debug(droppedItemMessage);
                         if (bot.settings.victoryScreenshot) {
-                            Misc.saveScreen(bot.getState() + "-" + tierName.toLowerCase(), "loot", victoryPopUpImg);
+                            Misc.saveScreen(bot.getState() + "-" + tierName.toLowerCase(), "loot", BHBot.includeMachineNameInScreenshots, victoryPopUpImg);
                         }
 
                         bot.notificationManager.sendDropNotification(tierName + " item drop in " + bot.getState(), droppedItemMessage, victoryPopUpImg);
@@ -5582,7 +5582,7 @@ public class DungeonThread implements Runnable {
 
             String finalFileName = fileNameTS.toString();
             if (!lastSavedName.equals(finalFileName)) {
-                Misc.saveScreen(fileNameTS.toString(), "wb-ts-debug", bot.browser.getImg());
+                Misc.saveScreen(fileNameTS.toString(), "wb-ts-debug", BHBot.includeMachineNameInScreenshots, bot.browser.getImg());
             }
             return finalFileName;
         }
@@ -5615,7 +5615,7 @@ public class DungeonThread implements Runnable {
         // As it is not possible to build a cue for the character menu, we aim at the Raid icon that is the closest thing to it
         MarvinSegment seg = MarvinSegment.fromCue(BHBot.cues.get("RaidButton"), bot.browser);
         if (seg == null) {
-            Misc.saveScreen("opnecharmenu-no-raid-menu", "errors", bot.browser.getImg());
+            Misc.saveScreen("opnecharmenu-no-raid-menu", "errors", BHBot.includeMachineNameInScreenshots, bot.browser.getImg());
             BHBot.logger.warn("Error: unable to detect raid! Skipping...");
             BHBot.logger.debug(Misc.getStackTrace());
             return true;
@@ -5625,7 +5625,7 @@ public class DungeonThread implements Runnable {
 
         seg = MarvinSegment.fromCue(BHBot.cues.get("Runes"), 5 * Misc.Durations.SECOND, bot.browser);
         if (seg == null) {
-            Misc.saveScreen("opnecharmenu-no-rune-button", "errors", bot.browser.getImg());
+            Misc.saveScreen("opnecharmenu-no-rune-button", "errors", BHBot.includeMachineNameInScreenshots, bot.browser.getImg());
             BHBot.logger.warn("Error: unable to detect runes button, char menu not opened! Skipping...");
             BHBot.logger.debug(Misc.getStackTrace());
             return true;

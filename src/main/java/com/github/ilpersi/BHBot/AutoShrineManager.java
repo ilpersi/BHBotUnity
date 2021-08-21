@@ -68,7 +68,7 @@ public class AutoShrineManager {
                     } while (ignoreBossCheck != null);
                     this.ignoreBoss = false;
                 } else {
-                    Misc.saveScreen("ignoreBossCheck-check-tmp", "debug", tmpSettingsMenu);
+                    Misc.saveScreen("ignoreBossCheck-check-tmp", "debug", BHBot.includeMachineNameInScreenshots, tmpSettingsMenu);
                     bot.saveGameScreen("ignoreBossCheck-check", "debug");
                 }
             } else {

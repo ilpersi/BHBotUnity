@@ -86,7 +86,7 @@ public class MarvinSegment {
             foundSegs.forEach((foundSeg) -> mainMarvinImg.drawRect(foundSeg.x1 + OFFSET + cue.im.getWidth(), foundSeg.y1 + OFFSET, foundSeg.width, foundSeg.height, 2, highlight));
             mainMarvinImg.update();
 
-            Misc.saveScreen("" + cue.name + "-" + match, "debugFindImage", mainMarvinImg.getBufferedImage());
+            Misc.saveScreen("" + cue.name + "-" + match, "debugFindImage", BHBot.includeMachineNameInScreenshots, mainMarvinImg.getBufferedImage());
 
         } else {
             seg = FindSubimage.findImage(src, cue.im, x1, y1, x2, y2);
@@ -150,7 +150,7 @@ public class MarvinSegment {
                 debugBounds.drawRect(seg.x1, seg.y1, seg.width, seg.height, Color.BLUE);
                 debugBounds.drawRect(suggestedX1, suggestedY1, suggestedWidth, suggestedHeight, 3, Color.GREEN);
                 debugBounds.update();
-                String boundsFName = Misc.saveScreen("debugNullBounds_" + cueKey, "debug_null_bounds", debugBounds.getBufferedImage());
+                String boundsFName = Misc.saveScreen("debugNullBounds_" + cueKey, "debug_null_bounds", BHBot.includeMachineNameInScreenshots, debugBounds.getBufferedImage());
                 BHBot.logger.debug("Found bounds saved in: " + boundsFName);
 
                 // To make the suggestion actionable we also print the stack trace so that developers can use it

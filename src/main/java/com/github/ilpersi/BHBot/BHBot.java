@@ -29,6 +29,7 @@ public class BHBot {
     private static String BHBotVersion;
     private static Properties gitProperties;
     static String screenshotPath = "./screenshots/";
+    static boolean includeMachineNameInScreenshots = true;
     static BHBotLogger logger;
 
     // static settings
@@ -1064,15 +1065,15 @@ public class BHBot {
      * @return name of the path in which the screenshot has been saved (successfully or not)
      */
     synchronized String saveGameScreen(String prefix) {
-        return Misc.saveScreen(prefix, null, browser.takeScreenshot(true));
+        return Misc.saveScreen(prefix, null, BHBot.includeMachineNameInScreenshots, browser.takeScreenshot(true));
     }
 
     synchronized String saveGameScreen(String prefix, BufferedImage img) {
-        return Misc.saveScreen(prefix, null, img);
+        return Misc.saveScreen(prefix, null, BHBot.includeMachineNameInScreenshots, img);
     }
 
     synchronized String saveGameScreen(String prefix, String subFolder) {
-        return Misc.saveScreen(prefix, subFolder, browser.takeScreenshot(true));
+        return Misc.saveScreen(prefix, subFolder, BHBot.includeMachineNameInScreenshots, browser.takeScreenshot(true));
     }
 
     void dumpCrashLog(Exception originalException) {

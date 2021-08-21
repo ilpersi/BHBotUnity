@@ -1,13 +1,11 @@
 package com.github.ilpersi.BHBot;
 
+import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLEncoder;
+import java.net.*;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -27,7 +25,18 @@ public class Misc {
 
     private static final Class<Misc> miscClass = Misc.class;
 
-    synchronized static String saveScreen(String prefix, String subFolder, BufferedImage img) {
+    /**
+     * This is the lord of the Screenshots: one method to rule them all. All the screenshots can have a customized prefix
+     * and the rest of the name is standard. It includes the date and optionally the machine name. This method will also
+     * take care of conflicting filenames adding a _<num> suffix to the filename.
+     *
+     * @param prefix The prefix that will be included in the screenshot file name
+     * @param subFolder A sub folder inside the screenshotPath one where the file will be saved. It can be null.
+     * @param includeMachineName Set to true if you want to include machine name in screenshot file name.
+     * @param img The image you want to save
+     * @return The final path of the saved image. If it was not possible to save the image, null is returned instead.
+     */
+    synchronized static String saveScreen(String prefix, @Nullable String subFolder, boolean includeMachineName, BufferedImage img) {
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
         // sub-folder logic management
@@ -49,8 +58,34 @@ public class Misc {
             screenshotPath += subFolder + "/";
         }
 
+        String machineName = "";
+
+        if (includeMachineName) {
+            InetAddress localMachine = null;
+            try {
+                localMachine = InetAddress.getLocalHost();
+            } catch (UnknownHostException e) {
+                BHBot.logger.warn("Impossible to get local host information.", e);
+            }
+
+            if (localMachine != null) {
+                // We get the host hame
+                machineName = localMachine.getHostName();
+
+                // We make sure that no weird characters are part of the file name
+                machineName = machineName.replaceAll("[^a-zA-Z0-9.-]", "");
+
+                // We add the "_" suffix so that in the final name the host name is separated from the date
+                if (machineName.length() > 0)
+                    machineName += "_";
+            }
+        }
+
+        prefix += "_";
+
         Date date = new Date();
-        String name = prefix + "_" + dateFormat.format(date) + ".png";
+
+        String name = prefix + machineName + dateFormat.format(date) + ".png";
         int num = 0;
         File f = new File(screenshotPath + name);
         while (f.exists()) {
@@ -88,7 +123,7 @@ public class Misc {
         do {
             shotCnt++;
             bot.readScreen();
-            Misc.saveScreen(startDate + "-" + prefix + "-" + shotCnt, "continuous-screenshots", bot.getImg());
+            Misc.saveScreen(startDate + "-" + prefix + "-" + shotCnt, "continuous-screenshots", BHBot.includeMachineNameInScreenshots, bot.getImg());
             Misc.sleep(delay);
         } while (Misc.getTime() <= timeout);
     }
@@ -358,7 +393,7 @@ public class Misc {
 
                 if (takeScreen) {
                     String screenName = String.format("scroller_%02d", posCnt);
-                    Misc.saveScreen(screenName, "ScrollBarPositions", bot.browser.getImg());
+                    Misc.saveScreen(screenName, "ScrollBarPositions", BHBot.includeMachineNameInScreenshots, bot.browser.getImg());
                 }
 
                 bot.browser.clickOnSeg(segDropDown);

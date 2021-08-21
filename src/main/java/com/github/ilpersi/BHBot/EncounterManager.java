@@ -129,7 +129,7 @@ public class EncounterManager {
 
         // We save all the errors and persuasions based on settings
         if ((familiarLevel.getValue() >= bot.settings.familiarScreenshot) || familiarLevel == FamiliarType.ERROR) {
-            Misc.saveScreen(persuasionLog.toString(), "familiars", bot.browser.getImg());
+            Misc.saveScreen(persuasionLog.toString(), "familiars", BHBot.includeMachineNameInScreenshots, bot.browser.getImg());
         }
 
         // if (bot.settings.contributeFamiliars) {
