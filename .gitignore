@@ -4,6 +4,11 @@
 # jar files
 *\.jar
 
+# archives
+*\.7z
+*\.zip
+*\.rar
+
 # Run time folders
 chrome_*/
 logs/
@@ -12,7 +17,7 @@ plans/
 data/
 
 # IntelliJ Files
-BHBot\.iml
+BHBot*\.iml
 \.idea
 
 # External executables
