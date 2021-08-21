@@ -3,7 +3,7 @@
 BHBot\.jar
 
 # Run time folders
-chrome_profile/
+chrome_*/
 logs/
 screenshots/
 plans/
@@ -15,6 +15,7 @@ BHBot\.iml
 
 # External executables
 chromedriver\.exe
+geckodriver*\.exe
 fisher-v1\.2\.4\.exe
 fishing\.exe
 
