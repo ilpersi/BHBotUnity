@@ -179,7 +179,7 @@ public class NotificationManager {
             }
 
             if (bot.settings.enableDiscord && bot.settings.discordNotifyErrors) {
-                discordManager.sendDiscordMessage(errorMsg, errorPrintScreen);
+                discordManager.sendDiscordMessage("@everyone " + errorMsg, errorPrintScreen);
             }
 
             if (errorPrintScreen != null && !errorPrintScreen.delete()) {
