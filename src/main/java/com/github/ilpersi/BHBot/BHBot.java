@@ -174,7 +174,10 @@ public class BHBot {
         logMaxDays = bot.settings.logMaxDays;
         logLevel = bot.settings.logLevel;
 
-        browserProfile = bot.settings.useFirefox ? "default" : "./chrome_profile";
+        // We only set a default value if not argument is provided
+        if ("".equals(browserProfile)) {
+            browserProfile = bot.settings.useFirefox ? "default" : "./chrome_profile";
+        }
 
         logger = BHBotLogger.create();
 
@@ -304,7 +307,7 @@ public class BHBot {
                             try {
                                 bot.settings.load(Settings.configurationFile);
                             } catch (FileNotFoundException e) {
-                                BHBot.logger.error("It was impossible to load setting file for scheduling : " + s.toString());
+                                BHBot.logger.error("It was impossible to load setting file for scheduling : " + s);
                                 continue;
                             }
 
@@ -319,7 +322,7 @@ public class BHBot {
                             bot.running = true;
                             bot.scheduler.resetIdleTime(true);
                             bot.processCommand("start");
-                            BHBot.logger.info("Current scheduler is: " + s.toString());
+                            BHBot.logger.info("Current scheduler is: " + s);
                             break;
                         }
                     }
@@ -615,7 +618,7 @@ public class BHBot {
 
                             for (Settings.ActivitiesScheduleSetting activityScheduling : settings.activitiesSchedule) {
                                 schedulingStr.append(activityScheduling.equals(currentScheduling) ? "[X] " : "[ ] ")
-                                        .append(activityScheduling.toString()).append("\n");
+                                        .append(activityScheduling).append("\n");
                             }
 
                             BHBot.logger.info(schedulingStr.toString());
@@ -637,7 +640,7 @@ public class BHBot {
                             cnt += 1;
 
                             Rectangle screenRect = new Rectangle(minx, miny, maxx-minx, maxy-miny);
-                            BHBot.logger.info("[Screen " + cnt + "] =>" + screenRect.toString() + " Scale => " + String.format("%.02f%%", scale));
+                            BHBot.logger.info("[Screen " + cnt + "] =>" + screenRect + " Scale => " + String.format("%.02f%%", scale));
                         }
                         break;
                     case "stats":
@@ -748,8 +751,8 @@ public class BHBot {
                 switch (params[1]) {
                     case "ai":
                     case "autoignore":
-                        boolean ignoreBoss = false;
-                        boolean ignoreShrines = false;
+                        Boolean ignoreBoss = null;
+                        Boolean ignoreShrines = null;
 
                         if (params.length > 2) {
                             switch (params[2].toLowerCase()) {
@@ -784,6 +787,17 @@ public class BHBot {
                                     break;
                             }
                         }
+
+                        if (ignoreBoss == null) {
+                            BHBot.logger.warn("No value is set for ignoreBoss, setting it to false.");
+                            ignoreBoss = true;
+                        }
+
+                        if (ignoreShrines == null) {
+                            BHBot.logger.warn("No value is set for ignoreShrines, setting it to false.");
+                            ignoreShrines = false;
+                        }
+
                         if (!dungeon.shrineManager.updateShrineSettings(ignoreBoss, ignoreShrines)) {
                             logger.error("Something went wrong when checking auto ignore settings!");
                         }
@@ -901,14 +915,23 @@ public class BHBot {
             int dumpCnt = 0;
             int dumpErrors = 0;
 
-            for (File file : new File("screenshots/screen-dump").listFiles()) {
-                dumpCnt++;
-                if (!file.delete()) {
-                    logger.debug("It was impossible to clean the screen dump named " + file.getAbsolutePath());
-                    dumpCnt--;
-                    dumpErrors++;
+            File screenDumpFile = new File("screenshots/screen-dump");
+
+            if (screenDumpFile.exists()) {
+                File[] screenDumpList = screenDumpFile.listFiles();
+
+                if (screenDumpList != null) {
+                    for (File file : screenDumpList) {
+                        dumpCnt++;
+                        if (!file.delete()) {
+                            logger.debug("It was impossible to clean the screen dump named " + file.getAbsolutePath());
+                            dumpCnt--;
+                            dumpErrors++;
+                        }
+                    }
                 }
             }
+
             logger.debug("Cleaned " + dumpCnt + " screen dumps.");
 
             if (dumpErrors > 0) {
