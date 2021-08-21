@@ -137,12 +137,10 @@ public class AutoShrineManager {
 
                 if (guildButtonSeg != null && battleDelay >= bot.settings.battleDelay) {
                     disableIgnoreShrines = true;
-                    usedInAdventure = true;
                     ignoreShrineMsg = bot.settings.battleDelay + "s since last encounter, disabling ignore shrines";
                 } else if (guildButtonSeg != null && bot.settings.positionDelay > 0
                         && bot.dungeon.positionChecker.isSamePosition(bot.browser.getImg(), bot.settings.positionDelay)) {
                     disableIgnoreShrines = true;
-                    usedInAdventure = true;
                     ignoreShrineMsg = "Position has not changed for " + bot.settings.positionDelay + " seconds, disabling ignore shrines";
                 }
 
@@ -188,6 +186,8 @@ public class AutoShrineManager {
                     bot.dungeon.setAutoOn(1000);
 
                     bot.scheduler.resetIdleTime(true);
+
+                    usedInAdventure = true;
                 }
             }
         }
