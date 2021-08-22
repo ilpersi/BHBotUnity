@@ -55,7 +55,8 @@ public class BHBot {
     private Thread blockerThread;
 
     private BHBot.State state; // at which stage of the game/menu are we currently?
-    private BHBot.State lastJoinedState;
+    private BHBot.State lastJoinedState = null;
+    private final String LAST_JOINED_CSV = "./data/last_status.csv";
 
     private long lastStateChange = Misc.getTime();
     /**
@@ -1045,7 +1046,49 @@ public class BHBot {
         return state;
     }
 
+    /**
+     * Get last joined state. The method tries to be smart. If the current last joined state is null, the method reads
+     * it from the state csv.
+     *
+     * @return The last joined state
+     */
     synchronized State getLastJoinedState() {
+
+        if (lastJoinedState == null) {
+            lastJoinedState = State.Unknown;
+
+            File stateCSV = new File(LAST_JOINED_CSV);
+
+            if (stateCSV.exists()) {
+                BufferedReader br;
+
+                try {
+                    br = new BufferedReader(new FileReader(stateCSV));
+
+                    try {
+                        String line = br.readLine();
+                        String[] data = line.split(";");
+
+                        if ("last_status".equals(data[0])) {
+                            lastJoinedState = State.fromShortcut(data[1]);
+
+                            if (lastJoinedState == null)
+                                lastJoinedState = State.Unknown;
+                        }
+                        br.close();
+                    } catch (IOException e) {
+                        BHBot.logger.error("Impossible to read file last status file: " + stateCSV.getAbsolutePath(), e);
+                    }
+                } catch (FileNotFoundException e) {
+                    BHBot.logger.error("Last status file not found in: " + stateCSV.getAbsolutePath(), e);
+                }
+
+
+            } else {
+                lastJoinedState = State.Unknown;
+            }
+        }
+
         return lastJoinedState;
     }
 
@@ -1054,8 +1097,29 @@ public class BHBot {
         this.state = state;
     }
 
+    /**
+     * This method is the setter for the lastJoinedState attribute
+     *
+     * @param state The state you want to set as the last valid one
+     */
     synchronized void setLastJoinedState(State state) {
         this.lastJoinedState = state;
+        this.saveLastJoinedToFile();
+    }
+
+    /**
+     * As the bot may crash, the last joined state is also saved in a CSV file so that it is persistent.
+     *
+     */
+    private void saveLastJoinedToFile() {
+        BufferedWriter writer;
+        try {
+            writer = new BufferedWriter(new FileWriter(LAST_JOINED_CSV));
+            writer.write(String.format("last_status;%s", lastJoinedState.getShortcut()));
+            writer.close();
+        } catch (IOException e) {
+            BHBot.logger.error("It was impossible to save last status to CSV file", e);
+        }
     }
 
     /**
@@ -1198,23 +1262,19 @@ public class BHBot {
         Gauntlet("Gauntlet", "g"),
         GVG("GVG", "v"),
         Invasion("Invasion", "i"),
-        Loading("Loading..."),
-        Main("Main screen"),
+        Loading("Loading...", "l"),
+        Main("Main screen", "m"),
         PVP("PVP", "p"),
         Raid("Raid", "r"),
         Trials("Trials", "t"),
         WorldBoss("World Boss", "w"),
         RerunWorldBoss("World Boss Rerun", "wr"),
         RerunRaid("Raid Rerun", "rr"),
-        RerunDungeon("Dungeon Rerun", "dr");
+        RerunDungeon("Dungeon Rerun", "dr"),
+        Unknown("Unknown Dungeon", "u");
 
         private final String name;
         private final String shortcut;
-
-        State(String name) {
-            this.name = name;
-            this.shortcut = null;
-        }
 
         State(String name, String shortcut) {
             this.name = name;
@@ -1233,6 +1293,13 @@ public class BHBot {
             for (State state : State.values())
                 if (state.shortcut != null && state.shortcut.equals(shortcut))
                     return state.name;
+            return null;
+        }
+
+        static State fromShortcut(String shortcut) {
+            for (State state : State.values())
+                if (state.shortcut != null && state.shortcut.equals(shortcut))
+                    return state;
             return null;
         }
     }
