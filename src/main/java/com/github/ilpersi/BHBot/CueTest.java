@@ -2,7 +2,7 @@ package com.github.ilpersi.BHBot;
 
 public class CueTest {
     public static void main(String[] args) {
-        String usage = "CueTest <imageToSearchPat> <cueImagePath>";
+        final String usage = "CueTest <imageToSearchPat> <cueImagePath>";
 
         if (args.length <2) {
             System.out.println(usage);
