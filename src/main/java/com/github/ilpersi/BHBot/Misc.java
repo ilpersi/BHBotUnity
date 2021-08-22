@@ -61,24 +61,14 @@ public class Misc {
         String machineName = "";
 
         if (includeMachineName) {
-            InetAddress localMachine = null;
-            try {
-                localMachine = InetAddress.getLocalHost();
-            } catch (UnknownHostException e) {
-                BHBot.logger.warn("Impossible to get local host information.", e);
-            }
+            machineName = Misc.getMachineName();
 
-            if (localMachine != null) {
-                // We get the host hame
-                machineName = localMachine.getHostName();
+            // We make sure that no weird characters are part of the file name
+            machineName = machineName.replaceAll("[^a-zA-Z0-9.-]", "");
 
-                // We make sure that no weird characters are part of the file name
-                machineName = machineName.replaceAll("[^a-zA-Z0-9.-]", "");
-
-                // We add the "_" suffix so that in the final name the host name is separated from the date
-                if (machineName.length() > 0)
-                    machineName += "_";
-            }
+            // We add the "_" suffix so that in the final name the host name is separated from the date
+            if (machineName.length() > 0)
+                machineName += "_";
         }
 
         prefix += "_";
@@ -324,7 +314,7 @@ public class Misc {
 
             throw new IllegalArgumentException("Unhandled url protocol: " +
                     resource.getProtocol() + " for class: " +
-                    miscClass.getName() + " resource: " + resource.toString());
+                    miscClass.getName() + " resource: " + resource);
         }
     }
 
@@ -533,5 +523,23 @@ public class Misc {
         }
         md.update(data);
         return Base64.getEncoder().encodeToString(md.digest());
+    }
+
+    static String getMachineName() {
+        String machineName = "";
+
+        InetAddress localMachine = null;
+        try {
+            localMachine = InetAddress.getLocalHost();
+        } catch (UnknownHostException e) {
+            BHBot.logger.warn("Impossible to get local host information.", e);
+        }
+
+        if (localMachine != null) {
+            // We get the host name
+            machineName = localMachine.getHostName();
+        }
+
+        return machineName;
     }
 }

@@ -49,23 +49,7 @@ public class BlockerThread implements Runnable {
 
                 bot.browser.manageLogin();
 
-                seg = MarvinSegment.fromCue("Selector", bot.browser);
-                if (seg != null) {
-                    String engineName = bot.settings.useUnityEngine ? "Unity" : "Flash";
-
-                    String selectCueName = bot.settings.useUnityEngine ? "OrangeSelect" : "LightBlueSelect";
-
-                    // We choose the engine based on the settings
-                    seg = MarvinSegment.fromCue(selectCueName, bot.browser);
-
-                    // Sometime the selector is there, but the select button is not so we check that
-                    if (seg != null) {
-                        BHBot.logger.info("Version selector detected. Choosing " + engineName + "...");
-                        bot.browser.closePopupSecurely(BHBot.cues.get("Selector"), BHBot.cues.get(selectCueName));
-                    }
-                    continue;
-                }
-
+                //region Unable to Connect
                 seg = MarvinSegment.fromCue(BHBot.cues.get("UnableToConnect"), bot.browser);
                 if (seg != null) {
                     BHBot.logger.info("'Unable to connect' dialog detected. Reconnecting...");
@@ -76,7 +60,9 @@ public class BlockerThread implements Runnable {
                     bot.setState(BHBot.State.Loading);
                     continue;
                 }
+                //endregion
 
+                //region Maintenance
                 // check for "Bit Heroes is currently down for maintenance. Please check back shortly!" window:
                 seg = MarvinSegment.fromCue(BHBot.cues.get("Maintenance"), bot.browser);
                 if (seg != null) {
@@ -87,7 +73,9 @@ public class BlockerThread implements Runnable {
                     bot.setState(BHBot.State.Loading);
                     continue;
                 }
+                //endregion
 
+                //region You have been disconnected
                 // check for "You have been disconnected" dialog:
                 MarvinSegment uhoh = MarvinSegment.fromCue(BHBot.cues.get("UhOh"), bot.browser);
                 MarvinSegment dc = MarvinSegment.fromCue(BHBot.cues.get("Disconnected"), bot.browser);
@@ -108,10 +96,12 @@ public class BlockerThread implements Runnable {
                     bot.setState(BHBot.State.Loading);
                     continue;
                 }
+                //endregion
 
                 // TODO ensure this field is properly synchronized
                 bot.scheduler.dismissReconnectOnNextIteration = false; // must be done after checking for "Disconnected" dialog!
 
+                //region New update required
                 // check for "There is a new update required to play" and click on "Reload" button:
                 seg = MarvinSegment.fromCue(BHBot.cues.get("Reload"), bot.browser);
                 if (seg != null) {
@@ -121,7 +111,9 @@ public class BlockerThread implements Runnable {
                     bot.setState(BHBot.State.Loading);
                     continue;
                 }
+                //endregion
 
+                // region Are You There?
                 // check for "Are you still there?" popup:
                 seg = MarvinSegment.fromCue(BHBot.cues.get("AreYouThere"), bot.browser);
                 if (seg != null) {
@@ -138,6 +130,9 @@ public class BlockerThread implements Runnable {
                     bot.browser.readScreen(Misc.Durations.SECOND);
                     continue;
                 }
+                // endregion
+
+                //region Gear Check
                 seg = MarvinSegment.fromCue(BHBot.cues.get("GearCheck"), bot.browser);
                 if (seg != null) {
                     seg = MarvinSegment.fromCue(BHBot.cues.get("Close"), 2 * Misc.Durations.SECOND, bot.browser);
@@ -146,17 +141,23 @@ public class BlockerThread implements Runnable {
                     bot.browser.readScreen(500);
                     continue;
                 }
+                //endregion
 
+                //region PM
                 if (!handlePM()) {
                     bot.restart(true, bot.browser.isDoNotShareUrl()); //*** problem: after a call to this, it will return to the main loop. It should call "continue" inside the main loop or else there could be other exceptions!
                     continue;
                 }
+                //endregion
 
+                //region Weekly reward
                 if (!handleWeeklyRewards()) {
                     bot.restart(true, false);
                     continue;
                 }
+                //endregion
 
+                //region Daily Reward
                 // check for daily rewards popup:
                 seg = MarvinSegment.fromCue(BHBot.cues.get("DailyRewards"), bot.browser);
                 if (seg != null) {
@@ -188,7 +189,9 @@ public class BlockerThread implements Runnable {
 
                     continue;
                 }
+                //endregion
 
+                //region Recently disconnected from a Dungeon
                 // check for "recently disconnected" popup:
                 seg = MarvinSegment.fromCue(BHBot.cues.get("RecentlyDisconnected"), bot.browser);
                 if (seg != null) {
@@ -235,7 +238,9 @@ public class BlockerThread implements Runnable {
                     bot.dungeon.shrineManager.updateShrineSettings(false, false); //in case we are stuck in a dungeon lets enable shrines/boss
                     continue;
                 }
+                //endregion
 
+                //region News Popup
                 // check for "News" popup:
                 seg = MarvinSegment.fromCue(BHBot.cues.get("News"), bot.browser);
                 if (seg != null) {
@@ -247,7 +252,9 @@ public class BlockerThread implements Runnable {
 
                     continue;
                 }
+                //endregion
 
+                //region Fishing Popup
                 // Sometimes the game is presenting fishing baits at login
                 if (!BHBot.State.FishingBaits.equals(bot.getState())) {
                     seg = MarvinSegment.fromCue("Fishing_Bait", 0, Bounds.fromWidthHeight(455, 190, 85, 90), bot.browser);
@@ -263,6 +270,7 @@ public class BlockerThread implements Runnable {
                         continue;
                     }
                 }
+                //endregion
             } catch (Exception e) {
                 if (bot.excManager.manageException(e)) continue;
                 bot.scheduler.resetIdleTime();

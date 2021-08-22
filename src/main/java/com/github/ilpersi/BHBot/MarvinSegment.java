@@ -195,7 +195,7 @@ public class MarvinSegment {
      *
      * @param cue The cue to search
      * @param timeout maximum time to wait until cue is null
-     * @param browserManager The browser manager uset to perform the searc
+     * @param browserManager The browser manager uset to perform the search
      * @return true if cue was not found otherwise false
      */
     @SuppressWarnings("SameParameterValue")
