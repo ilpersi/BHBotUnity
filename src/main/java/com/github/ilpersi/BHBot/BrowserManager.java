@@ -34,7 +34,7 @@ public class BrowserManager {
     private WebElement game;
     private String doNotShareUrl = "";
 
-    private BufferedImage img; // latest screen capture
+    private BufferedImage img = null; // latest screen capture
     private final BHBot bot;
 
     private final String browserProfile;
@@ -99,8 +99,8 @@ public class BrowserManager {
                 caps = ((RemoteWebDriver) driver).getCapabilities();
             }
         } else {
-            ProfilesIni profileIni = new ProfilesIni();
-            FirefoxProfile profile = profileIni.getProfile(browserProfile);
+//            ProfilesIni profileIni = new ProfilesIni();
+//            FirefoxProfile profile = profileIni.getProfile(browserProfile);
 
             FirefoxOptions options = new FirefoxOptions();
 //            options.setProfile(profile);
@@ -328,7 +328,7 @@ public class BrowserManager {
                     result = bImageFromConvert.getSubimage(x, y, width, height);
                 } catch (java.awt.image.RasterFormatException e) {
                     jsExecutor.executeScript("arguments[0].scrollIntoView(true);", game);
-                    BHBot.logger.debug("Error when taking screenshot based on getBoundingClientRect()", e);
+                    BHBot.logger.trace("Error when taking screenshot based on getBoundingClientRect()", e);
                     return new BufferedImage(800, 520, BufferedImage.TYPE_INT_RGB);
                 }
 
@@ -532,6 +532,9 @@ public class BrowserManager {
     }
 
     synchronized public BufferedImage getImg() {
+        if (img == null)
+            readScreen();
+
         return img;
     }
 
