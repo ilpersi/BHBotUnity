@@ -435,41 +435,43 @@ public class BrowserManager {
      * @return false in case it failed to close it (timed out).
      */
     synchronized boolean closePopupSecurely(Cue popup, Cue close) {
-        MarvinSegment seg1, seg2;
+        MarvinSegment closeSeg, popupSeg;
 
         final int timeOutDuration = Misc.Durations.SECOND * 10;
         final int WAIT_DELAY = Misc.Durations.SECOND;
 
-        seg1 = MarvinSegment.fromCue(close, bot.browser);
-        seg2 = MarvinSegment.fromCue(popup, bot.browser);
+        closeSeg = MarvinSegment.fromCue(close, bot.browser);
+        popupSeg = MarvinSegment.fromCue(popup, bot.browser);
 
         // make sure popup window is on the screen (or else wait until it appears):
         long timeOut = Misc.getTime() + timeOutDuration;
-        while (seg2 == null) {
+        while (popupSeg == null) {
             if (Misc.getTime() > timeOut) {
-                BHBot.logger.error("Error: unable to close popup <" + popup.name + "> securely: popup cue not detected!");
+                BHBot.logger.error("Error: unable to close popup <" + popup + "> securely: popup cue not detected!");
+                Misc.saveScreen("closePopupSecurely-popup-not-detected", "errors", true, bot.browser.getImg());
                 return false;
             }
 
-            seg2 = MarvinSegment.fromCue(popup, WAIT_DELAY, bot.browser);
+            popupSeg = MarvinSegment.fromCue(popup, WAIT_DELAY, bot.browser);
         }
 
         timeOut = Misc.getTime() + timeOutDuration;
         // there is no more popup window, so we're finished!
-        while (seg2 != null) {
-            if (seg1 != null) {
-                bot.browser.clickOnSeg(seg1);
+        while (popupSeg != null) {
+            if (closeSeg != null) {
+                bot.browser.clickOnSeg(closeSeg);
                 if (MarvinSegment.waitForNull(close, WAIT_DELAY, bot.browser)) return true;
             }
 
             if (Misc.getTime() > timeOut) {
-                BHBot.logger.error("Error: unable to close popup <" + popup.name + "> securely: either close button has not been detected or popup would not close!");
+                BHBot.logger.error("Error: unable to close popup <" + popup + "> securely: either close button < " + close + " > has not been detected or popup would not close!");
                 BHBot.logger.error(Misc.getStackTrace());
+                Misc.saveScreen("closePopupSecurely-close-error", "errors", true, bot.browser.getImg());
                 return false;
             }
 
-            seg1 = MarvinSegment.fromCue(close, WAIT_DELAY, bot.browser);
-            seg2 = MarvinSegment.fromCue(popup, WAIT_DELAY, bot.browser);
+            closeSeg = MarvinSegment.fromCue(close, WAIT_DELAY, bot.browser);
+            popupSeg = MarvinSegment.fromCue(popup, WAIT_DELAY, bot.browser);
         }
 
         return true;
