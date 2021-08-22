@@ -221,6 +221,7 @@ public class BHBot {
 
         gitProperties = Misc.getGITInfo();
         logger.info(MessageFormat.format("GIT commit id: {0}  time: {1}", gitProperties.get("git.commit.id"), gitProperties.get("git.commit.time")));
+        logger.info(String.format("Hostname: %s", Misc.getMachineName()));
         logger.info(String.format("Hosting OS: '%s'", System.getProperty("os.name")));
 
         /*if (!"UNKNOWN".equals(BHBotVersion)) {
