@@ -195,7 +195,7 @@ public class BlockerThread implements Runnable {
                 // check for "recently disconnected" popup:
                 seg = MarvinSegment.fromCue(BHBot.cues.get("RecentlyDisconnected"), bot.browser);
                 if (seg != null) {
-                    seg = MarvinSegment.fromCue(BHBot.cues.get("YesGreen"), 2 * Misc.Durations.SECOND, bot.browser);
+                    seg = MarvinSegment.fromCue(BHBot.cues.get("YesGreen"), 2 * Misc.Durations.SECOND, Bounds.fromWidthHeight(290, 330, 85, 60), bot.browser);
                     if (seg == null) {
                         BHBot.logger.error("Error: detected 'recently disconnected' popup but could not find 'Yes' button. Restarting...");
                         bot.restart(true, false);
@@ -205,6 +205,7 @@ public class BlockerThread implements Runnable {
                     bot.browser.clickOnSeg(seg);
                     if (bot.getState() == BHBot.State.Main || bot.getState() == BHBot.State.Loading) {
                         // we set this when we are not sure of what type of dungeon we are doing
+                        BHBot.logger.info("Setting state to: " + bot.getLastJoinedState().getName());
                         bot.setState(bot.getLastJoinedState());
                     } else {
                         BHBot.logger.debug("RecentlyDisconnected status is: " + bot.getState());
