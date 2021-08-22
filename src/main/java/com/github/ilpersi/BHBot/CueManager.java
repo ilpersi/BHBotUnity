@@ -340,7 +340,6 @@ class CueManager {
         addCue("GuildButton", "cues/cueGuildButton.png", new Bounds(500, 420, 590, 518));
         addCue("IgnoreCheck", "cues/cueIgnoreCheck.png", null);
 
-        addCue("Quest", "cues/cueQuest.png", new Bounds(0, 0, 40, 40)); // cue for quest (dungeons) button
         addCue("ZonesButton", "cues/cueZonesButton.png", new Bounds(105, 60, 125, 75));
         addCue("Zone1", "cues/cueZone1.png", Bounds.fromWidthHeight(290, 45, 220, 55));
         addCue("Zone2", "cues/cueZone2.png", null);
@@ -643,6 +642,12 @@ class CueManager {
         addCue("ConsumableSpeedMinor", "unitycues/autoConsume/consumables/cueConsumableSpeedMinor.png", null);
         addCue("ConsumableGoldMinor", "unitycues/autoConsume/consumables/cueConsumableGoldMinor.png", null);
         addCue("ConsumableItemMinor", "unitycues/autoConsume/consumables/cueConsumableItemMinor.png", null);
+
+        addCue("Filter", "unitycues/autoConsume/cueFilter.png", Bounds.fromWidthHeight(505, 90, 150, 60)); // Orange Filter button on character screen
+        addCue("FilterTitle", "unitycues/autoConsume/cueFilterTitle.png", Bounds.fromWidthHeight(320, 110, 155, 70)); // Filter title after you click the orange button
+        addCue("ConsumablesBtn", "unitycues/autoConsume/cueConsumablesBtn.png", Bounds.fromWidthHeight(405, 255, 205, 50)); // Consumables Button in filter menu
+        addCue("ConsumableHaveFun", "unitycues/autoConsume/cueConsumableHaveFun.png", Bounds.fromWidthHeight(300, 70, 200, 50)); // Have Fun text on top of the consumable confirmation screen
+        addCue("ConsumableDone", "unitycues/autoConsume/cueConsumableDone.png", Bounds.fromWidthHeight(340, 445, 120, 55)); // Green Done button after the consumable is used
         //endregion
 
         //region Blockers
@@ -661,7 +666,7 @@ class CueManager {
         addCue("StripSelectorButton", "unitycues/characterMenu/cueStripSelectorButton.png", Bounds.fromWidthHeight(445, 105, 255, 65));
         addCue("FilterConsumables", "unitycues/characterMenu/cueFilterConsumables.png", Bounds.fromWidthHeight(460, 110, 190, 50));
         addCue("StripItemsTitle", "unitycues/characterMenu/cueStripItemsTitle.png", Bounds.fromWidthHeight(460, 110, 190, 50));
-        addCue("Runes", "unitycues/characterMenu/cueRunes.png", Bounds.fromWidthHeight(135, 450, 100, 50));
+        addCue("Runes", "unitycues/characterMenu/cueRunes.png", Bounds.fromWidthHeight(110, 460, 95, 50)); // The purple rune button in character menu.
         //endregion
 
         //region Common
@@ -736,8 +741,9 @@ class CueManager {
 
         //region Main screen cues
         addCue("Main", "unitycues/mainScreen/cueMainScreen.png", Bounds.fromWidthHeight(60, 5, 140, 40)); // Gem cue used to identify the main screen
+        addCue("Quest", "unitycues/mainScreen/cueQuestButton.png", Bounds.fromWidthHeight(10, 5, 50, 75)); // Quest icon used to open the dungeon menu.
         addCue("SettingsGear", "unitycues/mainScreen/cueSettingsGear.png", Bounds.fromWidthHeight(665, 450, 55, 65)); // settings button
-        addCue("RaidButton", "unitycues/mainScreen/cueRaidButton.png", Bounds.fromWidthHeight(15, 200, 45, 200)); // Raid button
+        addCue("RaidButton", "unitycues/mainScreen/cueRaidButton.png", Bounds.fromWidthHeight(20, 295, 40, 65)); // Ruby icon used to open the raid menu.
         addCue("GorMenu", "unitycues/mainScreen/cueGorMenu.png", Bounds.fromWidthHeight(95, 465, 55, 60)); // Permagor menu close to the Character menu
         //endregion
 

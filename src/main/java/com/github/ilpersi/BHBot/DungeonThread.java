@@ -3537,6 +3537,7 @@ public class DungeonThread implements Runnable {
             return false;
         }
 
+        // TODO fix kong selection bug
         if (!onlyR1 && (selectedRaid != desiredRaid)) {
             // we need to change the raid type!
             BHBot.logger.info("Changing from R" + selectedRaid + " to R" + desiredRaidZone);
@@ -4818,65 +4819,27 @@ public class DungeonThread implements Runnable {
         BHBot.logger.info("Trying to consume some consumables (" + Misc.listToString(consumables) + ")...");
 
         // click on the character menu button (it's a bottom-left button with your character image on it):
-        if (openCharacterMenu()) return;
-
-        seg = MarvinSegment.fromCue(BHBot.cues.get("StripSelectorButton"), 15 * Misc.Durations.SECOND, bot.browser);
-        if (seg == null) {
-            BHBot.logger.warn("Error: unable to detect equipment filter button! Skipping...");
+        if (openCharacterMenu()) {
+            BHBot.logger.warn("AutoConsume functionality was not able to open the Character Menu");
             return;
         }
 
-        // now lets select the <Consumables> category (if it is not already selected):
-        seg = MarvinSegment.fromCue(BHBot.cues.get("FilterConsumables"), 500, bot.browser);
-        if (seg == null) { // if not, right category (<Consumables>) is already selected!
-            // OK we need to manually select the <Consumables> category!
-            seg = MarvinSegment.fromCue(BHBot.cues.get("StripSelectorButton"), bot.browser);
-            bot.browser.clickOnSeg(seg);
-
-            MarvinSegment.fromCue(BHBot.cues.get("StripItemsTitle"), 10 * Misc.Durations.SECOND, bot.browser); // waits until "Items" popup is detected
-            bot.browser.readScreen(500); // to stabilize sliding popup a bit
-
-            int scrollerPos = detectEquipmentFilterScrollerPos();
-            if (scrollerPos == -1) {
-                BHBot.logger.warn("Problem detected: unable to detect scroller position in the character window (location #1)! Skipping consumption of consumables...");
-                return;
-            }
-
-            int[] yButtonPositions = {170, 230, 290, 350, 410}; // center y positions of the 5 buttons
-            int xButtonPosition = 390;
-
-            if (scrollerPos != 0) {
-                // we must scroll up!
-                int move = scrollerPos;
-                seg = MarvinSegment.fromCue(BHBot.cues.get("DropDownUp"), 5 * Misc.Durations.SECOND, bot.browser);
-                for (int i = 0; i < move; i++) {
-                    bot.browser.clickOnSeg(seg);
-                    scrollerPos--;
-                }
-            }
-
-            // make sure scroller is in correct position now:
-            bot.browser.readScreen(2000); // so that the scroller stabilizes a bit //Quick Fix slow down
-            int newScrollerPos = detectEquipmentFilterScrollerPos();
-            int counter = 0;
-            while (newScrollerPos != scrollerPos) {
-                if (counter > 3) {
-                    BHBot.logger.warn("Problem detected: unable to adjust scroller position in the character window (scroller position: " + newScrollerPos + ", should be: " + scrollerPos + ")! Skipping consumption of consumables...");
-                    return;
-                }
-                bot.browser.readScreen(Misc.Durations.SECOND);
-                newScrollerPos = detectEquipmentFilterScrollerPos();
-                counter++;
-            }
-            bot.browser.clickInGame(xButtonPosition, yButtonPositions[1]);
-            // clicking on the button will close the window automatically... we just need to wait a bit for it to close
-            MarvinSegment.fromCue(BHBot.cues.get("StripSelectorButton"), 5 * Misc.Durations.SECOND, bot.browser); // we do this just in order to wait for the previous menu to reappear
+        seg = MarvinSegment.fromCue(BHBot.cues.get("Filter"), 10 * Misc.Durations.SECOND, bot.browser);
+        if (seg == null) {
+            BHBot.logger.warn("Error: unable to detect orange filter button! Skipping...");
+            return;
         }
 
-        // now consume the consumable(s):
+        // We click the filter button
+        bot.browser.clickOnSeg(seg);
+        MarvinSegment.waitForNull(BHBot.cues.get("Filter"), Misc.Durations.SECOND, bot.browser);
 
+        // now let's select the <Consumables> button from the filter selection
+        bot.browser.closePopupSecurely(BHBot.cues.get("FilterTitle"), BHBot.cues.get("ConsumablesBtn"));
+
+        // now consume the consumable(s):
         bot.browser.readScreen(500); // to stabilize window a bit
-        Bounds bounds = new Bounds(450, 165, 670, 460); // detection area (where consumables icons are visible)
+        Bounds consumableBounds = new Bounds(450, 165, 670, 460); // detection area (where consumables icons are visible)
 
         MarvinSegment DropDownDown = null;
 
@@ -4884,21 +4847,14 @@ public class DungeonThread implements Runnable {
             waitForInventoryIconsToLoad(); // first of all, lets make sure that all icons are loaded
             for (Iterator<ConsumableType> i = consumables.iterator(); i.hasNext(); ) {
                 ConsumableType c = i.next();
-                seg = MarvinSegment.fromCue(new Cue(c.getInventoryCue(), bounds), bot.browser);
+                seg = MarvinSegment.fromCue(new Cue(c.getInventoryCue(), consumableBounds), bot.browser);
                 if (seg != null) {
                     // OK we found the consumable icon! Lets click it...
                     bot.browser.clickOnSeg(seg);
                     MarvinSegment.fromCue(BHBot.cues.get("ConsumableTitle"), 5 * Misc.Durations.SECOND, bot.browser); // wait for the consumable popup window to appear
                     bot.browser.readScreen(500); // wait for sliding popup to stabilize a bit
 
-                    /*
-                     *  Measure distance between "Consumable" (popup title) and "Yes" (green yes button).
-                     *  This seems to be the safest way to distinguish the two window types. Because text
-                     *  inside windows change and sometimes letters are wider apart and sometimes no, so it
-                     *  is not possible to detect cue like "replace" wording, or any other (I've tried that
-                     *  and failed).
-                     */
-
+                    // It may be possible that another (special) consumable is already there, we check this
                     if (!consumableReplaceCheck()) {
                         // don't consume the consumable... it's already in use!
                         BHBot.logger.warn("\"Replace consumable\" dialog detected for (" + c.getName() + "). Skipping...");
@@ -4908,7 +4864,11 @@ public class DungeonThread implements Runnable {
                         // consume the consumable:
                         bot.browser.closePopupSecurely(BHBot.cues.get("ConsumableTitle"), BHBot.cues.get("YesGreen"));
                     }
-                    MarvinSegment.fromCue(BHBot.cues.get("StripSelectorButton"), 5 * Misc.Durations.SECOND, bot.browser); // we do this just in order to wait for the previous menu to reappear
+
+                    // We close the consumable confirmation window
+                    bot.browser.closePopupSecurely(BHBot.cues.get("ConsumableHaveFun"), BHBot.cues.get("ConsumableDone"));
+
+                    MarvinSegment.fromCue(BHBot.cues.get("Filter"), 5 * Misc.Durations.SECOND, bot.browser); // we do this just in order to wait for the previous menu to reappear
                     i.remove();
                 }
             }
@@ -4921,6 +4881,11 @@ public class DungeonThread implements Runnable {
                 // lets scroll down, we only search for the arrow once
                 if (DropDownDown == null)
                     DropDownDown = MarvinSegment.fromCue(BHBot.cues.get("DropDownDown"), 5 * Misc.Durations.SECOND, bot.browser);
+
+                // We were not able to find the down arrow
+                if (DropDownDown == null) {
+
+                }
 
                 for (int i = 0; i < 4; i++) { //the menu has 4 rows so we move to the next four rows and check again
                     bot.browser.clickOnSeg(DropDownDown);
