@@ -87,12 +87,12 @@ class Bounds {
     @Override
     public String toString() {
         return new StringJoiner(", ", Bounds.class.getSimpleName() + "[", "]")
-                .add("x1=" + x1)
-                .add("y1=" + y1)
-                .add("x2=" + x2)
-                .add("y2=" + y2)
-                .add("width=" + width)
-                .add("height=" + height)
+                .add("x1 = '" + x1 + "'")
+                .add("y1 = '" + y1 + "'")
+                .add("x2 = '" + x2 + "'")
+                .add("y2 = '" + y2 + "'")
+                .add("width = '" + width + "'")
+                .add("height = '" + height + "'")
                 .toString();
     }
 }
