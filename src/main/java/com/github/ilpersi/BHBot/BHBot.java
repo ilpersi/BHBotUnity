@@ -18,8 +18,8 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.text.MessageFormat;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 
 public class BHBot {
@@ -517,6 +517,9 @@ public class BHBot {
                         logger.info("Forcing World Boss...");
                         scheduler.doWorldBossImmediately = true;
                         break;
+                    case "consumables":
+
+                        break;
                     default:
                         logger.warn("Unknown dungeon : '" + params[1] + "'");
                         break;
@@ -558,7 +561,7 @@ public class BHBot {
                     case "positions":
                         Misc.findScrollBarPositions(dungeon.bot, false);
                         break;
-                    case  "screen":
+                    case "screen":
                         Misc.findScrollBarPositions(dungeon.bot, true);
                         break;
                 }
@@ -630,19 +633,19 @@ public class BHBot {
                     case "screen-rect":
                         int minx = 0, miny = 0, maxx = 0, maxy = 0, cnt = 0;
                         GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
-                        for(GraphicsDevice device : environment.getScreenDevices()){
+                        for (GraphicsDevice device : environment.getScreenDevices()) {
 
                             Rectangle bounds = device.getDefaultConfiguration().getBounds();
                             minx = Math.min(minx, bounds.x);
                             miny = Math.min(miny, bounds.y);
-                            maxx = Math.max(maxx,  bounds.x+bounds.width);
-                            maxy = Math.max(maxy, bounds.y+bounds.height);
+                            maxx = Math.max(maxx, bounds.x + bounds.width);
+                            maxy = Math.max(maxy, bounds.y + bounds.height);
 
                             double scale = (double) device.getDisplayMode().getWidth() / (double) device.getDefaultConfiguration().getBounds().width;
 
                             cnt += 1;
 
-                            Rectangle screenRect = new Rectangle(minx, miny, maxx-minx, maxy-miny);
+                            Rectangle screenRect = new Rectangle(minx, miny, maxx - minx, maxy - miny);
                             BHBot.logger.info("[Screen " + cnt + "] =>" + screenRect + " Scale => " + String.format("%.02f%%", scale));
                         }
                         break;
@@ -725,7 +728,7 @@ public class BHBot {
             case "sd":
             case "screen-dump":
                 settings.dumpReadScreen = !settings.dumpReadScreen;
-                logger.info("Screen dump is now " + (settings.dumpReadScreen? "enabled" : "disabled") + ".");
+                logger.info("Screen dump is now " + (settings.dumpReadScreen ? "enabled" : "disabled") + ".");
                 break;
             case "set": {
                 List<String> list = new ArrayList<>();
@@ -980,7 +983,7 @@ public class BHBot {
 
             HashMap<String, String> updates = new HashMap<>();
 
-            for (GitHubRelease release: lastReleaseInfo) {
+            for (GitHubRelease release : lastReleaseInfo) {
 
                 String tagName = release.tagName;
                 String tagUrl = "https://api.github.com/repos/ilpersi/BHBot/git/refs/tags/" + tagName;
@@ -1030,7 +1033,7 @@ public class BHBot {
             if (updates.size() > 0) {
                 logger.warn("Your current version is " + updates.size() + " version behind the latest released one. Here is a list of updates:");
 
-                for (Map.Entry<String, String> vu: updates.entrySet()) {
+                for (Map.Entry<String, String> vu : updates.entrySet()) {
                     logger.warn(vu.getKey() + " updates:");
                     for (String line : vu.getValue().split("\n")) {
                         logger.warn(line);
