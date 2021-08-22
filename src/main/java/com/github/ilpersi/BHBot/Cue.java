@@ -31,4 +31,14 @@ public class Cue {
         this.im = cue.im;
         this.bounds = bounds;
     }
+
+    @Override
+    public String toString() {
+        return "Cue [" +
+                "name='" + name + '\'' +
+                ", path='" + path + '\'' +
+                ", im=" + im +
+                ", bounds=" + bounds +
+                ']';
+    }
 }
