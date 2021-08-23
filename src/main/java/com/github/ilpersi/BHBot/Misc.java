@@ -132,7 +132,7 @@ public class Misc {
         static final Point TG = new Point(0, 23);
     }
 
-    static final Bounds SIGNATURE_BOUNDS = Bounds.fromWidthHeight(87, 108, 1, 350);
+    static final Bounds SIGNATURE_BOUNDS = Bounds.fromWidthHeight(90, 400, 70, 60);
 
     /**
      * Return time in milliseconds from the start of the system. Can have a negative value.
