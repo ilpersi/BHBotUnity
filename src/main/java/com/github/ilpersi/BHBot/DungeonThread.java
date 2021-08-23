@@ -782,14 +782,14 @@ public class DungeonThread implements Runnable {
                                     Cue cueDifficulty;
                                     switch (dungeonSetting.difficulty) {
                                         case 1:
-                                            cueDifficulty = bot.settings.useUnityEngine ? BHBot.cues.get("DungNormal") : new Cue(BHBot.cues.get("Normal"), Bounds.fromWidthHeight(155, 225, 110, 40));
+                                            cueDifficulty = BHBot.cues.get("DungNormal");
                                             break;
                                         case 2:
-                                            cueDifficulty = bot.settings.useUnityEngine ? BHBot.cues.get("DungHard") : new Cue(BHBot.cues.get("Hard"), null);
+                                            cueDifficulty = BHBot.cues.get("DungHard");
                                             break;
                                         case 3:
                                         default:
-                                            cueDifficulty = bot.settings.useUnityEngine ? BHBot.cues.get("DungHeroic") : new Cue(BHBot.cues.get("Heroic"), Bounds.fromWidthHeight(525, 225, 140, 40));
+                                            cueDifficulty = BHBot.cues.get("DungHeroic");
                                             break;
                                     }
 
