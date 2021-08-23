@@ -183,6 +183,7 @@ public class BlockerThread implements Runnable {
                     }
                     // TODO Add bounds
                     seg = MarvinSegment.fromCue(BHBot.cues.get("X"), bot.browser);
+                    // TODO Chec if seg is null
                     bot.browser.clickOnSeg(seg);
                     BHBot.logger.info("Daily reward claimed successfully.");
                     bot.browser.readScreen(2 * Misc.Durations.SECOND);

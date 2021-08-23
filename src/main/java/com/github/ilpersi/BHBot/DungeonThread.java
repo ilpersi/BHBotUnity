@@ -799,6 +799,7 @@ public class DungeonThread implements Runnable {
                                 if (seg == null) {
                                     bot.settings.activitiesEnabled.remove("d");
                                     BHBot.logger.error("It was impossible to get difficulty button of dungeon z" + goalZone + "d" + goalDungeon + ". Dungeons are now disabled!");
+                                    Misc.saveScreen("dungeon-no-difficulty-btn", "errors", true, bot.browser.getImg());
                                     bot.notificationManager.sendErrorNotification("Dungeon error", "It was impossible to get difficulty button of dungeon z" + goalZone + "d" + goalDungeon + ". Dungeons are now disabled!");
                                     bot.browser.closePopupSecurely(BHBot.cues.get("X"), BHBot.cues.get("X"));
                                     continue;
@@ -2418,12 +2419,7 @@ public class DungeonThread implements Runnable {
                 } else {
 
                     //close 'cleared' popup
-                    Bounds TownBounds = null;
-                    if (BHBot.State.Raid.equals(bot.getState()) || BHBot.State.Dungeon.equals(bot.getState())) {
-                        TownBounds = Bounds.fromWidthHeight(440, 455, 95, 50);
-                    }
-
-                    bot.browser.closePopupSecurely(BHBot.cues.get("ClearedRecap"), new Cue(BHBot.cues.get("Town"), TownBounds));
+                    bot.browser.closePopupSecurely(BHBot.cues.get("ClearedRecap"), BHBot.cues.get("Town"));
 
                     // close the activity window to return us to the main screen
                     if (bot.getState() != BHBot.State.Expedition) {

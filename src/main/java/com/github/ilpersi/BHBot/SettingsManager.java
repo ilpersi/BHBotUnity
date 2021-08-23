@@ -51,11 +51,12 @@ public class SettingsManager {
             settingConfigs.put("settingsMusic", "rel:4;5:1");
             settingConfigs.put("settingsSound", "rel:4;5:1");
             settingConfigs.put("settingsNotification", "rel:20;20:3");
-            settingConfigs.put("settingsWBReq", "rel:24;24:6");
-            settingConfigs.put("settingsReducedFX", "rel:22;22:8");
-            settingConfigs.put("settingsBattleTXT", "rel:23;25:9");
-            settingConfigs.put("settingsAnimations", "rel:21;25:10");
+            settingConfigs.put("settingsWBReq", "rel:24;24:7");
+            settingConfigs.put("settingsReducedFX", "rel:22;22:10");
+            settingConfigs.put("settingsBattleTXT", "rel:22;24:10");
+            settingConfigs.put("settingsAnimations", "rel:22;21:11");
             settingConfigs.put("settingsMerchants", "rel:20;22:19");
+            settingConfigs.put("settingsTips", "rel:20;22:23");
 
             // Regular expression to understand how the bot should click on settings based on the previous hashmap
             Pattern clickRegex = Pattern.compile("(?<click>rel|abs):(?<x>\\d+);(?<y>\\d+):(?<barPosition>\\d{1,2})");

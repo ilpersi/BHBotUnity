@@ -688,7 +688,7 @@ class CueManager {
         addCue("Speed1X", "unitycues/common/cueSpeed1X.png", Bounds.fromWidthHeight(20, 465, 40, 35)); // 1X Speed cue
         addCue("ClearedRecap", "unitycues/common/cueClearedRecap.png", Bounds.fromWidthHeight(320, 55, 165, 50)); // Cleared message on top of the victory recap screen
         addCue("Rerun", "unitycues/common/cueRerun.png", Bounds.fromWidthHeight(86, 445, 641, 57)); // Green "Rerun" button on the victory recap screen
-        addCue("Town", "unitycues/common/cueTown.png", Bounds.fromWidthHeight(440, 455, 95, 50)); // The Red "Town" button on the victory/defeat recap screen
+        addCue("Town", "unitycues/common/cueTown.png", Bounds.fromWidthHeight(365, 455, 210, 50)); // The Red "Town" button on the victory/defeat recap screen
         //endregion
 
         //region Dungeon
@@ -786,6 +786,7 @@ class CueManager {
         addCue("settingsBattleTXT", "unitycues/settings/cueSettingsBattleTXT.png", Bounds.fromWidthHeight(155, 265, 250, 75));
         addCue("settingsAnimations", "unitycues/settings/cueSettingsAnimations.png", Bounds.fromWidthHeight(155, 295, 220, 75));
         addCue("settingsMerchants", "unitycues/settings/cueSettingsMerchants.png", Bounds.fromWidthHeight(160, 315, 330, 70));
+        addCue("settingsTips", "unitycues/settings/cueSettingsTips.png", Bounds.fromWidthHeight(160, 290, 335, 65)); // Tips when defeated setting.
         //end region
 
         //region scrollBar

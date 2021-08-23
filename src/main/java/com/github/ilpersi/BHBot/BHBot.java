@@ -74,6 +74,8 @@ public class BHBot {
     // currently used scheduling
     Settings.ActivitiesScheduleSetting currentScheduling = null;
 
+    private static String machineName = Misc.getMachineName();
+
     public static void main(String[] args) {
         BHBot bot = new BHBot();
         bot.notificationManager = new NotificationManager(bot);
@@ -222,7 +224,7 @@ public class BHBot {
 
         gitProperties = Misc.getGITInfo();
         logger.info(MessageFormat.format("GIT commit id: {0}  time: {1}", gitProperties.get("git.commit.id"), gitProperties.get("git.commit.time")));
-        logger.info(String.format("Hostname: %s", Misc.getMachineName()));
+        logger.info(String.format("Hostname: %s", machineName));
         logger.info(String.format("Hosting OS: '%s'", System.getProperty("os.name")));
 
         /*if (!"UNKNOWN".equals(BHBotVersion)) {
@@ -340,6 +342,13 @@ public class BHBot {
         bot.stop();
         reader.close();
         logger.info(PROGRAM_NAME + " has finished.");
+    }
+
+    public static String getMachineName() {
+        if (machineName.length() == 0)
+            machineName = Misc.getMachineName();
+
+        return machineName;
     }
 
     private void stop() {
@@ -552,7 +561,7 @@ public class BHBot {
                 break;
             case "menu":
                 if (params.length <= 1) {
-                    BHBot.logger.error("Not enough parameters for menu command");
+                    BHBot.logger.error("Not enough parameters for menu command. Available commands are 'pos', 'screen'");
                     break;
                 }
 

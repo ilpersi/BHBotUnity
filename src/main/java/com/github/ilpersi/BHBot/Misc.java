@@ -61,7 +61,7 @@ public class Misc {
         String machineName = "";
 
         if (includeMachineName) {
-            machineName = Misc.getMachineName();
+            machineName = BHBot.getMachineName();
 
             // We make sure that no weird characters are part of the file name
             machineName = machineName.replaceAll("[^a-zA-Z0-9.-]", "");

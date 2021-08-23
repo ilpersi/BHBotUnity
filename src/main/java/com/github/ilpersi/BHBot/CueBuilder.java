@@ -413,18 +413,20 @@ public class CueBuilder {
                 Set.of(), "settingsMusic", "unitycues/settings/cueSettingsMusic.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "settings_01(.*)\\.png", Bounds.fromWidthHeight(354, 254, 9, 31),
                 Set.of(), "settingsSound", "unitycues/settings/cueSettingsSound.png", "");
-        addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "settings_03(.*)\\.png", Bounds.fromWidthHeight(171, 345, 228, 43),
+        addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "scroller_03_(.*)\\.png", Bounds.fromWidthHeight(169, 342, 217, 41),
                 Set.of(), "settingsNotification", "unitycues/settings/cueSettingsNotification.png", "");
-        addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "settings_06(.*)\\.png", Bounds.fromWidthHeight(166, 290, 345, 45),
+        addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "scroller_07_(.*)\\.png", Bounds.fromWidthHeight(170, 309, 333, 45),
                 Set.of(), "settingsWBReq", "unitycues/settings/cueSettingsWBReq.png", "");
-        addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "settings_08(.*)\\.png", Bounds.fromWidthHeight(169, 345, 272, 41),
+        addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "scroller_10_(.*)(.*)\\.png", Bounds.fromWidthHeight(170, 256, 267, 39),
                 Set.of(), "settingsReducedFX", "unitycues/settings/cueSettingsReducedFX.png", "");
-        addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "settings_09(.*)\\.png", Bounds.fromWidthHeight(168, 279, 226, 49),
+        addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "scroller_10_(.*)\\.png", Bounds.fromWidthHeight(170, 297, 208, 43),
                 Set.of(), "settingsBattleTXT", "unitycues/settings/cueSettingsBattleTXT.png", "");
-        addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "settings_10(.*)\\.png", Bounds.fromWidthHeight(167, 306, 196, 50),
+        addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "scroller_11_(.*)\\.png", Bounds.fromWidthHeight(170, 326, 183, 39),
                 Set.of(), "settingsAnimations", "unitycues/settings/cueSettingsAnimations.png", "");
-        addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "settings_19(.*)\\.png", Bounds.fromWidthHeight(170, 329, 307, 46),
+        addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "scroller_20_(.*)\\.png", Bounds.fromWidthHeight(170, 334, 295, 40),
                 Set.of(), "settingsMerchants", "unitycues/settings/cueSettingsMerchants.png", "");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "scroller_23_(.*)\\.png", Bounds.fromWidthHeight(170, 303, 315, 40),
+                Set.of(), "settingsTips", "unitycues/settings/cueSettingsTips.png", "Tips when defeated setting.");
         //endregion settings
 
         //region T/G
