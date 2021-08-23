@@ -37,7 +37,6 @@ public class Cue {
         return "Cue [" +
                 "name='" + name + '\'' +
                 ", path='" + path + '\'' +
-                ", im=" + im +
                 ", bounds=" + bounds +
                 ']';
     }
