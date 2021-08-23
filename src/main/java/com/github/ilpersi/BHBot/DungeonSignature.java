@@ -41,7 +41,7 @@ public class DungeonSignature {
             buildSignatures();
             this.saveToJson();
 
-            zone = this.zoneSignatures.getOrDefault(signature, 0);
+            zone = this.zoneSignatures.getOrDefault(this.getCurrentZoneSignature(), 0);
         }
 
         return zone;
@@ -105,9 +105,8 @@ public class DungeonSignature {
         do {
             seg = MarvinSegment.fromCue(BHBot.cues.get("RightArrow"), bot.browser);
             zoneCount++;
-            BufferedImage zoneSignatureImg = bot.browser.getImg().getSubimage(Misc.SIGNATURE_BOUNDS.x1, Misc.SIGNATURE_BOUNDS.y1, Misc.SIGNATURE_BOUNDS.width, Misc.SIGNATURE_BOUNDS.height);
-            String signature = Misc.imgToMD5(zoneSignatureImg);
 
+            String signature = this.getCurrentZoneSignature();
             this.zoneSignatures.put(signature, zoneCount);
             BHBot.logger.debug(signature + " -> " + zoneCount);
 
@@ -117,6 +116,17 @@ public class DungeonSignature {
             }
 
         } while (seg != null);
+    }
+
+    /**
+     * This method will return the signature for the current zone. This method assumes that the quest selection window is opened.
+     *
+     * @return The MD5 hash for the current zone.
+     */
+    String getCurrentZoneSignature() {
+        BufferedImage zoneSignatureImg = bot.browser.getImg().getSubimage(Misc.SIGNATURE_BOUNDS.x1, Misc.SIGNATURE_BOUNDS.y1, Misc.SIGNATURE_BOUNDS.width, Misc.SIGNATURE_BOUNDS.height);
+
+        return Misc.imgToMD5(zoneSignatureImg);
     }
 
     /**

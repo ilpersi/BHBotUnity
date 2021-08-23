@@ -719,14 +719,14 @@ public class DungeonThread implements Runnable {
 
                                 BHBot.logger.info("Attempting " + difficultyName + " z" + goalZone + "d" + goalDungeon);
 
-                                BufferedImage zoneSignatureImg = bot.browser.getImg().getSubimage(Misc.SIGNATURE_BOUNDS.x1, Misc.SIGNATURE_BOUNDS.y1, Misc.SIGNATURE_BOUNDS.width, Misc.SIGNATURE_BOUNDS.height);
-                                String signature = Misc.imgToMD5(zoneSignatureImg);
+                                // We wait for the zones button to be there
+                                MarvinSegment.fromCue(BHBot.cues.get("DungeonZones"), Misc.Durations.SECOND * 3, bot.browser);
+
+                                String signature = dungSignatures.getCurrentZoneSignature();
                                 int currentZone = dungSignatures.zoneFromSignature(signature);
                                 if (currentZone == 0) {
                                     BHBot.logger.error("Impossible to detect current selected zone!");
 
-                                    zoneSignatureImg = bot.browser.getImg().getSubimage(Misc.SIGNATURE_BOUNDS.x1, Misc.SIGNATURE_BOUNDS.y1, Misc.SIGNATURE_BOUNDS.width, Misc.SIGNATURE_BOUNDS.height);
-                                    signature = Misc.imgToMD5(zoneSignatureImg);
                                     BHBot.logger.error("Found signature: " + signature);
 
                                     seg = MarvinSegment.fromCue("X", Bounds.fromWidthHeight(695, 40, 70, 70), bot.browser);
