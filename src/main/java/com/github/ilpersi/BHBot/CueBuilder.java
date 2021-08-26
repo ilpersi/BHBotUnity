@@ -229,7 +229,7 @@ public class CueBuilder {
         addCueLocatorByPattern(cueLocators, "cuebuilder/autoConsume", "ConsumableTitle(.*)\\.png", Bounds.fromWidthHeight(318, 142, 171, 32),
                 Set.of(), "ConsumableTitle", "unitycues/autoConsume/cueConsumableTitle.png", "");
 
-        addCueLocatorByPattern(cueLocators, "cuebuilder/autoConsume", "consumables-minor(.*)\\.png", Bounds.fromWidthHeight(599, 203, 60, 33),
+        addCueLocatorByPattern(cueLocators, "cuebuilder/autoConsume", "min_exp_(.*)\\.png", Bounds.fromWidthHeight(608, 193, 61, 34),
                 Set.of(), "ConsumableExpMinor", "unitycues/autoConsume/consumables/cueConsumableExpMinor.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/autoConsume", "consumables-minor(.*)\\.png", Bounds.fromWidthHeight(463, 205, 60, 30),
                 Set.of(), "ConsumableSpeedMinor", "unitycues/autoConsume/consumables/cueConsumableSpeedMinor.png", "");
@@ -394,10 +394,12 @@ public class CueBuilder {
         //region Scroll Bars
         addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "settings_01(.*)\\.png", Bounds.fromWidthHeight(614, 191, 18, 21),
                 Set.of(), "ScrollerAtTop", "unitycues/scrollBars/cueScrollerAtTop.png", "");
-        addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "settings_21(.*)\\.png", Bounds.fromWidthHeight(614, 373, 18, 21),
-                Set.of(), "ScrollerAtBottom", "unitycues/scrollBars/cueScrollerAtBottom.png", "");
-        cueLocators.add(new CueLocator("cuebuilder/autoConsume/consumables-minor_20210321.png", Bounds.fromWidthHeight(666, 426, 18, 21),
-                Set.of(), "ScrollerAtBottom", "unitycues/scrollBars/cueScrollerAtBottom.png", true, ""));
+
+        addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "scroller_23(.*)\\.png", Bounds.fromWidthHeight(618, 366, 10, 24),
+                Set.of(), "ScrollerAtBottom", "unitycues/scrollBars/cueScrollerAtBottom.png", "Cue used when a scroll bar is at the bottom position.");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/autoConsume", "min_exp_(.*)\\.png", Bounds.fromWidthHeight(685, 421, 10, 24),
+                Set.of(), "ScrollerAtBottom", "unitycues/scrollBars/cueScrollerAtBottom.png", "Cue used when a scroll bar is at the bottom position.");
+
 
         addCueLocatorByPattern(cueLocators, "cuebuilder/autoConsume", "filter_btn_(.*)\\.png", Bounds.fromWidthHeight(684, 433, 13, 13),
                 Set.of(), "DropDownDown", "unitycues/scrollBars/cueDropDownDown.png", "The arrow pointing down in scroll bars.");

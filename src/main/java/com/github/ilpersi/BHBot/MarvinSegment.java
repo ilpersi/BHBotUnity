@@ -303,12 +303,22 @@ public class MarvinSegment {
         File subImageFile = new File(subImagePath);
 
         if (!imageInFile.exists()) {
-            BHBot.logger.error("Image in file does not exist.");
+            String error = "Image in file does not exist: " + imageInPath;
+            try {
+                BHBot.logger.error(error);
+            } catch (NullPointerException e) {
+                System.out.println(error);
+            }
             return null;
         }
 
         if (!subImageFile.exists()) {
-            BHBot.logger.error("Sub-image file does not exist.");
+            String error = "Sub-image file does not exist: " + subImagePath;
+            try {
+                BHBot.logger.error("Sub-image file does not exist.");
+            } catch (NullPointerException e) {
+                System.out.println(error);
+            }
             return null;
         }
 
