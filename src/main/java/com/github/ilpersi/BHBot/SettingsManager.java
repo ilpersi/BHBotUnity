@@ -31,6 +31,7 @@ public class SettingsManager {
 
     private void checkBotSettings() {
         if (openSettings(Misc.Durations.SECOND)) {
+
 //            Bounds scrolAtTopBounds = Bounds.fromWidthHeight(600, 180, 45, 45);
             final Bounds scrolAtBottomBounds = Bounds.fromWidthHeight(600, 360, 45, 45);
             final Bounds downArrowBounds = Bounds.fromWidthHeight(614, 375, 18, 19);
@@ -56,7 +57,7 @@ public class SettingsManager {
             settingConfigs.put("settingsBattleTXT", "rel:22;24:10");
             settingConfigs.put("settingsAnimations", "rel:22;21:11");
             settingConfigs.put("settingsMerchants", "rel:20;22:19");
-            settingConfigs.put("settingsTips", "rel:20;22:23");
+            settingConfigs.put("settingsTips", "rel:19;21:23");
 
             // Regular expression to understand how the bot should click on settings based on the previous hashmap
             Pattern clickRegex = Pattern.compile("(?<click>rel|abs):(?<x>\\d+);(?<y>\\d+):(?<barPosition>\\d{1,2})");
@@ -141,6 +142,13 @@ public class SettingsManager {
 
     }
 
+    /**
+     * This method will take care of opening the settings menu. This method assumes that no other window is curretnly
+     * opened and the character main screen is clean.
+     *
+     * @param delay How much time before we time out?
+     * @return true if the settings menu was correctly opened, false otherwise.
+     */
     boolean openSettings(@SuppressWarnings("SameParameterValue") int delay) {
         bot.browser.readScreen();
 
@@ -148,7 +156,14 @@ public class SettingsManager {
         if (seg != null) {
             bot.browser.clickOnSeg(seg);
             seg = MarvinSegment.fromCue(BHBot.cues.get("Settings"), delay, bot.browser);
-            if (seg == null) bot.saveGameScreen("open-settings-no-setting-menu", "errors");
+            if (seg == null) {
+                bot.saveGameScreen("open-settings-no-setting-menu", "errors");
+            } else {
+                // Let's wait a bit more for the setting menu to stay in the correct position.
+                // Sometimes it bounces and this leads to errors
+                MarvinSegment.fromCue(BHBot.cues.get("Settings"), delay, bot.browser);
+            }
+
             return seg != null;
         } else {
             BHBot.logger.error("Impossible to find the settings button!");
@@ -157,8 +172,12 @@ public class SettingsManager {
         }
     }
 
+    /**
+     * This method will take cre of closing the settings menu.
+     *
+     * @return true if settings menu was correctly closed, false otherwise.
+     */
     boolean closeSettings() {
         return bot.browser.closePopupSecurely(BHBot.cues.get("Settings"), new Cue(BHBot.cues.get("X"), new Bounds(608, 39, 711, 131)));
-
     }
 }
