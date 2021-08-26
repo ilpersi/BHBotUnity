@@ -398,8 +398,12 @@ public class CueBuilder {
                 Set.of(), "ScrollerAtBottom", "unitycues/scrollBars/cueScrollerAtBottom.png", "");
         cueLocators.add(new CueLocator("cuebuilder/autoConsume/consumables-minor_20210321.png", Bounds.fromWidthHeight(666, 426, 18, 21),
                 Set.of(), "ScrollerAtBottom", "unitycues/scrollBars/cueScrollerAtBottom.png", true, ""));
-        addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "settings_01(.*)\\.png", Bounds.fromWidthHeight(616, 379, 14, 14),
-                Set.of(), "DropDownDown", "unitycues/scrollBars/cueDropDownDown.png", "");
+
+        addCueLocatorByPattern(cueLocators, "cuebuilder/autoConsume", "filter_btn_(.*)\\.png", Bounds.fromWidthHeight(684, 433, 13, 13),
+                Set.of(), "DropDownDown", "unitycues/scrollBars/cueDropDownDown.png", "The arrow pointing down in scroll bars.");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "scroller_01(.*)\\.png", Bounds.fromWidthHeight(616, 378, 13, 13),
+                Set.of(), "DropDownDown", "unitycues/scrollBars/cueDropDownDown.png", "The arrow pointing down in scroll bars.");
+
         addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "settings_01(.*)\\.png", Bounds.fromWidthHeight(614, 216, 18, 14),
                 Set.of(), "SettingsScrollerTopPos", "unitycues/scrollBars/cueSettingsScrollerTopPos.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "settings_02(.*)\\.png", Bounds.fromWidthHeight(614, 216, 18, 14),

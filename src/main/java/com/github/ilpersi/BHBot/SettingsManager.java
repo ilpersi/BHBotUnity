@@ -33,7 +33,7 @@ public class SettingsManager {
         if (openSettings(Misc.Durations.SECOND)) {
 //            Bounds scrolAtTopBounds = Bounds.fromWidthHeight(600, 180, 45, 45);
             final Bounds scrolAtBottomBounds = Bounds.fromWidthHeight(600, 360, 45, 45);
-            final Bounds downArrowBounds = Bounds.fromWidthHeight(605, 365, 35, 40);
+            final Bounds downArrowBounds = Bounds.fromWidthHeight(614, 375, 18, 19);
 
             final Cue scrolAtBottomCue = new Cue(BHBot.cues.get("ScrollerAtBottom"), scrolAtBottomBounds);
             final Cue downArrowCue = new Cue(BHBot.cues.get("DropDownDown"), downArrowBounds);

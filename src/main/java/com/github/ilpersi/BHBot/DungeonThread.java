@@ -4876,11 +4876,14 @@ public class DungeonThread implements Runnable {
 
                 // lets scroll down, we only search for the arrow once
                 if (DropDownDown == null)
-                    DropDownDown = MarvinSegment.fromCue(BHBot.cues.get("DropDownDown"), 5 * Misc.Durations.SECOND, bot.browser);
+                    DropDownDown = MarvinSegment.fromCue(BHBot.cues.get("DropDownDown"), 5 * Misc.Durations.SECOND, Bounds.fromWidthHeight(681, 427, 19, 22), bot.browser);
 
                 // We were not able to find the down arrow
                 if (DropDownDown == null) {
-
+                    BHBot.logger.error("It was impossible to find the Scroll Down arrow, no consumable has been used.");
+                    Misc.saveScreen("handleconsumables-no-scroll-down", "errors", true, bot.browser.getImg());
+                    boolean result = bot.browser.closePopupSecurely(BHBot.cues.get("Filter"), BHBot.cues.get("X"));
+                    return;
                 }
 
                 for (int i = 0; i < 4; i++) { //the menu has 4 rows so we move to the next four rows and check again
@@ -4892,7 +4895,7 @@ public class DungeonThread implements Runnable {
         }
 
         // OK, we're done, lets close the character menu window:
-        boolean result = bot.browser.closePopupSecurely(BHBot.cues.get("StripSelectorButton"), BHBot.cues.get("X"));
+        boolean result = bot.browser.closePopupSecurely(BHBot.cues.get("Filter"), BHBot.cues.get("X"));
         if (!result) {
             BHBot.logger.warn("Done. Error detected while trying to close character window. Ignoring...");
             return;
