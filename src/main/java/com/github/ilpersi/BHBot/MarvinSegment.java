@@ -167,6 +167,10 @@ public class MarvinSegment {
      * then it will attempt at cue detection only once and return the result immediately.
      */
     static MarvinSegment fromCue(Cue cue, int timeout, @SuppressWarnings("SameParameterValue") boolean game, BrowserManager browserManager) {
+
+        // We make sure to read the screen before starting
+        browserManager.readScreen();
+
         long timer = Misc.getTime();
         MarvinSegment seg = findSubimage(browserManager.getImg(), cue, browserManager);
 
