@@ -478,7 +478,6 @@ class CueManager {
         addCue("ConsumableGreatFeast", "cues/cueConsumableGreatFeast.png", new Bounds(150, 460, 205, 519)); // Thanksgiving consumable
         addCue("ConsumableBroccoli", "cues/cueConsumableBroccoli.png", new Bounds(150, 460, 205, 519)); // Special Halloween consumable
         addCue("ConsumableCoco", "cues/cueConsumableCoco.png", new Bounds(150, 460, 205, 519)); // Special ?? consumable
-        addCue("ScrollerAtBottom", "cues/cueScrollerAtBottom.png", null); // cue for scroller being at the bottom-most position (we can't scroll down more than this)
         addCue("ConsumableTitle", "cues/cueConsumableTitle.png", new Bounds(280, 100, 310, 180)); // cue for title of the window that pops up when we want to consume a consumable. Note that vertical range is big here since sometimes is higher due to greater window size and sometimes is lower.
         addCue("FilterConsumables", "cues/cueFilterConsumables.png", new Bounds(460, 125, 550, 140)); // cue for filter button name
         addCue("LoadingInventoryIcon", "cues/cueLoadingInventoryIcon.png", null); // cue for loading animation for the icons inside inventory
@@ -791,7 +790,7 @@ class CueManager {
 
         //region scrollBar
         addCue("ScrollerAtTop", "unitycues/scrollBars/cueScrollerAtTop.png", null);
-        addCue("ScrollerAtBottom", "unitycues/scrollBars/cueScrollerAtBottom.png", null);
+        addCue("ScrollerAtBottomSettings", "unitycues/scrollBars/cueScrollerAtBottomSettings.png", null);
         addCue("DropDownDown", "unitycues/scrollBars/cueDropDownDown.png", null); // down arrow in difficulty drop down menu (found in trials/gauntlet, for example)
         addCue("StripScrollerTopPos", "unitycues/scrollBars/cueStripScrollerTopPos.png", null); // Scroll bar top position for strip menu
         addCue("SettingsScrollerTopPos", "unitycues/scrollBars/cueSettingsScrollerTopPos.png", null); // Scroll bar top position for settings menu
