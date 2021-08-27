@@ -6,6 +6,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.*;
 import java.util.List;
@@ -208,18 +210,28 @@ public class CueBuilder {
 
         if (!containingPath.endsWith("/")) containingPath += "/";
 
-        for (String PNGImgFileName : containingPathFile.list(new ImageFilter(PNGPattern))) {
-            cueLocators.add(new CueLocator(containingPath + PNGImgFileName, cuePosition, colorWhiteList,
-                    destinationCueName, destinationCuePath, true, description));
+        ImageFilter PNGImageFilter = new ImageFilter(PNGPattern);
+        String[] PNGPaths = containingPathFile.list(PNGImageFilter);
+
+        if (PNGPaths != null) {
+            for (String PNGImgFileName : PNGPaths) {
+                cueLocators.add(new CueLocator(containingPath + PNGImgFileName, cuePosition, colorWhiteList,
+                        destinationCueName, destinationCuePath, true, description));
+            }
         }
     }
 
     /**
      * This method is where Cues to be created must be added.
      */
-    static void manageCueFiles() {
+    static void manageCueFiles(boolean printUnused) {
         List<CueLocator> cueLocators = new ArrayList<>();
-        HashMap<String, List<CueLocator>> cueLocatorsByFile = new HashMap<>();
+
+        // HashMap used to group cueLocators by destination cueName
+        HashMap<String, List<CueLocator>> cueLocatorsByDestFile = new HashMap<>();
+
+        // HashSet to have a unique list of the used source screenshots
+        HashSet<String> usedFilePaths = new HashSet<>();
 
         //region AutoConsume
         addCueLocatorByPattern(cueLocators, "cuebuilder/autoConsume", "inventory-1(.*)\\.png", Bounds.fromWidthHeight(472, 124, 164, 26),
@@ -458,15 +470,16 @@ public class CueBuilder {
         //endregion
 
 
+        // We group cueLocators by destination file so that we can run the generation in parallel without errors
         for (CueLocator cueLoc : cueLocators) {
-            // cueLoc.generateCue();
-            if (!cueLocatorsByFile.containsKey(cueLoc.destinationCuePath)) cueLocatorsByFile.put(cueLoc.destinationCuePath, new ArrayList<>());
+            if (!cueLocatorsByDestFile.containsKey(cueLoc.destinationCuePath))
+                cueLocatorsByDestFile.put(cueLoc.destinationCuePath, new ArrayList<>());
 
-            cueLocatorsByFile.get(cueLoc.destinationCuePath).add(cueLoc);
+            cueLocatorsByDestFile.get(cueLoc.destinationCuePath).add(cueLoc);
         }
 
-        // We reset the cues when we build them
-        for (String cuePath : cueLocatorsByFile.keySet()) {
+        // We reset the cues when we build them so we do not have any merge issue
+        for (String cuePath : cueLocatorsByDestFile.keySet()) {
             File cueFile = new File(cuePath);
 
             if (cueFile.exists() && !cueFile.delete()) {
@@ -475,8 +488,46 @@ public class CueBuilder {
             }
         }
 
-        // cueLocators.parallelStream().forEach(CueLocator::generateCue);
-        cueLocatorsByFile.entrySet().parallelStream().forEach((clList) -> clList.getValue().forEach((CueLocator::generateCue)));
+        // We generate all the Cues and save the destination path in the dedicated HashSet
+        cueLocatorsByDestFile.entrySet().parallelStream().forEach(
+                (clList) -> clList.getValue().forEach(
+                        (cl) -> {
+                            usedFilePaths.add(cl.containingScreenShotPath);
+                            cl.generateCue();
+                        }
+                )
+        );
+
+        // We print out the unused cue builder files
+        if (printUnused) {
+            try {
+                Files.walk(Paths.get("cuebuilder/"))
+                        .filter(p -> {
+                            boolean isFile = Files.isRegularFile(p);
+                            String fileName = p.toString().toLowerCase();
+
+                            boolean isPNG = fileName.endsWith(".png");
+                            return isFile && isPNG;
+                        })
+                        .forEach(p -> {
+                            String relativePath = p.toFile().getPath();
+
+                            // We make sure that the correct path separator is used
+                            if (relativePath.contains("\\")) {
+                                relativePath = relativePath.replace("\\", "/");
+                            }
+
+                            if (!usedFilePaths.contains(relativePath)) {
+                                String msg = String.format("%s %s used to create Cues",
+                                        relativePath, usedFilePaths.contains(relativePath) ? "is" : "is not");
+                                System.out.println(msg);
+                            }
+
+                        });
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     static void manageRaidBar() {
@@ -550,33 +601,38 @@ public class CueBuilder {
         }
 
         // Loop on all the files
-        for (String dungImgFile : dungPath.list(new ImageFilter("energy-bar(.*)\\.png"))) {
-            File dungBarFile = new File("barbuilder/dungeon/" + dungImgFile);
+        ImageFilter energyFilter = new ImageFilter("energy-bar(.*)\\.png");
+        String[] energyBars = dungPath.list(energyFilter);
 
-            //noinspection DuplicatedCode
-            if (!dungBarFile.exists() || dungBarFile.isDirectory()) {
-                System.out.println("File " + dungBarFile.getAbsolutePath() + " is not a valid bar file");
-                continue;
+        if (energyBars != null) {
+            for (String dungImgFile : energyBars) {
+                File dungBarFile = new File("barbuilder/dungeon/" + dungImgFile);
+
+                //noinspection DuplicatedCode
+                if (!dungBarFile.exists() || dungBarFile.isDirectory()) {
+                    System.out.println("File " + dungBarFile.getAbsolutePath() + " is not a valid bar file");
+                    continue;
+                }
+
+                BufferedImage dungImg;
+                try {
+                    dungImg = ImageIO.read(dungBarFile);
+                } catch (IOException e) {
+                    System.out.println("Exception while loading image" + dungBarFile.getAbsolutePath());
+                    e.printStackTrace();
+                    continue;
+                }
+
+                ImageHelper.getImgColors(dungImg.getSubimage(438, 31, 80, 1)).forEach((col) -> { if(!blackColors.contains(col)) energyColors.add(col); }  );
+
+                System.out.println("Found colors for Energy:");
+                ImageHelper.printColors(energyColors);
+
+                MarvinSegment seg = FindSubimage.findImage(dungImg, energyPopUp, 0, 0, 0, 0);
+                // As images can have different shat totals we use 100 so we get the percentage
+                int energy = DungeonThread.readResourceBarPercentage(seg, 100, Misc.BarOffsets.DUNGEON.x, Misc.BarOffsets.DUNGEON.y, energyColors, dungImg);
+                System.out.println("Energy bar is " + energy + "% full for image " + dungBarFile.getAbsolutePath());
             }
-
-            BufferedImage dungImg;
-            try {
-                dungImg = ImageIO.read(dungBarFile);
-            } catch (IOException e) {
-                System.out.println("Exception while loading image" + dungBarFile.getAbsolutePath());
-                e.printStackTrace();
-                continue;
-            }
-
-            ImageHelper.getImgColors(dungImg.getSubimage(438, 31, 80, 1)).forEach((col) -> { if(!blackColors.contains(col)) energyColors.add(col); }  );
-
-            System.out.println("Found colors for Energy:");
-            ImageHelper.printColors(energyColors);
-
-            MarvinSegment seg = FindSubimage.findImage(dungImg, energyPopUp, 0, 0, 0, 0);
-            // As images can have different shat totals we use 100 so we get the percentage
-            int energy = DungeonThread.readResourceBarPercentage(seg, 100, Misc.BarOffsets.DUNGEON.x, Misc.BarOffsets.DUNGEON.y, energyColors, dungImg);
-            System.out.println("Energy bar is " + energy + "% full for image " + dungBarFile.getAbsolutePath());
         }
     }
 
@@ -597,38 +653,56 @@ public class CueBuilder {
         }
 
         // Loop on all the files
-        for (String TGImgFile : tokenPath.list(new ImageFilter("token-bar(.*)\\.png"))) {
-            File TGBarFile = new File("barbuilder/token/" + TGImgFile);
+        ImageFilter tokenFilter = new ImageFilter("token-bar(.*)\\.png");
+        String[] tokenBars = tokenPath.list(tokenFilter);
 
-            //noinspection DuplicatedCode
-            if (!TGBarFile.exists() || TGBarFile.isDirectory()) {
-                System.out.println("File " + TGBarFile.getAbsolutePath() + " is not a valid bar file");
-                continue;
+        if (tokenBars != null) {
+            for (String TGImgFile : tokenBars) {
+                File TGBarFile = new File("barbuilder/token/" + TGImgFile);
+
+                //noinspection DuplicatedCode
+                if (!TGBarFile.exists() || TGBarFile.isDirectory()) {
+                    System.out.println("File " + TGBarFile.getAbsolutePath() + " is not a valid bar file");
+                    continue;
+                }
+
+                BufferedImage dungImg;
+                try {
+                    dungImg = ImageIO.read(TGBarFile);
+                } catch (IOException e) {
+                    System.out.println("Exception while loading image" + TGBarFile.getAbsolutePath());
+                    e.printStackTrace();
+                    continue;
+                }
+
+                ImageHelper.getImgColors(dungImg.getSubimage(361, 77, 80, 1)).forEach((col) -> { if(!blackColors.contains(col)) tokenColors.add(col); }  );
+
+                System.out.println("Found colors for Energy:");
+                ImageHelper.printColors(tokenColors);
+
+                MarvinSegment seg = FindSubimage.findImage(dungImg, tokenPopUp, 0, 0, 0, 0);
+                // As images can have different shat totals we use 100 so we get the percentage
+                int energy = DungeonThread.readResourceBarPercentage(seg, 100, Misc.BarOffsets.TG.x, Misc.BarOffsets.TG.y, tokenColors, dungImg);
+                System.out.println("Energy bar is " + energy + "% full for image " + TGBarFile.getAbsolutePath());
             }
-
-            BufferedImage dungImg;
-            try {
-                dungImg = ImageIO.read(TGBarFile);
-            } catch (IOException e) {
-                System.out.println("Exception while loading image" + TGBarFile.getAbsolutePath());
-                e.printStackTrace();
-                continue;
-            }
-
-            ImageHelper.getImgColors(dungImg.getSubimage(361, 77, 80, 1)).forEach((col) -> { if(!blackColors.contains(col)) tokenColors.add(col); }  );
-
-            System.out.println("Found colors for Energy:");
-            ImageHelper.printColors(tokenColors);
-
-            MarvinSegment seg = FindSubimage.findImage(dungImg, tokenPopUp, 0, 0, 0, 0);
-            // As images can have different shat totals we use 100 so we get the percentage
-            int energy = DungeonThread.readResourceBarPercentage(seg, 100, Misc.BarOffsets.TG.x, Misc.BarOffsets.TG.y, tokenColors, dungImg);
-            System.out.println("Energy bar is " + energy + "% full for image " + TGBarFile.getAbsolutePath());
         }
     }
 
     public static void main(String[] args) {
-        manageCueFiles();
+        boolean printUnused = false;
+
+        for (String arg : args) {
+            switch (arg) {
+                case "pu":
+                case "-pu":
+                case "--print-unused":
+                    printUnused = true;
+                    continue;
+                default:
+            }
+        }
+
+        manageCueFiles(printUnused);
         System.out.println("====== Raid bar ======");
         manageRaidBar();
         System.out.println("====== Dung bar ======");
