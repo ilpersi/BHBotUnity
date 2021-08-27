@@ -4901,7 +4901,6 @@ public class DungeonThread implements Runnable {
 
                 // We check the bottom signature
                 bot.browser.readScreen(Misc.Durations.SECOND); // so that the scroller stabilizes a bit
-                bottomArea = Bounds.fromWidthHeight(461, 416, 213, 27);
                 subImg =  bot.browser.getImg().getSubimage(bottomArea.x1, bottomArea.y1, bottomArea.width, bottomArea.height);
                 String newSignature = Misc.imgToMD5(subImg);
 
