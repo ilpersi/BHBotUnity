@@ -69,6 +69,9 @@ public class SettingsManager {
             // we search for all the setting in all bar positions (so we don't hard code positions)
             outer:
             do {
+                if (menuPos > 1)
+                    bot.browser.clickOnSeg(downArrowSeg);
+
                 for (Map.Entry<String, String> settingConf : settingConfigs.entrySet()) {
                     // We get cueName and position details
                     String cueName = settingConf.getKey();
@@ -128,7 +131,6 @@ public class SettingsManager {
                     break;
                 }
 
-                bot.browser.clickOnSeg(downArrowSeg);
                 bottomSeg = MarvinSegment.fromCue(scrolAtBottomCue, Misc.Durations.SECOND / 2, bot.browser);
                 bot.browser.readScreen();
                 menuPos += 1;
