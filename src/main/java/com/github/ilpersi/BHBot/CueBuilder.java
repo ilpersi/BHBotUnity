@@ -243,13 +243,13 @@ public class CueBuilder {
 
         //region Consumable Inventory Cues
         addCueLocatorByPattern(cueLocators, "cuebuilder/autoConsume", "min_exp_(.*)\\.png", Bounds.fromWidthHeight(608, 193, 61, 34),
-                Set.of(), "ConsumableExpMinor", "unitycues/autoConsume/consumables/cueConsumableExpMinor.png", "");
+                Set.of(), "ConsumableExpMinor", "unitycues/autoConsume/consumables/cueConsumableExpMinor.png", "Tome of minor experience");
         addCueLocatorByPattern(cueLocators, "cuebuilder/autoConsume", "min_exp_(.*)(.*)\\.png", Bounds.fromWidthHeight(464, 194, 63, 34),
-                Set.of(), "ConsumableSpeedMinor", "unitycues/autoConsume/consumables/cueConsumableSpeedMinor.png", "");
-        addCueLocatorByPattern(cueLocators, "cuebuilder/autoConsume", "consumables-minor(.*)\\.png", Bounds.fromWidthHeight(531, 205, 60, 31),
-                Set.of(), "ConsumableGoldMinor", "unitycues/autoConsume/consumables/cueConsumableGoldMinor.png", "");
-        addCueLocatorByPattern(cueLocators, "cuebuilder/autoConsume", "consumables-minor(.*)\\.png", Bounds.fromWidthHeight(463, 273, 60, 31),
-                Set.of(), "ConsumableItemMinor", "unitycues/autoConsume/consumables/cueConsumableItemMinor.png", "");
+                Set.of(), "ConsumableSpeedMinor", "unitycues/autoConsume/consumables/cueConsumableSpeedMinor.png", "Minor Speed Kicks");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/autoConsume", "min_exp_(.*)\\.png", Bounds.fromWidthHeight(536, 193, 63, 35),
+                Set.of(), "ConsumableGoldMinor", "unitycues/autoConsume/consumables/cueConsumableGoldMinor.png", "Minor Gold Find Potion");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/autoConsume", "min_exp_(.*)\\.png", Bounds.fromWidthHeight(464, 265, 64, 35),
+                Set.of(), "ConsumableItemMinor", "unitycues/autoConsume/consumables/cueConsumableItemMinor.png", "Minor Item Find Scroll");
         //endregion
 
         //region Consumable Functional Cues

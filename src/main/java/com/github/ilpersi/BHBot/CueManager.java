@@ -461,16 +461,12 @@ class CueManager {
         addCue("BonusItem", "cues/cueBonusItem.png", new Bounds(100, 455, 370, 485));
         addCue("BonusGold", "cues/cueBonusGold.png", new Bounds(100, 455, 370, 485));
         addCue("BonusSpeed", "cues/cueBonusSpeed.png", new Bounds(100, 455, 370, 485));
-        addCue("ConsumableExpMinor", "cues/cueConsumableExpMinor.png", null); // consumable icon in the inventory
         addCue("ConsumableExpAverage", "cues/cueConsumableExpAverage.png", null);
         addCue("ConsumableExpMajor", "cues/cueConsumableExpMajor.png", null);
-        addCue("ConsumableItemMinor", "cues/cueConsumableItemMinor.png", null);
         addCue("ConsumableItemAverage", "cues/cueConsumableItemAverage.png", null);
         addCue("ConsumableItemMajor", "cues/cueConsumableItemMajor.png", null);
-        addCue("ConsumableSpeedMinor", "cues/cueConsumableSpeedMinor.png", null);
         addCue("ConsumableSpeedAverage", "cues/cueConsumableSpeedAverage.png", null);
         addCue("ConsumableSpeedMajor", "cues/cueConsumableSpeedMajor.png", null);
-        addCue("ConsumableGoldMinor", "cues/cueConsumableGoldMinor.png", null);
         addCue("ConsumableGoldAverage", "cues/cueConsumableGoldAverage.png", null);
         addCue("ConsumableGoldMajor", "cues/cueConsumableGoldMajor.png", null);
         addCue("ConsumablePumkgor", "cues/cueConsumablePumkgor.png", new Bounds(150, 460, 205, 519)); // Special Halloween consumable
