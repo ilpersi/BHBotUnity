@@ -34,6 +34,7 @@ public class SettingsManager {
 
             final Bounds scrolAtBottomBounds = Bounds.fromWidthHeight(605, 355, 35, 45);
             final Bounds downArrowBounds = Bounds.fromWidthHeight(614, 375, 18, 19);
+            final Bounds settingsArea = Bounds.fromWidthHeight(162, 162, 449, 259);
 
             final Cue scrolAtBottomCue = new Cue(BHBot.cues.get("ScrollerAtBottomSettings"), scrolAtBottomBounds);
             final Cue downArrowCue = new Cue(BHBot.cues.get("DropDownDown"), downArrowBounds);
@@ -98,8 +99,11 @@ public class SettingsManager {
 
                         if (menuPos != barPosition) continue;
 
+                        // We make sure to search for the cue in the right screen area
+                        Cue settingCue = new Cue(BHBot.cues.get(cueName), settingsArea);
+
                         // we search for the cue and if we find it, we click based on the settings
-                        MarvinSegment settingSeg = MarvinSegment.fromCue(BHBot.cues.get(cueName), bot.browser);
+                        MarvinSegment settingSeg = MarvinSegment.fromCue(settingCue, Misc.Durations.SECOND, bot.browser);
                         if (settingSeg != null) {
                             int clickX, clickY;
                             if ("rel".equalsIgnoreCase(clickType)) {
@@ -114,13 +118,17 @@ public class SettingsManager {
                                 BHBot.logger.warn("Unknown click position logic while searching for settings in SettingManager.");
                                 continue;
                             }
+
                             bot.browser.clickInGame(clickX, clickY);
+                            // As there may be additional settings in the same page, we make sure to refresh the image
+                            bot.browser.readScreen(Misc.Durations.SECOND / 2);
 
                             alreadyFound.add(cueName);
+                        } else {
+                            BHBot.logger.warn(String.format("Impossible to find %s at bar position %d", cueName, barPosition));
                         }
-
                     } else {
-                        BHBot.logger.warn(MessageFormat.format("Wrong setting configuration: {0} -> {1}", cueName, clickDetails));
+                        BHBot.logger.warn(String.format("Wrong setting configuration: %S -> %s", cueName, clickDetails));
                     }
 
                 }
