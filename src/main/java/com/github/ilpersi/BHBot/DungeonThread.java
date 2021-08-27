@@ -4132,7 +4132,6 @@ public class DungeonThread implements Runnable {
 
         // Scroller cues
         Cue scrollerAtTop = new Cue(BHBot.cues.get("ScrollerAtTop"), Bounds.fromWidthHeight(520, 115, 35, 90));
-//        Cue scrollerAtBottom = new Cue(BHBot.cues.get("ScrollerAtBottom"), Bounds.fromWidthHeight(520, 360, 35, 90) );
         // Scroller max clicks
         final int MAX_CLICKS = 30;
 
@@ -4835,12 +4834,24 @@ public class DungeonThread implements Runnable {
 
         // now consume the consumable(s):
         bot.browser.readScreen(500); // to stabilize window a bit
+
         Bounds consumableBounds = new Bounds(450, 165, 670, 460); // detection area (where consumables icons are visible)
+
+        /*
+         ******** IMPORTANT ********
+         * The is no easy way to understand when the scroll bar reached the bottom position using a scrollbar cue, so
+         * what we do instead is to take a sub image of the bottom part of the character menu and check everytime we
+         * scroll if it has changed
+         ********/
+        bot.browser.readScreen();
+        Bounds bottomArea = Bounds.fromWidthHeight(461, 416, 213, 27);
+        BufferedImage subImg =  bot.browser.getImg().getSubimage(bottomArea.x1, bottomArea.y1, bottomArea.width, bottomArea.height);
+        String bottomSignature = Misc.imgToMD5(subImg);
 
         MarvinSegment DropDownDown = null;
 
         while (!consumables.isEmpty()) {
-            waitForInventoryIconsToLoad(); // first of all, lets make sure that all icons are loaded
+            // waitForInventoryIconsToLoad(); // first of all, lets make sure that all icons are loaded
             for (Iterator<ConsumableType> i = consumables.iterator(); i.hasNext(); ) {
                 ConsumableType c = i.next();
                 seg = MarvinSegment.fromCue(new Cue(c.getInventoryCue(), consumableBounds), bot.browser);
@@ -4870,10 +4881,6 @@ public class DungeonThread implements Runnable {
             }
 
             if (!consumables.isEmpty()) {
-                seg = MarvinSegment.fromCue(BHBot.cues.get("ScrollerAtBottom"), 500, bot.browser);
-                if (seg != null)
-                    break; // there is nothing we can do anymore... we've scrolled to the bottom and haven't found the icon(s). We obviously don't have the required consumable(s)!
-
                 // lets scroll down, we only search for the arrow once
                 if (DropDownDown == null)
                     DropDownDown = MarvinSegment.fromCue(BHBot.cues.get("DropDownDown"), 5 * Misc.Durations.SECOND, Bounds.fromWidthHeight(681, 427, 19, 22), bot.browser);
@@ -4890,7 +4897,18 @@ public class DungeonThread implements Runnable {
                     bot.browser.clickOnSeg(DropDownDown);
                 }
 
+                // We check the bottom signature
                 bot.browser.readScreen(Misc.Durations.SECOND); // so that the scroller stabilizes a bit
+                bottomArea = Bounds.fromWidthHeight(461, 416, 213, 27);
+                subImg =  bot.browser.getImg().getSubimage(bottomArea.x1, bottomArea.y1, bottomArea.width, bottomArea.height);
+                String newSignature = Misc.imgToMD5(subImg);
+
+                if (bottomSignature.equals(newSignature)) {
+                    break; // there is nothing we can do anymore... we've scrolled to the bottom and haven't found the icon(s). We obviously don't have the required consumable(s)!
+                } else {
+                    bottomSignature = newSignature;
+                }
+
             }
         }
 

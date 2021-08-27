@@ -32,11 +32,10 @@ public class SettingsManager {
     private void checkBotSettings() {
         if (openSettings(Misc.Durations.SECOND)) {
 
-//            Bounds scrolAtTopBounds = Bounds.fromWidthHeight(600, 180, 45, 45);
-            final Bounds scrolAtBottomBounds = Bounds.fromWidthHeight(600, 360, 45, 45);
+            final Bounds scrolAtBottomBounds = Bounds.fromWidthHeight(605, 355, 35, 45);
             final Bounds downArrowBounds = Bounds.fromWidthHeight(614, 375, 18, 19);
 
-            final Cue scrolAtBottomCue = new Cue(BHBot.cues.get("ScrollerAtBottom"), scrolAtBottomBounds);
+            final Cue scrolAtBottomCue = new Cue(BHBot.cues.get("ScrollerAtBottomSettings"), scrolAtBottomBounds);
             final Cue downArrowCue = new Cue(BHBot.cues.get("DropDownDown"), downArrowBounds);
 
             MarvinSegment downArrowSeg = MarvinSegment.fromCue(downArrowCue, Misc.Durations.SECOND, bot.browser);
@@ -56,7 +55,7 @@ public class SettingsManager {
             settingConfigs.put("settingsReducedFX", "rel:22;22:10");
             settingConfigs.put("settingsBattleTXT", "rel:22;24:10");
             settingConfigs.put("settingsAnimations", "rel:22;21:11");
-            settingConfigs.put("settingsMerchants", "rel:20;22:19");
+            settingConfigs.put("settingsMerchants", "rel:20;22:21");
             settingConfigs.put("settingsTips", "rel:19;21:23");
 
             // Regular expression to understand how the bot should click on settings based on the previous hashmap

@@ -229,15 +229,18 @@ public class CueBuilder {
         addCueLocatorByPattern(cueLocators, "cuebuilder/autoConsume", "ConsumableTitle(.*)\\.png", Bounds.fromWidthHeight(318, 142, 171, 32),
                 Set.of(), "ConsumableTitle", "unitycues/autoConsume/cueConsumableTitle.png", "");
 
+        //region Consumable Inventory Cues
         addCueLocatorByPattern(cueLocators, "cuebuilder/autoConsume", "min_exp_(.*)\\.png", Bounds.fromWidthHeight(608, 193, 61, 34),
                 Set.of(), "ConsumableExpMinor", "unitycues/autoConsume/consumables/cueConsumableExpMinor.png", "");
-        addCueLocatorByPattern(cueLocators, "cuebuilder/autoConsume", "consumables-minor(.*)\\.png", Bounds.fromWidthHeight(463, 205, 60, 30),
+        addCueLocatorByPattern(cueLocators, "cuebuilder/autoConsume", "min_exp_(.*)(.*)\\.png", Bounds.fromWidthHeight(464, 194, 63, 34),
                 Set.of(), "ConsumableSpeedMinor", "unitycues/autoConsume/consumables/cueConsumableSpeedMinor.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/autoConsume", "consumables-minor(.*)\\.png", Bounds.fromWidthHeight(531, 205, 60, 31),
                 Set.of(), "ConsumableGoldMinor", "unitycues/autoConsume/consumables/cueConsumableGoldMinor.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/autoConsume", "consumables-minor(.*)\\.png", Bounds.fromWidthHeight(463, 273, 60, 31),
                 Set.of(), "ConsumableItemMinor", "unitycues/autoConsume/consumables/cueConsumableItemMinor.png", "");
+        //endregion
 
+        //region Consumable Functional Cues
         addCueLocatorByPattern(cueLocators, "cuebuilder/autoConsume", "filter_btn_(.*)\\.png", Bounds.fromWidthHeight(518, 103, 126, 35),
                 Set.of(), "Filter", "unitycues/autoConsume/cueFilter.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/autoConsume", "filter_consumables_o(.*)\\.png", Bounds.fromWidthHeight(333, 122, 132, 44),
@@ -245,10 +248,11 @@ public class CueBuilder {
         addCueLocatorByPattern(cueLocators, "cuebuilder/autoConsume", "filter_consumables_o(.*)\\.png", Bounds.fromWidthHeight(417, 268, 182, 27),
                 Set.of(), "ConsumablesBtn", "unitycues/autoConsume/cueConsumablesBtn.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/autoConsume", "consumable_done(.*)\\.png", Bounds.fromWidthHeight(353, 458, 94, 31),
-                Set.of(), "ConsumableDone", "unitycues/autoConsume/cueConsumableConsumableDone.png", "");
+                Set.of(), "ConsumableDone", "unitycues/autoConsume/cueConsumableDone.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/autoConsume", "consumable_done(.*)\\.png", Bounds.fromWidthHeight(310, 81, 180, 32),
                 Set.of(new Color(255, 255, 255), new Color(206, 206, 206), new Color(116, 116, 116)),
                 "ConsumableHaveFun", "unitycues/autoConsume/cueConsumableHaveFun.png", "");
+        //endregion
 
         //endregion
 
@@ -395,11 +399,8 @@ public class CueBuilder {
         addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "settings_01(.*)\\.png", Bounds.fromWidthHeight(614, 191, 18, 21),
                 Set.of(), "ScrollerAtTop", "unitycues/scrollBars/cueScrollerAtTop.png", "");
 
-        addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "scroller_23(.*)\\.png", Bounds.fromWidthHeight(618, 366, 10, 24),
-                Set.of(), "ScrollerAtBottom", "unitycues/scrollBars/cueScrollerAtBottom.png", "Cue used when a scroll bar is at the bottom position.");
-        addCueLocatorByPattern(cueLocators, "cuebuilder/autoConsume", "min_exp_(.*)\\.png", Bounds.fromWidthHeight(685, 421, 10, 24),
-                Set.of(), "ScrollerAtBottom", "unitycues/scrollBars/cueScrollerAtBottom.png", "Cue used when a scroll bar is at the bottom position.");
-
+        addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "scroller_23(.*)\\.png", Bounds.fromWidthHeight(616, 368, 14, 24),
+                Set.of(), "ScrollerAtBottomSettings", "unitycues/scrollBars/cueScrollerAtBottomSettings.png", "Cue used when a scroll bar is at the bottom position in the settings menu.");
 
         addCueLocatorByPattern(cueLocators, "cuebuilder/autoConsume", "filter_btn_(.*)\\.png", Bounds.fromWidthHeight(684, 433, 13, 13),
                 Set.of(), "DropDownDown", "unitycues/scrollBars/cueDropDownDown.png", "The arrow pointing down in scroll bars.");
