@@ -214,6 +214,9 @@ public class BlockerThread implements Runnable {
 
                     BHBot.logger.info("'You were recently in a dungeon' dialog detected and confirmed. Resuming dungeon...");
 
+                    // We make sure that autoShrine settings are reset
+                    bot.dungeon.shrineManager.resetUsedInAdventure();
+
                     // So that the screen reloads correctly
                     Misc.sleep(Misc.Durations.SECOND * 2);
 

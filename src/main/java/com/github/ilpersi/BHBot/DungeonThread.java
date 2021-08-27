@@ -198,6 +198,7 @@ public class DungeonThread implements Runnable {
                         bot.setState(bot.getLastJoinedState()); // we are not sure what type of dungeon we are doing
                         BHBot.logger.warn("Possible dungeon crash, activating failsafe");
                         bot.saveGameScreen("dungeon-crash-failsafe", "errors");
+                        shrineManager.resetUsedInAdventure();
                         shrineManager.updateShrineSettings(false, false); //in case we are stuck in a dungeon lets enable shrines/boss
                         setAutoOff(Misc.Durations.SECOND);
                         bot.browser.readScreen();
@@ -2216,6 +2217,7 @@ public class DungeonThread implements Runnable {
                 return;
             }
 
+            shrineManager.resetUsedInAdventure();
             BHBot.logger.warn("Potential Kongregate bug detected, refreshing page.");
             bot.browser.refresh();
             Misc.sleep(Misc.Durations.MINUTE);
