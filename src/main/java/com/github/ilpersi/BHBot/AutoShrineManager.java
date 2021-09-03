@@ -11,6 +11,10 @@ public class AutoShrineManager {
     private boolean initialized;
     private boolean usedInAdventure;
 
+    // Used to log in/out timestamp for encounters
+    private long outOfEncounterTimestamp;
+    private long inEncounterTimestamp;
+
     AutoShrineManager(BHBot bot, boolean skipInitialization) {
         this.bot = bot;
         this.initialized = skipInitialization;
@@ -19,6 +23,9 @@ public class AutoShrineManager {
 
     void initialize() {
         if (!initialized) {
+            outOfEncounterTimestamp = 0;
+            inEncounterTimestamp = 0;
+
             BHBot.logger.info("Initializing autoShrine to make sure it is disabled");
             if (!updateShrineSettings(false, false)) {
                 BHBot.logger.error("It was not possible to perform the autoShrine start-up check!");
@@ -119,8 +126,9 @@ public class AutoShrineManager {
         }
     }
 
-    void processAutoShrine(long battleDelay) {
+    void processAutoShrine() {
         MarvinSegment guildButtonSeg;
+        long battleDelay = outOfEncounterTimestamp - inEncounterTimestamp;
 
         if ((bot.getState() == BHBot.State.Raid && bot.settings.autoShrine.contains("r")) ||
                 (bot.getState() == BHBot.State.Trials && bot.settings.autoShrine.contains("t")) ||
@@ -194,6 +202,24 @@ public class AutoShrineManager {
     }
 
     void resetUsedInAdventure() {
+        outOfEncounterTimestamp = 0;
+        inEncounterTimestamp = 0;
         usedInAdventure = false;
+    }
+
+    public long getOutOfEncounterTimestamp() {
+        return outOfEncounterTimestamp;
+    }
+
+    public void setOutOfEncounterTimestamp(long outOfEncounterTimestamp) {
+        this.outOfEncounterTimestamp = outOfEncounterTimestamp;
+    }
+
+    public long getInEncounterTimestamp() {
+        return inEncounterTimestamp;
+    }
+
+    public void setInEncounterTimestamp(long inEncounterTimestamp) {
+        this.inEncounterTimestamp = inEncounterTimestamp;
     }
 }

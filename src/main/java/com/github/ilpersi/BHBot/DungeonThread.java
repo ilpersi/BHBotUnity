@@ -44,8 +44,6 @@ public class DungeonThread implements Runnable {
     private boolean isAdventureStarted = false;
     private long activityStartTime;
     private boolean isInFight = true;
-    private long outOfEncounterTimestamp = 0;
-    private long inEncounterTimestamp = 0;
     private boolean specialDungeon; //d4 check for closing properly when no energy
     private String expeditionFailsafePortal = "";
     private int expeditionFailsafeDifficulty = 0;
@@ -2193,11 +2191,11 @@ public class DungeonThread implements Runnable {
         if (!isAdventureStarted) {
             activityStartTime = TimeUnit.MILLISECONDS.toSeconds(Misc.getTime());
             BHBot.logger.debug(bot.getState().getName() + " start time: " + activityStartTime);
-            outOfEncounterTimestamp = TimeUnit.MILLISECONDS.toSeconds(Misc.getTime());
-            inEncounterTimestamp = TimeUnit.MILLISECONDS.toSeconds(Misc.getTime());
             isInFight = false; //true is in encounter, false is out of encounter
             positionChecker.resetStartPos();
             shrineManager.resetUsedInAdventure();
+            shrineManager.setOutOfEncounterTimestamp(TimeUnit.MILLISECONDS.toSeconds(Misc.getTime()));
+            shrineManager.setInEncounterTimestamp(TimeUnit.MILLISECONDS.toSeconds(Misc.getTime()));
             isAdventureStarted = true;
 
             // Every 7 minutes we check for the Kongregate motion bug
@@ -2222,7 +2220,7 @@ public class DungeonThread implements Runnable {
             bot.browser.refresh();
             Misc.sleep(Misc.Durations.MINUTE);
             kongMotionBugNexCheck = Misc.getTime() + (Misc.Durations.MINUTE * 7);
-            outOfEncounterTimestamp = TimeUnit.MILLISECONDS.toSeconds(Misc.getTime());
+            shrineManager.setOutOfEncounterTimestamp(TimeUnit.MILLISECONDS.toSeconds(Misc.getTime()));
             return;
         }
         //endregion
@@ -2236,7 +2234,7 @@ public class DungeonThread implements Runnable {
         //region Encounter Detection
         MarvinSegment guildButtonSeg = MarvinSegment.fromCue(BHBot.cues.get("GuildButton"), bot.browser);
         if (guildButtonSeg != null) {
-            outOfEncounterTimestamp = TimeUnit.MILLISECONDS.toSeconds(Misc.getTime());
+            shrineManager.setOutOfEncounterTimestamp(TimeUnit.MILLISECONDS.toSeconds(Misc.getTime()));
             if (isInFight) {
                 BHBot.logger.trace("Updating idle time (Out of combat)");
                 bot.scheduler.resetIdleTime(true);
@@ -2246,7 +2244,7 @@ public class DungeonThread implements Runnable {
                 kongMotionBugNexCheck = Misc.getTime() + (Misc.Durations.MINUTE * 7);
             }
         } else {
-            inEncounterTimestamp = TimeUnit.MILLISECONDS.toSeconds(Misc.getTime());
+            shrineManager.setInEncounterTimestamp(TimeUnit.MILLISECONDS.toSeconds(Misc.getTime()));
             if (!isInFight) {
                 BHBot.logger.trace("Updating idle time (In combat)");
                 bot.scheduler.resetIdleTime(true);
@@ -2274,7 +2272,7 @@ public class DungeonThread implements Runnable {
          */
         //region Auto Rune
         if (bot.settings.autoBossRune.containsKey(bot.getState().getShortcut()) && !isInFight) {
-            runeManager.handleAutoBossRune(outOfEncounterTimestamp, inEncounterTimestamp);
+            runeManager.handleAutoBossRune(shrineManager.getOutOfEncounterTimestamp(), shrineManager.getInEncounterTimestamp());
         }
         //endregion
 
@@ -2283,7 +2281,7 @@ public class DungeonThread implements Runnable {
          */
         //region Auto Shrine
         if (bot.settings.autoShrine.contains(bot.getState().getShortcut()) && !isInFight) {
-            shrineManager.processAutoShrine((outOfEncounterTimestamp - inEncounterTimestamp));
+            shrineManager.processAutoShrine();
         }
         //endregion
 
@@ -2862,7 +2860,7 @@ public class DungeonThread implements Runnable {
         bot.scheduler.resetIdleTime(true);
 
         // after reviving we update encounter timestamp as it wasn't updating from processDungeon
-        inEncounterTimestamp = Misc.getTime() / 1000;
+        shrineManager.setInEncounterTimestamp(TimeUnit.MILLISECONDS.toSeconds(Misc.getTime()));
 
     }
 
