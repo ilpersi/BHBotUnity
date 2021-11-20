@@ -81,7 +81,7 @@ public class BrowserManager {
                 options.setCapability(CapabilityType.LOGGING_PREFS, logPrefs);
             }
 
-            DesiredCapabilities capabilities = DesiredCapabilities.chrome();
+            DesiredCapabilities capabilities = new DesiredCapabilities();
             capabilities.setCapability("chrome.verbose", false);
             capabilities.setCapability(ChromeOptions.CAPABILITY, options);
 
@@ -149,7 +149,7 @@ public class BrowserManager {
                 options.setCapability(CapabilityType.LOGGING_PREFS, logPrefs);
             }
 
-            DesiredCapabilities capabilities = DesiredCapabilities.firefox();
+            DesiredCapabilities capabilities = new DesiredCapabilities();
             capabilities.setCapability(FirefoxOptions.FIREFOX_OPTIONS, options);
 
             if (bot.settings.autoStartChromeDriver) {
@@ -541,7 +541,7 @@ public class BrowserManager {
     }
 
     private int getChromeVersion() {
-        String[] versionArray = caps.getVersion().split("\\.");
+        String[] versionArray = caps.getBrowserVersion().split("\\.");
         return Integer.parseInt(versionArray[0]);
     }
 
