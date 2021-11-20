@@ -87,6 +87,7 @@ public class BlockerThread implements Runnable {
                         bot.browser.clickOnSeg(seg);
                         BHBot.logger.info("Disconnected dialog dismissed (reconnecting).");
                         bot.browser.readScreen(Misc.Durations.SECOND);
+                        bot.dungeon.shrineManager.resetUsedInAdventure();
                     } else {
                         bot.scheduler.isUserInteracting = true;
                         // probably user has logged in, that's why we got disconnected. Lets leave him alone for some time and then resume!
