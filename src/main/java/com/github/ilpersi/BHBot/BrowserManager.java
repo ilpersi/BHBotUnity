@@ -448,7 +448,7 @@ public class BrowserManager {
         while (popupSeg == null) {
             if (Misc.getTime() > timeOut) {
                 BHBot.logger.error("Error: unable to close popup <" + popup + "> securely: popup cue not detected!");
-                Misc.saveScreen("closePopupSecurely-popup-not-detected", "errors", true, bot.browser.getImg());
+                Misc.saveScreen("closePopupSecurely-popup-not-detected-" + popup.name, "errors", true, bot.browser.getImg());
                 return false;
             }
 
@@ -466,7 +466,7 @@ public class BrowserManager {
             if (Misc.getTime() > timeOut) {
                 BHBot.logger.error("Error: unable to close popup <" + popup + "> securely: either close button < " + close + " > has not been detected or popup would not close!");
                 BHBot.logger.error(Misc.getStackTrace());
-                Misc.saveScreen("closePopupSecurely-close-error", "errors", true, bot.browser.getImg());
+                Misc.saveScreen("closePopupSecurely-close-error-" + popup.name + "-" + close.name, "errors", true, bot.browser.getImg());
                 return false;
             }
 
