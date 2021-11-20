@@ -364,6 +364,7 @@ public class DungeonThread implements Runnable {
                                 seg = MarvinSegment.fromCue(BHBot.cues.get("RaidSummon"), 3 * Misc.Durations.SECOND, bot.browser);
                                 if (seg == null) {
                                     BHBot.logger.error("Raid Summon button not found");
+                                    Misc.saveScreen("no-raid-summon-button", "errors", true, bot.browser.getImg());
                                     restart();
                                     continue;
                                 }
@@ -3533,10 +3534,15 @@ public class DungeonThread implements Runnable {
             return false;
         }
 
-        // TODO fix kong selection bug
         if (!onlyR1 && (selectedRaid != desiredRaid)) {
             // we need to change the raid type!
             BHBot.logger.info("Changing from R" + selectedRaid + " to R" + desiredRaidZone);
+
+            // TODO fix kong selection bug
+            if (desiredRaid >= 2 && "Linux".equals(System.getProperty("os.name"))) {
+                bot.browser.clickInGame(645, 302);
+            }
+
             // we click on the desired cue
             bot.browser.clickOnSeg(raidDotsList.get(desiredRaid - 1));
         }
