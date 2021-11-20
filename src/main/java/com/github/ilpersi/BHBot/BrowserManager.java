@@ -39,6 +39,8 @@ public class BrowserManager {
 
     private final String browserProfile;
 
+    private long lastClickTime = Misc.getTime();
+
     BrowserManager(BHBot bot, String browserProfile) {
         this.bot = bot;
         this.browserProfile = browserProfile;
@@ -410,6 +412,12 @@ public class BrowserManager {
 
     synchronized void clickInGame(int x, int y) {
         Point clickCoordinates = getChromeOffset(x, y);
+
+        int CLICK_DELAY = 100;
+        while ((Misc.getTime() - lastClickTime) < CLICK_DELAY) {
+            Misc.sleep(CLICK_DELAY / 2);
+            lastClickTime = Misc.getTime();
+        }
 
         Actions act = new Actions(driver);
         act.moveToElement(game, clickCoordinates.x, clickCoordinates.y);
