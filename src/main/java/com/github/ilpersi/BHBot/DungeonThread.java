@@ -4819,9 +4819,10 @@ public class DungeonThread implements Runnable {
             return;
         }
 
-        seg = MarvinSegment.fromCue(BHBot.cues.get("Filter"), 10 * Misc.Durations.SECOND, bot.browser);
+        seg = MarvinSegment.fromCue(BHBot.cues.get("Filter"), 5 * Misc.Durations.SECOND, bot.browser);
         if (seg == null) {
             BHBot.logger.warn("Error: unable to detect orange filter button! Skipping...");
+            bot.browser.closePopupSecurely(BHBot.cues.get("X"), BHBot.cues.get("X"));
             return;
         }
 
