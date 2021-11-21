@@ -197,7 +197,9 @@ public class DungeonThread implements Runnable {
                         BHBot.logger.warn("Possible dungeon crash, activating failsafe");
                         bot.saveGameScreen("dungeon-crash-failsafe", "errors");
                         shrineManager.resetUsedInAdventure();
-                        if (bot.settings.autoShrine.size() > 0) {
+
+                        // We only reset autoShrine if configurations require so
+                        if (bot.settings.autoShrine.contains(bot.getState().getShortcut())) {
                             shrineManager.updateShrineSettings(false, false); //in case we are stuck in a dungeon lets enable shrines/boss
                         }
                         setAutoOff(Misc.Durations.SECOND);

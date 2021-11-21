@@ -242,7 +242,8 @@ public class BlockerThread implements Runnable {
                         bot.saveGameScreen("recently-disconnected-timeout", "errors");
                     }
 
-                    if (bot.settings.autoShrine.size() > 0) {
+                    // We check if the restored status requires autoShrine and we reset it if needed
+                    if (bot.settings.autoShrine.contains(bot.getState().getShortcut())) {
                         bot.dungeon.shrineManager.updateShrineSettings(false, false); //in case we are stuck in a dungeon lets enable shrines/boss
                     }
                     continue;
