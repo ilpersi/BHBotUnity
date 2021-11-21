@@ -227,21 +227,24 @@ public class BlockerThread implements Runnable {
                         3) We timed out after 5 minutes
                      */
                     long reconnectTimeout = Misc.getTime() + (Misc.Durations.MINUTE * 5);
-                    MarvinSegment settingSeg = MarvinSegment.fromCue("SettingsGear", 500, bot.browser);
-                    MarvinSegment guildSeg = MarvinSegment.fromCue(BHBot.cues.get("GuildButton"), 500, bot.browser);
+                    MarvinSegment settingSeg;
+                    MarvinSegment guildSeg;
 
-                    while (guildSeg == null && settingSeg == null && Misc.getTime() <= reconnectTimeout) {
+                    do {
                         bot.browser.readScreen(500);
                         settingSeg = MarvinSegment.fromCue("SettingsGear", bot.browser);
                         guildSeg = MarvinSegment.fromCue(BHBot.cues.get("GuildButton"), bot.browser);
-                    }
+
+                    } while (guildSeg == null && settingSeg == null && Misc.getTime() <= reconnectTimeout);
 
                     if (guildSeg == null && settingSeg == null) {
                         BHBot.logger.warn("'You were recently in a dungeon' reconnection timed-out");
                         bot.saveGameScreen("recently-disconnected-timeout", "errors");
                     }
 
-                    bot.dungeon.shrineManager.updateShrineSettings(false, false); //in case we are stuck in a dungeon lets enable shrines/boss
+                    if (bot.settings.autoShrine.size() > 0) {
+                        bot.dungeon.shrineManager.updateShrineSettings(false, false); //in case we are stuck in a dungeon lets enable shrines/boss
+                    }
                     continue;
                 }
                 //endregion
