@@ -20,6 +20,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.RasterFormatException;
 import java.io.*;
 import java.net.*;
+import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -40,6 +41,9 @@ public class BrowserManager {
     private final String browserProfile;
 
     private long lastClickTime = Misc.getTime();
+
+    private final String COOKIE_DAT_PATH_FORMAT = "./data/cookies_%s.dat";
+    private boolean cookiesLoaded = false;
 
     BrowserManager(BHBot bot, String browserProfile) {
         this.bot = bot;
@@ -200,6 +204,7 @@ public class BrowserManager {
         Logger.getLogger("").setLevel(Level.WARNING);
 
         connect();
+
         if (bot.settings.hideWindowOnRestart)
             hideBrowser();
         if ("".equals(doNotShareUrl)) {
@@ -567,9 +572,26 @@ public class BrowserManager {
 
     void refresh() {
         driver.navigate().refresh();
+        Misc.sleep(Misc.Durations.SECOND * 3);
+        // As we refreshed, we make sure to point game to the newly loaded element
+        game = driver.findElement(byElement);
     }
 
     void manageLogin() {
+
+        // Once for every run we try to load saved cookies
+        if (!cookiesLoaded) {
+            cookiesLoaded = true;
+
+            HashSet<Cookie> cookies = this.deserializeCookies();
+            for (Cookie cookie: cookies) {
+                driver.manage().addCookie(cookie);
+            }
+
+            refresh();
+            return;
+        }
+
         WebElement btnClose;
         try {
             btnClose = driver.findElement(By.cssSelector("div#kongregate_lightbox_wrapper > div.header_bar > a.close_link"));
@@ -620,6 +642,9 @@ public class BrowserManager {
             tooManyLogins = driver.findElement(By.xpath("//*[@id=\"lightboxlogin_message\"]"));
         } catch (NoSuchElementException e)  {
             BHBot.logger.info("Signed-in manually (sign-in prompt was open).");
+
+            HashSet<Cookie> cookies = new HashSet<>(driver.manage().getCookies());
+            this.serializeCookies(cookies);
             return;
         }
 
@@ -630,5 +655,51 @@ public class BrowserManager {
             driver.navigate().refresh();
         }
 
+    }
+
+    /**
+     * This method will take care of serializing all the cookies in a data file
+     *
+     * @param cookies An HashSet containing all the cookies that need to be serialized
+     */
+    private void serializeCookies(HashSet<Cookie> cookies) {
+        try {
+            String datFileNane = String.format(COOKIE_DAT_PATH_FORMAT, bot.settings.username);
+            FileOutputStream fileOut = new FileOutputStream(datFileNane);
+            ObjectOutputStream oss = new ObjectOutputStream(fileOut);
+            oss.writeObject(cookies);
+        } catch (FileNotFoundException e) {
+            BHBot.logger.debug("FileNotFoundException while dumping cookies.", e);
+        } catch (IOException e) {
+            BHBot.logger.debug("IOException while dumping cookies.", e);
+        }
+    }
+
+    /**
+     * This method will take care of de-serializing Cookies from a dat file
+     *
+     * @return An HashSet with all the deserialized Cookies
+     */
+    private HashSet<Cookie> deserializeCookies() {
+        String datFileNane = String.format(COOKIE_DAT_PATH_FORMAT, bot.settings.username);
+
+        File datFile = new File(datFileNane);
+        if (datFile.exists()) {
+            try {
+                FileInputStream fileIn = new FileInputStream(datFileNane);
+                ObjectInputStream ois = new ObjectInputStream(fileIn);
+
+                //noinspection unchecked
+                return (HashSet<Cookie>) ois.readObject();
+            } catch (FileNotFoundException e) {
+                BHBot.logger.debug("FileNotFoundException while deserializing cookies.", e);
+            } catch (IOException e) {
+                BHBot.logger.debug("IOException while deserializing cookies.", e);
+            } catch (ClassNotFoundException e) {
+                BHBot.logger.debug("ClassNotFoundException while deserializing cookies.", e);
+            }
+        }
+
+        return new HashSet<>();
     }
 }
