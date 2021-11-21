@@ -194,7 +194,7 @@ public class DungeonThread implements Runnable {
                     MarvinSegment autoOff = MarvinSegment.fromCue(BHBot.cues.get("AutoOff"), bot.browser);
                     if (autoOn != null || autoOff != null) { //if we're in Loading state, with auto button visible, then we need to change state
                         bot.setState(bot.getLastJoinedState()); // we are not sure what type of dungeon we are doing
-                        BHBot.logger.warn("Possible dungeon crash, activating failsafe");
+                        BHBot.logger.warn("Possible dungeon crash, activating failsafe. Restore to last known status: " + bot.getState());
                         bot.saveGameScreen("dungeon-crash-failsafe", "errors");
                         shrineManager.resetUsedInAdventure();
 
