@@ -1482,7 +1482,9 @@ public class DungeonThread implements Runnable {
                                 continue;
                             }
 
-                            int xeals = getXeals();
+                            final Set<Color> xealBarColors = Set.of(new Color (0, 86, 208), new Color (0, 77, 190), new Color (0, 138, 255));
+                            int xeals = readResourceBarPercentage(seg, bot.settings.maxXeals, Misc.BarOffsets.WB.x, Misc.BarOffsets.WB.y, xealBarColors, bot.browser.getImg());
+
                             globalXeals = xeals;
                             BHBot.logger.readout("Xeals: " + xeals + ", required: >" + bot.settings.minXeals);
 

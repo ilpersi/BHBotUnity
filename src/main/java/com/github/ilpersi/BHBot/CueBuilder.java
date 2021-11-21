@@ -458,6 +458,11 @@ public class CueBuilder {
                 Set.of(), "Decline", "unitycues/treasureChest/cueDecline.png", "");
         //endregion
 
+        //region WB
+        addCueLocatorByPattern(cueLocators, "cuebuilder/worldBoss", "xeal_bar_(.*)\\.png", Bounds.fromWidthHeight(321, 37, 40, 35),
+                Set.of(), "WorldBossPopup", "unitycues/worldBoss/cueWorldBossPopup.png", "Xeal bar popup");
+        //endregion
+
         //region Weekly Rewards
         addCueLocatorByPattern(cueLocators, "cuebuilder/weeklyRewards", "pvp(.*)\\.png", Bounds.fromWidthHeight(361, 120, 75, 54),
                 Set.of(), "PVP_Rewards", "unitycues/weeklyRewards/pvp.png", "");
@@ -688,6 +693,58 @@ public class CueBuilder {
         }
     }
 
+    static void manageXealBar() {
+        Set<Color> xealColors = new HashSet<>();
+        Set<Color> blackColors = new HashSet<>(Set.of(new Color (50, 51, 52), new Color (8, 10, 11)));
+
+        // Path to files with raid bar
+        File xealPath = new File("barbuilder/xeal");
+
+        BufferedImage xealPopUp;
+        try {
+            xealPopUp = ImageIO.read(new File("src/main/resources/unitycues/worldBoss/cueWorldBossPopup.png"));
+        } catch (IOException e) {
+            System.out.println("Errow while reading xeal pop-up");
+            e.printStackTrace();
+            return;
+        }
+
+        // Loop on all the files
+        ImageFilter xealFilter = new ImageFilter("xeal_bar_(.*)\\.png");
+        String[] xealBars = xealPath.list(xealFilter);
+
+        if (xealBars != null) {
+            for (String XealImgFile : xealBars) {
+                File XealBarFile = new File("barbuilder/xeal/" + XealImgFile);
+
+                //noinspection DuplicatedCode
+                if (!XealBarFile.exists() || XealBarFile.isDirectory()) {
+                    System.out.println("File " + XealBarFile.getAbsolutePath() + " is not a valid bar file");
+                    continue;
+                }
+
+                BufferedImage dungImg;
+                try {
+                    dungImg = ImageIO.read(XealBarFile);
+                } catch (IOException e) {
+                    System.out.println("Exception while loading image" + XealBarFile.getAbsolutePath());
+                    e.printStackTrace();
+                    continue;
+                }
+
+                ImageHelper.getImgColors(dungImg.getSubimage(361, 63, 80, 1)).forEach((col) -> { if(!blackColors.contains(col)) xealColors.add(col); }  );
+
+                System.out.println("Found colors for Xeals:");
+                ImageHelper.printColors(xealColors);
+
+                MarvinSegment seg = FindSubimage.findImage(dungImg, xealPopUp, 0, 0, 0, 0);
+                // As images can have different shat totals we use 100 so we get the percentage
+                int xeal = DungeonThread.readResourceBarPercentage(seg, 100, Misc.BarOffsets.WB.x, Misc.BarOffsets.WB.y, xealColors, dungImg);
+                System.out.println("Xeal bar is " + xeal + "% full for image " + XealBarFile.getAbsolutePath());
+            }
+        }
+    }
+
     public static void main(String[] args) {
         boolean printUnused = false;
 
@@ -709,5 +766,7 @@ public class CueBuilder {
         manageEnergyBar();
         System.out.println("====== Tokn bar ======");
         manageTokenBar();
+        System.out.println("====== Xeal bar ======");
+        manageXealBar();
     }
 }

@@ -523,7 +523,6 @@ class CueManager {
         addCue("WorldBossDifficultyNormal", "cues/worldboss/cueWorldBossDifficultyNormal.png", new Bounds(300, 275, 500, 325));
         addCue("WorldBossDifficultyHard", "cues/worldboss/cueWorldBossDifficultyHard.png", new Bounds(300, 275, 500, 325));
         addCue("WorldBossDifficultyHeroic", "cues/worldboss/cueWorldBossDifficultyHeroic.png", new Bounds(300, 275, 500, 325));
-        addCue("WorldBossPopup", "cues/worldboss/cueWorldBossPopup.png", Bounds.fromWidthHeight(305, 29, 67, 53));
         addCue("NotEnoughXeals", "cues/worldboss/cueNotEnoughXeals.png", Bounds.fromWidthHeight(270, 220, 260, 90));
 
         addCue("cueWBSelectNormal", "cues/worldboss/cueWBSelectNormal.png", new Bounds(260, 140, 510, 320));
@@ -755,6 +754,10 @@ class CueManager {
 
         //region T/G
         addCue("TokenBar", "unitycues/tierGauntlet/cueTokenBar.png", Bounds.fromWidthHeight(315, 40, 60, 55));
+        //endregion
+
+        //region WB
+        addCue("WorldBossPopup", "unitycues/worldBoss/cueWorldBossPopup.png", Bounds.fromWidthHeight(310, 25, 65, 60)); // Xeal pop-up
         //endregion
 
         //region Treasure Chest
