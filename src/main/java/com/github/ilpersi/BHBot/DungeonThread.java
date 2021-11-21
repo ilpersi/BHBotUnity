@@ -2345,7 +2345,7 @@ public class DungeonThread implements Runnable {
          *   Not super common so we check every 5 seconds
          */
         //region Merchant Offer
-        if (activityDuration % 5 == 0 && isInFight) {
+        if (isInFight) {
             seg = MarvinSegment.fromCue(BHBot.cues.get("Merchant"), bot.browser);
             if (seg != null) {
                 seg = bot.settings.useUnityEngine ? MarvinSegment.fromCue(BHBot.cues.get("MerchantDecline"), bot.browser) : MarvinSegment.fromCue(BHBot.cues.get("Decline"), 5 * Misc.Durations.SECOND, bot.browser);
@@ -2368,7 +2368,7 @@ public class DungeonThread implements Runnable {
          *   encounterStatus is set to true as the dialogue obscures the guild icon
          */
         //region Character dialouge
-        if (activityDuration % 10 == 0 && isInFight && (bot.getState() == BHBot.State.Dungeon || bot.getState() == BHBot.State.Raid)) {
+        if (isInFight && (bot.getState() == BHBot.State.Dungeon || bot.getState() == BHBot.State.Raid)) {
             detectCharacterDialogAndHandleIt();
         }
         //endregion
