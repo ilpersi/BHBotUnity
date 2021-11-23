@@ -345,17 +345,17 @@ public class BrowserManager {
                 return bImageFromConvert;
         } catch (StaleElementReferenceException e) {
             // sometimes the game element is not available, if this happen we just return an empty image
-            BHBot.logger.error("Stale image detected while taking a screenshot. Trying to reset game element.");
+            BHBot.logger.debug("Stale image detected while taking a screenshot. Trying to reset game element.");
 
             // For more details about this line of code, have a look here: https://www.selenium.dev/exceptions/#stale_element_reference
             try {
                 game = driver.findElement(byElement);
             } catch (Exception ex) {
                 BHBot.logger.error("It was impossible to reset the game element! Generating an empty screenshot.");
-                return new BufferedImage(800, 520, BufferedImage.TYPE_INT_RGB);
             }
 
-            return takeScreenshot(false);
+            return new BufferedImage(800, 520, BufferedImage.TYPE_INT_RGB);
+
         } catch (TimeoutException | IOException e) {
             // sometimes Chrome/Chromium crashes and it is impossible to take screenshots from it
             BHBot.logger.warn("Selenium could not take a screenshot. A monitor screenshot will be taken using AWT.", e);
