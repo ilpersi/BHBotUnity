@@ -1493,9 +1493,7 @@ public class DungeonThread implements Runnable {
                                     bot.scheduler.doWorldBossImmediately = false; // reset it
                                 bot.scheduler.restoreIdleTime();
                                 continue;
-                            }
-
-                            if ((xeals == 0) || (!bot.scheduler.doWorldBossImmediately && (xeals <= bot.settings.minXeals || bot.settings.worldBossSettings.size() == 0))) {
+                            } else if ((xeals == 0) || (!bot.scheduler.doWorldBossImmediately && (xeals <= bot.settings.minXeals || bot.settings.worldBossSettings.size() == 0))) {
                                 if (bot.scheduler.doWorldBossImmediately)
                                     bot.scheduler.doWorldBossImmediately = false; // reset it
 
@@ -1505,6 +1503,7 @@ public class DungeonThread implements Runnable {
                                     XEALS_CHECK_INTERVAL = (long) increase * Misc.Durations.MINUTE; //add 45 minutes to the check interval for each xeal needed above 1
                                 } else
                                     XEALS_CHECK_INTERVAL = 10 * Misc.Durations.MINUTE; //if we only need 1 check every 10 minutes
+
                                 bot.browser.readScreen();
                                 seg = MarvinSegment.fromCue(BHBot.cues.get("X"), Misc.Durations.SECOND, bot.browser);
                                 bot.browser.clickOnSeg(seg);
@@ -1586,7 +1585,7 @@ public class DungeonThread implements Runnable {
                                 seg = MarvinSegment.fromCue("LargeDarkBlueSummon", 4 * Misc.Durations.SECOND, bot.browser);
                                 bot.browser.clickOnSeg(seg); //selected world boss
 
-                                seg = MarvinSegment.fromCue(BHBot.cues.get("Private"), Misc.Durations.SECOND * 3, bot.browser);
+                                seg = MarvinSegment.fromCue(BHBot.cues.get("WBIsPrivate"), Misc.Durations.SECOND * 3, bot.browser);
                                 if (!wbSetting.solo) {
                                     if (seg != null) {
                                         BHBot.logger.info("Unchecking private lobby");

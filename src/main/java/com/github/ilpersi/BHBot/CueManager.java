@@ -507,8 +507,6 @@ class CueManager {
         //WorldBoss Related
         addCue("WorldBoss", "cues/worldboss/cueWorldBoss.png", Bounds.fromWidthHeight(5, 235, 40, 55));
         addCue("WorldBossSelector", "cues/worldboss/cueWorldBossSelector.png", null);
-        addCue("DarkBlueSummon", "cues/worldboss/cueDarkBlueSummon.png", Bounds.fromWidthHeight(453, 449, 99, 28));
-        addCue("LargeDarkBlueSummon", "cues/worldboss/cueLargeDarkBlueSummon.png", Bounds.fromWidthHeight(492, 363, 99, 28));
         addCue("SmallDarkBlueSummon", "cues/worldboss/cueSmallDarkBlueSummon.png", Bounds.fromWidthHeight(430, 388, 95, 28));
         addCue("Invite", "cues/worldboss/cueDarkBlueInvite.png", null);
         addCue("Start", "cues/cueStart.png", null);
@@ -516,10 +514,8 @@ class CueManager {
         addCue("VictoryLarge", "cues/Victory_Large.png", new Bounds(324, 128, 476, 157));
         addCue("OrlagSelected", "cues/cueOrlagSelected.png", new Bounds(360, 430, 440, 460));
         addCue("NetherSelected", "cues/cueNetherSelected.png", null);
-        addCue("Private", "cues/cuePrivate.png", new Bounds(310, 320, 370, 380));
         addCue("Unready", "cues/worldboss/cueWorldBossUnready.png", new Bounds(170, 210, 215, 420));
         addCue("WorldBossTier", "cues/worldboss/cueWorldBossTier.png", Bounds.fromWidthHeight(314, 206, 88, 28));
-        addCue("WorldBossTierDropDown", "cues/worldboss/cueWorldBossTierDropDown.png", Bounds.fromWidthHeight(304, 199, 194, 42));
         addCue("WorldBossDifficultyNormal", "cues/worldboss/cueWorldBossDifficultyNormal.png", new Bounds(300, 275, 500, 325));
         addCue("WorldBossDifficultyHard", "cues/worldboss/cueWorldBossDifficultyHard.png", new Bounds(300, 275, 500, 325));
         addCue("WorldBossDifficultyHeroic", "cues/worldboss/cueWorldBossDifficultyHeroic.png", new Bounds(300, 275, 500, 325));
@@ -530,7 +526,6 @@ class CueManager {
         addCue("cueWBSelectHeroic", "cues/worldboss/cueWBSelectHeroic.png", new Bounds(260, 140, 510, 320));
 
 
-        addCue("WorldBossTitle", "cues/worldboss/cueWorldBossTitle.png", new Bounds(280, 90, 515, 140));
         addCue("WorldBossSummonTitle", "cues/worldboss/cueWorldBossSummonTitle.png", new Bounds(325, 100, 480, 150));
         addCue("WorldBossPlayerKick", "cues/worldboss/ts/wb_player_kick.png", null);
         addCue("WorldBossPopupKick", "cues/worldboss/ts/wb_popup_kick.png", Bounds.fromWidthHeight(355, 135, 85, 40));
@@ -758,6 +753,11 @@ class CueManager {
 
         //region WB
         addCue("WorldBossPopup", "unitycues/worldBoss/cueWorldBossPopup.png", Bounds.fromWidthHeight(310, 25, 65, 60)); // Xeal pop-up
+        addCue("DarkBlueSummon", "unitycues/worldboss/cueDarkBlueSummon.png", Bounds.fromWidthHeight(435, 435, 130, 55)); // WB Main menu summon button
+        addCue("WorldBossTitle", "unitycues/worldboss/cueWorldBossTitle.png", Bounds.fromWidthHeight(280, 75, 245, 55)); // WB Title in Main Menu
+        addCue("LargeDarkBlueSummon", "unitycues/worldboss/cueLargeDarkBlueSummon.png", Bounds.fromWidthHeight(480, 350, 125, 60)); // Big Blue Summon button in WB Screen 2
+        addCue("WBIsPrivate", "unitycues/worldboss/cueWBIsPrivate.png", Bounds.fromWidthHeight(310, 315, 65, 70)); // Private Flag for World Boss
+        addCue("WorldBossTierDropDown", "unitycues/worldboss/cueWorldBossTierDropDown.png", Bounds.fromWidthHeight(290, 185, 220, 70)); // Drop Down for Tier detection
         //endregion
 
         //region Treasure Chest

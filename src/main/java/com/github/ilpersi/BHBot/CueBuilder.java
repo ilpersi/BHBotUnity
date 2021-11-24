@@ -9,8 +9,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 import java.util.regex.Pattern;
 
 /**
@@ -86,10 +86,10 @@ public class CueBuilder {
         void generateCue() {
             // File that contains the Cue to be extracted
             File screenShotFile = new File(this.containingScreenShotPath);
-            if (!screenShotFile.exists() || screenShotFile.isDirectory() ) {
+            if (!screenShotFile.exists() || screenShotFile.isDirectory()) {
                 System.out.println("Origin screenshot is not a file or it does not exist: " + screenShotFile.getAbsolutePath());
                 return;
-            }else if (!screenShotFile.getName().toLowerCase().endsWith(".png")) {
+            } else if (!screenShotFile.getName().toLowerCase().endsWith(".png")) {
                 System.out.println("Origin screenshot is not a PNG image: " + screenShotFile.getAbsolutePath());
                 return;
             }
@@ -115,7 +115,7 @@ public class CueBuilder {
             BufferedImage destCueImg = containingScreenshotImg.getSubimage(this.cuePosition.x1, this.cuePosition.y1, this.cuePosition.width, this.cuePosition.height);
 
             // If a white list is specified we only save the white listed pixel colors and we set the others as transparent
-            if (this.colorWhiteList.size() > 0 ) {
+            if (this.colorWhiteList.size() > 0) {
                 int minX = destCueImg.getWidth();
                 int minY = destCueImg.getHeight();
                 int maxY = 0;
@@ -126,7 +126,7 @@ public class CueBuilder {
                     for (int x = 0; x < destCueImg.getWidth(); x++) {
                         // if (pixelMatrix[x][y] == familiarTxtColor) {
                         if (!this.colorWhiteList.contains(new Color(pixelMatrix[x][y]))) {
-                           destCueImg.setRGB(x, y, 0);
+                            destCueImg.setRGB(x, y, 0);
                         } else {
                             if (y < minY) minY = y;
                             if (x < minX) minX = x;
@@ -191,14 +191,15 @@ public class CueBuilder {
     /**
      * Use this method when you want to use multiple input files to generate the same Cue. The logic
      * will walk the containing path and add to the hashmap all the files matching the PNGPattern
-     *  @param cueLocators The destination array list where to add the matching cueLocators
-     * @param containingPath The path where the screenshots to build the Cue are located
-     * @param PNGPattern The pattern used to walk containingPath to find relevant source screenshots
-     * @param cuePosition Where to search for the Cue in the origin screenshots
-     * @param colorWhiteList The color whitelist
+     *
+     * @param cueLocators        The destination array list where to add the matching cueLocators
+     * @param containingPath     The path where the screenshots to build the Cue are located
+     * @param PNGPattern         The pattern used to walk containingPath to find relevant source screenshots
+     * @param cuePosition        Where to search for the Cue in the origin screenshots
+     * @param colorWhiteList     The color whitelist
      * @param destinationCueName The destination Cue name as used in CueManager
      * @param destinationCuePath Where the output Cue should be created
-     * @param description The cue description
+     * @param description        The cue description
      */
     static void addCueLocatorByPattern(List<CueLocator> cueLocators, String containingPath, String PNGPattern, Bounds cuePosition, Set<Color> colorWhiteList,
                                        String destinationCueName, String destinationCuePath, String description) {
@@ -461,6 +462,22 @@ public class CueBuilder {
         //region WB
         addCueLocatorByPattern(cueLocators, "cuebuilder/worldBoss", "xeal_bar_(.*)\\.png", Bounds.fromWidthHeight(321, 37, 40, 35),
                 Set.of(), "WorldBossPopup", "unitycues/worldBoss/cueWorldBossPopup.png", "Xeal bar popup");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/worldBoss", "xeal_bar_(.*)\\.png", Bounds.fromWidthHeight(449, 447, 106, 31),
+                Set.of(), "DarkBlueSummon", "unitycues/worldboss/cueDarkBlueSummon.png", "WB Main menu summon button");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/worldBoss", "xeal_bar_(.*)\\.png", Bounds.fromWidthHeight(290, 87, 224, 32),
+                Set.of(), "WorldBossTitle", "unitycues/worldboss/cueWorldBossTitle.png", "WB Title in Main Menu");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/worldBoss", "wb_2_(.*)\\.png", Bounds.fromWidthHeight(490, 361, 105, 35),
+                Set.of(), "LargeDarkBlueSummon", "unitycues/worldboss/cueLargeDarkBlueSummon.png", "Big Blue Summon button in WB Screen 2");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/worldBoss", "wb_3_(.*)\\.png", Bounds.fromWidthHeight(322, 327, 42, 46),
+                Set.of(), "WBIsPrivate", "unitycues/worldboss/cueWBIsPrivate.png", "Private Flag for World Boss");
+
+        Set<Color> TierDropDownColors = Set.of(new Color(0, 0, 0), new Color(70, 105, 134), new Color(124, 179, 221), new Color(112, 169, 214),
+                new Color(70, 123, 161), new Color(86, 145, 190), new Color(116, 175, 223), new Color(115, 175, 223), new Color(133, 191, 235),
+                new Color(112, 172, 222), new Color(113, 174, 222), new Color(95, 157, 207), new Color(173, 222, 255), new Color(99, 147, 183),
+                new Color(87, 148, 195), new Color(59, 98, 131), new Color(108, 166, 212), new Color(166, 219, 255), new Color(99, 164, 218),
+                new Color(84, 135, 174), new Color(111, 168, 213), new Color(110, 167, 213), new Color(101, 149, 184), new Color(102, 150, 185));
+        addCueLocatorByPattern(cueLocators, "cuebuilder/worldBoss", "wb_3_(.*)\\.png", Bounds.fromWidthHeight(304, 199, 194, 42),
+                TierDropDownColors, "WorldBossTierDropDown", "unitycues/worldboss/cueWorldBossTierDropDown.png", "Drop Down for Tier detection");
         //endregion
 
         //region Weekly Rewards
@@ -488,7 +505,7 @@ public class CueBuilder {
             File cueFile = new File(cuePath);
 
             if (cueFile.exists() && !cueFile.delete()) {
-                System.out.println("It was impossible to delete file \"" + cueFile.getAbsolutePath() +"\". Cue generation interrupted");
+                System.out.println("It was impossible to delete file \"" + cueFile.getAbsolutePath() + "\". Cue generation interrupted");
                 return;
             }
         }
@@ -538,8 +555,8 @@ public class CueBuilder {
     static void manageRaidBar() {
         // Currently known colors
         Set<Color> raidColors = new HashSet<>(
-                 Set.of(new Color(199, 79, 175), new Color(199, 79, 176),
-                         new Color(147, 47, 118)));
+                Set.of(new Color(199, 79, 175), new Color(199, 79, 176),
+                        new Color(147, 47, 118)));
 
         // Path to files with raid bar
         File raidPath = new File("barbuilder/raid");
@@ -589,9 +606,9 @@ public class CueBuilder {
 
     }
 
-    static void manageEnergyBar () {
+    static void manageEnergyBar() {
         Set<Color> energyColors = new HashSet<>();
-        Set<Color> blackColors = new HashSet<>(Set.of(new Color (50, 51, 52)));
+        Set<Color> blackColors = new HashSet<>(Set.of(new Color(50, 51, 52)));
 
         // Path to files with raid bar
         File dungPath = new File("barbuilder/dungeon");
@@ -628,7 +645,9 @@ public class CueBuilder {
                     continue;
                 }
 
-                ImageHelper.getImgColors(dungImg.getSubimage(438, 31, 80, 1)).forEach((col) -> { if(!blackColors.contains(col)) energyColors.add(col); }  );
+                ImageHelper.getImgColors(dungImg.getSubimage(438, 31, 80, 1)).forEach((col) -> {
+                    if (!blackColors.contains(col)) energyColors.add(col);
+                });
 
                 System.out.println("Found colors for Energy:");
                 ImageHelper.printColors(energyColors);
@@ -643,7 +662,7 @@ public class CueBuilder {
 
     static void manageTokenBar() {
         Set<Color> tokenColors = new HashSet<>();
-        Set<Color> blackColors = new HashSet<>(Set.of(new Color (50, 51, 52)));
+        Set<Color> blackColors = new HashSet<>(Set.of(new Color(50, 51, 52)));
 
         // Path to files with raid bar
         File tokenPath = new File("barbuilder/token");
@@ -680,7 +699,9 @@ public class CueBuilder {
                     continue;
                 }
 
-                ImageHelper.getImgColors(dungImg.getSubimage(361, 77, 80, 1)).forEach((col) -> { if(!blackColors.contains(col)) tokenColors.add(col); }  );
+                ImageHelper.getImgColors(dungImg.getSubimage(361, 77, 80, 1)).forEach((col) -> {
+                    if (!blackColors.contains(col)) tokenColors.add(col);
+                });
 
                 System.out.println("Found colors for Energy:");
                 ImageHelper.printColors(tokenColors);
@@ -695,7 +716,7 @@ public class CueBuilder {
 
     static void manageXealBar() {
         Set<Color> xealColors = new HashSet<>();
-        Set<Color> blackColors = new HashSet<>(Set.of(new Color (50, 51, 52), new Color (8, 10, 11)));
+        Set<Color> blackColors = new HashSet<>(Set.of(new Color(50, 51, 52), new Color(8, 10, 11)));
 
         // Path to files with raid bar
         File xealPath = new File("barbuilder/xeal");
@@ -732,7 +753,9 @@ public class CueBuilder {
                     continue;
                 }
 
-                ImageHelper.getImgColors(dungImg.getSubimage(361, 63, 80, 1)).forEach((col) -> { if(!blackColors.contains(col)) xealColors.add(col); }  );
+                ImageHelper.getImgColors(dungImg.getSubimage(361, 63, 80, 1)).forEach((col) -> {
+                    if (!blackColors.contains(col)) xealColors.add(col);
+                });
 
                 System.out.println("Found colors for Xeals:");
                 ImageHelper.printColors(xealColors);
@@ -742,6 +765,19 @@ public class CueBuilder {
                 int xeal = DungeonThread.readResourceBarPercentage(seg, 100, Misc.BarOffsets.WB.x, Misc.BarOffsets.WB.y, xealColors, dungImg);
                 System.out.println("Xeal bar is " + xeal + "% full for image " + XealBarFile.getAbsolutePath());
             }
+        }
+
+        // We calculate colors for the Tier DropDown Bar
+        BufferedImage tiedDropDown;
+        try {
+            tiedDropDown = ImageIO.read(new File("barbuilder/xeal/cueWorldBossTierDropDown.png"));
+            Set<Color> DropDownColors = ImageHelper.getImgColors(tiedDropDown);
+            System.out.println("Found colors for Tier Drop Down:");
+            ImageHelper.printColors(DropDownColors);
+
+        } catch (IOException e) {
+            System.out.println("Errow while reading xeal pop-up");
+            e.printStackTrace();
         }
     }
 
