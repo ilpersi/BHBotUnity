@@ -746,7 +746,7 @@ class CueManager {
         addCue("RaidLevel", "unitycues/raid/cueRaidLevel.png", Bounds.fromWidthHeight(190, 430, 430, 30)); // selected raid type button cue
         addCue("cueRaidLevelEmpty", "unitycues/raid/cueRaidLevelEmpty.png", Bounds.fromWidthHeight(190, 430, 430, 30)); // unselected raid type button cue
         addCue("Raid1Name", "unitycues/raid/r1Name.png", Bounds.fromWidthHeight(175, 350, 300, 45));// Raid 1 Name, used whe R1 is the only unlocked raid
-        addCue("RaidSummon", "unitycues/raid/cueRaidSummon.png", Bounds.fromWidthHeight(480, 360, 125, 40)); // Purple summon button
+        addCue("RaidSummon", "unitycues/raid/cueRaidSummon.png", Bounds.fromWidthHeight(480, 360, 125, 40)); // Raid Summon button
         addCue("RaidNormal", "unitycues/raid/cueRaidNormal.png", Bounds.fromWidthHeight(135, 210, 145, 50)); // Normal difficulty Raid
         addCue("RaidHard", "unitycues/raid/cueRaidHard.png", Bounds.fromWidthHeight(330, 210, 145, 50)); // Hard difficulty Raid
         addCue("RaidHeroic", "unitycues/raid/cueRaidHeroic.png", Bounds.fromWidthHeight(525, 210, 145, 50)); // Heroic difficulty Raid
