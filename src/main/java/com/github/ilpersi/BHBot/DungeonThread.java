@@ -3544,7 +3544,7 @@ public class DungeonThread implements Runnable {
             BHBot.logger.info("Changing from R" + selectedRaid + " to R" + desiredRaidZone);
 
             // TODO fix kong selection bug
-            if (desiredRaid >= 2 && "Linux".equals(System.getProperty("os.name"))) {
+            if (desiredRaid >= 2) {
                 bot.browser.clickInGame(645, 302);
             }
 

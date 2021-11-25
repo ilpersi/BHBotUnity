@@ -399,7 +399,7 @@ public class CueBuilder {
 
         //region Raid
         addCueLocatorByPattern(cueLocators, "cuebuilder/raid", "raid_summon_(.*)\\.png", Bounds.fromWidthHeight(489, 362, 110, 31),
-                Set.of(new Color(255, 255, 255)), "RaidSummon", "unitycues/raid/cueRaidSummon.png", "Raid Summon button");
+                Set.of(), "RaidSummon", "unitycues/raid/cueRaidSummon.png", "Raid Summon button");
         addCueLocatorByPattern(cueLocators, "cuebuilder/raid", "raid-diff(.*)\\.png", Bounds.fromWidthHeight(147, 222, 122, 27),
                 Set.of(), "RaidNormal", "unitycues/raid/cueRaidNormal.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/raid", "raid-diff(.*)\\.png", Bounds.fromWidthHeight(340, 222, 122, 27),
