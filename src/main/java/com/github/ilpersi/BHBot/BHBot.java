@@ -1197,6 +1197,8 @@ public class BHBot {
             dumpCrashLog(originalException);
         }
 
+        browser.cookiesLoaded = false;
+
         try {
             browser.restart(useDoNotShareLink);
         } catch (Exception e) {

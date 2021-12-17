@@ -1603,6 +1603,8 @@ public class DungeonThread implements Runnable {
                                 //world boss tier selection
 
                                 int currentTier = detectWorldBossTier();
+                                // TODO  When currentTier == 0, an error with reading number happened!
+
                                 if (currentTier != wbSetting.tier) {
                                     BHBot.logger.info("T" + currentTier + " detected, changing to T" + wbSetting.tier);
                                     Misc.sleep(500);

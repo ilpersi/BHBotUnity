@@ -43,7 +43,7 @@ public class BrowserManager {
     private long lastClickTime = Misc.getTime();
 
     private final String COOKIE_DAT_PATH_FORMAT = "./data/cookies_%s.dat";
-    private boolean cookiesLoaded = false;
+    boolean cookiesLoaded = false;
 
     BrowserManager(BHBot bot, String browserProfile) {
         this.bot = bot;
