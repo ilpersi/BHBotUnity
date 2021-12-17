@@ -3952,7 +3952,7 @@ public class DungeonThread implements Runnable {
 
         if (!bot.browser.isDoNotShareUrl()) {
             xOffset = 401;
-            yOffset = 210;
+            yOffset = 209;
         } else {
             xOffset = 400;
             yOffset = 207;
@@ -3970,7 +3970,7 @@ public class DungeonThread implements Runnable {
         MarvinImage im = new MarvinImage(bot.browser.getImg().getSubimage(xOffset, yOffset, w, h));
 
         // make it white-gray (to facilitate cue recognition):
-        im.toBlackWhite(new Color(25, 25, 25), new Color(255, 255, 255), 254);
+        im.toBlackWhite(new Color(25, 25, 25), new Color(255, 255, 255), 255);
         im.update();
 
         BufferedImage imb = im.getBufferedImage();

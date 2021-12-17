@@ -19,10 +19,11 @@ public class BlackWhiteTools {
     public static void main(String[] args) {
 
         if (args.length > 0) {
-            folderToBlackWhite(args[0]);
+            // folderToBlackWhite(args[0]);
             // testWBPlayersTS(args[0]);
             // testInvasion(args[0]);
             // testWBTotalTS(args[0]);
+            testWBTier(args[0]);
         }
     }
 
@@ -136,6 +137,27 @@ public class BlackWhiteTools {
 
                 MarvinImage subImg = new MarvinImage(screenImg.getSubimage(375, 20, 55, 20));
                 subImg.toBlackWhite(new Color(10, 11, 13), new Color(64, 64, 64), 0);
+                subImg.update();
+                BufferedImage subimagetestbw = subImg.getBufferedImage();
+
+            } catch (IOException e) {
+                System.out.println("Error when loading game screen ");
+            }
+
+
+        }
+    }
+
+    static void testWBTier(String screenPath) {
+        File imgFile = new File(screenPath);
+
+        if (imgFile.exists()) {
+            BufferedImage screenImg;
+            try {
+                screenImg = ImageIO.read(imgFile);
+
+                MarvinImage subImg = new MarvinImage(screenImg.getSubimage(401, 209, 21, 19));
+                subImg.toBlackWhite(new Color(25, 25, 25), new Color(255, 255, 255), 255);
                 subImg.update();
                 BufferedImage subimagetestbw = subImg.getBufferedImage();
 
