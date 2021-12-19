@@ -368,19 +368,19 @@ public class EncounterManager {
         Color familiarTxtCol;
         switch (familiarType) {
             case COMMON:
-                familiarTxtCol = useUnityEngine ? new Color(151, 255, 125) : new Color(150, 254, 124);
+                familiarTxtCol = new Color(151, 255, 125);
                 // familiarTxtColor = -6881668;
                 break;
             case RARE:
-                familiarTxtCol = useUnityEngine ? new Color(147, 158, 244) : new Color(146, 157, 243);
+                familiarTxtCol = new Color(147, 158, 244);
                 // familiarTxtColor = -7168525;
                 break;
             case EPIC:
-                familiarTxtCol = useUnityEngine ? new Color(255, 128, 125) : new Color(254, 127, 124);
+                familiarTxtCol = new Color(255, 128, 125);
                 // familiarTxtColor = -98436;
                 break;
             case LEGENDARY:
-                familiarTxtCol = useUnityEngine ? new Color(255, 255, 0) : new Color(254, 254, 0);
+                familiarTxtCol = new Color(255, 255, 0);
                 // familiarTxtColor = -66048;
                 break;
             case ERROR:
