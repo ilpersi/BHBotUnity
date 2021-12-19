@@ -5,8 +5,10 @@ import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class EncounterManager {
     private final BHBot bot;
@@ -356,8 +358,8 @@ public class EncounterManager {
      * This methods extract an image only containing the familiar name. The logic is based on the type of the familiar.
      * Once that the type is known, the name will be extracted using a specific value for the color
      *
-     * @param screenImg    A Buffered Image containing the image
-     * @param familiarType What is the type of the familiar we are looking to find the name
+     * @param screenImg      A Buffered Image containing the image
+     * @param familiarType   What is the type of the familiar we are looking to find the name
      * @param useUnityEngine Are we using Unity Engine?
      * @return A Buffered Image containing just the familiar name
      */
@@ -398,7 +400,7 @@ public class EncounterManager {
         else
             nameImgRect = screenImg;
 
-		int minX = nameImgRect.getWidth();
+        int minX = nameImgRect.getWidth();
         int minY = nameImgRect.getHeight();
         int maxY = 0;
         int maxX = 0;
@@ -440,6 +442,7 @@ public class EncounterManager {
     static void buildMD5() {
 
         //region Familiars MD5 Values
+        //region COMMON familiars
         EncounterManager.famMD5Table.put("UNPCHOxJynGzDrS2PbfO4Q==", new FamiliarDetails("Batty", FamiliarType.COMMON));
         EncounterManager.famMD5Table.put("4QLlgvnJ8c6Hi79o09SXEA==", new FamiliarDetails("Booboo", FamiliarType.COMMON));
         EncounterManager.famMD5Table.put("80W8hPDRABjAn4y/au7XAg==", new FamiliarDetails("Candelabors", FamiliarType.COMMON));
@@ -459,6 +462,26 @@ public class EncounterManager {
         EncounterManager.famMD5Table.put("OyDlQ/0AwFrAK+Mg8tAOJQ==", new FamiliarDetails("Tubbo", FamiliarType.COMMON));
         EncounterManager.famMD5Table.put("qqE+XKOmcjQawhMNpytVgg==", new FamiliarDetails("Uggs", FamiliarType.COMMON));
         EncounterManager.famMD5Table.put("MHskvmKyjvIgcsoU6EGVxg==", new FamiliarDetails("Uggs", FamiliarType.COMMON));
+        //endregion
+
+        //region RARE familiars
+        EncounterManager.famMD5Table.put("JUt00pm9AwcvyqLqfwzbUw==", new FamiliarDetails("Bob", FamiliarType.RARE));
+        EncounterManager.famMD5Table.put("39U/7JaT1Z5x0pd+FzbEFQ==", new FamiliarDetails("Chewy", FamiliarType.RARE));
+        EncounterManager.famMD5Table.put("MB3W6wapyV3mO49iDdJPfw==", new FamiliarDetails("Findle", FamiliarType.RARE));
+        EncounterManager.famMD5Table.put("hoB3qmpDjEEB0hBy+rwz8g==", new FamiliarDetails("Findle", FamiliarType.RARE));
+        EncounterManager.famMD5Table.put("DJGsWnnnxVHETufD0eIgBg==", new FamiliarDetails("Findle", FamiliarType.RARE));
+        EncounterManager.famMD5Table.put("fgzFQqY5npamn4sJpX9qUQ==", new FamiliarDetails("Grampz", FamiliarType.RARE));
+        EncounterManager.famMD5Table.put("DjjvE7I59OrRj3MBIwMtUw==", new FamiliarDetails("Grampz", FamiliarType.RARE));
+        EncounterManager.famMD5Table.put("Rww5h5df+e7o6Sv8rLDWBQ==", new FamiliarDetails("Marm", FamiliarType.RARE));
+        EncounterManager.famMD5Table.put("8yYWadHRp5IsKm77wVbUJw==", new FamiliarDetails("Marm", FamiliarType.RARE));
+        EncounterManager.famMD5Table.put("tx8GZ0uVHcQa952MbWJptw==", new FamiliarDetails("Marm", FamiliarType.RARE));
+        EncounterManager.famMD5Table.put("yCtNI92TX05nLb2YC/9ZIA==", new FamiliarDetails("Marm", FamiliarType.RARE));
+        EncounterManager.famMD5Table.put("C7dwGQo8jCNHskBzJJf53Q==", new FamiliarDetails("Opo", FamiliarType.RARE));
+        EncounterManager.famMD5Table.put("pbhAbGekMoIvtGVZ6MjEGQ==", new FamiliarDetails("Roy", FamiliarType.RARE));
+        EncounterManager.famMD5Table.put("TXKBBLJjAS0wPRHUMvmFuw==", new FamiliarDetails("Shrump", FamiliarType.RARE));
+        //endregion
+
+        //region EPIC familiars
         EncounterManager.famMD5Table.put("85S94YptyStkGch3cJu6cw==", new FamiliarDetails("Ahlpuch", FamiliarType.EPIC));
         EncounterManager.famMD5Table.put("+VDI0b+EoGCyyJiABpxt6A==", new FamiliarDetails("Blemb", FamiliarType.EPIC));
         EncounterManager.famMD5Table.put("wj/v0X2ZV8L2F3VIAu4Deg==", new FamiliarDetails("Blubber", FamiliarType.EPIC));
@@ -486,6 +509,9 @@ public class EncounterManager {
         EncounterManager.famMD5Table.put("lj+l9bUYHn6MCb76q8pVAg==", new FamiliarDetails("Violace", FamiliarType.EPIC));
         EncounterManager.famMD5Table.put("SBynK4RkNSIIBvK0EdfGPQ==", new FamiliarDetails("Violace", FamiliarType.EPIC));
         EncounterManager.famMD5Table.put("x1B19CH026b+aVgx+VwS2Q==", new FamiliarDetails("Violace", FamiliarType.EPIC));
+        //endregion
+
+        //region LEGENDARY familiars
         EncounterManager.famMD5Table.put("WMfqJ7gWJwmZto6GKIbiQA==", new FamiliarDetails("Abernario", FamiliarType.LEGENDARY));
         EncounterManager.famMD5Table.put("60MCR0T/pKRXJnqQzNRG1g==", new FamiliarDetails("Astarot", FamiliarType.LEGENDARY));
         EncounterManager.famMD5Table.put("4TdkLS0eWWSTwa1tD8Bp7Q==", new FamiliarDetails("Astarot", FamiliarType.LEGENDARY));
@@ -493,20 +519,8 @@ public class EncounterManager {
         EncounterManager.famMD5Table.put("IYuGa2ky9DEyXsRD9iq3/w==", new FamiliarDetails("Gobby", FamiliarType.LEGENDARY));
         EncounterManager.famMD5Table.put("F/NM+ZWXFtsA7nP4fLtEhg==", new FamiliarDetails("Kakunapac", FamiliarType.LEGENDARY));
         EncounterManager.famMD5Table.put("QT3sBIYLjF324QE9LzlHDA==", new FamiliarDetails("Neistall", FamiliarType.LEGENDARY));
-        EncounterManager.famMD5Table.put("JUt00pm9AwcvyqLqfwzbUw==", new FamiliarDetails("Bob", FamiliarType.RARE));
-        EncounterManager.famMD5Table.put("39U/7JaT1Z5x0pd+FzbEFQ==", new FamiliarDetails("Chewy", FamiliarType.RARE));
-        EncounterManager.famMD5Table.put("MB3W6wapyV3mO49iDdJPfw==", new FamiliarDetails("Findle", FamiliarType.RARE));
-        EncounterManager.famMD5Table.put("hoB3qmpDjEEB0hBy+rwz8g==", new FamiliarDetails("Findle", FamiliarType.RARE));
-        EncounterManager.famMD5Table.put("DJGsWnnnxVHETufD0eIgBg==", new FamiliarDetails("Findle", FamiliarType.RARE));
-        EncounterManager.famMD5Table.put("fgzFQqY5npamn4sJpX9qUQ==", new FamiliarDetails("Grampz", FamiliarType.RARE));
-        EncounterManager.famMD5Table.put("DjjvE7I59OrRj3MBIwMtUw==", new FamiliarDetails("Grampz", FamiliarType.RARE));
-        EncounterManager.famMD5Table.put("Rww5h5df+e7o6Sv8rLDWBQ==", new FamiliarDetails("Marm", FamiliarType.RARE));
-        EncounterManager.famMD5Table.put("8yYWadHRp5IsKm77wVbUJw==", new FamiliarDetails("Marm", FamiliarType.RARE));
-        EncounterManager.famMD5Table.put("tx8GZ0uVHcQa952MbWJptw==", new FamiliarDetails("Marm", FamiliarType.RARE));
-        EncounterManager.famMD5Table.put("yCtNI92TX05nLb2YC/9ZIA==", new FamiliarDetails("Marm", FamiliarType.RARE));
-        EncounterManager.famMD5Table.put("C7dwGQo8jCNHskBzJJf53Q==", new FamiliarDetails("Opo", FamiliarType.RARE));
-        EncounterManager.famMD5Table.put("pbhAbGekMoIvtGVZ6MjEGQ==", new FamiliarDetails("Roy", FamiliarType.RARE));
-        EncounterManager.famMD5Table.put("TXKBBLJjAS0wPRHUMvmFuw==", new FamiliarDetails("Shrump", FamiliarType.RARE));
+        //endregion
+
         //endregion
 
         BHBot.logger.debug("Loaded " + EncounterManager.famMD5Table.size() + " familiars MD5 hashes.");
@@ -516,7 +530,7 @@ public class EncounterManager {
      * Print the full list of MD5 hashes
      */
     static void printMD5() {
-        for (Map.Entry<String, EncounterManager.FamiliarDetails> famDetails: EncounterManager.famMD5Table.entrySet()) {
+        for (Map.Entry<String, EncounterManager.FamiliarDetails> famDetails : EncounterManager.famMD5Table.entrySet()) {
             BHBot.logger.debug("MD5 '" + famDetails.getKey() + "' - > " + famDetails.getValue().name);
         }
     }
@@ -527,7 +541,7 @@ public class EncounterManager {
      * @param famName The name of the desired familiar
      */
     static void printMD5(String famName) {
-        for (Map.Entry<String, EncounterManager.FamiliarDetails> famDetails: EncounterManager.famMD5Table.entrySet()) {
+        for (Map.Entry<String, EncounterManager.FamiliarDetails> famDetails : EncounterManager.famMD5Table.entrySet()) {
             if (famName.equalsIgnoreCase(famDetails.getValue().name)) {
                 BHBot.logger.debug("MD5 '" + famDetails.getKey() + "' - > " + famDetails.getValue().name);
                 return;
