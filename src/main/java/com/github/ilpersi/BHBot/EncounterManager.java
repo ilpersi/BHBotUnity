@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -138,7 +139,7 @@ public class EncounterManager {
 
         // We build the MD5 string for the current encounter
         Bounds familiarNameBounds = new Bounds(105, 60, 640, 105);
-        BufferedImage famNameImg = EncounterManager.getFamiliarNameImg(bot.browser.getImg(), familiarLevel, familiarNameBounds, bot.settings.useUnityEngine);
+        BufferedImage famNameImg = EncounterManager.getFamiliarNameImg(bot.browser.getImg(), familiarLevel, familiarNameBounds);
         String famNameMD5 = Misc.imgToMD5(famNameImg);
 
         // We check if the familiar is known
@@ -155,7 +156,7 @@ public class EncounterManager {
                 Misc.contributeImage(bot.browser.getImg(), persuasionLog.toString(), familiarNameBounds, bot.settings.useUnityEngine);
             }
         } else {
-            BHBot.logger.debug("MD5 familiar detected: " + encounterDetails.name);
+            BHBot.logger.debug(MessageFormat.format("MD5 familiar detected: {0}", encounterDetails.name));
         }
         // }
 
@@ -164,7 +165,7 @@ public class EncounterManager {
             if (!bribeFamiliar()) {
                 BHBot.logger.autobribe("Bribe attempt failed! Trying with persuasion...");
                 if (persuadeFamiliar()) {
-                    BHBot.logger.autobribe(familiarLevel.toString().toUpperCase() + " persuasion attempted.");
+                    BHBot.logger.autobribe(MessageFormat.format("{0} persuasion attempted.", familiarLevel.toString().toUpperCase()));
                 } else {
                     BHBot.logger.error("Impossible to persuade familiar, restarting...");
                     bot.restart(true, false);
@@ -174,7 +175,7 @@ public class EncounterManager {
             }
         } else if (persuasion == PersuationType.PERSUADE) {
             if (persuadeFamiliar()) {
-                BHBot.logger.autobribe(familiarLevel.toString().toUpperCase() + " persuasion attempted.");
+                BHBot.logger.autobribe(MessageFormat.format("{0} persuasion attempted.", familiarLevel.toString().toUpperCase()));
             } else {
                 BHBot.logger.error("Impossible to attempt persuasion, restarting.");
                 bot.restart(true, false);
@@ -186,7 +187,7 @@ public class EncounterManager {
 
                 Cue yesGreen = new Cue(BHBot.cues.get("YesGreen"), Bounds.fromWidthHeight(290, 330, 85, 60));
                 if (bot.browser.closePopupSecurely(yesGreen, yesGreen)) {
-                    BHBot.logger.autobribe(familiarLevel.toString().toUpperCase() + " persuasion declined.");
+                    BHBot.logger.autobribe(MessageFormat.format("{0} persuasion declined.", familiarLevel.toString().toUpperCase()));
                 } else {
                     BHBot.logger.error("Impossible to find the yes-green button after decline, restarting...");
                     bot.restart(true, false);
@@ -220,7 +221,7 @@ public class EncounterManager {
                 if (toBribeCnt > 0) {
                     // The familiar screen is opened, we we search for cues without timeout
                     if (MarvinSegment.fromCue(familiarCue, bot.browser) != null) {
-                        BHBot.logger.autobribe("Detected familiar " + familiarDetails + " as valid in familiars");
+                        BHBot.logger.autobribe(MessageFormat.format("Detected familiar {0} as valid in familiars", familiarDetails));
                         result.toBribeCnt = toBribeCnt;
                         result.familiarName = familiarName;
                         break;
@@ -228,11 +229,11 @@ public class EncounterManager {
                     }
 
                 } else {
-                    BHBot.logger.warn("Count for familiar " + familiarName + " is 0! Temporary removing it form the settings...");
+                    BHBot.logger.warn(MessageFormat.format("Count for familiar {0} is 0! Temporary removing it form the settings...", familiarName));
                     wrongNames.add(familiarDetails);
                 }
             } else {
-                BHBot.logger.warn("Impossible to find a cue for familiar " + familiarName + ", it will be temporary removed from settings.");
+                BHBot.logger.warn(MessageFormat.format("Impossible to find a cue for familiar {0}, it will be temporary removed from settings.", familiarName));
                 wrongNames.add(familiarDetails);
             }
         }
@@ -360,10 +361,9 @@ public class EncounterManager {
      *
      * @param screenImg      A Buffered Image containing the image
      * @param familiarType   What is the type of the familiar we are looking to find the name
-     * @param useUnityEngine Are we using Unity Engine?
      * @return A Buffered Image containing just the familiar name
      */
-    static BufferedImage getFamiliarNameImg(BufferedImage screenImg, FamiliarType familiarType, Bounds nameBounds, boolean useUnityEngine) {
+    static BufferedImage getFamiliarNameImg(BufferedImage screenImg, FamiliarType familiarType, Bounds nameBounds) {
         // int familiarTxtColor;
         Color familiarTxtCol;
         switch (familiarType) {
@@ -523,7 +523,7 @@ public class EncounterManager {
 
         //endregion
 
-        BHBot.logger.debug("Loaded " + EncounterManager.famMD5Table.size() + " familiars MD5 hashes.");
+        BHBot.logger.debug(MessageFormat.format("Loaded {0} familiars MD5 hashes.", EncounterManager.famMD5Table.size()));
     }
 
     /**
@@ -531,7 +531,7 @@ public class EncounterManager {
      */
     static void printMD5() {
         for (Map.Entry<String, EncounterManager.FamiliarDetails> famDetails : EncounterManager.famMD5Table.entrySet()) {
-            BHBot.logger.debug("MD5 '" + famDetails.getKey() + "' - > " + famDetails.getValue().name);
+            BHBot.logger.debug(MessageFormat.format("MD5 ''{0}'' - > {1}", famDetails.getKey(), famDetails.getValue().name));
         }
     }
 
@@ -543,10 +543,10 @@ public class EncounterManager {
     static void printMD5(String famName) {
         for (Map.Entry<String, EncounterManager.FamiliarDetails> famDetails : EncounterManager.famMD5Table.entrySet()) {
             if (famName.equalsIgnoreCase(famDetails.getValue().name)) {
-                BHBot.logger.debug("MD5 '" + famDetails.getKey() + "' - > " + famDetails.getValue().name);
+                BHBot.logger.debug(MessageFormat.format("MD5 ''{0}'' - > {1}", famDetails.getKey(), famDetails.getValue().name));
                 return;
             }
         }
-        BHBot.logger.warn("Familiar name not found: " + famName);
+        BHBot.logger.warn(MessageFormat.format("Familiar name not found: {0}", famName));
     }
 }
