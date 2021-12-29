@@ -584,8 +584,11 @@ public class BrowserManager {
             cookiesLoaded = true;
 
             HashSet<Cookie> cookies = this.deserializeCookies();
-            for (Cookie cookie: cookies) {
-                driver.manage().addCookie(cookie);
+            if (cookies.size() > 0){
+                for (Cookie cookie: cookies) {
+                    driver.manage().addCookie(cookie);
+                }
+                BHBot.logger.info("Loaded cookies from file " + String.format(COOKIE_DAT_PATH_FORMAT, bot.settings.username));
             }
 
             refresh();
