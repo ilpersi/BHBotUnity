@@ -589,9 +589,9 @@ public class BrowserManager {
                     driver.manage().addCookie(cookie);
                 }
                 BHBot.logger.info("Loaded cookies from file " + String.format(COOKIE_DAT_PATH_FORMAT, bot.settings.username));
+                refresh();
             }
 
-            refresh();
             return;
         }
 

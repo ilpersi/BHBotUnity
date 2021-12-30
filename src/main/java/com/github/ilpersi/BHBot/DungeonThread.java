@@ -208,6 +208,9 @@ public class DungeonThread implements Runnable {
                         kongMotionBugNexCheck = Misc.getTime() + (Misc.Durations.MINUTE * 7);
                         continue;
                     }
+
+                    // If you start in the fishing zone, you have the character dialog coming up
+                    detectCharacterDialogAndHandleIt();
                 }
 
                 if (BHBot.State.RerunRaid.equals(bot.getState())) {
@@ -1617,6 +1620,7 @@ public class DungeonThread implements Runnable {
                                 //world boss difficulty selection
 
                                 int currentDifficulty = detectWorldBossDifficulty();
+                                // TODO When currentDifficulty == 0, an error with reading difficulty happened
                                 String currentDifficultyName = (currentDifficulty == 1 ? "Normal" : currentDifficulty == 2 ? "Hard" : "Heroic");
                                 String settingsDifficultyName = (wbSetting.difficulty == 1 ? "Normal" : wbSetting.difficulty == 2 ? "Hard" : "Heroic");
                                 if (currentDifficulty != wbSetting.difficulty) {
@@ -1679,7 +1683,7 @@ public class DungeonThread implements Runnable {
                                             totalTSImg.toBlackWhite(new Color(25, 25, 25), new Color(255, 255, 255), 254);
                                             totalTSImg.update();
                                             BufferedImage totalTSSubImg = totalTSImg.getBufferedImage();
-                                            totalTS = readNumFromImg(totalTSSubImg, "wb_total_ts_", new HashSet<>());
+                                            totalTS = readNumFromImg(totalTSSubImg, "wb_total_ts_", new HashSet<>(), false);
 
                                             // If readNumFromImg has errors it will return 0, so we make sure this is not the case
                                             if (totalTS > 0 && totalTS >= wbSetting.minimumTotalTS) {
@@ -1711,7 +1715,7 @@ public class DungeonThread implements Runnable {
                                                     subImg.update();
                                                     BufferedImage tsSubImg = subImg.getBufferedImage();
 
-                                                    int playerTS = readNumFromImg(tsSubImg, "wb_player_ts_", new HashSet<>());
+                                                    int playerTS = readNumFromImg(tsSubImg, "wb_player_ts_", new HashSet<>(), false);
                                                     playersTS[partyMemberPos] = playerTS;
 
                                                     if (playerTS < 1) {
@@ -2586,7 +2590,7 @@ public class DungeonThread implements Runnable {
                 subm.toBlackWhite(new Color(25, 25, 25), new Color(255, 255, 255), 64);
                 subm.update();
                 BufferedImage subimagetestbw = subm.getBufferedImage();
-                int num = readNumFromImg(subimagetestbw, "small", new HashSet<>());
+                int num = readNumFromImg(subimagetestbw, "small", new HashSet<>(), false);
                 BHBot.logger.info(bot.getState().getName() + " #" + counters.get(bot.getState()).getTotal() + " completed. Level reached: " + num);
                 BHBot.logger.stats("Run time: " + runtime + ". Average: " + runtimeAvg + ".");
             }
@@ -3820,10 +3824,10 @@ public class DungeonThread implements Runnable {
      * @return 0 in case of error.
      */
     private int readNumFromImg(BufferedImage im) {
-        return readNumFromImg(im, "", new HashSet<>());
+        return readNumFromImg(im, "", new HashSet<>(), false);
     }
 
-    private int readNumFromImg(BufferedImage im, String numberPrefix, HashSet<Integer> intToSkip) {
+    private int readNumFromImg(BufferedImage im, String numberPrefix, HashSet<Integer> intToSkip, boolean logEmptyResults) {
         List<ScreenNum> nums = new ArrayList<>();
 
         for (int i = 0; i < 10; i++) {
@@ -3838,8 +3842,14 @@ public class DungeonThread implements Runnable {
         // order list horizontally:
         Collections.sort(nums);
 
-        if (nums.size() == 0)
+        if (nums.size() == 0) {
+            if (logEmptyResults) {
+                BHBot.logger.debug(Misc.getStackTrace());
+                BHBot.logger.debug("Empty number from readNumFromImg im = " + im + ", numberPrefix = " + numberPrefix + ", intToSkip = " + intToSkip);
+                Misc.saveScreen("readNumFromImg-empty", "debug", true, im);
+            }
             return 0; // error
+        }
 
         StringBuilder result = new StringBuilder();
         for (ScreenNum sn : nums) {
@@ -3975,7 +3985,7 @@ public class DungeonThread implements Runnable {
 
         BufferedImage imb = im.getBufferedImage();
 
-        return readNumFromImg(imb);
+        return readNumFromImg(imb, "wb_tier_", new HashSet<>(), true);
     }
 
     /**
@@ -3999,11 +4009,11 @@ public class DungeonThread implements Runnable {
         bot.browser.readScreen(2 * Misc.Durations.SECOND); //wait for screen to stabilize
 
         // We detect what is the top available tier. This may be different based on player level and unlocked zones
-        Bounds topTierBounds = Bounds.fromWidthHeight(403, 156, 27, 26);
+        Bounds topTierBounds = Bounds.fromWidthHeight(409, 146, 27, 26);
         MarvinImage topTierImg = new MarvinImage(bot.browser.getImg().getSubimage(topTierBounds.x1, topTierBounds.y1, topTierBounds.width, topTierBounds.height));
-        topTierImg.toBlackWhite(new Color(25, 25, 25), new Color(255, 255, 255), 254);
+        topTierImg.toBlackWhite(new Color(25, 25, 25), new Color(255, 255, 255), 255);
         topTierImg.update();
-        int topAvailableTier = readNumFromImg(topTierImg.getBufferedImage(), "", new HashSet<>());
+        int topAvailableTier = readNumFromImg(topTierImg.getBufferedImage(), "wb_tier_", new HashSet<>(), true);
 
         if (topAvailableTier == 0) {
             BHBot.logger.error("Impossible to detect maximum available tier in World Boss");
@@ -4014,7 +4024,7 @@ public class DungeonThread implements Runnable {
         BHBot.logger.debug("Detected top available tier is: " + topAvailableTier);
 
         // The bounds for the WB tier selection
-        Bounds tiersBounds = Bounds.fromWidthHeight(263, 139, 251, 60);
+        Bounds tiersBounds = Bounds.fromWidthHeight(264, 136, 251, 60);
 
         // Offset between the different tiers buttons
         int tierOffset = 60;

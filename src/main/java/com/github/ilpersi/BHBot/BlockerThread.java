@@ -75,29 +75,45 @@ public class BlockerThread implements Runnable {
                 }
                 //endregion
 
-                //region You have been disconnected
-                // check for "You have been disconnected" dialog:
                 MarvinSegment uhoh = MarvinSegment.fromCue(BHBot.cues.get("UhOh"), bot.browser);
-                MarvinSegment dc = MarvinSegment.fromCue(BHBot.cues.get("Disconnected"), bot.browser);
-                if (uhoh != null && dc != null) {
-                    if (bot.scheduler.isUserInteracting || bot.scheduler.dismissReconnectOnNextIteration) {
-                        bot.scheduler.isUserInteracting = false;
-                        bot.scheduler.dismissReconnectOnNextIteration = false;
-                        seg = MarvinSegment.fromCue(BHBot.cues.get("Reconnect"), 5 * Misc.Durations.SECOND, bot.browser);
-                        bot.browser.clickOnSeg(seg);
-                        BHBot.logger.info("Disconnected dialog dismissed (reconnecting).");
-                        bot.browser.readScreen(Misc.Durations.SECOND);
-                        bot.dungeon.shrineManager.resetUsedInAdventure();
-                    } else {
-                        bot.scheduler.isUserInteracting = true;
-                        // probably user has logged in, that's why we got disconnected. Lets leave him alone for some time and then resume!
-                        BHBot.logger.info("Disconnect has been detected. Probably due to user interaction. Sleeping for " + Misc.millisToHumanForm((long) bot.settings.reconnectTimer * Misc.Durations.MINUTE) + "...");
-                        bot.scheduler.pause(bot.settings.reconnectTimer * Misc.Durations.MINUTE);
+                if (uhoh != null) {
+                    //region You have been disconnected
+                    // check for "You have been disconnected" dialog:
+                    MarvinSegment dc = MarvinSegment.fromCue(BHBot.cues.get("Disconnected"), bot.browser);
+                    if (dc != null) {
+                        if (bot.scheduler.isUserInteracting || bot.scheduler.dismissReconnectOnNextIteration) {
+                            bot.scheduler.isUserInteracting = false;
+                            bot.scheduler.dismissReconnectOnNextIteration = false;
+                            seg = MarvinSegment.fromCue(BHBot.cues.get("Reconnect"), 5 * Misc.Durations.SECOND, bot.browser);
+                            bot.browser.clickOnSeg(seg);
+                            BHBot.logger.info("Disconnected dialog dismissed (reconnecting).");
+                            bot.browser.readScreen(Misc.Durations.SECOND);
+                            bot.dungeon.shrineManager.resetUsedInAdventure();
+                        } else {
+                            bot.scheduler.isUserInteracting = true;
+                            // probably user has logged in, that's why we got disconnected. Lets leave him alone for some time and then resume!
+                            BHBot.logger.info("Disconnect has been detected. Probably due to user interaction. Sleeping for " + Misc.millisToHumanForm((long) bot.settings.reconnectTimer * Misc.Durations.MINUTE) + "...");
+                            bot.scheduler.pause(bot.settings.reconnectTimer * Misc.Durations.MINUTE);
+                        }
+                        bot.setState(BHBot.State.Loading);
+                        continue;
                     }
-                    bot.setState(BHBot.State.Loading);
-                    continue;
+                    //endregion
+
+                    //region Not In A Guild
+                    MarvinSegment notInAGuildSeg = MarvinSegment.fromCue(BHBot.cues.get("NotInAGuild"), bot.browser);
+                    if (notInAGuildSeg != null) {
+                        seg = MarvinSegment.fromCue(BHBot.cues.get("Close"), 2 * Misc.Durations.SECOND, bot.browser);
+                        if (seg != null) {
+                            BHBot.logger.info("Not in a guild popup dismissed.");
+                            bot.browser.clickOnSeg(seg);
+                        } else {
+                            BHBot.logger.debug("Impossible to find the close button for the 'Not in a guild' popup.");
+                        }
+                    }
+                    //endregion
+
                 }
-                //endregion
 
                 // TODO ensure this field is properly synchronized
                 bot.scheduler.dismissReconnectOnNextIteration = false; // must be done after checking for "Disconnected" dialog!
@@ -254,7 +270,7 @@ public class BlockerThread implements Runnable {
                 // check for "News" popup:
                 seg = MarvinSegment.fromCue(BHBot.cues.get("News"), bot.browser);
                 if (seg != null) {
-                    Cue CloseWithBounds = bot.settings.useUnityEngine ? BHBot.cues.get("NewsClose") : new Cue(BHBot.cues.get("Close"), Bounds.fromWidthHeight(425, 440, 100, 45));
+                    Cue CloseWithBounds = BHBot.cues.get("NewsClose");
                     seg = MarvinSegment.fromCue(CloseWithBounds, 2 * Misc.Durations.SECOND, bot.browser);
                     bot.browser.clickOnSeg(seg);
                     BHBot.logger.info("News popup dismissed.");

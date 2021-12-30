@@ -3,6 +3,8 @@ package com.github.ilpersi.BHBot;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -112,7 +114,16 @@ public class CueBuilder {
             }
 
             // We create the destination Cue
-            BufferedImage destCueImg = containingScreenshotImg.getSubimage(this.cuePosition.x1, this.cuePosition.y1, this.cuePosition.width, this.cuePosition.height);
+            BufferedImage destCueImg;
+            if (this.cuePosition != null)
+                destCueImg = containingScreenshotImg.getSubimage(this.cuePosition.x1, this.cuePosition.y1, this.cuePosition.width, this.cuePosition.height);
+            else {
+                // We clone the original image
+                ColorModel cm = containingScreenshotImg.getColorModel();
+                boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
+                WritableRaster raster = containingScreenshotImg.copyData(null);
+                destCueImg = new BufferedImage(cm, raster, isAlphaPremultiplied, null);
+            }
 
             // If a white list is specified we only save the white listed pixel colors and we set the others as transparent
             if (this.colorWhiteList.size() > 0) {
@@ -293,6 +304,8 @@ public class CueBuilder {
                 Set.of(), "Items", "unitycues/blockers/cueItems.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/blockers", "recently_disc_(.*)\\.png", Bounds.fromWidthHeight(270, 208, 258, 109),
                 Set.of(), "RecentlyDisconnected", "unitycues/blockers/cueRecentlyDisconnected.png", "");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/blockers", "not_in_guild_(.*)\\.png", Bounds.fromWidthHeight(267, 226, 264, 65),
+                Set.of(), "NotInAGuild", "unitycues/blockers/cueNotInAGuild.png", "You are currently non in a Guild popup");
         //endregion
 
         //region Common
@@ -397,6 +410,31 @@ public class CueBuilder {
                 Set.of(), "Quest", "unitycues/mainScreen/cueQuestButton.png", "Quest icon used to open the dungeon menu.");
         //endregion
 
+        //region Numbers
+        //region WB Tiers
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTiers", "wb_tier_0_(.*)\\.png", null,
+                Set.of(), "wb_tier_0", "unitycues/numbers/wbTier/wb_tier_0.png", " WB Tier 0");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTiers", "wb_tier_1_(.*)\\.png", null,
+                Set.of(), "wb_tier_1", "unitycues/numbers/wbTier/wb_tier_1.png", " WB Tier 1");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTiers", "wb_tier_2_(.*)\\.png", null,
+                Set.of(), "wb_tier_2", "unitycues/numbers/wbTier/wb_tier_2.png", " WB Tier 2");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTiers", "wb_tier_3_(.*)\\.png", null,
+                Set.of(), "wb_tier_3", "unitycues/numbers/wbTier/wb_tier_3.png", " WB Tier 3");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTiers", "wb_tier_4_(.*)\\.png", null,
+                Set.of(), "wb_tier_4", "unitycues/numbers/wbTier/wb_tier_4.png", " WB Tier 4");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTiers", "wb_tier_5_(.*)\\.png", null,
+                Set.of(), "wb_tier_5", "unitycues/numbers/wbTier/wb_tier_5.png", " WB Tier 5");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTiers", "wb_tier_6_(.*)\\.png", null,
+                Set.of(), "wb_tier_6", "unitycues/numbers/wbTier/wb_tier_6.png", " WB Tier 6");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTiers", "wb_tier_7_(.*)\\.png", null,
+                Set.of(), "wb_tier_7", "unitycues/numbers/wbTier/wb_tier_7.png", " WB Tier 7");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTiers", "wb_tier_8_(.*)\\.png", null,
+                Set.of(), "wb_tier_8", "unitycues/numbers/wbTier/wb_tier_8.png", " WB Tier 8");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTiers", "wb_tier_9_(.*)\\.png", null,
+                Set.of(), "wb_tier_9", "unitycues/numbers/wbTier/wb_tier_9.png", " WB Tier 9");
+        //endregion WT Tiers
+        //endregion Numbers
+
         //region Raid
         addCueLocatorByPattern(cueLocators, "cuebuilder/raid", "raid_summon_(.*)\\.png", Bounds.fromWidthHeight(489, 362, 110, 31),
                 Set.of(), "RaidSummon", "unitycues/raid/cueRaidSummon.png", "Raid Summon button");
@@ -489,6 +527,8 @@ public class CueBuilder {
                 Set.of(), "GVG_Rewards", "unitycues/weeklyRewards/gvg.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/weeklyRewards", "invasion(.*)\\.png", Bounds.fromWidthHeight(315, 129, 165, 35),
                 Set.of(), "Invasion_Rewards", "unitycues/weeklyRewards/invasion.png", "");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/weeklyRewards", "fishing_bait_(.*)\\.png", Bounds.fromWidthHeight(395, 230, 60, 33),
+                Set.of(), "Fishing_Bait", "unitycues/weeklyRewards/fishing_bait.png", "Green fishing bait");
         //endregion
 
 

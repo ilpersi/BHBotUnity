@@ -649,6 +649,7 @@ class CueManager {
         addCue("Claim", "unitycues/blockers/cueClaim.png", Bounds.fromWidthHeight(340, 430, 120, 55)); // Daily Reward green claim button
         addCue("Items", "unitycues/blockers/cueItems.png", Bounds.fromWidthHeight(325, 105, 145, 80)); // Imes Cue for daily reward
         addCue("RecentlyDisconnected", "unitycues/blockers/cueRecentlyDisconnected.png", Bounds.fromWidthHeight(260, 195, 280, 135));
+        addCue("NotInAGuild", "unitycues/blockers/cueNotInAGuild.png", Bounds.fromWidthHeight(255, 215, 290, 90)); // You are currently non in a Guild popup
         //endregion
 
         //region Character Menu
@@ -736,6 +737,22 @@ class CueManager {
         addCue("GorMenu", "unitycues/mainScreen/cueGorMenu.png", Bounds.fromWidthHeight(95, 465, 55, 60)); // Permagor menu close to the Character menu
         //endregion
 
+        //region Numbers
+
+        // region WB Tiers
+        addCue("wb_tier_0", "unitycues/numbers/wbTier/wb_tier_0.png", null);
+        addCue("wb_tier_1", "unitycues/numbers/wbTier/wb_tier_1.png", null);
+        addCue("wb_tier_2", "unitycues/numbers/wbTier/wb_tier_2.png", null);
+        addCue("wb_tier_3", "unitycues/numbers/wbTier/wb_tier_3.png", null);
+        addCue("wb_tier_4", "unitycues/numbers/wbTier/wb_tier_4.png", null);
+        addCue("wb_tier_5", "unitycues/numbers/wbTier/wb_tier_5.png", null);
+        addCue("wb_tier_6", "unitycues/numbers/wbTier/wb_tier_6.png", null);
+        addCue("wb_tier_7", "unitycues/numbers/wbTier/wb_tier_7.png", null);
+        addCue("wb_tier_8", "unitycues/numbers/wbTier/wb_tier_8.png", null);
+        addCue("wb_tier_9", "unitycues/numbers/wbTier/wb_tier_9.png", null);
+        // endregion
+        //endregion
+
         //region Raid
         addCue("RaidPopup", "unitycues/raid/cueRaidPopup.png", Bounds.fromWidthHeight(310, 45, 60, 45)); // The raid near the bar
         addCue("RaidLevel", "unitycues/raid/cueRaidLevel.png", Bounds.fromWidthHeight(190, 430, 430, 30)); // selected raid type button cue
@@ -773,6 +790,7 @@ class CueManager {
         addCue("Trials_Rewards", "unitycues/weeklyRewards/trials.png", Bounds.fromWidthHeight(325, 110, 145, 75));
         addCue("GVG_Rewards", "unitycues/weeklyRewards/gvg.png", Bounds.fromWidthHeight(325, 110, 145, 75));
         addCue("Invasion_Rewards", "unitycues/weeklyRewards/invasion.png", Bounds.fromWidthHeight(305, 115, 185, 60));
+        addCue("Fishing_Bait", "unitycues/weeklyRewards/fishing_bait.png", Bounds.fromWidthHeight(385, 220, 80, 55)); // Green fishing bait
         //endregion
 
         //region Settings
