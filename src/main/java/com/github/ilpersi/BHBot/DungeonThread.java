@@ -4013,7 +4013,7 @@ public class DungeonThread implements Runnable {
         MarvinImage topTierImg = new MarvinImage(bot.browser.getImg().getSubimage(topTierBounds.x1, topTierBounds.y1, topTierBounds.width, topTierBounds.height));
         topTierImg.toBlackWhite(new Color(25, 25, 25), new Color(255, 255, 255), 255);
         topTierImg.update();
-        int topAvailableTier = readNumFromImg(topTierImg.getBufferedImage(), "wb_tier_", new HashSet<>(), true);
+        int topAvailableTier = readNumFromImg(topTierImg.getBufferedImage(), "wb_tier_button_", new HashSet<>(), true);
 
         if (topAvailableTier == 0) {
             BHBot.logger.error("Impossible to detect maximum available tier in World Boss");

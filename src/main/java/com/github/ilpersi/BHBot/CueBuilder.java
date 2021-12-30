@@ -431,7 +431,30 @@ public class CueBuilder {
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTiers", "wb_tier_8_(.*)\\.png", null,
                 Set.of(), "wb_tier_8", "unitycues/numbers/wbTier/wb_tier_8.png", " WB Tier 8");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTiers", "wb_tier_9_(.*)\\.png", null,
-                Set.of(), "wb_tier_9", "unitycues/numbers/wbTier/wb_tier_9.png", " WB Tier 9");
+                Set.of(), "wb_tier_9", "unitycues/numbers/wbTier/wb_tier_9.png", " jWB Tier 9");
+        //endregion WT Tiers
+
+        //region WB Tier Buttons
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTierButton", "wb_tier_button_0_(.*)\\.png", null,
+                Set.of(), "wb_tier_button_0", "unitycues/numbers/wbTierButton/wb_tier_button_0.png", " WB Tier Button 0");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTierButton", "wb_tier_button_1_(.*)\\.png", null,
+                Set.of(), "wb_tier_button_1", "unitycues/numbers/wbTierButton/wb_tier_button_1.png", " WB Tier Button 1");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTierButton", "wb_tier_button_2_(.*)\\.png", null,
+                Set.of(), "wb_tier_button_2", "unitycues/numbers/wbTierButton/wb_tier_button_2.png", " WB Tier Button 2");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTierButton", "wb_tier_button_3_(.*)\\.png", null,
+                Set.of(), "wb_tier_button_3", "unitycues/numbers/wbTierButton/wb_tier_button_3.png", " WB Tier Button 3");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTierButton", "wb_tier_button_4_(.*)\\.png", null,
+                Set.of(), "wb_tier_button_4", "unitycues/numbers/wbTierButton/wb_tier_button_4.png", " WB Tier Button 4");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTierButton", "wb_tier_button_5_(.*)\\.png", null,
+                Set.of(), "wb_tier_button_5", "unitycues/numbers/wbTierButton/wb_tier_button_5.png", " WB Tier Button 5");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTierButton", "wb_tier_button_6_(.*)\\.png", null,
+                Set.of(), "wb_tier_button_6", "unitycues/numbers/wbTierButton/wb_tier_button_6.png", " WB Tier Button 6");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTierButton", "wb_tier_button_7_(.*)\\.png", null,
+                Set.of(), "wb_tier_button_7", "unitycues/numbers/wbTierButton/wb_tier_button_7.png", " WB Tier Button 7");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTierButton", "wb_tier_button_8_(.*)\\.png", null,
+                Set.of(), "wb_tier_button_8", "unitycues/numbers/wbTierButton/wb_tier_button_8.png", " WB Tier Button 8");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTierButton", "wb_tier_button_9_(.*)\\.png", null,
+                Set.of(), "wb_tier_button_9", "unitycues/numbers/wbTierButton/wb_tier_button_9.png", " WB Tier Button 9");
         //endregion WT Tiers
         //endregion Numbers
 

@@ -21,13 +21,13 @@ public class BlackWhiteTools {
     public static void main(String[] args) {
 
         if (args.length > 0) {
-            //folderToBlackWhite(args[0]);
+            folderToBlackWhite(args[0]);
             // testWBPlayersTS(args[0]);
             // testInvasion(args[0]);
             // testWBTotalTS(args[0]);
             // testWBTier(args[0]);
             // generateWorldBossTierCues(args[0]);
-            generateWorldBossTierNumbers(args[0]);
+            // generateWorldBossTierNumbers(args[0]);
         }
     }
 

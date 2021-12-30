@@ -751,6 +751,20 @@ class CueManager {
         addCue("wb_tier_8", "unitycues/numbers/wbTier/wb_tier_8.png", null);
         addCue("wb_tier_9", "unitycues/numbers/wbTier/wb_tier_9.png", null);
         // endregion
+
+        // region WB Tier Buttons
+        // These are used when selectin World Boss tier
+        addCue("wb_tier_button_0", "unitycues/numbers/wbTierButton/wb_tier_button_0.png", null);
+        addCue("wb_tier_button_1", "unitycues/numbers/wbTierButton/wb_tier_button_1.png", null);
+        addCue("wb_tier_button_2", "unitycues/numbers/wbTierButton/wb_tier_button_2.png", null);
+        addCue("wb_tier_button_3", "unitycues/numbers/wbTierButton/wb_tier_button_3.png", null);
+        addCue("wb_tier_button_4", "unitycues/numbers/wbTierButton/wb_tier_button_4.png", null);
+        addCue("wb_tier_button_5", "unitycues/numbers/wbTierButton/wb_tier_button_5.png", null);
+        addCue("wb_tier_button_6", "unitycues/numbers/wbTierButton/wb_tier_button_6.png", null);
+        addCue("wb_tier_button_7", "unitycues/numbers/wbTierButton/wb_tier_button_7.png", null);
+        addCue("wb_tier_button_8", "unitycues/numbers/wbTierButton/wb_tier_button_8.png", null);
+        addCue("wb_tier_button_9", "unitycues/numbers/wbTierButton/wb_tier_button_9.png", null);
+        // endregion
         //endregion
 
         //region Raid
