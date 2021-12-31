@@ -1646,7 +1646,7 @@ public class DungeonThread implements Runnable {
                                     // Invite and unready buttons bounds are dinamically calculated based on the WB party member
                                     Bounds inviteBounds = Bounds.fromWidthHeight(330, 217, 127, 54 * inviteCnt);
                                     Bounds unreadyBounds = Bounds.fromWidthHeight(177, 217, 24, 54 * inviteCnt);
-                                    Bounds totalWBTS = Bounds.fromWidthHeight(604, 70, 81, 25);
+                                    Bounds totalWBTS = Bounds.fromWidthHeight(603, 68, 85, 3);
 
                                     // we assume we did not start the WB
                                     boolean lobbyTimeout = true;
@@ -1663,7 +1663,7 @@ public class DungeonThread implements Runnable {
                                     cutOffLoop:
                                     while (Misc.getTime() < cutOffTime && bot.running && !bot.finished) {
 
-                                        // When a puse command is issued, we get out of the WB lobby
+                                        // When a pause command is issued, we get out of the WB lobby
                                         if (bot.scheduler.isPaused()) {
                                             BHBot.logger.info("Pause detected, exiting from World Boss loby.");
                                             break;
@@ -1683,7 +1683,7 @@ public class DungeonThread implements Runnable {
                                             totalTSImg.toBlackWhite(new Color(25, 25, 25), new Color(255, 255, 255), 254);
                                             totalTSImg.update();
                                             BufferedImage totalTSSubImg = totalTSImg.getBufferedImage();
-                                            totalTS = readNumFromImg(totalTSSubImg, "wb_total_ts_", new HashSet<>(), false);
+                                            totalTS = readNumFromImg(totalTSSubImg, "wb_total_ts_", new HashSet<>(), true);
 
                                             // If readNumFromImg has errors it will return 0, so we make sure this is not the case
                                             if (totalTS > 0 && totalTS >= wbSetting.minimumTotalTS) {

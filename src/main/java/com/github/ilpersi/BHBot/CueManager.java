@@ -507,24 +507,13 @@ class CueManager {
         //WorldBoss Related
         addCue("WorldBoss", "cues/worldboss/cueWorldBoss.png", Bounds.fromWidthHeight(5, 235, 40, 55));
         addCue("WorldBossSelector", "cues/worldboss/cueWorldBossSelector.png", null);
-        addCue("SmallDarkBlueSummon", "cues/worldboss/cueSmallDarkBlueSummon.png", Bounds.fromWidthHeight(430, 388, 95, 28));
         addCue("Invite", "cues/worldboss/cueDarkBlueInvite.png", null);
         addCue("Start", "cues/cueStart.png", null);
         addCue("DarkBlueStart", "cues/worldboss/cueDarkBlueStart.png", Bounds.fromWidthHeight(285, 435, 190, 65));
         addCue("VictoryLarge", "cues/Victory_Large.png", new Bounds(324, 128, 476, 157));
         addCue("OrlagSelected", "cues/cueOrlagSelected.png", new Bounds(360, 430, 440, 460));
         addCue("NetherSelected", "cues/cueNetherSelected.png", null);
-        addCue("Unready", "cues/worldboss/cueWorldBossUnready.png", new Bounds(170, 210, 215, 420));
         addCue("WorldBossTier", "cues/worldboss/cueWorldBossTier.png", Bounds.fromWidthHeight(314, 206, 88, 28));
-        addCue("WorldBossDifficultyNormal", "cues/worldboss/cueWorldBossDifficultyNormal.png", new Bounds(300, 275, 500, 325));
-        addCue("WorldBossDifficultyHard", "cues/worldboss/cueWorldBossDifficultyHard.png", new Bounds(300, 275, 500, 325));
-        addCue("WorldBossDifficultyHeroic", "cues/worldboss/cueWorldBossDifficultyHeroic.png", new Bounds(300, 275, 500, 325));
-        addCue("NotEnoughXeals", "cues/worldboss/cueNotEnoughXeals.png", Bounds.fromWidthHeight(270, 220, 260, 90));
-
-        addCue("cueWBSelectNormal", "cues/worldboss/cueWBSelectNormal.png", new Bounds(260, 140, 510, 320));
-        addCue("cueWBSelectHard", "cues/worldboss/cueWBSelectHard.png", new Bounds(260, 140, 510, 320));
-        addCue("cueWBSelectHeroic", "cues/worldboss/cueWBSelectHeroic.png", new Bounds(260, 140, 510, 320));
-
 
         addCue("WorldBossSummonTitle", "cues/worldboss/cueWorldBossSummonTitle.png", new Bounds(325, 100, 480, 150));
         addCue("WorldBossPlayerKick", "cues/worldboss/ts/wb_player_kick.png", null);
@@ -789,6 +778,17 @@ class CueManager {
         addCue("LargeDarkBlueSummon", "unitycues/worldboss/cueLargeDarkBlueSummon.png", Bounds.fromWidthHeight(480, 350, 125, 60)); // Big Blue Summon button in WB Screen 2
         addCue("WBIsPrivate", "unitycues/worldboss/cueWBIsPrivate.png", Bounds.fromWidthHeight(310, 315, 65, 70)); // Private Flag for World Boss
         addCue("WorldBossTierDropDown", "unitycues/worldboss/cueWorldBossTierDropDown.png", Bounds.fromWidthHeight(290, 185, 220, 70)); // Drop Down for Tier detection
+        addCue("SmallDarkBlueSummon", "unitycues/worldboss/cueSmallDarkBlueSummon.png", Bounds.fromWidthHeight(415, 380, 130, 50)); // Dark blue WB Summon button
+        addCue("NotEnoughXeals", "unitycues/worldboss/cueNotEnoughXeals.png", Bounds.fromWidthHeight(270, 215, 265, 95)); // Not enough xeals popup
+        addCue("Unready", "unitycues/worldboss/cueWorldBossUnready.png", null); // Red X in WB Lobby
+
+        addCue("WorldBossDifficultyNormal", "unitycues/worldboss/cueWorldBossDifficultyNormal.png", Bounds.fromWidthHeight(330, 280, 105, 35)); // WB Normal difficulty selected
+        addCue("WorldBossDifficultyHard", "unitycues/worldboss/cueWorldBossDifficultyHard.png", Bounds.fromWidthHeight(345, 280, 75, 35)); // WB Hard difficulty selected
+        addCue("WorldBossDifficultyHeroic", "unitycues/worldboss/cueWorldBossDifficultyHeroic.png", Bounds.fromWidthHeight(335, 280, 95, 35)); // WB Heroic difficulty selected
+
+        addCue("cueWBSelectNormal", "unitycues/worldboss/cueWBSelectNormal.png", Bounds.fromWidthHeight(330, 140, 115, 40)); // WB Normal difficulty selection
+        addCue("cueWBSelectHard", "unitycues/worldboss/cueWBSelectHard.png", Bounds.fromWidthHeight(345, 200, 85, 40)); // WB Hard difficulty selection
+        addCue("cueWBSelectHeroic", "unitycues/worldboss/cueWBSelectHeroic.png", Bounds.fromWidthHeight(335, 260, 105, 40)); // WB Heroic difficulty selection
         //endregion
 
         //region Treasure Chest
