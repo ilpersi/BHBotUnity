@@ -339,6 +339,9 @@ public class BHBot {
 
         }
 
+        // We save cookies before we quit
+        bot.browser.serializeCookies();
+
         bot.stop();
         reader.close();
         logger.info(PROGRAM_NAME + " has finished.");

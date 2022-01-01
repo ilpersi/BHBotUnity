@@ -646,8 +646,7 @@ public class BrowserManager {
         } catch (NoSuchElementException e)  {
             BHBot.logger.info("Signed-in manually (sign-in prompt was open).");
 
-            HashSet<Cookie> cookies = new HashSet<>(driver.manage().getCookies());
-            this.serializeCookies(cookies);
+            this.serializeCookies();
             return;
         }
 
@@ -663,9 +662,10 @@ public class BrowserManager {
     /**
      * This method will take care of serializing all the cookies in a data file
      *
-     * @param cookies An HashSet containing all the cookies that need to be serialized
      */
-    private void serializeCookies(HashSet<Cookie> cookies) {
+    void serializeCookies() {
+        HashSet<Cookie> cookies = new HashSet<>(driver.manage().getCookies());
+
         try {
             String datFileNane = String.format(COOKIE_DAT_PATH_FORMAT, bot.settings.username);
             FileOutputStream fileOut = new FileOutputStream(datFileNane);
