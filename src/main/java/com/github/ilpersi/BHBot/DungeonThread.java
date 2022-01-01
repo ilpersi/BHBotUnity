@@ -48,6 +48,7 @@ public class DungeonThread implements Runnable {
     private String expeditionFailsafePortal = "";
     private int expeditionFailsafeDifficulty = 0;
     private boolean rerunCurrentActivity = false;
+    private boolean debugBootWarning = false; // Used together with debugBoot to make sure the user is warned one time only.
 
     private long kongMotionBugNexCheck;
 
@@ -282,9 +283,16 @@ public class DungeonThread implements Runnable {
                         Misc.saveScreen("daily-gems", "gems", BHBot.includeMachineNameInScreenshots, gems); //else screenshot daily count
                     }
 
-                    settings.initialize();
-                    shrineManager.initialize();
-                    runeManager.initialize();
+                    if (!bot.settings.debugBoot) {
+                        settings.initialize();
+                        shrineManager.initialize();
+                        runeManager.initialize();
+                    } else {
+                        if (!debugBootWarning) {
+                            BHBot.logger.debug("Debug boot detected: autoRune, autoShrine, Settings not initialized.");
+                            debugBootWarning = true;
+                        }
+                    }
 
                     // check for bonuses:
                     if (bot.settings.autoConsume && (Misc.getTime() - timeLastBonusCheck > BONUS_CHECK_INTERVAL)) {
@@ -1481,6 +1489,7 @@ public class DungeonThread implements Runnable {
                                 BHBot.logger.warn("Error: attempt at opening world boss window failed. No window cue detected. Ignoring...");
                                 bot.scheduler.restoreIdleTime();
                                 // we make sure that everything that can be closed is actually closed to avoid idle timeout
+                                Misc.saveScreen("no-wb-window", "errors", true, bot.browser.getImg());
                                 bot.browser.closePopupSecurely(BHBot.cues.get("X"), BHBot.cues.get("X"));
                                 continue;
                             }

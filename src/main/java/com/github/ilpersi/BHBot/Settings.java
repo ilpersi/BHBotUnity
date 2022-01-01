@@ -307,6 +307,7 @@ public class Settings {
     boolean debugFindImage = false; // if true, for each cue research a visual output is provided
     boolean useDoNotShareURL = false; // if true, then each time a cue detection from game screenshot will be attempted, a time taken will be displayed together with a name of the cue
     boolean useUnityEngine = true; // if true, then Unity cues will be loaded
+    boolean debugBoot = false; // if true, then some engines will not be initialize to make bot boot time faster. This is for developers only
     boolean useFirefox = false; // if true, then Unity cues will be loaded
     boolean dumpReadScreen = false; // if true, everytime a readScreen is performed, the image is saved. Huge performance hog!
     boolean hideWindowOnRestart = false; // if true, game window will be hidden upon driver (re)start
@@ -563,6 +564,7 @@ public class Settings {
         costInvasion = 1;
         costPVP = 1;
         costTrials = 1;
+        debugBoot = false;
         debugDetectionTimes = false;
         debugFindImage = false;
         debugNullBounds = false;
@@ -1516,6 +1518,7 @@ public class Settings {
         restartAfterAdOfferTimeout = lastUsedMap.getOrDefault("restartAfterAdOfferTimeout", restartAfterAdOfferTimeout ? "1" : "0").equals("1");
         debugDetectionTimes = lastUsedMap.getOrDefault("debugDetectionTimes", debugDetectionTimes ? "1" : "0").equals("1");
         debugNullBounds = lastUsedMap.getOrDefault("debugNullBounds", debugNullBounds ? "1" : "0").equals("1");
+        debugBoot = lastUsedMap.getOrDefault("debugBoot", debugBoot ? "1" : "0").equals("1");
         debugFindImage = lastUsedMap.getOrDefault("debugFindImage", debugFindImage ? "1" : "0").equals("1");
         useDoNotShareURL = lastUsedMap.getOrDefault("useDoNotShareURL", useDoNotShareURL ? "1" : "0").equals("1");
         useUnityEngine = lastUsedMap.getOrDefault("useUnityEngine", useUnityEngine ? "1" : "0").equals("1");
