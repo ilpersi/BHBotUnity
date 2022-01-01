@@ -1780,7 +1780,7 @@ public class DungeonThread implements Runnable {
                                         closeWorldBoss();
                                     } else {
                                         bot.browser.readScreen();
-                                        MarvinSegment segStart = MarvinSegment.fromCue(BHBot.cues.get("DarkBlueStart"), 5 * Misc.Durations.SECOND, bot.browser);
+                                        MarvinSegment segStart = MarvinSegment.fromCue(BHBot.cues.get("DarkBlueStart"), 3 * Misc.Durations.SECOND, bot.browser);
                                         if (segStart != null) {
                                             while (segStart != null) {
                                                 bot.browser.closePopupSecurely(BHBot.cues.get("DarkBlueStart"), BHBot.cues.get("DarkBlueStart")); //start World Boss
@@ -2479,33 +2479,29 @@ public class DungeonThread implements Runnable {
                 || bot.getState() == BHBot.State.Invasion || bot.getState() == BHBot.State.PVP
                 || bot.getState() == BHBot.State.GVG) {
 
-            if (bot.getState() == BHBot.State.Gauntlet || bot.getState() == BHBot.State.GVG) {
-                seg = MarvinSegment.fromCue(BHBot.cues.get("VictorySmall"), bot.browser);
-            } else {
-                seg = MarvinSegment.fromCue(BHBot.cues.get("VictoryLarge"), bot.browser);
-            }
+            seg = MarvinSegment.fromCue(BHBot.cues.get("VictoryRecap"), bot.browser);
             if (seg != null) {
 
-                Bounds closeBounds;
+                Bounds townBounds;
                 switch (bot.getState()) {
                     case Gauntlet:
-                        closeBounds = Bounds.fromWidthHeight(320, 420, 160, 65);
+                        townBounds = Bounds.fromWidthHeight(320, 420, 160, 65);
                         break;
                     case WorldBoss:
-                        closeBounds = Bounds.fromWidthHeight(425, 425, 100, 45);
+                        townBounds = Bounds.fromWidthHeight(502, 459, 133, 38);
                         break;
                     default:
-                        closeBounds = null;
+                        townBounds = null;
                         break;
                 }
 
-                // Sometime the victory pop-up is show without the close button, this check is there to ignore it
-                seg = MarvinSegment.fromCue(BHBot.cues.get("CloseGreen"), 2 * Misc.Durations.SECOND, closeBounds, bot.browser);
-                if (seg == null) {
-                    BHBot.logger.debug("Unable to find close button for " + bot.getState().getName() + " victory screen. Ignoring it.");
-                    handleLoot();
-                    return;
-                }
+//                // Sometime the victory pop-up is show without the close button, this check is there to ignore it
+//                seg = MarvinSegment.fromCue(BHBot.cues.get("CloseGreen"), 2 * Misc.Durations.SECOND, townBounds, bot.browser);
+//                if (seg == null) {
+//                    BHBot.logger.debug("Unable to find close button for " + bot.getState().getName() + " victory screen. Ignoring it.");
+//                    handleLoot();
+//                    return;
+//                }
 
                 //Calculate activity stats
                 counters.get(bot.getState()).increaseVictories();
@@ -2525,7 +2521,7 @@ public class DungeonThread implements Runnable {
                 handleLoot();
 
                 // If we are here the close button should be there
-                seg = MarvinSegment.fromCue(BHBot.cues.get("CloseGreen"), 2 * Misc.Durations.SECOND, closeBounds, bot.browser);
+                seg = MarvinSegment.fromCue(BHBot.cues.get("Town"), 2 * Misc.Durations.SECOND, townBounds, bot.browser);
                 if (seg != null) {
                     bot.browser.clickOnSeg(seg);
                 } else {
@@ -2541,7 +2537,7 @@ public class DungeonThread implements Runnable {
                 //noinspection SwitchStatementWithTooFewBranches
                 switch (bot.getState()) {
                     case WorldBoss:
-                        XWithBounds = new Cue(BHBot.cues.get("X"), Bounds.fromWidthHeight(640, 75, 60, 60));
+                        XWithBounds = new Cue(BHBot.cues.get("X"), Bounds.fromWidthHeight(637, 80, 64, 61));
                         break;
                     default:
                         XWithBounds = new Cue(BHBot.cues.get("X"), null);
@@ -2568,7 +2564,7 @@ public class DungeonThread implements Runnable {
          *  Most activities have custom tasks on defeat
          */
         //region Defeat
-        seg = MarvinSegment.fromCue(BHBot.cues.get("Defeat"), bot.browser);
+        seg = MarvinSegment.fromCue(BHBot.cues.get("DefeatRecap"), bot.browser);
         if (seg != null) {
 
             //Calculate activity stats
@@ -2674,36 +2670,49 @@ public class DungeonThread implements Runnable {
 
             Misc.saveScreen("defeat-pop-up-" + bot.getState(), "debug", BHBot.includeMachineNameInScreenshots, bot.browser.getImg());
 
-            //in Gauntlet/Invasion/GVG the close button is green, everywhere else its blue
-            if (bot.getState() == BHBot.State.Gauntlet || bot.getState() == BHBot.State.Invasion || bot.getState() == BHBot.State.GVG) {
-                seg = MarvinSegment.fromCue(BHBot.cues.get("CloseGreen"), 2 * Misc.Durations.SECOND, bot.browser);
-            } else {
-                switch (bot.getState()) {
-                    case PVP:
-                        seg = MarvinSegment.fromCue("Close", 3 * Misc.Durations.SECOND, Bounds.fromWidthHeight(355, 345, 85, 35), bot.browser);
-                        break;
-                    case Raid:
-                        seg = bot.settings.useUnityEngine ? MarvinSegment.fromCue(BHBot.cues.get("Close"), 2 * Misc.Durations.SECOND, Bounds.fromWidthHeight(331, 341, 140, 42), bot.browser) : null;
-                        break;
-                    default:
-                        seg = MarvinSegment.fromCue(BHBot.cues.get("Close"), 2 * Misc.Durations.SECOND, bot.browser);
-                        break;
-                }
+            Bounds townBounds;
+            switch (bot.getState()) {
+                case WorldBoss:
+                    townBounds = Bounds.fromWidthHeight(426, 460, 132, 36);
+                    break;
+                case Dungeon:
+                    townBounds = Bounds.fromWidthHeight(351, 458, 133, 40);
+                    break;
+                default:
+                    townBounds = null;
             }
+
+            seg = MarvinSegment.fromCue("Town", 3 * Misc.Durations.SECOND, townBounds, bot.browser);
 
             if (seg != null) {
                 bot.browser.clickOnSeg(seg);
             } else {
-                BHBot.logger.warn("Problem: 'Defeat' popup detected but no 'Close' button detected in " + bot.getState().getName() + ".");
+                BHBot.logger.warn("Problem: 'Defeat' popup detected but no 'Town' button detected in " + bot.getState().getName() + ".");
                 if (bot.getState() == BHBot.State.PVP) dressUp(bot.settings.pvpstrip);
                 if (bot.getState() == BHBot.State.GVG) dressUp(bot.settings.gvgstrip);
                 return;
             }
 
             if (bot.getState() != BHBot.State.Expedition) {
+
+                Bounds xBounds;
+                switch (bot.getState()) {
+                    case Dungeon:
+                        xBounds = Bounds.fromWidthHeight(678, 37, 96, 90);
+                        break;
+                    case WorldBoss:
+                        xBounds = Bounds.fromWidthHeight(639, 81, 63, 58);
+                        break;
+                    default:
+                        xBounds = null;
+                        break;
+                }
+
+                Cue xButton = new Cue(BHBot.cues.get("X"), xBounds);
+
                 //Close the activity window to return us to the main screen
                 bot.browser.readScreen(3 * Misc.Durations.SECOND); //wait for slide-in animation to finish
-                bot.browser.closePopupSecurely(BHBot.cues.get("X"), BHBot.cues.get("X"));
+                bot.browser.closePopupSecurely(xButton, BHBot.cues.get("X"));
             } else {
                 //For Expedition we need to close 3 windows (Exped/Portal/Team) to return to main screen
                 bot.browser.closePopupSecurely(BHBot.cues.get("Enter"), BHBot.cues.get("X"));
@@ -2881,7 +2890,7 @@ public class DungeonThread implements Runnable {
             BHBot.logger.error("first x Error returning to main screen from World Boss, restarting");
         }
 
-        Cue yesGreenWB = new Cue(BHBot.cues.get("YesGreen"), Bounds.fromWidthHeight(295, 345, 60, 35));
+        Cue yesGreenWB = new Cue(BHBot.cues.get("YesGreen"), Bounds.fromWidthHeight(290, 330, 85, 60));
         if (!bot.browser.closePopupSecurely(yesGreenWB, yesGreenWB)) {
             BHBot.logger.error("yesgreen Error returning to main screen from World Boss, restarting");
         }
@@ -5179,6 +5188,7 @@ public class DungeonThread implements Runnable {
         }
     }
 
+    // TODO Review this metod to work with Unity Engine
     private void handleLoot() {
         MarvinSegment seg;
         BufferedImage victoryPopUpImg = bot.browser.getImg();
@@ -5186,7 +5196,7 @@ public class DungeonThread implements Runnable {
         if (bot.notificationManager.shouldNotify()) {
 
             String droppedItemMessage;
-            Bounds victoryDropArea = new Bounds(100, 160, 630, 420);
+            Bounds victoryDropArea = new Bounds(453, 290, 247, 153);
 
             //linkedHashMap so we iterate from mythic > heroic
             LinkedHashMap<String, Cue> itemTier = new LinkedHashMap<>();

@@ -347,12 +347,16 @@ public class CueBuilder {
                 Set.of(), "Runes", "unitycues/characterMenu/cueRunes.png", "The purple rune button in character menu.");
         addCueLocatorByPattern(cueLocators, "cuebuilder/common", "speed-1x(.*)\\.png", Bounds.fromWidthHeight(31, 476, 16, 14),
                 Set.of(new Color(255, 255, 255)), "Speed1X", "unitycues/common/cueSpeed1X.png", "");
-        addCueLocatorByPattern(cueLocators, "cuebuilder/common", "victory_recap_(.*)\\.png", Bounds.fromWidthHeight(334, 68, 141, 27),
+        addCueLocatorByPattern(cueLocators, "cuebuilder/common", "cleared_recap_(.*)\\.png", Bounds.fromWidthHeight(334, 68, 141, 27),
                 Set.of(), "ClearedRecap", "unitycues/common/cueClearedRecap.png", "");
-        addCueLocatorByPattern(cueLocators, "cuebuilder/common", "victory_recap_(.*)\\.png", Bounds.fromWidthHeight(299, 465, 86, 26),
+        addCueLocatorByPattern(cueLocators, "cuebuilder/common", "cleared_recap_(.*)\\.png", Bounds.fromWidthHeight(299, 465, 86, 26),
                 Set.of(), "Rerun", "unitycues/common/cueRerun.png", "");
-        addCueLocatorByPattern(cueLocators, "cuebuilder/common", "victory_recap_(.*)\\.png", Bounds.fromWidthHeight(453, 466, 72, 26),
+        addCueLocatorByPattern(cueLocators, "cuebuilder/common", "cleared_recap_(.*)\\.png", Bounds.fromWidthHeight(453, 466, 72, 26),
                 Set.of(), "Town", "unitycues/common/cueTown.png", "");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/common", "victory_recap_(.*)\\.png", Bounds.fromWidthHeight(340, 68, 128, 28),
+                Set.of(), "VictoryRecap", "unitycues/common/cueVictoryRecap.png", "Victory message when completing adventures");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/common", "defeat_recap_(.*)\\.png", Bounds.fromWidthHeight(347, 67, 113, 28),
+                Set.of(), "DefeatRecap", "unitycues/common/cueDefeatRecap.png", "Defeat message when completing adventures");
         //endregion
 
         //region CueX

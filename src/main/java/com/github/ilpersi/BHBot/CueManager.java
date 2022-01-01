@@ -294,8 +294,6 @@ class CueManager {
         addCue("Accept", "cues/cueAccept.png", null);
         addCue("D4Accept", "cues/cueD4Accept.png", null);
         addCue("Cleared", "cues/cueCleared.png", new Bounds(208, 113, 608, 394)); // used for example when raid has been finished
-        addCue("Defeat", "cues/cueDefeat.png", new Bounds(320, 50, 480, 180)); // used for example when you have been defeated in a dungeon. Also used when you have been defeated in a gauntlet.
-        addCue("YesGreen", "cues/cueYesGreen.png", null); // used for example when raid has been finished ("Cleared" popup)
         addCue("Rerun", "cues/cueRerun.png", null); // used for example when raid has been finished ("Cleared" popup)
         addCue("Persuade", "cues/cuePersuade.png", new Bounds(116, 311, 286, 380));
         addCue("View", "cues/cueView.png", new Bounds(390, 415, 600, 486));
@@ -331,7 +329,6 @@ class CueManager {
         addCue("Play", "cues/cuePlay.png", null); // cue for play button in trials/gauntlet window
         addCue("TokenBar", "cues/cueTokenBar.png", Bounds.fromWidthHeight(310, 40, 65, 55));
         addCue("CloseGreen", "cues/cueCloseGreen.png", null); // close button used with "You have been defeated" popup in gauntlet and also "Victory" window in gauntlet
-        addCue("VictorySmall", "cues/Victory_Small.png", null); // victory window cue found upon completing gauntlet / PvP
 
         addCue("UhOh", "cues/cueUhoh.png", new Bounds(319, 122, 526, 184));
         addCue("ReviveAverage", "cues/cueReviveAverage.png", null);
@@ -507,7 +504,6 @@ class CueManager {
         //WorldBoss Related
         addCue("WorldBoss", "cues/worldboss/cueWorldBoss.png", Bounds.fromWidthHeight(5, 235, 40, 55));
         addCue("Start", "cues/cueStart.png", null);
-        addCue("VictoryLarge", "cues/Victory_Large.png", new Bounds(324, 128, 476, 157));
 
         //fishing related
         addCue("FishingButton", "cues/cueFishingButton.png", null);
@@ -647,7 +643,6 @@ class CueManager {
         addCue("No", "unitycues/common/cueNo.png", Bounds.fromWidthHeight(435, 335, 65, 50)); // cue for a blue "No" button used for example with "Your team is not full" dialog, or for "Replace consumable" dialog, etc. This is why we can't put concrete borders as position varies a lot.
         addCue("AutoTeam", "unitycues/common/cueAutoTeam.png", null); // "Auto" button that automatically assigns team (in raid, GvG, ...)
         addCue("Cleared", "unitycues/common/cueCleared.png", Bounds.fromWidthHeight(320, 120, 160, 80)); // used for example when raid has been finished
-        addCue("Defeat", "unitycues/common/cueDefeat.png", Bounds.fromWidthHeight(325, 120, 150, 80)); // used for example when you have been defeated in a dungeon. Also used when you have been defeated in a gauntlet.
         addCue("TeamClear", "unitycues/common/cueTeamClear.png", Bounds.fromWidthHeight(313, 447, 108, 42)); //clear team button
         addCue("TeamAccept", "unitycues/common/cueTeamAccept.png", Bounds.fromWidthHeight(445, 440, 145, 55)); // raid accept button
         addCue("AreYouThere", "unitycues/common/cueAreYouThere.png", Bounds.fromWidthHeight(295, 225, 220, 80)); // Are you there popup
@@ -657,6 +652,8 @@ class CueManager {
         addCue("ClearedRecap", "unitycues/common/cueClearedRecap.png", Bounds.fromWidthHeight(320, 55, 165, 50)); // Cleared message on top of the victory recap screen
         addCue("Rerun", "unitycues/common/cueRerun.png", Bounds.fromWidthHeight(86, 445, 641, 57)); // Green "Rerun" button on the victory recap screen
         addCue("Town", "unitycues/common/cueTown.png", Bounds.fromWidthHeight(365, 455, 210, 50)); // The Red "Town" button on the victory/defeat recap screen
+        addCue("VictoryRecap", "unitycues/common/cueVictoryRecap.png", Bounds.fromWidthHeight(330, 55, 150, 55)); // Victory message when completing adventures
+        addCue("DefeatRecap", "unitycues/common/cueDefeatRecap.png", Bounds.fromWidthHeight(335, 55, 135, 50)); // Defeat message when completing adventures
         //endregion
 
         //region Dungeon
