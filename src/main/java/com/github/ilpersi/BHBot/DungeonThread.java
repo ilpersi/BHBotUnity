@@ -1670,7 +1670,7 @@ public class DungeonThread implements Runnable {
                                         }
 
                                         // we make sure to update the screen image as FindSubimage.findSubimage is using a static image
-                                        // at the same time we also wait 500ms so to easu CPU consumption
+                                        // at the same time we also wait 500ms so to ease CPU consumption
                                         bot.browser.readScreen(500);
 
                                         // Array used to save party members TS
@@ -1706,12 +1706,12 @@ public class DungeonThread implements Runnable {
                                         List<MarvinSegment> inviteSegs = FindSubimage.findSubimage(bot.browser.getImg(), BHBot.cues.get("Invite").im, 1.0, true, false, inviteBounds.x1, inviteBounds.y1, inviteBounds.x2, inviteBounds.y2);
                                         // At least one person joined the lobby
                                         if (inviteSegs.size() < inviteCnt) {
-                                            Bounds TSBound = Bounds.fromWidthHeight(184, 241, 84, 18);
+                                            Bounds TSBound = Bounds.fromWidthHeight(184, 243, 84, 18);
 
                                             if (wbSetting.minimumPlayerTS > 0) {
                                                 for (int partyMemberPos = 0; partyMemberPos < inviteCnt; partyMemberPos++) {
                                                     MarvinImage subImg = new MarvinImage(bot.browser.getImg().getSubimage(TSBound.x1, TSBound.y1 + (54 * partyMemberPos), TSBound.width, TSBound.height));
-                                                    subImg.toBlackWhite(new Color(20, 20, 20), new Color(203, 203, 203), 203);
+                                                    subImg.toBlackWhite(new Color(20, 20, 20), new Color(204, 204, 204), 204);
                                                     subImg.update();
                                                     BufferedImage tsSubImg = subImg.getBufferedImage();
 
@@ -1726,7 +1726,7 @@ public class DungeonThread implements Runnable {
                                                             BHBot.logger.info("Player " + (partyMemberPos + 2) + " TS is lower than required minimum: " + playerTS + "/" + wbSetting.minimumPlayerTS);
 
                                                             // We kick the player if we need to
-                                                            Bounds kickBounds = Bounds.fromWidthHeight(411, 220 + (54 * partyMemberPos), 43, 42);
+                                                            Bounds kickBounds = Bounds.fromWidthHeight(412, 222 + (54 * partyMemberPos), 43, 42);
                                                             seg = MarvinSegment.fromCue("WorldBossPlayerKick", 2 * Misc.Durations.SECOND, kickBounds, bot.browser);
                                                             if (seg == null) {
                                                                 BHBot.logger.error("Impossible to find kick button for party member " + (partyMemberPos + 2) + ".");

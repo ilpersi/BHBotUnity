@@ -506,19 +506,8 @@ class CueManager {
 
         //WorldBoss Related
         addCue("WorldBoss", "cues/worldboss/cueWorldBoss.png", Bounds.fromWidthHeight(5, 235, 40, 55));
-        addCue("WorldBossSelector", "cues/worldboss/cueWorldBossSelector.png", null);
-        addCue("Invite", "cues/worldboss/cueDarkBlueInvite.png", null);
         addCue("Start", "cues/cueStart.png", null);
-        addCue("DarkBlueStart", "cues/worldboss/cueDarkBlueStart.png", Bounds.fromWidthHeight(285, 435, 190, 65));
         addCue("VictoryLarge", "cues/Victory_Large.png", new Bounds(324, 128, 476, 157));
-        addCue("OrlagSelected", "cues/cueOrlagSelected.png", new Bounds(360, 430, 440, 460));
-        addCue("NetherSelected", "cues/cueNetherSelected.png", null);
-        addCue("WorldBossTier", "cues/worldboss/cueWorldBossTier.png", Bounds.fromWidthHeight(314, 206, 88, 28));
-
-        addCue("WorldBossSummonTitle", "cues/worldboss/cueWorldBossSummonTitle.png", new Bounds(325, 100, 480, 150));
-        addCue("WorldBossPlayerKick", "cues/worldboss/ts/wb_player_kick.png", null);
-        addCue("WorldBossPopupKick", "cues/worldboss/ts/wb_popup_kick.png", Bounds.fromWidthHeight(355, 135, 85, 40));
-
 
         //fishing related
         addCue("FishingButton", "cues/cueFishingButton.png", null);
@@ -781,6 +770,11 @@ class CueManager {
         addCue("SmallDarkBlueSummon", "unitycues/worldboss/cueSmallDarkBlueSummon.png", Bounds.fromWidthHeight(415, 380, 130, 50)); // Dark blue WB Summon button
         addCue("NotEnoughXeals", "unitycues/worldboss/cueNotEnoughXeals.png", Bounds.fromWidthHeight(270, 215, 265, 95)); // Not enough xeals popup
         addCue("Unready", "unitycues/worldboss/cueWorldBossUnready.png", null); // Red X in WB Lobby
+        addCue("Invite", "unitycues/worldboss/cueDarkBlueInvite.png", Bounds.fromWidthHeight(335, 330, 120, 45)); // Lobby member invite button
+        addCue("DarkBlueStart", "unitycues/worldboss/cueDarkBlueStart.png", Bounds.fromWidthHeight(325, 445, 110, 50)); // WB Dark blue start button
+        addCue("WorldBossPlayerKick", "unitycues/worldboss/cueWorldBossKick.png", Bounds.fromWidthHeight(410, 220, 45, 50)); // Lobby member kick button
+        addCue("WorldBossSummonTitle", "unitycues/worldboss/cueWorldBossSummonTitle.png", Bounds.fromWidthHeight(330, 105, 140, 50)); // WB Summon Title
+        addCue("WorldBossPopupKick", "unitycues/worldboss/cueWorldBossPopupKick.png", Bounds.fromWidthHeight(345, 130, 110, 55)); // WB Player Kick confirmation
 
         addCue("WorldBossDifficultyNormal", "unitycues/worldboss/cueWorldBossDifficultyNormal.png", Bounds.fromWidthHeight(330, 280, 105, 35)); // WB Normal difficulty selected
         addCue("WorldBossDifficultyHard", "unitycues/worldboss/cueWorldBossDifficultyHard.png", Bounds.fromWidthHeight(345, 280, 75, 35)); // WB Hard difficulty selected

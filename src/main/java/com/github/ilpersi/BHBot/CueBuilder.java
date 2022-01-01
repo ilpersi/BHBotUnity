@@ -542,6 +542,16 @@ public class CueBuilder {
                 Set.of(), "NotEnoughXeals", "unitycues/worldboss/cueNotEnoughXeals.png", "Not enough xeals popup");
         addCueLocatorByPattern(cueLocators, "cuebuilder/worldBoss", "wb_lobby_unready_(.*)\\.png", null,
                 Set.of(), "Unready", "unitycues/worldboss/cueWorldBossUnready.png", "Red X in WB Lobby");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/worldBoss", "wb_invite_(.*)\\.png", Bounds.fromWidthHeight(347, 340, 96, 23),
+                Set.of(), "Invite", "unitycues/worldboss/cueDarkBlueInvite.png", "Lobby member invite button");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/worldBoss", "wb_invite_(.*)\\.png", Bounds.fromWidthHeight(337, 457, 87, 28),
+                Set.of(), "DarkBlueStart", "unitycues/worldboss/cueDarkBlueStart.png", "WB Dark blue start button");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/worldBoss", "wb_kick_(.*)\\.png", Bounds.fromWidthHeight(423, 233, 22, 23),
+                Set.of(), "WorldBossPlayerKick", "unitycues/worldboss/cueWorldBossKick.png", "Lobby member kick button");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/worldBoss", "wb_summon_(.*)\\.png", Bounds.fromWidthHeight(342, 117, 115, 26),
+                Set.of(), "WorldBossSummonTitle", "unitycues/worldboss/cueWorldBossSummonTitle.png", "WB Summon Title");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/worldBoss", "wb_lobby_kick_popup_(.*)\\.png", Bounds.fromWidthHeight(359, 140, 84, 35),
+                Set.of(), "WorldBossPopupKick", "unitycues/worldboss/cueWorldBossPopupKick.png", "WB Player Kick confirmation");
 
         // Tier drop down
         Set<Color> TierDropDownColors = Set.of(new Color(0, 0, 0), new Color(70, 105, 134), new Color(124, 179, 221), new Color(112, 169, 214),
