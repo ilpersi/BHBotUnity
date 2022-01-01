@@ -533,29 +533,29 @@ public class CueBuilder {
         addCueLocatorByPattern(cueLocators, "cuebuilder/worldBoss", "xeal_bar_(.*)\\.png", Bounds.fromWidthHeight(321, 37, 40, 35),
                 Set.of(), "WorldBossPopup", "unitycues/worldBoss/cueWorldBossPopup.png", "Xeal bar popup");
         addCueLocatorByPattern(cueLocators, "cuebuilder/worldBoss", "xeal_bar_(.*)\\.png", Bounds.fromWidthHeight(449, 447, 106, 31),
-                Set.of(), "DarkBlueSummon", "unitycues/worldboss/cueDarkBlueSummon.png", "WB Main menu summon button");
+                Set.of(), "DarkBlueSummon", "unitycues/worldBoss/cueDarkBlueSummon.png", "WB Main menu summon button");
         addCueLocatorByPattern(cueLocators, "cuebuilder/worldBoss", "xeal_bar_(.*)\\.png", Bounds.fromWidthHeight(290, 87, 224, 32),
-                Set.of(), "WorldBossTitle", "unitycues/worldboss/cueWorldBossTitle.png", "WB Title in Main Menu");
+                Set.of(), "WorldBossTitle", "unitycues/worldBoss/cueWorldBossTitle.png", "WB Title in Main Menu");
         addCueLocatorByPattern(cueLocators, "cuebuilder/worldBoss", "wb_2_(.*)\\.png", Bounds.fromWidthHeight(490, 361, 105, 35),
-                Set.of(), "LargeDarkBlueSummon", "unitycues/worldboss/cueLargeDarkBlueSummon.png", "Big Blue Summon button in WB Screen 2");
+                Set.of(), "LargeDarkBlueSummon", "unitycues/worldBoss/cueLargeDarkBlueSummon.png", "Big Blue Summon button in WB Screen 2");
         addCueLocatorByPattern(cueLocators, "cuebuilder/worldBoss", "wb_3_(.*)\\.png", Bounds.fromWidthHeight(322, 327, 42, 46),
-                Set.of(), "WBIsPrivate", "unitycues/worldboss/cueWBIsPrivate.png", "Private Flag for World Boss");
+                Set.of(), "WBIsPrivate", "unitycues/worldBoss/cueWBIsPrivate.png", "Private Flag for World Boss");
         addCueLocatorByPattern(cueLocators, "cuebuilder/worldBoss", "wb_difficulty_(.*)\\.png", Bounds.fromWidthHeight(428, 390, 104, 27),
-                Set.of(), "SmallDarkBlueSummon", "unitycues/worldboss/cueSmallDarkBlueSummon.png", "Dark blue WB Summon button");
+                Set.of(), "SmallDarkBlueSummon", "unitycues/worldBoss/cueSmallDarkBlueSummon.png", "Dark blue WB Summon button");
         addCueLocatorByPattern(cueLocators, "cuebuilder/worldBoss", "wb_no_xeals_(.*)\\.png", Bounds.fromWidthHeight(282, 229, 239, 71),
-                Set.of(), "NotEnoughXeals", "unitycues/worldboss/cueNotEnoughXeals.png", "Not enough xeals popup");
+                Set.of(), "NotEnoughXeals", "unitycues/worldBoss/cueNotEnoughXeals.png", "Not enough xeals popup");
         addCueLocatorByPattern(cueLocators, "cuebuilder/worldBoss", "wb_lobby_unready_(.*)\\.png", null,
-                Set.of(), "Unready", "unitycues/worldboss/cueWorldBossUnready.png", "Red X in WB Lobby");
+                Set.of(), "Unready", "unitycues/worldBoss/cueWorldBossUnready.png", "Red X in WB Lobby");
         addCueLocatorByPattern(cueLocators, "cuebuilder/worldBoss", "wb_invite_(.*)\\.png", Bounds.fromWidthHeight(347, 340, 96, 23),
-                Set.of(), "Invite", "unitycues/worldboss/cueDarkBlueInvite.png", "Lobby member invite button");
+                Set.of(), "Invite", "unitycues/worldBoss/cueDarkBlueInvite.png", "Lobby member invite button");
         addCueLocatorByPattern(cueLocators, "cuebuilder/worldBoss", "wb_invite_(.*)\\.png", Bounds.fromWidthHeight(337, 457, 87, 28),
-                Set.of(), "DarkBlueStart", "unitycues/worldboss/cueDarkBlueStart.png", "WB Dark blue start button");
+                Set.of(), "DarkBlueStart", "unitycues/worldBoss/cueDarkBlueStart.png", "WB Dark blue start button");
         addCueLocatorByPattern(cueLocators, "cuebuilder/worldBoss", "wb_kick_(.*)\\.png", Bounds.fromWidthHeight(423, 233, 22, 23),
-                Set.of(), "WorldBossPlayerKick", "unitycues/worldboss/cueWorldBossKick.png", "Lobby member kick button");
+                Set.of(), "WorldBossPlayerKick", "unitycues/worldBoss/cueWorldBossKick.png", "Lobby member kick button");
         addCueLocatorByPattern(cueLocators, "cuebuilder/worldBoss", "wb_summon_(.*)\\.png", Bounds.fromWidthHeight(342, 117, 115, 26),
-                Set.of(), "WorldBossSummonTitle", "unitycues/worldboss/cueWorldBossSummonTitle.png", "WB Summon Title");
+                Set.of(), "WorldBossSummonTitle", "unitycues/worldBoss/cueWorldBossSummonTitle.png", "WB Summon Title");
         addCueLocatorByPattern(cueLocators, "cuebuilder/worldBoss", "wb_lobby_kick_popup_(.*)\\.png", Bounds.fromWidthHeight(359, 140, 84, 35),
-                Set.of(), "WorldBossPopupKick", "unitycues/worldboss/cueWorldBossPopupKick.png", "WB Player Kick confirmation");
+                Set.of(), "WorldBossPopupKick", "unitycues/worldBoss/cueWorldBossPopupKick.png", "WB Player Kick confirmation");
 
         // Tier drop down
         Set<Color> TierDropDownColors = Set.of(new Color(0, 0, 0), new Color(70, 105, 134), new Color(124, 179, 221), new Color(112, 169, 214),
@@ -564,23 +564,23 @@ public class CueBuilder {
                 new Color(87, 148, 195), new Color(59, 98, 131), new Color(108, 166, 212), new Color(166, 219, 255), new Color(99, 164, 218),
                 new Color(84, 135, 174), new Color(111, 168, 213), new Color(110, 167, 213), new Color(101, 149, 184), new Color(102, 150, 185));
         addCueLocatorByPattern(cueLocators, "cuebuilder/worldBoss", "wb_3_(.*)\\.png", Bounds.fromWidthHeight(304, 199, 194, 42),
-                TierDropDownColors, "WorldBossTierDropDown", "unitycues/worldboss/cueWorldBossTierDropDown.png", "Drop Down for Tier detection");
+                TierDropDownColors, "WorldBossTierDropDown", "unitycues/worldBoss/cueWorldBossTierDropDown.png", "Drop Down for Tier detection");
 
         // Currently selected difficulty
         addCueLocatorByPattern(cueLocators, "cuebuilder/worldBoss", "wb_difficulty_1_(.*)\\.png", Bounds.fromWidthHeight(336, 287, 92, 20),
-                Set.of(new Color(147, 158, 244)), "WorldBossDifficultyNormal", "unitycues/worldboss/cueWorldBossDifficultyNormal.png", "WB Normal difficulty selected");
+                Set.of(new Color(147, 158, 244)), "WorldBossDifficultyNormal", "unitycues/worldBoss/cueWorldBossDifficultyNormal.png", "WB Normal difficulty selected");
         addCueLocatorByPattern(cueLocators, "cuebuilder/worldBoss", "wb_difficulty_2_(.*)\\.png", Bounds.fromWidthHeight(336, 287, 92, 20),
-                Set.of(new Color(255, 128, 125)), "WorldBossDifficultyHard", "unitycues/worldboss/cueWorldBossDifficultyHard.png", "WB Hard difficulty selected");
+                Set.of(new Color(255, 128, 125)), "WorldBossDifficultyHard", "unitycues/worldBoss/cueWorldBossDifficultyHard.png", "WB Hard difficulty selected");
         addCueLocatorByPattern(cueLocators, "cuebuilder/worldBoss", "wb_difficulty_3_(.*)\\.png", Bounds.fromWidthHeight(336, 287, 92, 20),
-                Set.of(new Color(255, 255, 0)), "WorldBossDifficultyHeroic", "unitycues/worldboss/cueWorldBossDifficultyHeroic.png", "WB Heroic difficulty selected");
+                Set.of(new Color(255, 255, 0)), "WorldBossDifficultyHeroic", "unitycues/worldBoss/cueWorldBossDifficultyHeroic.png", "WB Heroic difficulty selected");
 
         // New difficulty selection
         addCueLocatorByPattern(cueLocators, "cuebuilder/worldBoss", "wb_select_difficulty_(.*)\\.png", Bounds.fromWidthHeight(336, 146, 102, 24),
-                Set.of(new Color(147, 158, 244)), "cueWBSelectNormal", "unitycues/worldboss/cueWBSelectNormal.png", "WB Normal difficulty selection");
+                Set.of(new Color(147, 158, 244)), "cueWBSelectNormal", "unitycues/worldBoss/cueWBSelectNormal.png", "WB Normal difficulty selection");
         addCueLocatorByPattern(cueLocators, "cuebuilder/worldBoss", "wb_select_difficulty_(.*)\\.png", Bounds.fromWidthHeight(355, 207, 64, 23),
-                Set.of(new Color(255, 128, 125)), "cueWBSelectHard", "unitycues/worldboss/cueWBSelectHard.png", "WB Hard difficulty selection");
+                Set.of(new Color(255, 128, 125)), "cueWBSelectHard", "unitycues/worldBoss/cueWBSelectHard.png", "WB Hard difficulty selection");
         addCueLocatorByPattern(cueLocators, "cuebuilder/worldBoss", "wb_select_difficulty_(.*)\\.png", Bounds.fromWidthHeight(346, 268, 85, 21),
-                Set.of(new Color(255, 255, 0)), "cueWBSelectHeroic", "unitycues/worldboss/cueWBSelectHeroic.png", "WB Heroic difficulty selection");
+                Set.of(new Color(255, 255, 0)), "cueWBSelectHeroic", "unitycues/worldBoss/cueWBSelectHeroic.png", "WB Heroic difficulty selection");
         //endregion
 
         //region Weekly Rewards
