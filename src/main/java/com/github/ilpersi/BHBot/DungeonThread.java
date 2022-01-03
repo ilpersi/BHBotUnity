@@ -1943,6 +1943,7 @@ public class DungeonThread implements Runnable {
 
                 } // main screen processing
             } catch (Exception e) {
+                BHBot.logger.debug("Exception in Dungeon Thread.", e);
                 if (bot.excManager.manageException(e)) continue;
                 bot.scheduler.restoreIdleTime();
                 continue;

@@ -57,9 +57,10 @@ public class ExceptionManager {
             bot.restart(true, false, e);
             return true;
         } else if (e instanceof org.openqa.selenium.TimeoutException) {
-            /* When we get time out errors it may be possible that the bot.browser has crashed so it is impossible to take screenshots
+            /* When we get time out errors it may be possible that the bot.browser has crashed, so it is impossible to take screenshots
              * For this reason we do a standard restart.
              */
+            BHBot.logger.error("Error: Selenium tiemout. Restarting...", e);
             bot.restart(true, false, e);
             return true;
         } else {
