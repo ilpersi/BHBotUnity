@@ -170,7 +170,7 @@ public class CueBuilder {
                     // If the merge was successful we override the destination Cue
                     if (mergedCueImg != null) destCueImg = mergedCueImg;
                 } else {
-                    System.out.println("It was impossible to merge '" + this.destinationCueName + "' from " + this.containingScreenShotPath + " due to different cue dimensions.");
+                    throw new RuntimeException("It was impossible to merge '" + this.destinationCueName + "' from " + this.containingScreenShotPath + " due to different cue dimensions.");
                 }
             }
 
