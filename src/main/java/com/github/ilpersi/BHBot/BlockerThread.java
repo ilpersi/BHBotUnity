@@ -299,6 +299,7 @@ public class BlockerThread implements Runnable {
                 //endregion
             } catch (Exception e) {
                 BHBot.logger.debug("Exception in Blocker Thread.", e);
+                BHBot.logger.debug(Misc.getStackTrace());
                 if (bot.excManager.manageException(e)) continue;
                 bot.scheduler.resetIdleTime();
                 continue;
