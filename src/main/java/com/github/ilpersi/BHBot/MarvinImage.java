@@ -11,6 +11,7 @@ import java.awt.image.BufferedImage;
  * @author Betalord
  */
 
+@SuppressWarnings("unused")
 public class MarvinImage implements Cloneable {
 
     public final static int COLOR_MODEL_RGB = 0;
@@ -27,7 +28,7 @@ public class MarvinImage implements Cloneable {
     protected boolean[] arrBinaryColor;
 
     // Colors
-    protected int rgb, r, b, g;
+    protected int r, b, g;
     protected Color color;
 
     // Color Model
@@ -380,7 +381,7 @@ public class MarvinImage implements Cloneable {
     }
 
     /**
-     * @returns a BufferedImage associated with the MarvinImage
+     * @return a BufferedImage associated with the MarvinImage
      */
     public BufferedImage getBufferedImage() {
         return image;
@@ -870,5 +871,24 @@ public class MarvinImage implements Cloneable {
             }
         }
         setIntColorArray(map);
+    }
+
+    /**
+     * This is an alternate version of the toBlackWhite that is relying on the standard MarvinColorModelConverter class
+     * to manage the conversion to B&W. Compared to the previous method, this one is more flexible and gives better
+     * results when different shades of colors are present.
+     *
+     * @param treshold The gray scale threshold
+     */
+    @SuppressWarnings("SameParameterValue")
+    void toBlackWhite(int treshold) {
+        // We create a new MarvinImage with the B&W conversion
+        MarvinImage BWImage = MarvinColorModelConverter.rgbToBinary(this, treshold);
+
+        // We update the properties of the current MarvinImage so that it is managed as a B&W Image
+        colorModel = COLOR_MODEL_BINARY;
+        arrIntColor = null;
+        arrBinaryColor = new boolean[width * height];
+        copyBinaryColorArray(BWImage, this);
     }
 }
