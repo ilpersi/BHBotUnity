@@ -152,8 +152,8 @@ public class EncounterManager {
             // If we could not get the name, we are going to upload the full screen image.
             if (famNameImg == null) famNameImg = bot.browser.getImg();
 
-            if (!Misc.contributeImage(famNameImg, persuasionLog.toString(), null, bot.settings.useUnityEngine)) {
-                Misc.contributeImage(bot.browser.getImg(), persuasionLog.toString(), familiarNameBounds, bot.settings.useUnityEngine);
+            if (!Misc.contributeImage(famNameImg, persuasionLog.toString(), null)) {
+                Misc.contributeImage(bot.browser.getImg(), persuasionLog.toString(), familiarNameBounds);
             }
         } else {
             BHBot.logger.debug(MessageFormat.format("MD5 familiar detected: {0}", encounterDetails.name));
