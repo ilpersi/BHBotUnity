@@ -2842,7 +2842,7 @@ public class DungeonThread implements Runnable {
             return;
         }
 
-        seg = MarvinSegment.fromCue(BHBot.cues.get("VictoryLarge"), 500, bot.browser);
+        seg = MarvinSegment.fromCue(BHBot.cues.get("VictoryRecap"), 500, bot.browser);
         if (seg != null) {
             BHBot.logger.autorevive("Victory popup, skipping revive check");
             setAutoOn(Misc.Durations.SECOND);
@@ -4105,12 +4105,12 @@ public class DungeonThread implements Runnable {
      * @return The total TS found value, 0 if errors
      */
     private int getWorldBossTotalTS() {
-        final Bounds totalWBTS = Bounds.fromWidthHeight(603, 68, 85, 3);
+        final Bounds totalWBTS = Bounds.fromWidthHeight(602, 67, 88, 36);
         MarvinImage totalTSImg = new MarvinImage(bot.browser.getImg().getSubimage(totalWBTS.x1, totalWBTS.y1, totalWBTS.width, totalWBTS.height));
         totalTSImg.toBlackWhite(120);
         totalTSImg.update();
         BufferedImage totalTSSubImg = totalTSImg.getBufferedImage();
-        return readNumFromImg(totalTSSubImg, "wb_total_ts_", new HashSet<>(), true);
+        return readNumFromImg(totalTSSubImg, "wb_total_ts_20_", new HashSet<>(), true);
     }
 
     /**
