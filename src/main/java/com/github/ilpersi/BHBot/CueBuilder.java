@@ -629,13 +629,16 @@ public class CueBuilder {
             cueLocatorsByDestFile.get(cueLoc.destinationCuePath).add(cueLoc);
         }
 
-        // We reset the cues when we build them so we do not have any merge issue
+        // We reset the cues when we build them, so we do not have any merge issue
         for (String cuePath : cueLocatorsByDestFile.keySet()) {
+            cuePath = "src/main/resources/" + cuePath;
             File cueFile = new File(cuePath);
 
-            if (cueFile.exists() && !cueFile.delete()) {
-                System.out.println("It was impossible to delete file \"" + cueFile.getAbsolutePath() + "\". Cue generation interrupted");
-                return;
+            if (cueFile.exists()) {
+                if (!cueFile.delete()) {
+                    System.out.println("It was impossible to delete file \"" + cueFile.getAbsolutePath() + "\". Cue generation interrupted");
+                    return;
+                }
             }
         }
 
