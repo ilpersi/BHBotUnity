@@ -4129,7 +4129,7 @@ public class DungeonThread implements Runnable {
             subImg.update();
             BufferedImage tsSubImg = subImg.getBufferedImage();
 
-            int playerTS = readNumFromImg(tsSubImg, "wb_total_ts_20_", new HashSet<>(), false);
+            int playerTS = readNumFromImg(tsSubImg, "wb_player_ts_", new HashSet<>(), false);
             results[partyMemberPos] = playerTS;
         }
 
