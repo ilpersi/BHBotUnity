@@ -740,6 +740,19 @@ class CueManager {
         addCue("wb_tier_button_8", "unitycues/numbers/wbTierButton/wb_tier_button_8.png", null);
         addCue("wb_tier_button_9", "unitycues/numbers/wbTierButton/wb_tier_button_9.png", null);
         // endregion
+
+        //region WB Total TS 20px
+        addCue("wb_total_ts_20_0", "unitycues/numbers/wbTotalTS20/wb_total_ts_20_0.png", null); // WB Total TS 20px 0
+        addCue("wb_total_ts_20_1", "unitycues/numbers/wbTotalTS20/wb_total_ts_20_1.png", null); // WB Total TS 20px 1
+        addCue("wb_total_ts_20_2", "unitycues/numbers/wbTotalTS20/wb_total_ts_20_2.png", null); // WB Total TS 20px 2
+        addCue("wb_total_ts_20_3", "unitycues/numbers/wbTotalTS20/wb_total_ts_20_3.png", null); // WB Total TS 20px 3
+        addCue("wb_total_ts_20_4", "unitycues/numbers/wbTotalTS20/wb_total_ts_20_4.png", null); // WB Total TS 20px 4
+        addCue("wb_total_ts_20_5", "unitycues/numbers/wbTotalTS20/wb_total_ts_20_5.png", null); // WB Total TS 20px 5
+        addCue("wb_total_ts_20_6", "unitycues/numbers/wbTotalTS20/wb_total_ts_20_6.png", null); // WB Total TS 20px 6
+        addCue("wb_total_ts_20_7", "unitycues/numbers/wbTotalTS20/wb_total_ts_20_7.png", null); // WB Total TS 20px 7
+        addCue("wb_total_ts_20_8", "unitycues/numbers/wbTotalTS20/wb_total_ts_20_8.png", null); // WB Total TS 20px 8
+        addCue("wb_total_ts_20_9", "unitycues/numbers/wbTotalTS20/wb_total_ts_20_9.png", null); // WB Total TS 20px 9
+        // endregion
         //endregion
 
         //region Raid

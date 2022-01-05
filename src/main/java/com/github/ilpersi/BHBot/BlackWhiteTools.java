@@ -17,6 +17,7 @@ import java.util.Set;
  * <p>
  * This tool can be used for other meaning also.
  */
+@SuppressWarnings("unused")
 public class BlackWhiteTools {
     public static void main(String[] args) {
 
@@ -51,7 +52,8 @@ public class BlackWhiteTools {
                              * ATTENTION IF YOU WANT THIS TO WORK CORRECTLY, REMEMBER TO CHECK THE PARAMETERS
                              * OF THE TOBLACKWHITE METHOD
                              */
-                            origImg.toBlackWhite(new Color(25, 25, 25), new Color(255, 255, 255), 255);
+                            // origImg.toBlackWhite(new Color(25, 25, 25), new Color(204, 204, 204), 204);
+                            origImg.toBlackWhite(120);
                             origImg.update();
                             BufferedImage bwImage = origImg.getBufferedImage();
 

@@ -1655,7 +1655,6 @@ public class DungeonThread implements Runnable {
                                     // Invite and unready buttons bounds are dinamically calculated based on the WB party member
                                     Bounds inviteBounds = Bounds.fromWidthHeight(330, 217, 127, 54 * inviteCnt);
                                     Bounds unreadyBounds = Bounds.fromWidthHeight(177, 217, 24, 54 * inviteCnt);
-                                    Bounds totalWBTS = Bounds.fromWidthHeight(603, 68, 85, 3);
 
                                     // we assume we did not start the WB
                                     boolean lobbyTimeout = true;
@@ -1688,11 +1687,8 @@ public class DungeonThread implements Runnable {
                                         // We read the current total TS
                                         int totalTS = 0;
                                         if (wbSetting.minimumTotalTS > 0) {
-                                            MarvinImage totalTSImg = new MarvinImage(bot.browser.getImg().getSubimage(totalWBTS.x1, totalWBTS.y1, totalWBTS.width, totalWBTS.height));
-                                            totalTSImg.toBlackWhite(new Color(25, 25, 25), new Color(255, 255, 255), 254);
-                                            totalTSImg.update();
-                                            BufferedImage totalTSSubImg = totalTSImg.getBufferedImage();
-                                            totalTS = readNumFromImg(totalTSSubImg, "wb_total_ts_", new HashSet<>(), true);
+
+                                            totalTS = getWorldBossTotalTS();
 
                                             // If readNumFromImg has errors it will return 0, so we make sure this is not the case
                                             if (totalTS > 0 && totalTS >= wbSetting.minimumTotalTS) {
@@ -1715,17 +1711,15 @@ public class DungeonThread implements Runnable {
                                         List<MarvinSegment> inviteSegs = FindSubimage.findSubimage(bot.browser.getImg(), BHBot.cues.get("Invite").im, 1.0, true, false, inviteBounds.x1, inviteBounds.y1, inviteBounds.x2, inviteBounds.y2);
                                         // At least one person joined the lobby
                                         if (inviteSegs.size() < inviteCnt) {
-                                            Bounds TSBound = Bounds.fromWidthHeight(184, 243, 84, 18);
+
 
                                             if (wbSetting.minimumPlayerTS > 0) {
-                                                for (int partyMemberPos = 0; partyMemberPos < inviteCnt; partyMemberPos++) {
-                                                    MarvinImage subImg = new MarvinImage(bot.browser.getImg().getSubimage(TSBound.x1, TSBound.y1 + (54 * partyMemberPos), TSBound.width, TSBound.height));
-                                                    subImg.toBlackWhite(new Color(20, 20, 20), new Color(204, 204, 204), 204);
-                                                    subImg.update();
-                                                    BufferedImage tsSubImg = subImg.getBufferedImage();
+                                                System.arraycopy(getWorldBossPlayersTS(inviteCnt), 0, playersTS, 0, inviteCnt);
+                                                // playersTS = getWorldBossPlayersTS(inviteCnt);
 
-                                                    int playerTS = readNumFromImg(tsSubImg, "wb_player_ts_", new HashSet<>(), false);
-                                                    playersTS[partyMemberPos] = playerTS;
+                                                for (int partyMemberPos = 0; partyMemberPos < inviteCnt; partyMemberPos++) {
+
+                                                    int playerTS = playersTS[partyMemberPos];
 
                                                     if (playerTS < 1) {
                                                         // Player position one is you, the first party member is position two
@@ -1772,6 +1766,15 @@ public class DungeonThread implements Runnable {
                                         }
 
                                         if (Misc.getTime() >= nextUpdateTime) {
+
+                                            // If debugWBTS is enabled, we check if the minimum TS is set to 0, and we get the computed values
+                                            // Otherwise they will always default to 0
+                                            if (bot.settings.debugWBTS) {
+                                                if (wbSetting.minimumPlayerTS == 0 ) totalTS = getWorldBossTotalTS();
+                                                //if (wbSetting.minimumPlayerTS == 0) playersTS = getWorldBossPlayersTS(inviteCnt);
+                                                if (wbSetting.minimumPlayerTS == 0) System.arraycopy(getWorldBossPlayersTS(inviteCnt), 0, playersTS, 0, inviteCnt);
+                                            }
+
                                             if (totalTS > 0) {
                                                 BHBot.logger.debug("Total lobby TS is " + totalTS);
                                             }
@@ -2169,37 +2172,6 @@ public class DungeonThread implements Runnable {
     }
 
     /**
-     * Returns number of xeals that we have. Works only if wb popup is open. Returns -1 in case it cannot read number of shards for some reason.
-     */
-    private int getXeals() {
-        MarvinSegment seg;
-
-        seg = MarvinSegment.fromCue("WorldBossPopup", bot.browser);
-
-        if (seg == null) // this should probably not happen
-            return -1;
-
-        int left = seg.x2 + 1;
-        int top = seg.y1 + 9;
-
-        final Color full = new Color(12, 137, 255);
-
-        int value = 0;
-        int maxXeals = bot.settings.maxXeals;
-
-        for (int i = 0; i < 76; i++) {
-            value = i;
-            Color col = new Color(bot.browser.getImg().getRGB(left + i, top));
-
-            if (!col.equals(full))
-                break;
-        }
-
-        value = value + 2; //add the last 2 pixels to get an accurate count
-        return Math.round(value * (maxXeals / 75.0f)); // round to nearest whole number
-    }
-
-    /**
      * Processes any kind of dungeon: <br>
      * - normal dungeon <br>
      * - raid <br>
@@ -2248,7 +2220,7 @@ public class DungeonThread implements Runnable {
         }
         //endregion
 
-        long activityDuration = (TimeUnit.MILLISECONDS.toSeconds(Misc.getTime()) - activityStartTime);
+        // long activityDuration = (TimeUnit.MILLISECONDS.toSeconds(Misc.getTime()) - activityStartTime);
 
         /*
          * Encounter detection code
@@ -3848,14 +3820,18 @@ public class DungeonThread implements Runnable {
     }
 
     private int readNumFromImg(BufferedImage im, String numberPrefix, HashSet<Integer> intToSkip, boolean logEmptyResults) {
+        // You can have multiple prefixes separated by a comma
+        String[] prefixes = numberPrefix.split(",");
         List<ScreenNum> nums = new ArrayList<>();
 
-        for (int i = 0; i < 10; i++) {
-            if (intToSkip.contains(i)) continue;
-            List<MarvinSegment> list = FindSubimage.findSubimage(im, BHBot.cues.get(numberPrefix + "" + i).im, 1.0, true, false, 0, 0, 0, 0);
-            //BHBot.logger.info("DEBUG difficulty detection: " + i + " - " + list.size());
-            for (MarvinSegment s : list) {
-                nums.add(new ScreenNum(Integer.toString(i), s.x1));
+        for (String prefix: prefixes) {
+            for (int i = 0; i < 10; i++) {
+                if (intToSkip.contains(i)) continue;
+                List<MarvinSegment> list = FindSubimage.findSubimage(im, BHBot.cues.get(prefix + "" + i).im, 1.0, true, false, 0, 0, 0, 0);
+                //BHBot.logger.info("DEBUG difficulty detection: " + i + " - " + list.size());
+                for (MarvinSegment s : list) {
+                    nums.add(new ScreenNum(Integer.toString(i), s.x1));
+                }
             }
         }
 
@@ -3964,7 +3940,7 @@ public class DungeonThread implements Runnable {
             return 0; // error
         }
 
-        MarvinImage im = new MarvinImage(bot.browser.getImg().getSubimage(seg.x1 + 35, seg.y1 + 30, 55, 19));
+        MarvinImage im = new MarvinImage(bot.browser.getImg().getSubimage(seg.x1 + 35, seg.y1 + 30, 55, 19), "PNG");
 
         // make it white-gray (to facilitate cue recognition):
         im.toBlackWhite(new Color(25, 25, 25), new Color(255, 255, 255), 254);
@@ -4121,6 +4097,43 @@ public class DungeonThread implements Runnable {
             BHBot.logger.error("Impossible to detect desired difficulty in changeWorldBossDifficulty!");
             restart();
         }
+    }
+
+    /**
+     * Get the Total World Boss TS. This method assumes that the WB Lobby is opened and screen read is up to date with it
+     *
+     * @return The total TS found value, 0 if errors
+     */
+    private int getWorldBossTotalTS() {
+        final Bounds totalWBTS = Bounds.fromWidthHeight(603, 68, 85, 3);
+        MarvinImage totalTSImg = new MarvinImage(bot.browser.getImg().getSubimage(totalWBTS.x1, totalWBTS.y1, totalWBTS.width, totalWBTS.height));
+        totalTSImg.toBlackWhite(120);
+        totalTSImg.update();
+        BufferedImage totalTSSubImg = totalTSImg.getBufferedImage();
+        return readNumFromImg(totalTSSubImg, "wb_total_ts_", new HashSet<>(), true);
+    }
+
+    /**
+     * Get the TS for each World Boss lobby member
+     *
+     * @param inviteCnt The lobby size
+     * @return An array of int with TS for each party member
+     */
+    private int[] getWorldBossPlayersTS(int inviteCnt) {
+        int[] results = new int[inviteCnt];
+        final Bounds TSBound = Bounds.fromWidthHeight(184, 243, 84, 18);
+
+        for (int partyMemberPos = 0; partyMemberPos < inviteCnt; partyMemberPos++) {
+            MarvinImage subImg = new MarvinImage(bot.browser.getImg().getSubimage(TSBound.x1, TSBound.y1 + (54 * partyMemberPos), TSBound.width, TSBound.height));
+            subImg.toBlackWhite(120);
+            subImg.update();
+            BufferedImage tsSubImg = subImg.getBufferedImage();
+
+            int playerTS = readNumFromImg(tsSubImg, "wb_total_ts_20_", new HashSet<>(), false);
+            results[partyMemberPos] = playerTS;
+        }
+
+        return results;
     }
 
     /**
@@ -4933,7 +4946,7 @@ public class DungeonThread implements Runnable {
                 if (DropDownDown == null) {
                     BHBot.logger.error("It was impossible to find the Scroll Down arrow, no consumable has been used.");
                     Misc.saveScreen("handleconsumables-no-scroll-down", "errors", true, bot.browser.getImg());
-                    boolean result = bot.browser.closePopupSecurely(BHBot.cues.get("Filter"), BHBot.cues.get("X"));
+                    bot.browser.closePopupSecurely(BHBot.cues.get("Filter"), BHBot.cues.get("X"));
                     return;
                 }
 

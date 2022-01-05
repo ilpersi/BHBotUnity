@@ -464,6 +464,30 @@ public class CueBuilder {
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTierButton", "wb_tier_button_9_(.*)\\.png", null,
                 Set.of(), "wb_tier_button_9", "unitycues/numbers/wbTierButton/wb_tier_button_9.png", " WB Tier Button 9");
         //endregion WT Tiers
+
+        //region WB Total TS 20px
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS20", "wb_total_ts_20_0(.*)\\.png", null,
+                Set.of(), "wb_total_ts_20_0", "unitycues/numbers/wbTotalTS20/wb_total_ts_20_0.png", "WB Total TS 20px 0");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS20", "wb_total_ts_20_1(.*)\\.png", null,
+                Set.of(), "wb_total_ts_20_1", "unitycues/numbers/wbTotalTS20/wb_total_ts_20_1.png", "WB Total TS 20px 1");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS20", "wb_total_ts_20_2(.*)\\.png", null,
+                Set.of(), "wb_total_ts_20_2", "unitycues/numbers/wbTotalTS20/wb_total_ts_20_2.png", "WB Total TS 20px 2");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS20", "wb_total_ts_20_3(.*)\\.png", null,
+                Set.of(), "wb_total_ts_20_3", "unitycues/numbers/wbTotalTS20/wb_total_ts_20_3.png", "WB Total TS 20px 3");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS20", "wb_total_ts_20_4(.*)\\.png", null,
+                Set.of(), "wb_total_ts_20_4", "unitycues/numbers/wbTotalTS20/wb_total_ts_20_4.png", "WB Total TS 20px 4");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS20", "wb_total_ts_20_5(.*)\\.png", null,
+                Set.of(), "wb_total_ts_20_5", "unitycues/numbers/wbTotalTS20/wb_total_ts_20_5.png", "WB Total TS 20px 5");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS20", "wb_total_ts_20_6(.*)\\.png", null,
+                Set.of(), "wb_total_ts_20_6", "unitycues/numbers/wbTotalTS20/wb_total_ts_20_6.png", "WB Total TS 20px 6");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS20", "wb_total_ts_20_7(.*)\\.png", null,
+                Set.of(), "wb_total_ts_20_7", "unitycues/numbers/wbTotalTS20/wb_total_ts_20_7.png", "WB Total TS 20px 7");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS20", "wb_total_ts_20_8(.*)\\.png", null,
+                Set.of(), "wb_total_ts_20_8", "unitycues/numbers/wbTotalTS20/wb_total_ts_20_8.png", "WB Total TS 20px 8");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS20", "wb_total_ts_20_9(.*)\\.png", null,
+                Set.of(), "wb_total_ts_20_9", "unitycues/numbers/wbTotalTS20/wb_total_ts_20_9.png", "WB Total TS 20px 9");
+        //endregion WB Total TS 20px
+
         //endregion Numbers
 
         //region Raid
