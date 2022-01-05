@@ -398,30 +398,6 @@ class CueManager {
         // Difficulty Tier
         addCue("hyphen", "cues/numbers/hyphen.png", null);
 
-        // WB player TS numbers
-        addCue("wb_player_ts_0", "cues/worldboss/ts/wb_player_ts_0.png", null);
-        addCue("wb_player_ts_1", "cues/worldboss/ts/wb_player_ts_1.png", null);
-        addCue("wb_player_ts_2", "cues/worldboss/ts/wb_player_ts_2.png", null);
-        addCue("wb_player_ts_3", "cues/worldboss/ts/wb_player_ts_3.png", null);
-        addCue("wb_player_ts_4", "cues/worldboss/ts/wb_player_ts_4.png", null);
-        addCue("wb_player_ts_5", "cues/worldboss/ts/wb_player_ts_5.png", null);
-        addCue("wb_player_ts_6", "cues/worldboss/ts/wb_player_ts_6.png", null);
-        addCue("wb_player_ts_7", "cues/worldboss/ts/wb_player_ts_7.png", null);
-        addCue("wb_player_ts_8", "cues/worldboss/ts/wb_player_ts_8.png", null);
-        addCue("wb_player_ts_9", "cues/worldboss/ts/wb_player_ts_9.png", null);
-
-        // WB player TS numbers
-        addCue("wb_total_ts_0", "cues/worldboss/ts/wb_total_ts_0.png", null);
-        addCue("wb_total_ts_1", "cues/worldboss/ts/wb_total_ts_1.png", null);
-        addCue("wb_total_ts_2", "cues/worldboss/ts/wb_total_ts_2.png", null);
-        addCue("wb_total_ts_3", "cues/worldboss/ts/wb_total_ts_3.png", null);
-        addCue("wb_total_ts_4", "cues/worldboss/ts/wb_total_ts_4.png", null);
-        addCue("wb_total_ts_5", "cues/worldboss/ts/wb_total_ts_5.png", null);
-        addCue("wb_total_ts_6", "cues/worldboss/ts/wb_total_ts_6.png", null);
-        addCue("wb_total_ts_7", "cues/worldboss/ts/wb_total_ts_7.png", null);
-        addCue("wb_total_ts_8", "cues/worldboss/ts/wb_total_ts_8.png", null);
-        addCue("wb_total_ts_9", "cues/worldboss/ts/wb_total_ts_9.png", null);
-
         // Invasion Level Numbers
         addCue("small0", "cues/numbers/small0.png", null);
         addCue("small1", "cues/numbers/small1.png", null);
@@ -713,6 +689,19 @@ class CueManager {
         //endregion
 
         //region Numbers
+
+        // region WB Player TS
+        addCue("wb_player_ts_0", "unitycues/numbers/wbPlayerTS/wb_player_ts_0.png", null);
+        addCue("wb_player_ts_1", "unitycues/numbers/wbPlayerTS/wb_player_ts_1.png", null);
+        addCue("wb_player_ts_2", "unitycues/numbers/wbPlayerTS/wb_player_ts_2.png", null);
+        addCue("wb_player_ts_3", "unitycues/numbers/wbPlayerTS/wb_player_ts_3.png", null);
+        addCue("wb_player_ts_4", "unitycues/numbers/wbPlayerTS/wb_player_ts_4.png", null);
+        addCue("wb_player_ts_5", "unitycues/numbers/wbPlayerTS/wb_player_ts_5.png", null);
+        addCue("wb_player_ts_6", "unitycues/numbers/wbPlayerTS/wb_player_ts_6.png", null);
+        addCue("wb_player_ts_7", "unitycues/numbers/wbPlayerTS/wb_player_ts_7.png", null);
+        addCue("wb_player_ts_8", "unitycues/numbers/wbPlayerTS/wb_player_ts_8.png", null);
+        addCue("wb_player_ts_9", "unitycues/numbers/wbPlayerTS/wb_player_ts_9.png", null);
+        // endregion WB Player TS
 
         // region WB Tiers
         addCue("wb_tier_0", "unitycues/numbers/wbTier/wb_tier_0.png", null);

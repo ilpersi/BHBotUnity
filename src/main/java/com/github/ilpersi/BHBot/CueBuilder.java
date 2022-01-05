@@ -419,6 +419,29 @@ public class CueBuilder {
         //endregion
 
         //region Numbers
+        //region WB Player TS
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbPlayerTS", "wb_player_ts_0(.*)\\.png", null,
+                Set.of(), "wb_player_ts_0", "unitycues/numbers/wbPlayerTS/wb_player_ts_0.png", "WB Player TS 0");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbPlayerTS", "wb_player_ts_1(.*)\\.png", null,
+                Set.of(), "wb_player_ts_1", "unitycues/numbers/wbPlayerTS/wb_player_ts_1.png", "WB Player TS 1");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbPlayerTS", "wb_player_ts_2(.*)\\.png", null,
+                Set.of(), "wb_player_ts_2", "unitycues/numbers/wbPlayerTS/wb_player_ts_2.png", "WB Player TS 2");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbPlayerTS", "wb_player_ts_3(.*)\\.png", null,
+                Set.of(), "wb_player_ts_3", "unitycues/numbers/wbPlayerTS/wb_player_ts_3.png", "WB Player TS 3");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbPlayerTS", "wb_player_ts_4(.*)\\.png", null,
+                Set.of(), "wb_player_ts_4", "unitycues/numbers/wbPlayerTS/wb_player_ts_4.png", "WB Player TS 4");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbPlayerTS", "wb_player_ts_5(.*)\\.png", null,
+                Set.of(), "wb_player_ts_5", "unitycues/numbers/wbPlayerTS/wb_player_ts_5.png", "WB Player TS 5");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbPlayerTS", "wb_player_ts_6(.*)\\.png", null,
+                Set.of(), "wb_player_ts_6", "unitycues/numbers/wbPlayerTS/wb_player_ts_6.png", "WB Player TS 6");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbPlayerTS", "wb_player_ts_7(.*)\\.png", null,
+                Set.of(), "wb_player_ts_7", "unitycues/numbers/wbPlayerTS/wb_player_ts_7.png", "WB Player TS 7");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbPlayerTS", "wb_player_ts_8(.*)\\.png", null,
+                Set.of(), "wb_player_ts_8", "unitycues/numbers/wbPlayerTS/wb_player_ts_8.png", "WB Player TS 8");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbPlayerTS", "wb_player_ts_9(.*)\\.png", null,
+                Set.of(), "wb_player_ts_9", "unitycues/numbers/wbPlayerTS/wb_player_ts_9.png", "WB Player TS 9");
+        //endregion WB Player TS
+
         //region WB Tiers
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTiers", "wb_tier_0_(.*)\\.png", null,
                 Set.of(), "wb_tier_0", "unitycues/numbers/wbTier/wb_tier_0.png", " WB Tier 0");
