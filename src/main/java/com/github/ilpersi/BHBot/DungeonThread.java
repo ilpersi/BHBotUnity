@@ -2833,7 +2833,7 @@ public class DungeonThread implements Runnable {
         }
 
         // if everyone dies autoRevive attempts to revive people on the defeat screen, this should prevent that
-        seg = MarvinSegment.fromCue(BHBot.cues.get("Defeat"), Misc.Durations.SECOND, bot.browser);
+        seg = MarvinSegment.fromCue(BHBot.cues.get("DefeatRecap"), Misc.Durations.SECOND, bot.browser);
         if (seg != null) {
             BHBot.logger.autorevive("Defeat screen, skipping revive check");
             setAutoOn(Misc.Durations.SECOND);
