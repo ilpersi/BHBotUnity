@@ -4110,7 +4110,7 @@ public class DungeonThread implements Runnable {
         totalTSImg.toBlackWhite(120);
         totalTSImg.update();
         BufferedImage totalTSSubImg = totalTSImg.getBufferedImage();
-        return readNumFromImg(totalTSSubImg, "wb_total_ts_20_", new HashSet<>(), true);
+        return readNumFromImg(totalTSSubImg, "wb_total_ts_16_,wb_total_ts_20_", new HashSet<>(), true);
     }
 
     /**

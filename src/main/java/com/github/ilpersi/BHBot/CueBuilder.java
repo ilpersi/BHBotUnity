@@ -368,6 +368,10 @@ public class CueBuilder {
                 Set.of(), "X", "unitycues/common/cueX.png", true, ""));
         cueLocators.add(new CueLocator("cuebuilder/common/dung-x_20210119.png", Bounds.fromWidthHeight(746, 8, 48, 48),
                 Set.of(), "X", "unitycues/common/cueX.png", true, ""));
+        cueLocators.add(new CueLocator("cuebuilder/common/raid-x_vmi529938.contaboserver.net_20220105_13.png", Bounds.fromWidthHeight(616, 96, 48, 48),
+                Set.of(), "X", "unitycues/common/cueX.png", true, ""));
+        cueLocators.add(new CueLocator("cuebuilder/common/reward-x_DESKTOP-6OOEROP_20211230.png", Bounds.fromWidthHeight(556, 128, 48, 48),
+                Set.of(), "X", "unitycues/common/cueX.png", true, ""));
         //endregion
 
         //region Dungeon
@@ -487,6 +491,52 @@ public class CueBuilder {
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTierButton", "wb_tier_button_9_(.*)\\.png", null,
                 Set.of(), "wb_tier_button_9", "unitycues/numbers/wbTierButton/wb_tier_button_9.png", " WB Tier Button 9");
         //endregion WT Tiers
+
+        //region WB Total TS 16px
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS16", "wb_total_ts_16_0(.*)\\.png", null,
+                Set.of(), "wb_total_ts_16_0", "unitycues/numbers/wbTotalTS16/wb_total_ts_16_0.png", "WB Total TS 16px 0");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS16", "wb_total_ts_16_1(.*)\\.png", null,
+                Set.of(), "wb_total_ts_16_1", "unitycues/numbers/wbTotalTS16/wb_total_ts_16_1.png", "WB Total TS 16px 1");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS16", "wb_total_ts_16_2(.*)\\.png", null,
+                Set.of(), "wb_total_ts_16_2", "unitycues/numbers/wbTotalTS16/wb_total_ts_16_2.png", "WB Total TS 16px 2");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS16", "wb_total_ts_16_3(.*)\\.png", null,
+                Set.of(), "wb_total_ts_16_3", "unitycues/numbers/wbTotalTS16/wb_total_ts_16_3.png", "WB Total TS 16px 3");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS16", "wb_total_ts_16_4(.*)\\.png", null,
+                Set.of(), "wb_total_ts_16_4", "unitycues/numbers/wbTotalTS16/wb_total_ts_16_4.png", "WB Total TS 16px 4");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS16", "wb_total_ts_16_5(.*)\\.png", null,
+                Set.of(), "wb_total_ts_16_5", "unitycues/numbers/wbTotalTS16/wb_total_ts_16_5.png", "WB Total TS 16px 5");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS16", "wb_total_ts_16_6(.*)\\.png", null,
+                Set.of(), "wb_total_ts_16_6", "unitycues/numbers/wbTotalTS16/wb_total_ts_16_6.png", "WB Total TS 16px 6");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS16", "wb_total_ts_16_7(.*)\\.png", null,
+                Set.of(), "wb_total_ts_16_7", "unitycues/numbers/wbTotalTS16/wb_total_ts_16_7.png", "WB Total TS 16px 7");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS16", "wb_total_ts_16_8(.*)\\.png", null,
+                Set.of(), "wb_total_ts_16_8", "unitycues/numbers/wbTotalTS16/wb_total_ts_16_8.png", "WB Total TS 16px 8");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS16", "wb_total_ts_16_9(.*)\\.png", null,
+                Set.of(), "wb_total_ts_16_9", "unitycues/numbers/wbTotalTS16/wb_total_ts_16_9.png", "WB Total TS 16px 9");
+        //endregion WB Total TS 16px
+
+        //region WB Total TS 18px
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS18", "wb_total_ts_18_0(.*)\\.png", null,
+                Set.of(), "wb_total_ts_18_0", "unitycues/numbers/wbTotalTS18/wb_total_ts_18_0.png", "WB Total TS 18px 0");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS18", "wb_total_ts_18_1(.*)\\.png", null,
+                Set.of(), "wb_total_ts_18_1", "unitycues/numbers/wbTotalTS18/wb_total_ts_18_1.png", "WB Total TS 18px 1");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS18", "wb_total_ts_18_2(.*)\\.png", null,
+                Set.of(), "wb_total_ts_18_2", "unitycues/numbers/wbTotalTS18/wb_total_ts_18_2.png", "WB Total TS 18px 2");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS18", "wb_total_ts_18_3(.*)\\.png", null,
+                Set.of(), "wb_total_ts_18_3", "unitycues/numbers/wbTotalTS18/wb_total_ts_18_3.png", "WB Total TS 18px 3");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS18", "wb_total_ts_18_4(.*)\\.png", null,
+                Set.of(), "wb_total_ts_18_4", "unitycues/numbers/wbTotalTS18/wb_total_ts_18_4.png", "WB Total TS 18px 4");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS18", "wb_total_ts_18_5(.*)\\.png", null,
+                Set.of(), "wb_total_ts_18_5", "unitycues/numbers/wbTotalTS18/wb_total_ts_18_5.png", "WB Total TS 18px 5");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS18", "wb_total_ts_18_6(.*)\\.png", null,
+                Set.of(), "wb_total_ts_18_6", "unitycues/numbers/wbTotalTS18/wb_total_ts_18_6.png", "WB Total TS 18px 6");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS18", "wb_total_ts_18_7(.*)\\.png", null,
+                Set.of(), "wb_total_ts_18_7", "unitycues/numbers/wbTotalTS18/wb_total_ts_18_7.png", "WB Total TS 18px 7");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS18", "wb_total_ts_18_8(.*)\\.png", null,
+                Set.of(), "wb_total_ts_18_8", "unitycues/numbers/wbTotalTS18/wb_total_ts_18_8.png", "WB Total TS 18px 8");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS18", "wb_total_ts_18_9(.*)\\.png", null,
+                Set.of(), "wb_total_ts_18_9", "unitycues/numbers/wbTotalTS18/wb_total_ts_18_9.png", "WB Total TS 18px 9");
+        //endregion WB Total TS 18px
 
         //region WB Total TS 20px
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS20", "wb_total_ts_20_0(.*)\\.png", null,
