@@ -5617,7 +5617,13 @@ public class DungeonThread implements Runnable {
 
             String finalFileName = fileNameTS.toString();
             if (!lastSavedName.equals(finalFileName)) {
-                Misc.saveScreen(fileNameTS.toString(), "wb-ts-debug", BHBot.includeMachineNameInScreenshots, bot.browser.getImg());
+
+                // We convert the image to B&W before we save it, so troubleshooting will be faster.
+                MarvinImage toBlackAndWhite = new MarvinImage(bot.browser.getImg());
+                toBlackAndWhite.toBlackWhite(120);
+                toBlackAndWhite.update();
+
+                Misc.saveScreen(fileNameTS.toString(), "wb-ts-debug", BHBot.includeMachineNameInScreenshots, toBlackAndWhite.getBufferedImage());
             }
             return finalFileName;
         }

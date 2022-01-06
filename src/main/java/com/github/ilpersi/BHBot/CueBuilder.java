@@ -164,7 +164,7 @@ public class CueBuilder {
                     existingCueImg = new BufferedImage(destCueImg.getWidth(), destCueImg.getHeight(), BufferedImage.TYPE_INT_RGB);
                 }
 
-                if (destCueImg.getHeight() == existingCueImg.getHeight() && destCueImg.getHeight() == existingCueImg.getHeight()) {
+                if (destCueImg.getHeight() == existingCueImg.getHeight() && destCueImg.getWidth() == existingCueImg.getWidth()) {
                     BufferedImage mergedCueImg = CueCompare.pixelCompare(destCueImg, existingCueImg);
 
                     // If the merge was successful we override the destination Cue
