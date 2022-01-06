@@ -1767,12 +1767,12 @@ public class DungeonThread implements Runnable {
 
                                         if (Misc.getTime() >= nextUpdateTime) {
 
-                                            // If debugWBTS is enabled, we check if the minimum TS is set to 0, and we get the computed values
-                                            // Otherwise they will always default to 0
+                                            // If debugWBTS is enabled, we make sure to read updated numbers
                                             if (bot.settings.debugWBTS) {
-                                                if (wbSetting.minimumPlayerTS == 0 ) totalTS = getWorldBossTotalTS();
-                                                //if (wbSetting.minimumPlayerTS == 0) playersTS = getWorldBossPlayersTS(inviteCnt);
-                                                if (wbSetting.minimumPlayerTS == 0) System.arraycopy(getWorldBossPlayersTS(inviteCnt), 0, playersTS, 0, inviteCnt);
+                                                bot.browser.readScreen();
+                                                totalTS = getWorldBossTotalTS();
+                                                // playersTS = getWorldBossPlayersTS(inviteCnt);
+                                                System.arraycopy(getWorldBossPlayersTS(inviteCnt), 0, playersTS, 0, inviteCnt);
                                             }
 
                                             if (totalTS > 0) {
