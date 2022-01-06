@@ -731,29 +731,29 @@ class CueManager {
         // endregion
 
         //region WB Total TS 16px
-        addCue("wb_total_ts_16_0", "unitycues/numbers/wbTotalTS20/wb_total_ts_16_0.png", null); // WB Total TS 16px 0
-        addCue("wb_total_ts_16_1", "unitycues/numbers/wbTotalTS20/wb_total_ts_16_1.png", null); // WB Total TS 16px 1
-        addCue("wb_total_ts_16_2", "unitycues/numbers/wbTotalTS20/wb_total_ts_16_2.png", null); // WB Total TS 16px 2
-        addCue("wb_total_ts_16_3", "unitycues/numbers/wbTotalTS20/wb_total_ts_16_3.png", null); // WB Total TS 16px 3
-        addCue("wb_total_ts_16_4", "unitycues/numbers/wbTotalTS20/wb_total_ts_16_4.png", null); // WB Total TS 16px 4
-        addCue("wb_total_ts_16_5", "unitycues/numbers/wbTotalTS20/wb_total_ts_16_5.png", null); // WB Total TS 16px 5
-        addCue("wb_total_ts_16_6", "unitycues/numbers/wbTotalTS20/wb_total_ts_16_6.png", null); // WB Total TS 16px 6
-        addCue("wb_total_ts_16_7", "unitycues/numbers/wbTotalTS20/wb_total_ts_16_7.png", null); // WB Total TS 16px 7
-        addCue("wb_total_ts_16_8", "unitycues/numbers/wbTotalTS20/wb_total_ts_16_8.png", null); // WB Total TS 16px 8
-        addCue("wb_total_ts_16_9", "unitycues/numbers/wbTotalTS20/wb_total_ts_16_9.png", null); // WB Total TS 16px 9
+        addCue("wb_total_ts_16_0", "unitycues/numbers/wbTotalTS16/wb_total_ts_16_0.png", null); // WB Total TS 16px 0
+        addCue("wb_total_ts_16_1", "unitycues/numbers/wbTotalTS16/wb_total_ts_16_1.png", null); // WB Total TS 16px 1
+        addCue("wb_total_ts_16_2", "unitycues/numbers/wbTotalTS16/wb_total_ts_16_2.png", null); // WB Total TS 16px 2
+        addCue("wb_total_ts_16_3", "unitycues/numbers/wbTotalTS16/wb_total_ts_16_3.png", null); // WB Total TS 16px 3
+        addCue("wb_total_ts_16_4", "unitycues/numbers/wbTotalTS16/wb_total_ts_16_4.png", null); // WB Total TS 16px 4
+        addCue("wb_total_ts_16_5", "unitycues/numbers/wbTotalTS16/wb_total_ts_16_5.png", null); // WB Total TS 16px 5
+        addCue("wb_total_ts_16_6", "unitycues/numbers/wbTotalTS16/wb_total_ts_16_6.png", null); // WB Total TS 16px 6
+        addCue("wb_total_ts_16_7", "unitycues/numbers/wbTotalTS16/wb_total_ts_16_7.png", null); // WB Total TS 16px 7
+        addCue("wb_total_ts_16_8", "unitycues/numbers/wbTotalTS16/wb_total_ts_16_8.png", null); // WB Total TS 16px 8
+        addCue("wb_total_ts_16_9", "unitycues/numbers/wbTotalTS16/wb_total_ts_16_9.png", null); // WB Total TS 16px 9
         // endregion
 
         //region WB Total TS 18px
-        addCue("wb_total_ts_18_0", "unitycues/numbers/wbTotalTS20/wb_total_ts_18_0.png", null); // WB Total TS 18px 0
-        addCue("wb_total_ts_18_1", "unitycues/numbers/wbTotalTS20/wb_total_ts_18_1.png", null); // WB Total TS 18px 1
-        addCue("wb_total_ts_18_2", "unitycues/numbers/wbTotalTS20/wb_total_ts_18_2.png", null); // WB Total TS 18px 2
-        addCue("wb_total_ts_18_3", "unitycues/numbers/wbTotalTS20/wb_total_ts_18_3.png", null); // WB Total TS 18px 3
-        addCue("wb_total_ts_18_4", "unitycues/numbers/wbTotalTS20/wb_total_ts_18_4.png", null); // WB Total TS 18px 4
-        addCue("wb_total_ts_18_5", "unitycues/numbers/wbTotalTS20/wb_total_ts_18_5.png", null); // WB Total TS 18px 5
-        addCue("wb_total_ts_18_6", "unitycues/numbers/wbTotalTS20/wb_total_ts_18_6.png", null); // WB Total TS 18px 6
-        addCue("wb_total_ts_18_7", "unitycues/numbers/wbTotalTS20/wb_total_ts_18_7.png", null); // WB Total TS 18px 7
-        addCue("wb_total_ts_18_8", "unitycues/numbers/wbTotalTS20/wb_total_ts_18_8.png", null); // WB Total TS 18px 8
-        addCue("wb_total_ts_18_9", "unitycues/numbers/wbTotalTS20/wb_total_ts_18_9.png", null); // WB Total TS 18px 9
+        addCue("wb_total_ts_18_0", "unitycues/numbers/wbTotalTS18/wb_total_ts_18_0.png", null); // WB Total TS 18px 0
+        addCue("wb_total_ts_18_1", "unitycues/numbers/wbTotalTS18/wb_total_ts_18_1.png", null); // WB Total TS 18px 1
+        addCue("wb_total_ts_18_2", "unitycues/numbers/wbTotalTS18/wb_total_ts_18_2.png", null); // WB Total TS 18px 2
+        addCue("wb_total_ts_18_3", "unitycues/numbers/wbTotalTS18/wb_total_ts_18_3.png", null); // WB Total TS 18px 3
+        addCue("wb_total_ts_18_4", "unitycues/numbers/wbTotalTS18/wb_total_ts_18_4.png", null); // WB Total TS 18px 4
+        addCue("wb_total_ts_18_5", "unitycues/numbers/wbTotalTS18/wb_total_ts_18_5.png", null); // WB Total TS 18px 5
+        addCue("wb_total_ts_18_6", "unitycues/numbers/wbTotalTS18/wb_total_ts_18_6.png", null); // WB Total TS 18px 6
+        addCue("wb_total_ts_18_7", "unitycues/numbers/wbTotalTS18/wb_total_ts_18_7.png", null); // WB Total TS 18px 7
+        addCue("wb_total_ts_18_8", "unitycues/numbers/wbTotalTS18/wb_total_ts_18_8.png", null); // WB Total TS 18px 8
+        addCue("wb_total_ts_18_9", "unitycues/numbers/wbTotalTS18/wb_total_ts_18_9.png", null); // WB Total TS 18px 9
         // endregion
 
         //region WB Total TS 20px
