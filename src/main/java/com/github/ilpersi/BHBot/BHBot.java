@@ -348,8 +348,14 @@ public class BHBot {
     }
 
     public static String getMachineName() {
-        if (machineName.length() == 0)
+        int loopLimit = 10;
+        int loopCnt = 0;
+
+        // Sometimes more than one attempt is required to correctly get the machine name.
+        while (machineName.length() == 0 && loopCnt < loopLimit) {
             machineName = Misc.getMachineName();
+            loopCnt++;
+        }
 
         return machineName;
     }

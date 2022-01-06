@@ -3811,7 +3811,7 @@ public class DungeonThread implements Runnable {
     }
 
     /**
-     * Reads number from given image.
+     * Reads number from given image. This is the legacy version, see the detailed version below.
      *
      * @return 0 in case of error.
      */
@@ -3819,6 +3819,18 @@ public class DungeonThread implements Runnable {
         return readNumFromImg(im, "", new HashSet<>(), false);
     }
 
+    /**
+     * Reads number from a given image
+     *
+     * @param im The BufferedImage to read the number from
+     * @param numberPrefix The prefix used to load the cues to read the numbers. It is possible to provide more than one
+     *                     prefix separating them using the comma
+     * @param intToSkip It may be possible that not all the numbers are available for a specific Cue set, to avoid
+     *                  NullPointerException specify the numbers you want to skip
+     * @param logEmptyResults If you want to troubleshoot number reading, set this to true and when the read number has
+     *                        no value, a picutre of the input im will be save in the debug screenshot folder
+     * @return The value of the read number or 0 if it was not possible to read the number
+     */
     private int readNumFromImg(BufferedImage im, String numberPrefix, HashSet<Integer> intToSkip, boolean logEmptyResults) {
         // You can have multiple prefixes separated by a comma
         String[] prefixes = numberPrefix.split(",");
