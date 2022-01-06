@@ -3838,21 +3838,23 @@ public class DungeonThread implements Runnable {
         // order list horizontally:
         Collections.sort(nums);
 
-        if (nums.size() == 0) {
-            if (logEmptyResults) {
-                BHBot.logger.debug(Misc.getStackTrace());
-                BHBot.logger.debug("Empty number from readNumFromImg im = " + im + ", numberPrefix = " + numberPrefix + ", intToSkip = " + intToSkip);
-                Misc.saveScreen("readNumFromImg-empty", "debug", true, im);
+        int result = 0;
+
+        if (nums.size() > 0 ) {
+            StringBuilder resultStr = new StringBuilder();
+            for (ScreenNum sn : nums) {
+                resultStr.append(sn.value);
             }
-            return 0; // error
+            result = Integer.parseInt(resultStr.toString());
         }
 
-        StringBuilder result = new StringBuilder();
-        for (ScreenNum sn : nums) {
-            result.append(sn.value);
+        if (logEmptyResults && (nums.size() == 0 || result == 0)) {
+            BHBot.logger.debug(Misc.getStackTrace());
+            BHBot.logger.debug("Empty number from readNumFromImg im = " + im + ", numberPrefix = " + numberPrefix + ", intToSkip = " + intToSkip);
+            Misc.saveScreen("readNumFromImg-empty", "debug", true, im);
         }
 
-        return Integer.parseInt(result.toString());
+        return result;
     }
 
     /**
@@ -4129,7 +4131,7 @@ public class DungeonThread implements Runnable {
             subImg.update();
             BufferedImage tsSubImg = subImg.getBufferedImage();
 
-            int playerTS = readNumFromImg(tsSubImg, "wb_player_ts_", new HashSet<>(), false);
+            int playerTS = readNumFromImg(tsSubImg, "wb_player_ts_", new HashSet<>(), true);
             results[partyMemberPos] = playerTS;
         }
 
