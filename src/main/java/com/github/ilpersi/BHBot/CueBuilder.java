@@ -55,6 +55,10 @@ public class CueBuilder {
          */
         Set<Color> colorWhiteList;
         /**
+         * If a transparent regions are present, the corresponding areas will be made transparent when loading the cue
+         */
+        Set<Bounds> transparentRegions;
+        /**
          * The internal name of the destination Cue
          */
         String destinationCueName;
@@ -71,11 +75,13 @@ public class CueBuilder {
          */
         String cueDescription;
 
-        public CueLocator(String containingScreenShotPath, Bounds cuePosition, Set<Color> colorWhiteList, String destinationCueName,
+        public CueLocator(String containingScreenShotPath, Bounds cuePosition, Set<Color> colorWhiteList,
+                          Set<Bounds> transparentRegions, String destinationCueName,
                           String destinationCuePath, boolean merge, String cueDescription) {
             this.containingScreenShotPath = containingScreenShotPath;
             this.cuePosition = cuePosition;
             this.colorWhiteList = colorWhiteList;
+            this.transparentRegions = transparentRegions;
             this.destinationCueName = destinationCueName;
             this.destinationCuePath = destinationCuePath;
             this.merge = merge;
@@ -111,6 +117,22 @@ public class CueBuilder {
             if (destinationCueFile.isDirectory()) {
                 System.out.println("Destination Cue file path is a directory: " + destinationCueFile.getAbsolutePath());
                 return;
+            }
+
+            // If transparent regions are present, we make sure they are transparent
+            if (this.transparentRegions.size() > 0) {
+                for (Bounds transaprentRegion : this.transparentRegions) {
+
+                    for (int y = 0; y < containingScreenshotImg.getHeight(); y++) {
+                        for (int x = 0; x < containingScreenshotImg.getWidth(); x++) {
+                            if (x >= transaprentRegion.x1 && x <= transaprentRegion.x2
+                                && y >= transaprentRegion.y1 && y <= transaprentRegion.y2) {
+                                containingScreenshotImg.setRGB(x, y, 0);
+                            }
+                        }
+
+                    }
+                }
             }
 
             // We create the destination Cue
@@ -206,18 +228,18 @@ public class CueBuilder {
     /**
      * Use this method when you want to use multiple input files to generate the same Cue. The logic
      * will walk the containing path and add to the hashmap all the files matching the PNGPattern
-     *
-     * @param cueLocators        The destination array list where to add the matching cueLocators
+     *  @param cueLocators        The destination array list where to add the matching cueLocators
      * @param containingPath     The path where the screenshots to build the Cue are located
      * @param PNGPattern         The pattern used to walk containingPath to find relevant source screenshots
      * @param cuePosition        Where to search for the Cue in the origin screenshots
      * @param colorWhiteList     The color whitelist
+     * @param transparentRegions Regions that should be made transparent when loading/merging dues
      * @param destinationCueName The destination Cue name as used in CueManager
      * @param destinationCuePath Where the output Cue should be created
      * @param description        The cue description
      */
     static void addCueLocatorByPattern(List<CueLocator> cueLocators, String containingPath, String PNGPattern, Bounds cuePosition, Set<Color> colorWhiteList,
-                                       String destinationCueName, String destinationCuePath, String description) {
+                                       Set<Bounds> transparentRegions, String destinationCueName, String destinationCuePath, String description) {
         File containingPathFile = new File(containingPath);
         if (!containingPathFile.exists() || !containingPathFile.isDirectory()) {
             System.out.println("Invalid containing path: " + containingPath);
@@ -232,7 +254,7 @@ public class CueBuilder {
         if (PNGPaths != null) {
             for (String PNGImgFileName : PNGPaths) {
                 cueLocators.add(new CueLocator(containingPath + PNGImgFileName, cuePosition, colorWhiteList,
-                        destinationCueName, destinationCuePath, true, description));
+                        transparentRegions, destinationCueName, destinationCuePath, true, description));
             }
         }
     }
@@ -251,408 +273,408 @@ public class CueBuilder {
 
         //region AutoConsume
         addCueLocatorByPattern(cueLocators, "cuebuilder/autoConsume", "inventory-1(.*)\\.png", Bounds.fromWidthHeight(472, 124, 164, 26),
-                Set.of(), "FilterConsumables", "unitycues/characterMenu/cueFilterConsumables.png", "");
+                Set.of(), Set.of(), "FilterConsumables", "unitycues/characterMenu/cueFilterConsumables.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/autoConsume", "inventory-filter(.*)\\.png", Bounds.fromWidthHeight(472, 124, 164, 26),
-                Set.of(), "StripItemsTitle", "unitycues/characterMenu/cueStripItemsTitle.png", "");
+                Set.of(), Set.of(), "StripItemsTitle", "unitycues/characterMenu/cueStripItemsTitle.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/autoConsume", "ConsumableTitle(.*)\\.png", Bounds.fromWidthHeight(318, 142, 171, 32),
-                Set.of(), "ConsumableTitle", "unitycues/autoConsume/cueConsumableTitle.png", "");
+                Set.of(), Set.of(), "ConsumableTitle", "unitycues/autoConsume/cueConsumableTitle.png", "");
 
         //region Consumable Inventory Cues
         addCueLocatorByPattern(cueLocators, "cuebuilder/autoConsume", "min_exp_(.*)\\.png", Bounds.fromWidthHeight(606, 204, 60, 29),
-                Set.of(), "ConsumableExpMinor", "unitycues/autoConsume/consumables/cueConsumableExpMinor.png", "Tome of minor experience");
+                Set.of(), Set.of(), "ConsumableExpMinor", "unitycues/autoConsume/consumables/cueConsumableExpMinor.png", "Tome of minor experience");
         addCueLocatorByPattern(cueLocators, "cuebuilder/autoConsume", "min_exp_(.*)(.*)\\.png", Bounds.fromWidthHeight(469, 204, 60, 29),
-                Set.of(), "ConsumableSpeedMinor", "unitycues/autoConsume/consumables/cueConsumableSpeedMinor.png", "Minor Speed Kicks");
+                Set.of(), Set.of(), "ConsumableSpeedMinor", "unitycues/autoConsume/consumables/cueConsumableSpeedMinor.png", "Minor Speed Kicks");
         addCueLocatorByPattern(cueLocators, "cuebuilder/autoConsume", "min_exp_(.*)\\.png", Bounds.fromWidthHeight(538, 204, 60, 29),
-                Set.of(), "ConsumableGoldMinor", "unitycues/autoConsume/consumables/cueConsumableGoldMinor.png", "Minor Gold Find Potion");
+                Set.of(), Set.of(), "ConsumableGoldMinor", "unitycues/autoConsume/consumables/cueConsumableGoldMinor.png", "Minor Gold Find Potion");
         addCueLocatorByPattern(cueLocators, "cuebuilder/autoConsume", "min_exp_(.*)\\.png", Bounds.fromWidthHeight(469, 273, 60, 29),
-                Set.of(), "ConsumableItemMinor", "unitycues/autoConsume/consumables/cueConsumableItemMinor.png", "Minor Item Find Scroll");
+                Set.of(), Set.of(), "ConsumableItemMinor", "unitycues/autoConsume/consumables/cueConsumableItemMinor.png", "Minor Item Find Scroll");
         //endregion
 
         //region Consumable Functional Cues
         addCueLocatorByPattern(cueLocators, "cuebuilder/autoConsume", "filter_btn_(.*)\\.png", Bounds.fromWidthHeight(518, 103, 126, 35),
-                Set.of(), "Filter", "unitycues/autoConsume/cueFilter.png", "");
+                Set.of(), Set.of(), "Filter", "unitycues/autoConsume/cueFilter.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/autoConsume", "filter_consumables_o(.*)\\.png", Bounds.fromWidthHeight(333, 122, 132, 44),
-                Set.of(), "FilterTitle", "unitycues/autoConsume/cueFilterTitle.png", "");
+                Set.of(), Set.of(), "FilterTitle", "unitycues/autoConsume/cueFilterTitle.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/autoConsume", "filter_consumables_o(.*)\\.png", Bounds.fromWidthHeight(417, 268, 182, 27),
-                Set.of(), "ConsumablesBtn", "unitycues/autoConsume/cueConsumablesBtn.png", "");
+                Set.of(), Set.of(), "ConsumablesBtn", "unitycues/autoConsume/cueConsumablesBtn.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/autoConsume", "consumable_done(.*)\\.png", Bounds.fromWidthHeight(353, 458, 94, 31),
-                Set.of(), "ConsumableDone", "unitycues/autoConsume/cueConsumableDone.png", "");
+                Set.of(), Set.of(), "ConsumableDone", "unitycues/autoConsume/cueConsumableDone.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/autoConsume", "consumable_done(.*)\\.png", Bounds.fromWidthHeight(310, 81, 180, 32),
                 Set.of(new Color(255, 255, 255), new Color(206, 206, 206), new Color(116, 116, 116)),
-                "ConsumableHaveFun", "unitycues/autoConsume/cueConsumableHaveFun.png", "");
+                Set.of(), "ConsumableHaveFun", "unitycues/autoConsume/cueConsumableHaveFun.png", "");
         //endregion
 
         //endregion
 
         //region Auto Shrine
         addCueLocatorByPattern(cueLocators, "cuebuilder/autoShrine", "settings(.*)\\.png", Bounds.fromWidthHeight(376, 115, 39, 58),
-                Set.of(), "Settings", "unitycues/autoShrine/cueSettings.png", "");
+                Set.of(), Set.of(), "Settings", "unitycues/autoShrine/cueSettings.png", "");
         //endregion
 
         //region Blockers
         addCueLocatorByPattern(cueLocators, "cuebuilder/blockers", "reconnect(.*)\\.png", Bounds.fromWidthHeight(338, 346, 127, 32),
-                Set.of(), "Reconnect", "unitycues/blockers/cueReconnect.png", "");
+                Set.of(), Set.of(), "Reconnect", "unitycues/blockers/cueReconnect.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/blockers", "news(.*)\\.png", Bounds.fromWidthHeight(358, 64, 83, 58),
-                Set.of(), "News", "unitycues/blockers/cueNewsPopup.png", "");
+                Set.of(), Set.of(), "News", "unitycues/blockers/cueNewsPopup.png", "");
         cueLocators.add(new CueLocator("cuebuilder/blockers/news.png", Bounds.fromWidthHeight(421, 447, 119, 32),
-                Set.of(new Color(255, 255, 255)), "NewsClose", "unitycues/blockers/cueNewsClose.png", true, ""));
+                Set.of(new Color(255, 255, 255)), Set.of(), "NewsClose", "unitycues/blockers/cueNewsClose.png", true, ""));
         addCueLocatorByPattern(cueLocators, "cuebuilder/blockers", "reconnect(.*)\\.png", Bounds.fromWidthHeight(336, 131, 129, 58),
-                Set.of(), "UhOh", "unitycues/blockers/cueUhoh.png", "");
+                Set.of(), Set.of(), "UhOh", "unitycues/blockers/cueUhoh.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/blockers", "reconnect(.*)\\.png", Bounds.fromWidthHeight(300, 230, 212, 67),
-                Set.of(), "Disconnected", "unitycues/blockers/cueDisconnected.png", "");
+                Set.of(), Set.of(), "Disconnected", "unitycues/blockers/cueDisconnected.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/blockers", "daily(.*)\\.png", Bounds.fromWidthHeight(259, 52, 282, 57),
-                Set.of(), "DailyRewards", "unitycues/blockers/cueDailyRewards.png", "");
+                Set.of(), Set.of(), "DailyRewards", "unitycues/blockers/cueDailyRewards.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/blockers", "daily(.*)\\.png", Bounds.fromWidthHeight(353, 444, 97, 31),
-                Set.of(), "Claim", "unitycues/blockers/cueClaim.png", "");
+                Set.of(), Set.of(), "Claim", "unitycues/blockers/cueClaim.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/blockers", "items(.*)\\.png", Bounds.fromWidthHeight(339, 117, 119, 58),
-                Set.of(), "Items", "unitycues/blockers/cueItems.png", "");
+                Set.of(), Set.of(), "Items", "unitycues/blockers/cueItems.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/blockers", "recently_disc_(.*)\\.png", Bounds.fromWidthHeight(270, 208, 258, 109),
-                Set.of(), "RecentlyDisconnected", "unitycues/blockers/cueRecentlyDisconnected.png", "");
+                Set.of(), Set.of(), "RecentlyDisconnected", "unitycues/blockers/cueRecentlyDisconnected.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/blockers", "not_in_guild_(.*)\\.png", Bounds.fromWidthHeight(267, 226, 264, 65),
-                Set.of(), "NotInAGuild", "unitycues/blockers/cueNotInAGuild.png", "You are currently non in a Guild popup");
+                Set.of(), Set.of(), "NotInAGuild", "unitycues/blockers/cueNotInAGuild.png", "You are currently non in a Guild popup");
         //endregion
 
         //region Common
         cueLocators.add(new CueLocator("cuebuilder/raid/raid-team.png", Bounds.fromWidthHeight(326, 453, 87, 29),
-                Set.of(new Color(255, 255, 255)), "TeamClear", "unitycues/common/cueTeamClear.png", false, ""));
+                Set.of(new Color(255, 255, 255)), Set.of(), "TeamClear", "unitycues/common/cueTeamClear.png", false, ""));
         addCueLocatorByPattern(cueLocators, "cuebuilder/common", "cleared(.*)\\.png", Bounds.fromWidthHeight(330, 132, 139, 56),
-                Set.of(), "Cleared", "unitycues/common/cueCleared.png", "");
+                Set.of(), Set.of(), "Cleared", "unitycues/common/cueCleared.png", "");
         cueLocators.add(new CueLocator("cuebuilder/common/cleared.png", Bounds.fromWidthHeight(303, 345, 61, 32),
-                Set.of(), "YesGreen", "unitycues/common/cueYesGreen.png", true, ""));
+                Set.of(), Set.of(), "YesGreen", "unitycues/common/cueYesGreen.png", true, ""));
         cueLocators.add(new CueLocator("cuebuilder/common/solo.png", Bounds.fromWidthHeight(303, 345, 61, 32),
-                Set.of(), "YesGreen", "unitycues/common/cueYesGreen.png", true, ""));
+                Set.of(), Set.of(), "YesGreen", "unitycues/common/cueYesGreen.png", true, ""));
         cueLocators.add(new CueLocator("cuebuilder/common/solo_2.png", Bounds.fromWidthHeight(303, 345, 61, 32),
-                Set.of(), "YesGreen", "unitycues/common/cueYesGreen.png", true, ""));
+                Set.of(), Set.of(), "YesGreen", "unitycues/common/cueYesGreen.png", true, ""));
         cueLocators.add(new CueLocator("cuebuilder/treasureChest/confirm-decline.png", Bounds.fromWidthHeight(303, 345, 61, 32),
-                Set.of(), "YesGreen", "unitycues/common/cueYesGreen.png", true, ""));
+                Set.of(), Set.of(), "YesGreen", "unitycues/common/cueYesGreen.png", true, ""));
         addCueLocatorByPattern(cueLocators, "cuebuilder/common", "not-full(.*)\\.png", Bounds.fromWidthHeight(350, 130, 99, 58),
-                Set.of(), "Team", "unitycues/common/cueTeam.png", "");
+                Set.of(), Set.of(), "Team", "unitycues/common/cueTeam.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/common", "not-full(.*)\\.png", Bounds.fromWidthHeight(275, 217, 256, 97),
-                Set.of(), "TeamNotFull", "unitycues/common/cueTeamNotFull.png", "");
+                Set.of(), Set.of(), "TeamNotFull", "unitycues/common/cueTeamNotFull.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/common", "not-full(.*)\\.png", Bounds.fromWidthHeight(445, 349, 45, 26),
-                Set.of(), "No", "unitycues/common/cueNo.png", "");
+                Set.of(), Set.of(), "No", "unitycues/common/cueNo.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/raid", "raid-team(.*)\\.png", Bounds.fromWidthHeight(204, 450, 84, 35),
-                Set.of(), "AutoTeam", "unitycues/common/cueAutoTeam.png", "");
+                Set.of(), Set.of(), "AutoTeam", "unitycues/common/cueAutoTeam.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/raid", "raid-team(.*)\\.png", Bounds.fromWidthHeight(456, 451, 124, 32),
-                Set.of(), "TeamAccept", "unitycues/common/cueTeamAccept.png", "");
+                Set.of(), Set.of(), "TeamAccept", "unitycues/common/cueTeamAccept.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/common", "are-you-there(.*)\\.png", Bounds.fromWidthHeight(307, 236, 195, 57),
-                Set.of(), "AreYouThere", "unitycues/common/cueAreYouThere.png", "");
+                Set.of(), Set.of(), "AreYouThere", "unitycues/common/cueAreYouThere.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/common", "are-you-there(.*)\\.png", Bounds.fromWidthHeight(367, 346, 66, 31),
-                Set.of(), "Yes", "unitycues/common/cueYes.png", "");
+                Set.of(), Set.of(), "Yes", "unitycues/common/cueYes.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/common", "defeat_(.*)\\.png", Bounds.fromWidthHeight(335, 130, 130, 58),
-                Set.of(), "Defeat", "unitycues/common/cueDefeat.png", "");
+                Set.of(), Set.of(), "Defeat", "unitycues/common/cueDefeat.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/common", "speed_(.*)\\.png", Bounds.fromWidthHeight(10, 465, 54, 38),
-                Set.of(), "SpeedBar", "unitycues/common/cueSpeedBar.png", "");
+                Set.of(), Set.of(), "SpeedBar", "unitycues/common/cueSpeedBar.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/common", "opnecharmenu-no-rune-button(.*)\\.png", Bounds.fromWidthHeight(124, 474, 71, 25),
-                Set.of(), "Runes", "unitycues/characterMenu/cueRunes.png", "The purple rune button in character menu.");
+                Set.of(), Set.of(), "Runes", "unitycues/characterMenu/cueRunes.png", "The purple rune button in character menu.");
         addCueLocatorByPattern(cueLocators, "cuebuilder/common", "speed-1x(.*)\\.png", Bounds.fromWidthHeight(31, 476, 16, 14),
-                Set.of(new Color(255, 255, 255)), "Speed1X", "unitycues/common/cueSpeed1X.png", "");
+                Set.of(new Color(255, 255, 255)), Set.of(), "Speed1X", "unitycues/common/cueSpeed1X.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/common", "cleared_recap_(.*)\\.png", Bounds.fromWidthHeight(334, 68, 141, 27),
-                Set.of(), "ClearedRecap", "unitycues/common/cueClearedRecap.png", "");
+                Set.of(), Set.of(), "ClearedRecap", "unitycues/common/cueClearedRecap.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/common", "cleared_recap_(.*)\\.png", Bounds.fromWidthHeight(299, 465, 86, 26),
-                Set.of(), "Rerun", "unitycues/common/cueRerun.png", "");
+                Set.of(), Set.of(), "Rerun", "unitycues/common/cueRerun.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/common", "cleared_recap_(.*)\\.png", Bounds.fromWidthHeight(453, 466, 72, 26),
-                Set.of(), "Town", "unitycues/common/cueTown.png", "");
+                Set.of(), Set.of(), "Town", "unitycues/common/cueTown.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/common", "victory_recap_(.*)\\.png", Bounds.fromWidthHeight(340, 68, 128, 28),
-                Set.of(), "VictoryRecap", "unitycues/common/cueVictoryRecap.png", "Victory message when completing adventures");
+                Set.of(), Set.of(), "VictoryRecap", "unitycues/common/cueVictoryRecap.png", "Victory message when completing adventures");
         addCueLocatorByPattern(cueLocators, "cuebuilder/common", "defeat_recap_(.*)\\.png", Bounds.fromWidthHeight(347, 67, 113, 28),
                 Set.of(), "DefeatRecap", "unitycues/common/cueDefeatRecap.png", "Defeat message when completing adventures");
         //endregion
 
         //region CueX
         cueLocators.add(new CueLocator("cuebuilder/raid/raid-summon.png", Bounds.fromWidthHeight(616, 97, 48, 48),
-                Set.of(), "X", "unitycues/common/cueX.png", true, ""));
+                Set.of(), Set.of(), "X", "unitycues/common/cueX.png", true, ""));
         cueLocators.add(new CueLocator("cuebuilder/blockers/items_20210112.png", Bounds.fromWidthHeight(566, 129, 48, 48),
-                Set.of(), "X", "unitycues/common/cueX.png", true, ""));
+                Set.of(), Set.of(), "X", "unitycues/common/cueX.png", true, ""));
         cueLocators.add(new CueLocator("cuebuilder/dungeon/dung-zone_20210115.png", Bounds.fromWidthHeight(706, 53, 48, 48),
-                Set.of(), "X", "unitycues/common/cueX.png", true, ""));
+                Set.of(), Set.of(), "X", "unitycues/common/cueX.png", true, ""));
         cueLocators.add(new CueLocator("cuebuilder/common/dung-x_20210119.png", Bounds.fromWidthHeight(746, 8, 48, 48),
-                Set.of(), "X", "unitycues/common/cueX.png", true, ""));
+                Set.of(), Set.of(), "X", "unitycues/common/cueX.png", true, ""));
         cueLocators.add(new CueLocator("cuebuilder/common/raid-x_vmi529938.contaboserver.net_20220105_13.png", Bounds.fromWidthHeight(616, 96, 48, 48),
-                Set.of(), "X", "unitycues/common/cueX.png", true, ""));
+                Set.of(), Set.of(), "X", "unitycues/common/cueX.png", true, ""));
         cueLocators.add(new CueLocator("cuebuilder/common/reward-x_DESKTOP-6OOEROP_20211230.png", Bounds.fromWidthHeight(556, 128, 48, 48),
-                Set.of(), "X", "unitycues/common/cueX.png", true, ""));
+                Set.of(), Set.of(), "X", "unitycues/common/cueX.png", true, ""));
         //endregion
 
         //region Dungeon
         addCueLocatorByPattern(cueLocators, "cuebuilder/dungeon", "dung-diff(.*)\\.png", Bounds.fromWidthHeight(147, 232, 122, 27),
-                Set.of(), "DungNormal", "unitycues/dungeon/cueDungNormal.png", "");
+                Set.of(), Set.of(), "DungNormal", "unitycues/dungeon/cueDungNormal.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/dungeon", "dung-diff(.*)\\.png", Bounds.fromWidthHeight(340, 232, 122, 27),
-                Set.of(), "DungHard", "unitycues/dungeon/cueDungHard.png", "");
+                Set.of(), Set.of(), "DungHard", "unitycues/dungeon/cueDungHard.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/dungeon", "dung-diff(.*)\\.png", Bounds.fromWidthHeight(535, 232, 122, 27),
-                Set.of(), "DungHeroic", "unitycues/dungeon/cueDungHeroic.png", "");
+                Set.of(), Set.of(), "DungHeroic", "unitycues/dungeon/cueDungHeroic.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/dungeon/zones", "z\\d{2}(.*)\\.png", Bounds.fromWidthHeight(104, 67, 102, 30),
-                Set.of(), "DungeonZones", "unitycues/dungeon/cueDungeonZones.png", "");
+                Set.of(), Set.of(), "DungeonZones", "unitycues/dungeon/cueDungeonZones.png", "");
         //endregion
 
         //region Familiar Encounters
         addCueLocatorByPattern(cueLocators, "cuebuilder/familiarEncounter", "encounter(.*)\\.png", Bounds.fromWidthHeight(141, 275, 23, 31),
-                Set.of(), "FamiliarEncounter", "unitycues/familiarEncounter/cueEncounter.png", "");
+                Set.of(), Set.of(), "FamiliarEncounter", "unitycues/familiarEncounter/cueEncounter.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/familiarEncounter", "encounter(.*)\\.png", Bounds.fromWidthHeight(134, 327, 133, 30),
-                Set.of(), "Persuade", "unitycues/familiarEncounter/cuePersuade.png", "");
+                Set.of(), Set.of(), "Persuade", "unitycues/familiarEncounter/cuePersuade.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/familiarEncounter", "encounter(.*)\\.png", Bounds.fromWidthHeight(553, 326, 94, 31),
-                Set.of(), "Bribe", "unitycues/familiarEncounter/cueBribe.png", "");
+                Set.of(), Set.of(), "Bribe", "unitycues/familiarEncounter/cueBribe.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/familiarEncounter", "encounter(.*)\\.png", Bounds.fromWidthHeight(253, 444, 108, 26),
-                Set.of(), "DeclineRed", "unitycues/familiarEncounter/cueDeclineRed.png", "");
+                Set.of(), Set.of(), "DeclineRed", "unitycues/familiarEncounter/cueDeclineRed.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/familiarEncounter", "encounter_common(.*)\\.png", Bounds.fromWidthHeight(539, 276, 124, 30),
-                Set.of(), "CommonFamiliar", "unitycues/familiarEncounter/type/cue01CommonFamiliar.png", "");
+                Set.of(), Set.of(), "CommonFamiliar", "unitycues/familiarEncounter/type/cue01CommonFamiliar.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/familiarEncounter", "encounter_rare(.*)\\.png", Bounds.fromWidthHeight(539, 276, 124, 30),
-                Set.of(), "RareFamiliar", "unitycues/familiarEncounter/type/cue02RareFamiliar.png", "");
+                Set.of(), Set.of(), "RareFamiliar", "unitycues/familiarEncounter/type/cue02RareFamiliar.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/familiarEncounter", "encounter_epic(.*)\\.png", Bounds.fromWidthHeight(539, 276, 124, 30),
-                Set.of(), "EpicFamiliar", "unitycues/familiarEncounter/type/cue03EpicFamiliar.png", "");
+                Set.of(), Set.of(), "EpicFamiliar", "unitycues/familiarEncounter/type/cue03EpicFamiliar.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/familiarEncounter", "encounter_legendary(.*)\\.png", Bounds.fromWidthHeight(539, 276, 124, 30),
-                Set.of(), "LegendaryFamiliar", "unitycues/familiarEncounter/type/cue04LegendaryFamiliar.png", "");
+                Set.of(), Set.of(), "LegendaryFamiliar", "unitycues/familiarEncounter/type/cue04LegendaryFamiliar.png", "");
         //endregion
 
         //region Merchant
         addCueLocatorByPattern(cueLocators, "cuebuilder/merchant", "merchant-title(.*)\\.png", Bounds.fromWidthHeight(311, 116, 175, 49),
-                Set.of(), "Merchant", "unitycues/merchant/cueMerchant.png", "");
+                Set.of(), Set.of(), "Merchant", "unitycues/merchant/cueMerchant.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/merchant", "merchant-title(.*)\\.png", Bounds.fromWidthHeight(422, 378, 109, 29),
-                Set.of(), "MerchantDecline", "unitycues/merchant/cueMerchantDecline.png", "");
+                Set.of(), Set.of(), "MerchantDecline", "unitycues/merchant/cueMerchantDecline.png", "");
         //endregion
 
         //region Main Menu
         addCueLocatorByPattern(cueLocators, "cuebuilder/mainScreen", "gor-menu(.*)\\.png", Bounds.fromWidthHeight(107, 477, 33, 34),
-                Set.of(), "GorMenu", "unitycues/mainScreen/cueGorMenu.png", "");
+                Set.of(), Set.of(), "GorMenu", "unitycues/mainScreen/cueGorMenu.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/mainScreen", "gor-menu(.*)\\.png", Bounds.fromWidthHeight(676, 464, 34, 37),
-                Set.of(), "SettingsGear", "unitycues/mainScreen/cueSettingsGear.png", "");
+                Set.of(), Set.of(), "SettingsGear", "unitycues/mainScreen/cueSettingsGear.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/mainScreen", "raid-menu(.*)\\.png", Bounds.fromWidthHeight(30, 308, 16, 40),
-                Set.of(), "RaidButton", "unitycues/mainScreen/cueRaidButton.png", "Ruby icon used to open the raid menu.");
+                Set.of(), Set.of(), "RaidButton", "unitycues/mainScreen/cueRaidButton.png", "Ruby icon used to open the raid menu.");
         addCueLocatorByPattern(cueLocators, "cuebuilder/mainScreen", "raid-menu(.*)\\.png", Bounds.fromWidthHeight(24, 15, 24, 51),
-                Set.of(), "Quest", "unitycues/mainScreen/cueQuestButton.png", "Quest icon used to open the dungeon menu.");
+                Set.of(), Set.of(), "Quest", "unitycues/mainScreen/cueQuestButton.png", "Quest icon used to open the dungeon menu.");
         //endregion
 
         //region Numbers
         //region WB Player TS
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbPlayerTS", "wb_player_ts_0(.*)\\.png", null,
-                Set.of(), "wb_player_ts_0", "unitycues/numbers/wbPlayerTS/wb_player_ts_0.png", "WB Player TS 0");
+                Set.of(), Set.of(), "wb_player_ts_0", "unitycues/numbers/wbPlayerTS/wb_player_ts_0.png", "WB Player TS 0");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbPlayerTS", "wb_player_ts_1(.*)\\.png", null,
-                Set.of(), "wb_player_ts_1", "unitycues/numbers/wbPlayerTS/wb_player_ts_1.png", "WB Player TS 1");
+                Set.of(), Set.of(), "wb_player_ts_1", "unitycues/numbers/wbPlayerTS/wb_player_ts_1.png", "WB Player TS 1");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbPlayerTS", "wb_player_ts_2(.*)\\.png", null,
-                Set.of(), "wb_player_ts_2", "unitycues/numbers/wbPlayerTS/wb_player_ts_2.png", "WB Player TS 2");
+                Set.of(), Set.of(), "wb_player_ts_2", "unitycues/numbers/wbPlayerTS/wb_player_ts_2.png", "WB Player TS 2");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbPlayerTS", "wb_player_ts_3(.*)\\.png", null,
-                Set.of(), "wb_player_ts_3", "unitycues/numbers/wbPlayerTS/wb_player_ts_3.png", "WB Player TS 3");
+                Set.of(), Set.of(), "wb_player_ts_3", "unitycues/numbers/wbPlayerTS/wb_player_ts_3.png", "WB Player TS 3");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbPlayerTS", "wb_player_ts_4(.*)\\.png", null,
-                Set.of(), "wb_player_ts_4", "unitycues/numbers/wbPlayerTS/wb_player_ts_4.png", "WB Player TS 4");
+                Set.of(), Set.of(), "wb_player_ts_4", "unitycues/numbers/wbPlayerTS/wb_player_ts_4.png", "WB Player TS 4");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbPlayerTS", "wb_player_ts_5(.*)\\.png", null,
-                Set.of(), "wb_player_ts_5", "unitycues/numbers/wbPlayerTS/wb_player_ts_5.png", "WB Player TS 5");
+                Set.of(), Set.of(), "wb_player_ts_5", "unitycues/numbers/wbPlayerTS/wb_player_ts_5.png", "WB Player TS 5");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbPlayerTS", "wb_player_ts_6(.*)\\.png", null,
-                Set.of(), "wb_player_ts_6", "unitycues/numbers/wbPlayerTS/wb_player_ts_6.png", "WB Player TS 6");
+                Set.of(), Set.of(), "wb_player_ts_6", "unitycues/numbers/wbPlayerTS/wb_player_ts_6.png", "WB Player TS 6");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbPlayerTS", "wb_player_ts_7(.*)\\.png", null,
-                Set.of(), "wb_player_ts_7", "unitycues/numbers/wbPlayerTS/wb_player_ts_7.png", "WB Player TS 7");
+                Set.of(), Set.of(), "wb_player_ts_7", "unitycues/numbers/wbPlayerTS/wb_player_ts_7.png", "WB Player TS 7");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbPlayerTS", "wb_player_ts_8(.*)\\.png", null,
-                Set.of(), "wb_player_ts_8", "unitycues/numbers/wbPlayerTS/wb_player_ts_8.png", "WB Player TS 8");
+                Set.of(), Set.of(), "wb_player_ts_8", "unitycues/numbers/wbPlayerTS/wb_player_ts_8.png", "WB Player TS 8");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbPlayerTS", "wb_player_ts_9(.*)\\.png", null,
-                Set.of(), "wb_player_ts_9", "unitycues/numbers/wbPlayerTS/wb_player_ts_9.png", "WB Player TS 9");
+                Set.of(), Set.of(), "wb_player_ts_9", "unitycues/numbers/wbPlayerTS/wb_player_ts_9.png", "WB Player TS 9");
         //endregion WB Player TS
 
         //region WB Tiers
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTiers", "wb_tier_0_(.*)\\.png", null,
-                Set.of(), "wb_tier_0", "unitycues/numbers/wbTier/wb_tier_0.png", " WB Tier 0");
+                Set.of(), Set.of(), "wb_tier_0", "unitycues/numbers/wbTier/wb_tier_0.png", " WB Tier 0");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTiers", "wb_tier_1_(.*)\\.png", null,
-                Set.of(), "wb_tier_1", "unitycues/numbers/wbTier/wb_tier_1.png", " WB Tier 1");
+                Set.of(), Set.of(), "wb_tier_1", "unitycues/numbers/wbTier/wb_tier_1.png", " WB Tier 1");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTiers", "wb_tier_2_(.*)\\.png", null,
-                Set.of(), "wb_tier_2", "unitycues/numbers/wbTier/wb_tier_2.png", " WB Tier 2");
+                Set.of(), Set.of(), "wb_tier_2", "unitycues/numbers/wbTier/wb_tier_2.png", " WB Tier 2");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTiers", "wb_tier_3_(.*)\\.png", null,
-                Set.of(), "wb_tier_3", "unitycues/numbers/wbTier/wb_tier_3.png", " WB Tier 3");
+                Set.of(), Set.of(), "wb_tier_3", "unitycues/numbers/wbTier/wb_tier_3.png", " WB Tier 3");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTiers", "wb_tier_4_(.*)\\.png", null,
-                Set.of(), "wb_tier_4", "unitycues/numbers/wbTier/wb_tier_4.png", " WB Tier 4");
+                Set.of(), Set.of(), "wb_tier_4", "unitycues/numbers/wbTier/wb_tier_4.png", " WB Tier 4");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTiers", "wb_tier_5_(.*)\\.png", null,
-                Set.of(), "wb_tier_5", "unitycues/numbers/wbTier/wb_tier_5.png", " WB Tier 5");
+                Set.of(), Set.of(), "wb_tier_5", "unitycues/numbers/wbTier/wb_tier_5.png", " WB Tier 5");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTiers", "wb_tier_6_(.*)\\.png", null,
-                Set.of(), "wb_tier_6", "unitycues/numbers/wbTier/wb_tier_6.png", " WB Tier 6");
+                Set.of(), Set.of(), "wb_tier_6", "unitycues/numbers/wbTier/wb_tier_6.png", " WB Tier 6");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTiers", "wb_tier_7_(.*)\\.png", null,
-                Set.of(), "wb_tier_7", "unitycues/numbers/wbTier/wb_tier_7.png", " WB Tier 7");
+                Set.of(), Set.of(), "wb_tier_7", "unitycues/numbers/wbTier/wb_tier_7.png", " WB Tier 7");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTiers", "wb_tier_8_(.*)\\.png", null,
-                Set.of(), "wb_tier_8", "unitycues/numbers/wbTier/wb_tier_8.png", " WB Tier 8");
+                Set.of(), Set.of(), "wb_tier_8", "unitycues/numbers/wbTier/wb_tier_8.png", " WB Tier 8");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTiers", "wb_tier_9_(.*)\\.png", null,
-                Set.of(), "wb_tier_9", "unitycues/numbers/wbTier/wb_tier_9.png", " jWB Tier 9");
+                Set.of(), Set.of(), "wb_tier_9", "unitycues/numbers/wbTier/wb_tier_9.png", " jWB Tier 9");
         //endregion WT Tiers
 
         //region WB Tier Buttons
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTierButton", "wb_tier_button_0_(.*)\\.png", null,
-                Set.of(), "wb_tier_button_0", "unitycues/numbers/wbTierButton/wb_tier_button_0.png", " WB Tier Button 0");
+                Set.of(), Set.of(), "wb_tier_button_0", "unitycues/numbers/wbTierButton/wb_tier_button_0.png", " WB Tier Button 0");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTierButton", "wb_tier_button_1_(.*)\\.png", null,
-                Set.of(), "wb_tier_button_1", "unitycues/numbers/wbTierButton/wb_tier_button_1.png", " WB Tier Button 1");
+                Set.of(), Set.of(), "wb_tier_button_1", "unitycues/numbers/wbTierButton/wb_tier_button_1.png", " WB Tier Button 1");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTierButton", "wb_tier_button_2_(.*)\\.png", null,
-                Set.of(), "wb_tier_button_2", "unitycues/numbers/wbTierButton/wb_tier_button_2.png", " WB Tier Button 2");
+                Set.of(), Set.of(), "wb_tier_button_2", "unitycues/numbers/wbTierButton/wb_tier_button_2.png", " WB Tier Button 2");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTierButton", "wb_tier_button_3_(.*)\\.png", null,
-                Set.of(), "wb_tier_button_3", "unitycues/numbers/wbTierButton/wb_tier_button_3.png", " WB Tier Button 3");
+                Set.of(), Set.of(), "wb_tier_button_3", "unitycues/numbers/wbTierButton/wb_tier_button_3.png", " WB Tier Button 3");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTierButton", "wb_tier_button_4_(.*)\\.png", null,
-                Set.of(), "wb_tier_button_4", "unitycues/numbers/wbTierButton/wb_tier_button_4.png", " WB Tier Button 4");
+                Set.of(), Set.of(), "wb_tier_button_4", "unitycues/numbers/wbTierButton/wb_tier_button_4.png", " WB Tier Button 4");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTierButton", "wb_tier_button_5_(.*)\\.png", null,
-                Set.of(), "wb_tier_button_5", "unitycues/numbers/wbTierButton/wb_tier_button_5.png", " WB Tier Button 5");
+                Set.of(), Set.of(), "wb_tier_button_5", "unitycues/numbers/wbTierButton/wb_tier_button_5.png", " WB Tier Button 5");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTierButton", "wb_tier_button_6_(.*)\\.png", null,
-                Set.of(), "wb_tier_button_6", "unitycues/numbers/wbTierButton/wb_tier_button_6.png", " WB Tier Button 6");
+                Set.of(), Set.of(), "wb_tier_button_6", "unitycues/numbers/wbTierButton/wb_tier_button_6.png", " WB Tier Button 6");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTierButton", "wb_tier_button_7_(.*)\\.png", null,
-                Set.of(), "wb_tier_button_7", "unitycues/numbers/wbTierButton/wb_tier_button_7.png", " WB Tier Button 7");
+                Set.of(), Set.of(), "wb_tier_button_7", "unitycues/numbers/wbTierButton/wb_tier_button_7.png", " WB Tier Button 7");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTierButton", "wb_tier_button_8_(.*)\\.png", null,
-                Set.of(), "wb_tier_button_8", "unitycues/numbers/wbTierButton/wb_tier_button_8.png", " WB Tier Button 8");
+                Set.of(), Set.of(), "wb_tier_button_8", "unitycues/numbers/wbTierButton/wb_tier_button_8.png", " WB Tier Button 8");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTierButton", "wb_tier_button_9_(.*)\\.png", null,
-                Set.of(), "wb_tier_button_9", "unitycues/numbers/wbTierButton/wb_tier_button_9.png", " WB Tier Button 9");
+                Set.of(), Set.of(), "wb_tier_button_9", "unitycues/numbers/wbTierButton/wb_tier_button_9.png", " WB Tier Button 9");
         //endregion WT Tiers
 
         //region WB Total TS 16px
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS16", "wb_total_ts_16_0(.*)\\.png", null,
-                Set.of(), "wb_total_ts_16_0", "unitycues/numbers/wbTotalTS16/wb_total_ts_16_0.png", "WB Total TS 16px 0");
+                Set.of(), Set.of(), "wb_total_ts_16_0", "unitycues/numbers/wbTotalTS16/wb_total_ts_16_0.png", "WB Total TS 16px 0");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS16", "wb_total_ts_16_1(.*)\\.png", null,
-                Set.of(), "wb_total_ts_16_1", "unitycues/numbers/wbTotalTS16/wb_total_ts_16_1.png", "WB Total TS 16px 1");
+                Set.of(), Set.of(), "wb_total_ts_16_1", "unitycues/numbers/wbTotalTS16/wb_total_ts_16_1.png", "WB Total TS 16px 1");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS16", "wb_total_ts_16_2(.*)\\.png", null,
-                Set.of(), "wb_total_ts_16_2", "unitycues/numbers/wbTotalTS16/wb_total_ts_16_2.png", "WB Total TS 16px 2");
+                Set.of(), Set.of(), "wb_total_ts_16_2", "unitycues/numbers/wbTotalTS16/wb_total_ts_16_2.png", "WB Total TS 16px 2");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS16", "wb_total_ts_16_3(.*)\\.png", null,
-                Set.of(), "wb_total_ts_16_3", "unitycues/numbers/wbTotalTS16/wb_total_ts_16_3.png", "WB Total TS 16px 3");
+                Set.of(), Set.of(), "wb_total_ts_16_3", "unitycues/numbers/wbTotalTS16/wb_total_ts_16_3.png", "WB Total TS 16px 3");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS16", "wb_total_ts_16_4(.*)\\.png", null,
-                Set.of(), "wb_total_ts_16_4", "unitycues/numbers/wbTotalTS16/wb_total_ts_16_4.png", "WB Total TS 16px 4");
+                Set.of(), Set.of(), "wb_total_ts_16_4", "unitycues/numbers/wbTotalTS16/wb_total_ts_16_4.png", "WB Total TS 16px 4");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS16", "wb_total_ts_16_5(.*)\\.png", null,
-                Set.of(), "wb_total_ts_16_5", "unitycues/numbers/wbTotalTS16/wb_total_ts_16_5.png", "WB Total TS 16px 5");
+                Set.of(), Set.of(), "wb_total_ts_16_5", "unitycues/numbers/wbTotalTS16/wb_total_ts_16_5.png", "WB Total TS 16px 5");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS16", "wb_total_ts_16_6(.*)\\.png", null,
-                Set.of(), "wb_total_ts_16_6", "unitycues/numbers/wbTotalTS16/wb_total_ts_16_6.png", "WB Total TS 16px 6");
+                Set.of(), Set.of(), "wb_total_ts_16_6", "unitycues/numbers/wbTotalTS16/wb_total_ts_16_6.png", "WB Total TS 16px 6");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS16", "wb_total_ts_16_7(.*)\\.png", null,
-                Set.of(), "wb_total_ts_16_7", "unitycues/numbers/wbTotalTS16/wb_total_ts_16_7.png", "WB Total TS 16px 7");
+                Set.of(), Set.of(), "wb_total_ts_16_7", "unitycues/numbers/wbTotalTS16/wb_total_ts_16_7.png", "WB Total TS 16px 7");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS16", "wb_total_ts_16_8(.*)\\.png", null,
-                Set.of(), "wb_total_ts_16_8", "unitycues/numbers/wbTotalTS16/wb_total_ts_16_8.png", "WB Total TS 16px 8");
+                Set.of(), Set.of(), "wb_total_ts_16_8", "unitycues/numbers/wbTotalTS16/wb_total_ts_16_8.png", "WB Total TS 16px 8");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS16", "wb_total_ts_16_9(.*)\\.png", null,
-                Set.of(), "wb_total_ts_16_9", "unitycues/numbers/wbTotalTS16/wb_total_ts_16_9.png", "WB Total TS 16px 9");
+                Set.of(), Set.of(), "wb_total_ts_16_9", "unitycues/numbers/wbTotalTS16/wb_total_ts_16_9.png", "WB Total TS 16px 9");
         //endregion WB Total TS 16px
 
         //region WB Total TS 18px
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS18", "wb_total_ts_18_0(.*)\\.png", null,
-                Set.of(), "wb_total_ts_18_0", "unitycues/numbers/wbTotalTS18/wb_total_ts_18_0.png", "WB Total TS 18px 0");
+                Set.of(), Set.of(), "wb_total_ts_18_0", "unitycues/numbers/wbTotalTS18/wb_total_ts_18_0.png", "WB Total TS 18px 0");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS18", "wb_total_ts_18_1(.*)\\.png", null,
-                Set.of(), "wb_total_ts_18_1", "unitycues/numbers/wbTotalTS18/wb_total_ts_18_1.png", "WB Total TS 18px 1");
+                Set.of(), Set.of(), "wb_total_ts_18_1", "unitycues/numbers/wbTotalTS18/wb_total_ts_18_1.png", "WB Total TS 18px 1");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS18", "wb_total_ts_18_2(.*)\\.png", null,
-                Set.of(), "wb_total_ts_18_2", "unitycues/numbers/wbTotalTS18/wb_total_ts_18_2.png", "WB Total TS 18px 2");
+                Set.of(), Set.of(), "wb_total_ts_18_2", "unitycues/numbers/wbTotalTS18/wb_total_ts_18_2.png", "WB Total TS 18px 2");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS18", "wb_total_ts_18_3(.*)\\.png", null,
-                Set.of(), "wb_total_ts_18_3", "unitycues/numbers/wbTotalTS18/wb_total_ts_18_3.png", "WB Total TS 18px 3");
+                Set.of(), Set.of(), "wb_total_ts_18_3", "unitycues/numbers/wbTotalTS18/wb_total_ts_18_3.png", "WB Total TS 18px 3");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS18", "wb_total_ts_18_4(.*)\\.png", null,
-                Set.of(), "wb_total_ts_18_4", "unitycues/numbers/wbTotalTS18/wb_total_ts_18_4.png", "WB Total TS 18px 4");
+                Set.of(), Set.of(), "wb_total_ts_18_4", "unitycues/numbers/wbTotalTS18/wb_total_ts_18_4.png", "WB Total TS 18px 4");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS18", "wb_total_ts_18_5(.*)\\.png", null,
-                Set.of(), "wb_total_ts_18_5", "unitycues/numbers/wbTotalTS18/wb_total_ts_18_5.png", "WB Total TS 18px 5");
+                Set.of(), Set.of(), "wb_total_ts_18_5", "unitycues/numbers/wbTotalTS18/wb_total_ts_18_5.png", "WB Total TS 18px 5");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS18", "wb_total_ts_18_6(.*)\\.png", null,
-                Set.of(), "wb_total_ts_18_6", "unitycues/numbers/wbTotalTS18/wb_total_ts_18_6.png", "WB Total TS 18px 6");
+                Set.of(), Set.of(), "wb_total_ts_18_6", "unitycues/numbers/wbTotalTS18/wb_total_ts_18_6.png", "WB Total TS 18px 6");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS18", "wb_total_ts_18_7(.*)\\.png", null,
-                Set.of(), "wb_total_ts_18_7", "unitycues/numbers/wbTotalTS18/wb_total_ts_18_7.png", "WB Total TS 18px 7");
+                Set.of(), Set.of(), "wb_total_ts_18_7", "unitycues/numbers/wbTotalTS18/wb_total_ts_18_7.png", "WB Total TS 18px 7");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS18", "wb_total_ts_18_8(.*)\\.png", null,
-                Set.of(), "wb_total_ts_18_8", "unitycues/numbers/wbTotalTS18/wb_total_ts_18_8.png", "WB Total TS 18px 8");
+                Set.of(), Set.of(), "wb_total_ts_18_8", "unitycues/numbers/wbTotalTS18/wb_total_ts_18_8.png", "WB Total TS 18px 8");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS18", "wb_total_ts_18_9(.*)\\.png", null,
-                Set.of(), "wb_total_ts_18_9", "unitycues/numbers/wbTotalTS18/wb_total_ts_18_9.png", "WB Total TS 18px 9");
+                Set.of(), Set.of(), "wb_total_ts_18_9", "unitycues/numbers/wbTotalTS18/wb_total_ts_18_9.png", "WB Total TS 18px 9");
         //endregion WB Total TS 18px
 
         //region WB Total TS 20px
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS20", "wb_total_ts_20_0(.*)\\.png", null,
-                Set.of(), "wb_total_ts_20_0", "unitycues/numbers/wbTotalTS20/wb_total_ts_20_0.png", "WB Total TS 20px 0");
+                Set.of(), Set.of(), "wb_total_ts_20_0", "unitycues/numbers/wbTotalTS20/wb_total_ts_20_0.png", "WB Total TS 20px 0");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS20", "wb_total_ts_20_1(.*)\\.png", null,
-                Set.of(), "wb_total_ts_20_1", "unitycues/numbers/wbTotalTS20/wb_total_ts_20_1.png", "WB Total TS 20px 1");
+                Set.of(), Set.of(), "wb_total_ts_20_1", "unitycues/numbers/wbTotalTS20/wb_total_ts_20_1.png", "WB Total TS 20px 1");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS20", "wb_total_ts_20_2(.*)\\.png", null,
-                Set.of(), "wb_total_ts_20_2", "unitycues/numbers/wbTotalTS20/wb_total_ts_20_2.png", "WB Total TS 20px 2");
+                Set.of(), Set.of(), "wb_total_ts_20_2", "unitycues/numbers/wbTotalTS20/wb_total_ts_20_2.png", "WB Total TS 20px 2");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS20", "wb_total_ts_20_3(.*)\\.png", null,
-                Set.of(), "wb_total_ts_20_3", "unitycues/numbers/wbTotalTS20/wb_total_ts_20_3.png", "WB Total TS 20px 3");
+                Set.of(), Set.of(), "wb_total_ts_20_3", "unitycues/numbers/wbTotalTS20/wb_total_ts_20_3.png", "WB Total TS 20px 3");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS20", "wb_total_ts_20_4(.*)\\.png", null,
-                Set.of(), "wb_total_ts_20_4", "unitycues/numbers/wbTotalTS20/wb_total_ts_20_4.png", "WB Total TS 20px 4");
+                Set.of(), Set.of(), "wb_total_ts_20_4", "unitycues/numbers/wbTotalTS20/wb_total_ts_20_4.png", "WB Total TS 20px 4");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS20", "wb_total_ts_20_5(.*)\\.png", null,
-                Set.of(), "wb_total_ts_20_5", "unitycues/numbers/wbTotalTS20/wb_total_ts_20_5.png", "WB Total TS 20px 5");
+                Set.of(), Set.of(), "wb_total_ts_20_5", "unitycues/numbers/wbTotalTS20/wb_total_ts_20_5.png", "WB Total TS 20px 5");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS20", "wb_total_ts_20_6(.*)\\.png", null,
-                Set.of(), "wb_total_ts_20_6", "unitycues/numbers/wbTotalTS20/wb_total_ts_20_6.png", "WB Total TS 20px 6");
+                Set.of(), Set.of(), "wb_total_ts_20_6", "unitycues/numbers/wbTotalTS20/wb_total_ts_20_6.png", "WB Total TS 20px 6");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS20", "wb_total_ts_20_7(.*)\\.png", null,
-                Set.of(), "wb_total_ts_20_7", "unitycues/numbers/wbTotalTS20/wb_total_ts_20_7.png", "WB Total TS 20px 7");
+                Set.of(), Set.of(), "wb_total_ts_20_7", "unitycues/numbers/wbTotalTS20/wb_total_ts_20_7.png", "WB Total TS 20px 7");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS20", "wb_total_ts_20_8(.*)\\.png", null,
-                Set.of(), "wb_total_ts_20_8", "unitycues/numbers/wbTotalTS20/wb_total_ts_20_8.png", "WB Total TS 20px 8");
+                Set.of(), Set.of(), "wb_total_ts_20_8", "unitycues/numbers/wbTotalTS20/wb_total_ts_20_8.png", "WB Total TS 20px 8");
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbTotalTS20", "wb_total_ts_20_9(.*)\\.png", null,
-                Set.of(), "wb_total_ts_20_9", "unitycues/numbers/wbTotalTS20/wb_total_ts_20_9.png", "WB Total TS 20px 9");
+                Set.of(), Set.of(), "wb_total_ts_20_9", "unitycues/numbers/wbTotalTS20/wb_total_ts_20_9.png", "WB Total TS 20px 9");
         //endregion WB Total TS 20px
 
         //endregion Numbers
 
         //region Raid
         addCueLocatorByPattern(cueLocators, "cuebuilder/raid", "raid_summon_(.*)\\.png", Bounds.fromWidthHeight(489, 362, 110, 31),
-                Set.of(), "RaidSummon", "unitycues/raid/cueRaidSummon.png", "Raid Summon button");
+                Set.of(), Set.of(), "RaidSummon", "unitycues/raid/cueRaidSummon.png", "Raid Summon button");
         addCueLocatorByPattern(cueLocators, "cuebuilder/raid", "raid-diff(.*)\\.png", Bounds.fromWidthHeight(147, 222, 122, 27),
-                Set.of(), "RaidNormal", "unitycues/raid/cueRaidNormal.png", "");
+                Set.of(), Set.of(), "RaidNormal", "unitycues/raid/cueRaidNormal.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/raid", "raid-diff(.*)\\.png", Bounds.fromWidthHeight(340, 222, 122, 27),
-                Set.of(), "RaidHard", "unitycues/raid/cueRaidHard.png", "");
+                Set.of(), Set.of(), "RaidHard", "unitycues/raid/cueRaidHard.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/raid", "raid-diff(.*)\\.png", Bounds.fromWidthHeight(535, 222, 122, 27),
-                Set.of(), "RaidHeroic", "unitycues/raid/cueRaidHeroic.png", "");
+                Set.of(), Set.of(), "RaidHeroic", "unitycues/raid/cueRaidHeroic.png", "");
         //endregion
 
         //region Scroll Bars
         addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "settings_01(.*)\\.png", Bounds.fromWidthHeight(614, 191, 18, 21),
-                Set.of(), "ScrollerAtTop", "unitycues/scrollBars/cueScrollerAtTop.png", "");
+                Set.of(), Set.of(), "ScrollerAtTop", "unitycues/scrollBars/cueScrollerAtTop.png", "");
 
         addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "scroller_23(.*)\\.png", Bounds.fromWidthHeight(616, 368, 14, 24),
-                Set.of(), "ScrollerAtBottomSettings", "unitycues/scrollBars/cueScrollerAtBottomSettings.png", "Cue used when a scroll bar is at the bottom position in the settings menu.");
+                Set.of(), Set.of(), "ScrollerAtBottomSettings", "unitycues/scrollBars/cueScrollerAtBottomSettings.png", "Cue used when a scroll bar is at the bottom position in the settings menu.");
 
         addCueLocatorByPattern(cueLocators, "cuebuilder/autoConsume", "filter_btn_(.*)\\.png", Bounds.fromWidthHeight(684, 433, 13, 13),
-                Set.of(), "DropDownDown", "unitycues/scrollBars/cueDropDownDown.png", "The arrow pointing down in scroll bars.");
+                Set.of(), Set.of(), "DropDownDown", "unitycues/scrollBars/cueDropDownDown.png", "The arrow pointing down in scroll bars.");
         addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "scroller_01(.*)\\.png", Bounds.fromWidthHeight(616, 378, 13, 13),
-                Set.of(), "DropDownDown", "unitycues/scrollBars/cueDropDownDown.png", "The arrow pointing down in scroll bars.");
+                Set.of(), Set.of(), "DropDownDown", "unitycues/scrollBars/cueDropDownDown.png", "The arrow pointing down in scroll bars.");
 
         addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "settings_01(.*)\\.png", Bounds.fromWidthHeight(614, 216, 18, 14),
-                Set.of(), "SettingsScrollerTopPos", "unitycues/scrollBars/cueSettingsScrollerTopPos.png", "");
+                Set.of(), Set.of(), "SettingsScrollerTopPos", "unitycues/scrollBars/cueSettingsScrollerTopPos.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "settings_02(.*)\\.png", Bounds.fromWidthHeight(614, 216, 18, 14),
-                Set.of(), "SettingsScrollerTopPos", "unitycues/scrollBars/cueSettingsScrollerTopPos.png", "");
+                Set.of(), Set.of(), "SettingsScrollerTopPos", "unitycues/scrollBars/cueSettingsScrollerTopPos.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/scrollBars", "strip_01(.*)\\.png", Bounds.fromWidthHeight(532, 147, 18, 14),
-                Set.of(), "StripScrollerTopPos", "unitycues/scrollBars/cueStripScrollerTopPos.png", "");
+                Set.of(), Set.of(), "StripScrollerTopPos", "unitycues/scrollBars/cueStripScrollerTopPos.png", "");
         //endregion
 
         //region Settings
         addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "settings_01(.*)\\.png", Bounds.fromWidthHeight(354, 188, 9, 31),
-                Set.of(), "settingsMusic", "unitycues/settings/cueSettingsMusic.png", "");
+                Set.of(), Set.of(), "settingsMusic", "unitycues/settings/cueSettingsMusic.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "settings_01(.*)\\.png", Bounds.fromWidthHeight(354, 254, 9, 31),
-                Set.of(), "settingsSound", "unitycues/settings/cueSettingsSound.png", "");
+                Set.of(), Set.of(), "settingsSound", "unitycues/settings/cueSettingsSound.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "scroller_03_(.*)\\.png", Bounds.fromWidthHeight(169, 342, 217, 41),
-                Set.of(), "settingsNotification", "unitycues/settings/cueSettingsNotification.png", "");
+                Set.of(), Set.of(), "settingsNotification", "unitycues/settings/cueSettingsNotification.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "scroller_07_(.*)\\.png", Bounds.fromWidthHeight(170, 309, 333, 45),
-                Set.of(), "settingsWBReq", "unitycues/settings/cueSettingsWBReq.png", "");
+                Set.of(), Set.of(), "settingsWBReq", "unitycues/settings/cueSettingsWBReq.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "scroller_10_(.*)(.*)\\.png", Bounds.fromWidthHeight(170, 256, 267, 39),
-                Set.of(), "settingsReducedFX", "unitycues/settings/cueSettingsReducedFX.png", "");
+                Set.of(), Set.of(), "settingsReducedFX", "unitycues/settings/cueSettingsReducedFX.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "scroller_10_(.*)\\.png", Bounds.fromWidthHeight(170, 297, 208, 43),
-                Set.of(), "settingsBattleTXT", "unitycues/settings/cueSettingsBattleTXT.png", "");
+                Set.of(), Set.of(), "settingsBattleTXT", "unitycues/settings/cueSettingsBattleTXT.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "scroller_11_(.*)\\.png", Bounds.fromWidthHeight(170, 326, 183, 39),
-                Set.of(), "settingsAnimations", "unitycues/settings/cueSettingsAnimations.png", "");
+                Set.of(), Set.of(), "settingsAnimations", "unitycues/settings/cueSettingsAnimations.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "scroller_20_(.*)\\.png", Bounds.fromWidthHeight(170, 334, 295, 40),
-                Set.of(), "settingsMerchants", "unitycues/settings/cueSettingsMerchants.png", "");
+                Set.of(), Set.of(), "settingsMerchants", "unitycues/settings/cueSettingsMerchants.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "scroller_23_(.*)\\.png", Bounds.fromWidthHeight(170, 303, 315, 40),
-                Set.of(), "settingsTips", "unitycues/settings/cueSettingsTips.png", "Tips when defeated setting.");
+                Set.of(), Set.of(), "settingsTips", "unitycues/settings/cueSettingsTips.png", "Tips when defeated setting.");
         //endregion settings
 
         //region T/G
         addCueLocatorByPattern(cueLocators, "cuebuilder/tierGauntlet", "tokens-bar(.*)\\.png", Bounds.fromWidthHeight(325, 54, 36, 30),
-                Set.of(), "TokenBar", "unitycues/tierGauntlet/cueTokenBar.png", "");
+                Set.of(), Set.of(), "TokenBar", "unitycues/tierGauntlet/cueTokenBar.png", "");
         //endregion
 
         //region Treasure Chest
         addCueLocatorByPattern(cueLocators, "cuebuilder/treasureChest", "treasure(.*)\\.png", Bounds.fromWidthHeight(416, 375, 127, 37),
-                Set.of(), "Decline", "unitycues/treasureChest/cueDecline.png", "");
+                Set.of(), Set.of(), "Decline", "unitycues/treasureChest/cueDecline.png", "");
         //endregion
 
         //region WB
         // Misc buttons
         addCueLocatorByPattern(cueLocators, "cuebuilder/worldBoss", "xeal_bar_(.*)\\.png", Bounds.fromWidthHeight(321, 37, 40, 35),
-                Set.of(), "WorldBossPopup", "unitycues/worldBoss/cueWorldBossPopup.png", "Xeal bar popup");
+                Set.of(), Set.of(), "WorldBossPopup", "unitycues/worldBoss/cueWorldBossPopup.png", "Xeal bar popup");
         addCueLocatorByPattern(cueLocators, "cuebuilder/worldBoss", "xeal_bar_(.*)\\.png", Bounds.fromWidthHeight(449, 447, 106, 31),
-                Set.of(), "DarkBlueSummon", "unitycues/worldBoss/cueDarkBlueSummon.png", "WB Main menu summon button");
+                Set.of(), Set.of(), "DarkBlueSummon", "unitycues/worldBoss/cueDarkBlueSummon.png", "WB Main menu summon button");
         addCueLocatorByPattern(cueLocators, "cuebuilder/worldBoss", "xeal_bar_(.*)\\.png", Bounds.fromWidthHeight(290, 87, 224, 32),
-                Set.of(), "WorldBossTitle", "unitycues/worldBoss/cueWorldBossTitle.png", "WB Title in Main Menu");
+                Set.of(), Set.of(), "WorldBossTitle", "unitycues/worldBoss/cueWorldBossTitle.png", "WB Title in Main Menu");
         addCueLocatorByPattern(cueLocators, "cuebuilder/worldBoss", "wb_2_(.*)\\.png", Bounds.fromWidthHeight(490, 361, 105, 35),
-                Set.of(), "LargeDarkBlueSummon", "unitycues/worldBoss/cueLargeDarkBlueSummon.png", "Big Blue Summon button in WB Screen 2");
+                Set.of(), Set.of(), "LargeDarkBlueSummon", "unitycues/worldBoss/cueLargeDarkBlueSummon.png", "Big Blue Summon button in WB Screen 2");
         addCueLocatorByPattern(cueLocators, "cuebuilder/worldBoss", "wb_3_(.*)\\.png", Bounds.fromWidthHeight(322, 327, 42, 46),
-                Set.of(), "WBIsPrivate", "unitycues/worldBoss/cueWBIsPrivate.png", "Private Flag for World Boss");
+                Set.of(), Set.of(), "WBIsPrivate", "unitycues/worldBoss/cueWBIsPrivate.png", "Private Flag for World Boss");
         addCueLocatorByPattern(cueLocators, "cuebuilder/worldBoss", "wb_difficulty_(.*)\\.png", Bounds.fromWidthHeight(428, 390, 104, 27),
-                Set.of(), "SmallDarkBlueSummon", "unitycues/worldBoss/cueSmallDarkBlueSummon.png", "Dark blue WB Summon button");
+                Set.of(), Set.of(), "SmallDarkBlueSummon", "unitycues/worldBoss/cueSmallDarkBlueSummon.png", "Dark blue WB Summon button");
         addCueLocatorByPattern(cueLocators, "cuebuilder/worldBoss", "wb_no_xeals_(.*)\\.png", Bounds.fromWidthHeight(282, 229, 239, 71),
-                Set.of(), "NotEnoughXeals", "unitycues/worldBoss/cueNotEnoughXeals.png", "Not enough xeals popup");
+                Set.of(), Set.of(), "NotEnoughXeals", "unitycues/worldBoss/cueNotEnoughXeals.png", "Not enough xeals popup");
         addCueLocatorByPattern(cueLocators, "cuebuilder/worldBoss", "wb_lobby_unready_(.*)\\.png", null,
-                Set.of(), "Unready", "unitycues/worldBoss/cueWorldBossUnready.png", "Red X in WB Lobby");
+                Set.of(), Set.of(), "Unready", "unitycues/worldBoss/cueWorldBossUnready.png", "Red X in WB Lobby");
         addCueLocatorByPattern(cueLocators, "cuebuilder/worldBoss", "wb_invite_(.*)\\.png", Bounds.fromWidthHeight(347, 340, 96, 23),
-                Set.of(), "Invite", "unitycues/worldBoss/cueDarkBlueInvite.png", "Lobby member invite button");
+                Set.of(), Set.of(), "Invite", "unitycues/worldBoss/cueDarkBlueInvite.png", "Lobby member invite button");
         addCueLocatorByPattern(cueLocators, "cuebuilder/worldBoss", "wb_invite_(.*)\\.png", Bounds.fromWidthHeight(337, 457, 87, 28),
-                Set.of(), "DarkBlueStart", "unitycues/worldBoss/cueDarkBlueStart.png", "WB Dark blue start button");
+                Set.of(), Set.of(), "DarkBlueStart", "unitycues/worldBoss/cueDarkBlueStart.png", "WB Dark blue start button");
         addCueLocatorByPattern(cueLocators, "cuebuilder/worldBoss", "wb_kick_(.*)\\.png", Bounds.fromWidthHeight(423, 233, 22, 23),
-                Set.of(), "WorldBossPlayerKick", "unitycues/worldBoss/cueWorldBossKick.png", "Lobby member kick button");
+                Set.of(), Set.of(), "WorldBossPlayerKick", "unitycues/worldBoss/cueWorldBossKick.png", "Lobby member kick button");
         addCueLocatorByPattern(cueLocators, "cuebuilder/worldBoss", "wb_summon_(.*)\\.png", Bounds.fromWidthHeight(342, 117, 115, 26),
-                Set.of(), "WorldBossSummonTitle", "unitycues/worldBoss/cueWorldBossSummonTitle.png", "WB Summon Title");
+                Set.of(), Set.of(), "WorldBossSummonTitle", "unitycues/worldBoss/cueWorldBossSummonTitle.png", "WB Summon Title");
         addCueLocatorByPattern(cueLocators, "cuebuilder/worldBoss", "wb_lobby_kick_popup_(.*)\\.png", Bounds.fromWidthHeight(359, 140, 84, 35),
-                Set.of(), "WorldBossPopupKick", "unitycues/worldBoss/cueWorldBossPopupKick.png", "WB Player Kick confirmation");
+                Set.of(), Set.of(), "WorldBossPopupKick", "unitycues/worldBoss/cueWorldBossPopupKick.png", "WB Player Kick confirmation");
 
         // Tier drop down
         Set<Color> TierDropDownColors = Set.of(new Color(0, 0, 0), new Color(70, 105, 134), new Color(124, 179, 221), new Color(112, 169, 214),
@@ -661,36 +683,36 @@ public class CueBuilder {
                 new Color(87, 148, 195), new Color(59, 98, 131), new Color(108, 166, 212), new Color(166, 219, 255), new Color(99, 164, 218),
                 new Color(84, 135, 174), new Color(111, 168, 213), new Color(110, 167, 213), new Color(101, 149, 184), new Color(102, 150, 185));
         addCueLocatorByPattern(cueLocators, "cuebuilder/worldBoss", "wb_3_(.*)\\.png", Bounds.fromWidthHeight(304, 199, 194, 42),
-                TierDropDownColors, "WorldBossTierDropDown", "unitycues/worldBoss/cueWorldBossTierDropDown.png", "Drop Down for Tier detection");
+                TierDropDownColors, Set.of(), "WorldBossTierDropDown", "unitycues/worldBoss/cueWorldBossTierDropDown.png", "Drop Down for Tier detection");
 
         // Currently selected difficulty
         addCueLocatorByPattern(cueLocators, "cuebuilder/worldBoss", "wb_difficulty_1_(.*)\\.png", Bounds.fromWidthHeight(336, 287, 92, 20),
-                Set.of(new Color(147, 158, 244)), "WorldBossDifficultyNormal", "unitycues/worldBoss/cueWorldBossDifficultyNormal.png", "WB Normal difficulty selected");
+                Set.of(new Color(147, 158, 244)), Set.of(), "WorldBossDifficultyNormal", "unitycues/worldBoss/cueWorldBossDifficultyNormal.png", "WB Normal difficulty selected");
         addCueLocatorByPattern(cueLocators, "cuebuilder/worldBoss", "wb_difficulty_2_(.*)\\.png", Bounds.fromWidthHeight(336, 287, 92, 20),
-                Set.of(new Color(255, 128, 125)), "WorldBossDifficultyHard", "unitycues/worldBoss/cueWorldBossDifficultyHard.png", "WB Hard difficulty selected");
+                Set.of(new Color(255, 128, 125)), Set.of(), "WorldBossDifficultyHard", "unitycues/worldBoss/cueWorldBossDifficultyHard.png", "WB Hard difficulty selected");
         addCueLocatorByPattern(cueLocators, "cuebuilder/worldBoss", "wb_difficulty_3_(.*)\\.png", Bounds.fromWidthHeight(336, 287, 92, 20),
-                Set.of(new Color(255, 255, 0)), "WorldBossDifficultyHeroic", "unitycues/worldBoss/cueWorldBossDifficultyHeroic.png", "WB Heroic difficulty selected");
+                Set.of(new Color(255, 255, 0)), Set.of(), "WorldBossDifficultyHeroic", "unitycues/worldBoss/cueWorldBossDifficultyHeroic.png", "WB Heroic difficulty selected");
 
         // New difficulty selection
         addCueLocatorByPattern(cueLocators, "cuebuilder/worldBoss", "wb_select_difficulty_(.*)\\.png", Bounds.fromWidthHeight(336, 146, 102, 24),
-                Set.of(new Color(147, 158, 244)), "cueWBSelectNormal", "unitycues/worldBoss/cueWBSelectNormal.png", "WB Normal difficulty selection");
+                Set.of(new Color(147, 158, 244)), Set.of(), "cueWBSelectNormal", "unitycues/worldBoss/cueWBSelectNormal.png", "WB Normal difficulty selection");
         addCueLocatorByPattern(cueLocators, "cuebuilder/worldBoss", "wb_select_difficulty_(.*)\\.png", Bounds.fromWidthHeight(355, 207, 64, 23),
-                Set.of(new Color(255, 128, 125)), "cueWBSelectHard", "unitycues/worldBoss/cueWBSelectHard.png", "WB Hard difficulty selection");
+                Set.of(new Color(255, 128, 125)), Set.of(), "cueWBSelectHard", "unitycues/worldBoss/cueWBSelectHard.png", "WB Hard difficulty selection");
         addCueLocatorByPattern(cueLocators, "cuebuilder/worldBoss", "wb_select_difficulty_(.*)\\.png", Bounds.fromWidthHeight(346, 268, 85, 21),
-                Set.of(new Color(255, 255, 0)), "cueWBSelectHeroic", "unitycues/worldBoss/cueWBSelectHeroic.png", "WB Heroic difficulty selection");
+                Set.of(new Color(255, 255, 0)), Set.of(), "cueWBSelectHeroic", "unitycues/worldBoss/cueWBSelectHeroic.png", "WB Heroic difficulty selection");
         //endregion
 
         //region Weekly Rewards
         addCueLocatorByPattern(cueLocators, "cuebuilder/weeklyRewards", "pvp(.*)\\.png", Bounds.fromWidthHeight(361, 120, 75, 54),
-                Set.of(), "PVP_Rewards", "unitycues/weeklyRewards/pvp.png", "");
+                Set.of(), Set.of(), "PVP_Rewards", "unitycues/weeklyRewards/pvp.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/weeklyRewards", "trials(.*)\\.png", Bounds.fromWidthHeight(336, 120, 123, 54),
-                Set.of(), "Trials_Rewards", "unitycues/weeklyRewards/trials.png", "");
+                Set.of(), Set.of(), "Trials_Rewards", "unitycues/weeklyRewards/trials.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/weeklyRewards", "gvg(.*)\\.png", Bounds.fromWidthHeight(336, 120, 123, 54),
-                Set.of(), "GVG_Rewards", "unitycues/weeklyRewards/gvg.png", "");
+                Set.of(), Set.of(), "GVG_Rewards", "unitycues/weeklyRewards/gvg.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/weeklyRewards", "invasion(.*)\\.png", Bounds.fromWidthHeight(315, 129, 165, 35),
-                Set.of(), "Invasion_Rewards", "unitycues/weeklyRewards/invasion.png", "");
+                Set.of(), Set.of(), "Invasion_Rewards", "unitycues/weeklyRewards/invasion.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/weeklyRewards", "fishing_bait_(.*)\\.png", Bounds.fromWidthHeight(395, 230, 60, 33),
-                Set.of(), "Fishing_Bait", "unitycues/weeklyRewards/fishing_bait.png", "Green fishing bait");
+                Set.of(), Set.of(), "Fishing_Bait", "unitycues/weeklyRewards/fishing_bait.png", "Green fishing bait");
         //endregion
 
 
