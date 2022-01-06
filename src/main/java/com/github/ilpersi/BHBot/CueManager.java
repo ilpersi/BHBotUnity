@@ -273,9 +273,6 @@ class CueManager {
         addCue("Claim", "cues/cueClaim.png", null); // claim button, when daily rewards popup is open
         addCue("Items", "cues/cueItems.png", null); // used when we clicked "claim" on daily rewards popup. Used also with main menu ads.
         addCue("X", "cues/cueX.png", null); // "X" close button used with claimed daily rewards popup
-        addCue("WeeklyRewards", "cues/cueWeeklyRewards.png", new Bounds(185, 95, 250, 185)); // used with reward for GVG/PVP/Gauntlet/Trial on Friday night (when day changes into Saturday)
-        addCue("Bounties", "cues/cueBounties.png", new Bounds(320, 63, 480, 103));
-        addCue("Loot", "cues/cueLoot.png", null);
 
         addCue("News", "cues/cueNewsPopup.png", new Bounds(345, 60, 365, 85)); // news popup
         addCue("Close", "cues/cueClose.png", null); // close button used with "News" popup, also when defeated in dungeon, etc.
@@ -602,6 +599,11 @@ class CueManager {
         addCue("NotInAGuild", "unitycues/blockers/cueNotInAGuild.png", Bounds.fromWidthHeight(255, 215, 290, 90)); // You are currently non in a Guild popup
         //endregion
 
+        //region Bounties
+        addCue("Bounties", "unitycues/bounties/cueBounties.png", Bounds.fromWidthHeight(305, 55, 190, 55)); // Bounties dialog title
+        addCue("Loot", "unitycues/bounties/cueLoot.png", Bounds.fromWidthHeight(495, 235, 100, 50)); // Green Loot button
+        //endregion Bounties
+
         //region Character Menu
         addCue("StripSelectorButton", "unitycues/characterMenu/cueStripSelectorButton.png", Bounds.fromWidthHeight(445, 105, 255, 65));
         addCue("FilterConsumables", "unitycues/characterMenu/cueFilterConsumables.png", Bounds.fromWidthHeight(460, 110, 190, 50));
@@ -630,6 +632,7 @@ class CueManager {
         addCue("Town", "unitycues/common/cueTown.png", Bounds.fromWidthHeight(365, 455, 210, 50)); // The Red "Town" button on the victory/defeat recap screen
         addCue("VictoryRecap", "unitycues/common/cueVictoryRecap.png", Bounds.fromWidthHeight(330, 55, 150, 55)); // Victory message when completing adventures
         addCue("DefeatRecap", "unitycues/common/cueDefeatRecap.png", Bounds.fromWidthHeight(335, 55, 135, 50)); // Defeat message when completing adventures
+        addCue("WeeklyRewards", "unitycues/common/cueWeeklyRewards.png", Bounds.fromWidthHeight(205, 135, 395, 255)); // Weekly rewards gump
         //endregion
 
         //region Dungeon

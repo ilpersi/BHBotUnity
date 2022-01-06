@@ -1858,7 +1858,10 @@ public class DungeonThread implements Runnable {
                                     bot.browser.clickOnSeg(seg);
                                     seg = MarvinSegment.fromCue(BHBot.cues.get("WeeklyRewards"), Misc.Durations.SECOND * 5, new Bounds(190, 100, 615, 400), bot.browser);
                                     if (seg != null) {
-                                        seg = MarvinSegment.fromCue(BHBot.cues.get("X"), 5 * Misc.Durations.SECOND, bot.browser);
+                                        Bounds xBounds = Bounds.fromWidthHeight(550, 120, 63, 70);
+                                        Cue cueX = new Cue(BHBot.cues.get("X"), xBounds);
+
+                                        seg = MarvinSegment.fromCue(cueX, 5 * Misc.Durations.SECOND, bot.browser);
                                         if (seg != null) {
                                             if ((bot.settings.screenshots.contains("b"))) {
                                                 bot.saveGameScreen("bounty-loot", "rewards");

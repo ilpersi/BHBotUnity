@@ -334,6 +334,13 @@ public class CueBuilder {
                 Set.of(), Set.of(), "NotInAGuild", "unitycues/blockers/cueNotInAGuild.png", "You are currently non in a Guild popup");
         //endregion
 
+        //region Bounties
+        addCueLocatorByPattern(cueLocators, "cuebuilder/bounties", "bounties_main_(.*)\\.png", Bounds.fromWidthHeight(319, 67, 164, 33),
+                Set.of(), Set.of(), "Bounties", "unitycues/bounties/cueBounties.png", "Bounties dialog title");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/bounties", "bounties_main_(.*)\\.png", Bounds.fromWidthHeight(508, 245, 74, 27),
+                Set.of(), Set.of(), "Loot", "unitycues/bounties/cueLoot.png", "Green Loot button");
+        //endregion Bounties
+
         //region Common
         cueLocators.add(new CueLocator("cuebuilder/raid/raid-team.png", Bounds.fromWidthHeight(326, 453, 87, 29),
                 Set.of(new Color(255, 255, 255)), Set.of(), "TeamClear", "unitycues/common/cueTeamClear.png", false, ""));
@@ -378,7 +385,12 @@ public class CueBuilder {
         addCueLocatorByPattern(cueLocators, "cuebuilder/common", "victory_recap_(.*)\\.png", Bounds.fromWidthHeight(340, 68, 128, 28),
                 Set.of(), Set.of(), "VictoryRecap", "unitycues/common/cueVictoryRecap.png", "Victory message when completing adventures");
         addCueLocatorByPattern(cueLocators, "cuebuilder/common", "defeat_recap_(.*)\\.png", Bounds.fromWidthHeight(347, 67, 113, 28),
-                Set.of(), "DefeatRecap", "unitycues/common/cueDefeatRecap.png", "Defeat message when completing adventures");
+                Set.of(), Set.of(), "DefeatRecap", "unitycues/common/cueDefeatRecap.png", "Defeat message when completing adventures");
+
+        Set<Bounds> weeklyTransparent = Set.of(Bounds.fromWidthHeight(296, 122, 215, 48), Bounds.fromWidthHeight(247, 193, 286, 153),
+                Bounds.fromWidthHeight(550, 126, 58, 53), Bounds.fromWidthHeight(535, 194, 19, 148));
+        addCueLocatorByPattern(cueLocators, "cuebuilder/bounties", "bounties_confirm_(.*)\\.png", Bounds.fromWidthHeight(219, 146, 367, 231),
+                Set.of(), weeklyTransparent, "WeeklyRewards", "unitycues/common/cueWeeklyRewards.png", "Weekly rewards gump");
         //endregion
 
         //region CueX
