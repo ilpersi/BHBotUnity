@@ -406,6 +406,9 @@ public class CueBuilder {
                 Set.of(), Set.of(), "X", "unitycues/common/cueX.png", true, ""));
         cueLocators.add(new CueLocator("cuebuilder/common/reward-x_DESKTOP-6OOEROP_20211230.png", Bounds.fromWidthHeight(556, 128, 48, 48),
                 Set.of(), Set.of(), "X", "unitycues/common/cueX.png", true, ""));
+        addCueLocatorByPattern(cueLocators, "cuebuilder/bounties", "bounties_main_(.*)\\.png", Bounds.fromWidthHeight(666, 62, 48, 48),
+                Set.of(), Set.of(), "X", "unitycues/common/cueX.png", "White X with red backgroud");
+
         //endregion
 
         //region Dungeon
