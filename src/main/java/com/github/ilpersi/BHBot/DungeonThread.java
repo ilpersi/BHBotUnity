@@ -1687,8 +1687,9 @@ public class DungeonThread implements Runnable {
                                         // We read the current total TS
                                         int totalTS = 0;
                                         if (wbSetting.minimumTotalTS > 0) {
-
-                                            totalTS = getWorldBossTotalTS();
+                                            // We refresh the screen to be sure we get the most up to date TS values
+                                            bot.browser.readScreen();
+                                            totalTS = getWorldBossTotalTS(bot.browser.getImg());
 
                                             // If readNumFromImg has errors it will return 0, so we make sure this is not the case
                                             if (totalTS > 0 && totalTS >= wbSetting.minimumTotalTS) {
@@ -1714,7 +1715,9 @@ public class DungeonThread implements Runnable {
 
 
                                             if (wbSetting.minimumPlayerTS > 0) {
-                                                System.arraycopy(getWorldBossPlayersTS(inviteCnt), 0, playersTS, 0, inviteCnt);
+                                                // We refresh the screen to be sure we get the most up to date TS values
+                                                bot.browser.readScreen();
+                                                System.arraycopy(getWorldBossPlayersTS(inviteCnt, bot.browser.getImg()), 0, playersTS, 0, inviteCnt);
                                                 // playersTS = getWorldBossPlayersTS(inviteCnt);
 
                                                 for (int partyMemberPos = 0; partyMemberPos < inviteCnt; partyMemberPos++) {
@@ -1770,9 +1773,9 @@ public class DungeonThread implements Runnable {
                                             // If debugWBTS is enabled, we make sure to read updated numbers
                                             if (bot.settings.debugWBTS) {
                                                 bot.browser.readScreen();
-                                                totalTS = getWorldBossTotalTS();
+                                                totalTS = getWorldBossTotalTS(bot.browser.getImg());
                                                 // playersTS = getWorldBossPlayersTS(inviteCnt);
-                                                System.arraycopy(getWorldBossPlayersTS(inviteCnt), 0, playersTS, 0, inviteCnt);
+                                                System.arraycopy(getWorldBossPlayersTS(inviteCnt, bot.browser.getImg()), 0, playersTS, 0, inviteCnt);
                                             }
 
                                             if (totalTS > 0) {
@@ -4120,13 +4123,22 @@ public class DungeonThread implements Runnable {
      * Get the Total World Boss TS. This method assumes that the WB Lobby is opened and screen read is up to date with it
      *
      * @return The total TS found value, 0 if errors
+     * @param lobbyScreen The image to be used to read the WB Total TS
      */
-    private int getWorldBossTotalTS() {
+    private int getWorldBossTotalTS(BufferedImage lobbyScreen) {
         final Bounds totalWBTS = Bounds.fromWidthHeight(602, 67, 88, 36);
-        MarvinImage totalTSImg = new MarvinImage(bot.browser.getImg().getSubimage(totalWBTS.x1, totalWBTS.y1, totalWBTS.width, totalWBTS.height));
+        MarvinImage totalTSImg = new MarvinImage(lobbyScreen.getSubimage(totalWBTS.x1, totalWBTS.y1, totalWBTS.width, totalWBTS.height));
         totalTSImg.toBlackWhite(120);
         totalTSImg.update();
         BufferedImage totalTSSubImg = totalTSImg.getBufferedImage();
+
+        if (bot.settings.debugWBTS) {
+            MarvinImage debugImg = new MarvinImage(lobbyScreen);
+            debugImg.drawRect(totalWBTS.x1, totalWBTS.y1, totalWBTS.width, totalWBTS.height, 2, Color.BLUE);
+            debugImg.update();
+            Misc.saveScreen("debug-total-ts", "wb-ts-debug", BHBot.includeMachineNameInScreenshots, debugImg.getBufferedImage());
+        }
+
         return readNumFromImg(totalTSSubImg, "wb_total_ts_16_,wb_total_ts_18_,wb_total_ts_20_", new HashSet<>(), true);
     }
 
@@ -4134,20 +4146,39 @@ public class DungeonThread implements Runnable {
      * Get the TS for each World Boss lobby member
      *
      * @param inviteCnt The lobby size
+     * @param lobbyScreen The image to be used to read the WB Total TS
      * @return An array of int with TS for each party member
      */
-    private int[] getWorldBossPlayersTS(int inviteCnt) {
+    private int[] getWorldBossPlayersTS(int inviteCnt, BufferedImage lobbyScreen) {
         int[] results = new int[inviteCnt];
         final Bounds TSBound = Bounds.fromWidthHeight(184, 243, 84, 18);
 
-        for (int partyMemberPos = 0; partyMemberPos < inviteCnt; partyMemberPos++) {
-            MarvinImage subImg = new MarvinImage(bot.browser.getImg().getSubimage(TSBound.x1, TSBound.y1 + (54 * partyMemberPos), TSBound.width, TSBound.height));
-            subImg.toBlackWhite(120);
-            subImg.update();
-            BufferedImage tsSubImg = subImg.getBufferedImage();
+        // We convert the lobby screen to black and white
+        MarvinImage toBlackAndWhite = new MarvinImage(lobbyScreen);
+        toBlackAndWhite.toBlackWhite(120);
+        toBlackAndWhite.update();
 
+        // Black and white BufferedImage
+        BufferedImage BlackAndWhiteTS = toBlackAndWhite.getBufferedImage();
+
+        // Only used if debugWBTS is true
+        MarvinImage debugWTSImg = new MarvinImage(BlackAndWhiteTS);
+
+        for (int partyMemberPos = 0; partyMemberPos < inviteCnt; partyMemberPos++) {
+            final int y = TSBound.y1 + (54 * partyMemberPos);
+
+            BufferedImage tsSubImg = BlackAndWhiteTS.getSubimage(TSBound.x1, y, TSBound.width, TSBound.height);
             int playerTS = readNumFromImg(tsSubImg, "wb_player_ts_", new HashSet<>(), true);
             results[partyMemberPos] = playerTS;
+
+            if (bot.settings.debugWBTS) {
+                debugWTSImg.drawRect(TSBound.x1, y, TSBound.width, TSBound.height, 2, Color.BLUE);
+            }
+        }
+
+        if (bot.settings.debugWBTS) {
+            debugWTSImg.update();
+            Misc.saveScreen("debug-player-ts", "wb-ts-debug", BHBot.includeMachineNameInScreenshots, debugWTSImg.getBufferedImage());
         }
 
         return results;
