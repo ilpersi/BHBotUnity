@@ -4152,7 +4152,7 @@ public class DungeonThread implements Runnable {
         }*/
 
         // We start from 20 intentionally: as soon a match is found, readNumFromImg will stop checking the remaining prefixes
-        return readNumFromImg(totalTSSubImg, "wb_total_ts_20_,wb_total_ts_18_,wb_total_ts_16_", new HashSet<>(), true, true);
+        return readNumFromImg(totalTSSubImg, "wb_total_ts_20_,wb_total_ts_18_,wb_total_ts_16_", new HashSet<>(), true, false);
     }
 
     /**
@@ -4181,7 +4181,7 @@ public class DungeonThread implements Runnable {
             final int y = TSBound.y1 + (54 * partyMemberPos);
 
             BufferedImage tsSubImg = BlackAndWhiteTS.getSubimage(TSBound.x1, y, TSBound.width, TSBound.height);
-            int playerTS = readNumFromImg(tsSubImg, "wb_player_ts_", new HashSet<>(), false, true);
+            int playerTS = readNumFromImg(tsSubImg, "wb_player_ts_", new HashSet<>(), false, false);
             results[partyMemberPos] = playerTS;
 
             if (bot.settings.debugWBTS) {
