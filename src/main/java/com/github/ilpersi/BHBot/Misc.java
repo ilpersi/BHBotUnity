@@ -24,6 +24,7 @@ import java.util.List;
 public class Misc {
 
     private static final Class<Misc> miscClass = Misc.class;
+    static String machineName = "";
 
     /**
      * This is the lord of the Screenshots: one method to rule them all. All the screenshots can have a customized prefix
@@ -61,7 +62,7 @@ public class Misc {
         String machineName = "";
 
         if (includeMachineName) {
-            machineName = BHBot.getMachineName();
+            machineName = Misc.getMachineName();
 
             // We make sure that no weird characters are part of the file name
             machineName = machineName.replaceAll("[^a-zA-Z0-9.-]", "");
@@ -525,21 +526,36 @@ public class Misc {
         return Base64.getEncoder().encodeToString(md.digest());
     }
 
+    /**
+     * Get the current hostname and cache it
+     *
+     * @return The hostname of the machine the bot is running on.
+     */
     static String getMachineName() {
-        String machineName = "";
 
-        InetAddress localMachine = null;
-        try {
-            localMachine = InetAddress.getLocalHost();
-        } catch (UnknownHostException e) {
-            BHBot.logger.warn("Impossible to get local host information.", e);
+        if ("".equals(Misc.machineName)) {
+            int loopLimit = 10;
+            int loopCnt = 0;
+
+            InetAddress localMachine = null;
+
+            // Sometimes more than one attempt is required to correctly get the machine name.
+            while ("".equals(Misc.machineName) && loopCnt < loopLimit) {
+
+                try {
+                    localMachine = InetAddress.getLocalHost();
+                } catch (UnknownHostException e) {
+                    BHBot.logger.warn("Impossible to get local host information.", e);
+                }
+
+                if (localMachine != null) {
+                    // We get the host name
+                    Misc.machineName = localMachine.getHostName();
+                }
+                loopCnt++;
+            }
         }
 
-        if (localMachine != null) {
-            // We get the host name
-            machineName = localMachine.getHostName();
-        }
-
-        return machineName;
+        return Misc.machineName;
     }
 }

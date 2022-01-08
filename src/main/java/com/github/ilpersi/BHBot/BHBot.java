@@ -74,7 +74,7 @@ public class BHBot {
     // currently used scheduling
     Settings.ActivitiesScheduleSetting currentScheduling = null;
 
-    private static String machineName = Misc.getMachineName();
+    static String machineName = "";
 
     public static void main(String[] args) {
         BHBot bot = new BHBot();
@@ -345,19 +345,6 @@ public class BHBot {
         bot.stop();
         reader.close();
         logger.info(PROGRAM_NAME + " has finished.");
-    }
-
-    public static String getMachineName() {
-        int loopLimit = 10;
-        int loopCnt = 0;
-
-        // Sometimes more than one attempt is required to correctly get the machine name.
-        while (machineName.length() == 0 && loopCnt < loopLimit) {
-            machineName = Misc.getMachineName();
-            loopCnt++;
-        }
-
-        return machineName;
     }
 
     private void stop() {
