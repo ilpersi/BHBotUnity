@@ -1763,6 +1763,11 @@ public class DungeonThread implements Runnable {
                                             if (unreadySegs.isEmpty()) {
                                                 BHBot.logger.info("Lobby filled and ready in " + Misc.millisToHumanForm(Misc.getTime() - startTime));
                                                 lobbyTimeout = false;
+                                                if (bot.settings.debugWBTS) {
+                                                    bot.browser.readScreen();
+                                                    totalTS = getWorldBossTotalTS(bot.browser.getImg());
+                                                    System.arraycopy(getWorldBossPlayersTS(inviteCnt, bot.browser.getImg()), 0, playersTS, 0, inviteCnt);
+                                                }
                                                 saveDebugWBTSScreen(totalTS, playersTS, lastSavedName);
                                                 break;
                                             }
@@ -4132,12 +4137,12 @@ public class DungeonThread implements Runnable {
         totalTSImg.update();
         BufferedImage totalTSSubImg = totalTSImg.getBufferedImage();
 
-        if (bot.settings.debugWBTS) {
+        /*if (bot.settings.debugWBTS) {
             MarvinImage debugImg = new MarvinImage(lobbyScreen);
             debugImg.drawRect(totalWBTS.x1, totalWBTS.y1, totalWBTS.width, totalWBTS.height, 2, Color.BLUE);
             debugImg.update();
             Misc.saveScreen("debug-total-ts", "wb-ts-debug", BHBot.includeMachineNameInScreenshots, debugImg.getBufferedImage());
-        }
+        }*/
 
         return readNumFromImg(totalTSSubImg, "wb_total_ts_16_,wb_total_ts_18_,wb_total_ts_20_", new HashSet<>(), true);
     }

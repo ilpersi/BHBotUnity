@@ -344,7 +344,7 @@ public class CueBuilder {
         //region Common
         cueLocators.add(new CueLocator("cuebuilder/raid/raid-team.png", Bounds.fromWidthHeight(326, 453, 87, 29),
                 Set.of(new Color(255, 255, 255)), Set.of(), "TeamClear", "unitycues/common/cueTeamClear.png", false, ""));
-        addCueLocatorByPattern(cueLocators, "cuebuilder/common", "cleared(.*)\\.png", Bounds.fromWidthHeight(330, 132, 139, 56),
+        addCueLocatorByPattern(cueLocators, "cuebuilder/common", "cleared_old(.*)\\.png", Bounds.fromWidthHeight(330, 132, 139, 56),
                 Set.of(), Set.of(), "Cleared", "unitycues/common/cueCleared.png", "");
         cueLocators.add(new CueLocator("cuebuilder/common/cleared.png", Bounds.fromWidthHeight(303, 345, 61, 32),
                 Set.of(), Set.of(), "YesGreen", "unitycues/common/cueYesGreen.png", true, ""));
