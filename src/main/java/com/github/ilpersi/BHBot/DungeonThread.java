@@ -2580,7 +2580,7 @@ public class DungeonThread implements Runnable {
                 subm.toBlackWhite(new Color(25, 25, 25), new Color(255, 255, 255), 64);
                 subm.update();
                 BufferedImage subimagetestbw = subm.getBufferedImage();
-                int num = readNumFromImg(subimagetestbw, "small", new HashSet<>(), false);
+                int num = readNumFromImg(subimagetestbw, "small", new HashSet<>(), false, false);
                 BHBot.logger.info(bot.getState().getName() + " #" + counters.get(bot.getState()).getTotal() + " completed. Level reached: " + num);
                 BHBot.logger.stats("Run time: " + runtime + ". Average: " + runtimeAvg + ".");
             }
@@ -3827,7 +3827,7 @@ public class DungeonThread implements Runnable {
      * @return 0 in case of error.
      */
     private int readNumFromImg(BufferedImage im) {
-        return readNumFromImg(im, "", new HashSet<>(), false);
+        return readNumFromImg(im, "", new HashSet<>(), false, false);
     }
 
     /**
@@ -3838,11 +3838,13 @@ public class DungeonThread implements Runnable {
      *                     prefix separating them using the comma
      * @param intToSkip It may be possible that not all the numbers are available for a specific Cue set, to avoid
      *                  NullPointerException specify the numbers you want to skip
+     * @param breakOnMatch When more than one prefix is passed in numberPrefix parameter, if this is set to true, as soon
+     *                     as one match is found with one prefix, the logic will not check the remaining prefixes.
      * @param logEmptyResults If you want to troubleshoot number reading, set this to true and when the read number has
      *                        no value, a picutre of the input im will be save in the debug screenshot folder
      * @return The value of the read number or 0 if it was not possible to read the number
      */
-    private int readNumFromImg(BufferedImage im, String numberPrefix, HashSet<Integer> intToSkip, boolean logEmptyResults) {
+    private int readNumFromImg(BufferedImage im, String numberPrefix, HashSet<Integer> intToSkip, boolean breakOnMatch, boolean logEmptyResults) {
         // You can have multiple prefixes separated by a comma
         String[] prefixes = numberPrefix.split(",");
         List<ScreenNum> nums = new ArrayList<>();
@@ -3855,6 +3857,11 @@ public class DungeonThread implements Runnable {
                 for (MarvinSegment s : list) {
                     nums.add(new ScreenNum(Integer.toString(i), s.x1));
                 }
+            }
+
+            // The current prefix is the correct one, so we do not check the remaining ones
+            if (nums.size() > 0 && breakOnMatch) {
+                break;
             }
         }
 
@@ -4006,7 +4013,7 @@ public class DungeonThread implements Runnable {
 
         BufferedImage imb = im.getBufferedImage();
 
-        return readNumFromImg(imb, "wb_tier_", new HashSet<>(), true);
+        return readNumFromImg(imb, "wb_tier_", new HashSet<>(), false, true);
     }
 
     /**
@@ -4034,7 +4041,7 @@ public class DungeonThread implements Runnable {
         MarvinImage topTierImg = new MarvinImage(bot.browser.getImg().getSubimage(topTierBounds.x1, topTierBounds.y1, topTierBounds.width, topTierBounds.height));
         topTierImg.toBlackWhite(new Color(25, 25, 25), new Color(255, 255, 255), 255);
         topTierImg.update();
-        int topAvailableTier = readNumFromImg(topTierImg.getBufferedImage(), "wb_tier_button_", new HashSet<>(), true);
+        int topAvailableTier = readNumFromImg(topTierImg.getBufferedImage(), "wb_tier_button_", new HashSet<>(), false, true);
 
         if (topAvailableTier == 0) {
             BHBot.logger.error("Impossible to detect maximum available tier in World Boss");
@@ -4144,7 +4151,8 @@ public class DungeonThread implements Runnable {
             Misc.saveScreen("debug-total-ts", "wb-ts-debug", BHBot.includeMachineNameInScreenshots, debugImg.getBufferedImage());
         }*/
 
-        return readNumFromImg(totalTSSubImg, "wb_total_ts_16_,wb_total_ts_18_,wb_total_ts_20_", new HashSet<>(), true);
+        // We start from 20 intentionally: as soon a match is found, readNumFromImg will stop checking the remaining prefixes
+        return readNumFromImg(totalTSSubImg, "wb_total_ts_20_,wb_total_ts_18_,wb_total_ts_16_", new HashSet<>(), true, true);
     }
 
     /**
@@ -4173,7 +4181,7 @@ public class DungeonThread implements Runnable {
             final int y = TSBound.y1 + (54 * partyMemberPos);
 
             BufferedImage tsSubImg = BlackAndWhiteTS.getSubimage(TSBound.x1, y, TSBound.width, TSBound.height);
-            int playerTS = readNumFromImg(tsSubImg, "wb_player_ts_", new HashSet<>(), true);
+            int playerTS = readNumFromImg(tsSubImg, "wb_player_ts_", new HashSet<>(), false, true);
             results[partyMemberPos] = playerTS;
 
             if (bot.settings.debugWBTS) {
