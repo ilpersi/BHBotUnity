@@ -534,25 +534,22 @@ public class Misc {
     static String getMachineName() {
 
         if ("".equals(Misc.machineName)) {
-            int loopLimit = 10;
+            final int loopLimit = 10;
             int loopCnt = 0;
 
-            InetAddress localMachine = null;
 
             // Sometimes more than one attempt is required to correctly get the machine name.
             while ("".equals(Misc.machineName) && loopCnt < loopLimit) {
 
                 try {
-                    localMachine = InetAddress.getLocalHost();
+                    InetAddress localMachine = InetAddress.getLocalHost();
+                    Misc.machineName = localMachine.getHostName();
                 } catch (UnknownHostException e) {
                     BHBot.logger.warn("Impossible to get local host information.", e);
                 }
 
-                if (localMachine != null) {
-                    // We get the host name
-                    Misc.machineName = localMachine.getHostName();
-                }
                 loopCnt++;
+
             }
         }
 

@@ -4164,7 +4164,7 @@ public class DungeonThread implements Runnable {
      */
     private int[] getWorldBossPlayersTS(int inviteCnt, BufferedImage lobbyScreen) {
         int[] results = new int[inviteCnt];
-        final Bounds TSBound = Bounds.fromWidthHeight(184, 243, 84, 18);
+        final Bounds TSBound = Bounds.fromWidthHeight(184, 244, 84, 18);
 
         // We convert the lobby screen to black and white
         MarvinImage toBlackAndWhite = new MarvinImage(lobbyScreen);
