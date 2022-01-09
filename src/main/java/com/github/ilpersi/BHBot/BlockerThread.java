@@ -283,7 +283,7 @@ public class BlockerThread implements Runnable {
                 //region Fishing Popup
                 // Sometimes the game is presenting fishing baits at login
                 if (!BHBot.State.FishingBaits.equals(bot.getState())) {
-                    seg = MarvinSegment.fromCue("Fishing_Bait", 0, Bounds.fromWidthHeight(455, 190, 85, 90), bot.browser);
+                    seg = MarvinSegment.fromCue("Fishing_Bait", 0, Bounds.fromWidthHeight(243, 190, 297, 154), bot.browser);
                     if (seg != null) {
                         BHBot.logger.debug("Fishing baits detected during login...");
                         if ((bot.settings.screenshots.contains("a"))) {
