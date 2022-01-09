@@ -4219,7 +4219,7 @@ public class DungeonThread implements Runnable {
         BufferedImage BlackAndWhiteTS = toBlackAndWhite.getBufferedImage();
 
         // Only used if debugWBTS is true
-        MarvinImage debugWTSImg = new MarvinImage(BlackAndWhiteTS);
+        // MarvinImage debugWTSImg = new MarvinImage(BlackAndWhiteTS);
 
         for (int partyMemberPos = 0; partyMemberPos < inviteCnt; partyMemberPos++) {
             final int y = TSBound.y1 + (54 * partyMemberPos);
@@ -4228,15 +4228,15 @@ public class DungeonThread implements Runnable {
             int playerTS = readNumFromImg(tsSubImg, "wb_player_ts_", new HashSet<>(), false, false);
             results[partyMemberPos] = playerTS;
 
-            if (bot.settings.debugWBTS) {
+            /*if (bot.settings.debugWBTS) {
                 debugWTSImg.drawRect(TSBound.x1, y, TSBound.width, TSBound.height, 2, Color.BLUE);
-            }
+            }*/
         }
 
-        if (bot.settings.debugWBTS) {
+        /*if (bot.settings.debugWBTS) {
             debugWTSImg.update();
             Misc.saveScreen("debug-player-ts", "wb-ts-debug", BHBot.includeMachineNameInScreenshots, debugWTSImg.getBufferedImage());
-        }
+        }*/
 
         return results;
     }
