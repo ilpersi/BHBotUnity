@@ -323,7 +323,14 @@ public class BrowserManager {
             if (ofGame) {
                 String listStr = (String) jsExecutor.executeScript("var rect = arguments[0].getBoundingClientRect();" +
                 "return '' + parseInt(rect.left) + ',' + parseInt(rect.top) + ',' + parseInt(rect.width) + ',' + parseInt(rect.height)", game);
-                String[] list = listStr.split(",");
+
+                String[] list;
+                try {
+                    list = listStr.split(",");
+                } catch (NullPointerException e) {
+                    BHBot.logger.trace("JS Executor error while getting windows dimensions.", e);
+                    return new BufferedImage(800, 520, BufferedImage.TYPE_INT_RGB);
+                }
 
                 final int x = Math.max(Integer.parseInt(list[0]), 0);
                 final int y = Math.max(Integer.parseInt(list[1]), 0);
