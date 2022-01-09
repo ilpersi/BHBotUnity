@@ -373,8 +373,8 @@ public class CueBuilder {
                 Set.of(), Set.of(), "SpeedBar", "unitycues/common/cueSpeedBar.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/common", "opnecharmenu-no-rune-button(.*)\\.png", Bounds.fromWidthHeight(124, 474, 71, 25),
                 Set.of(), Set.of(), "Runes", "unitycues/characterMenu/cueRunes.png", "The purple rune button in character menu.");
-        addCueLocatorByPattern(cueLocators, "cuebuilder/common", "speed-1x(.*)\\.png", Bounds.fromWidthHeight(31, 476, 16, 14),
-                Set.of(new Color(255, 255, 255)), Set.of(), "Speed1X", "unitycues/common/cueSpeed1X.png", "");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/common", "speed(.*)\\.png", Bounds.fromWidthHeight(17, 507, 45, 13),
+                Set.of(new Color(255, 255, 255)), Set.of(), "SpeedTXT", "unitycues/common/cueSpeedTXT.png", "Speed text while in a fight");
         addCueLocatorByPattern(cueLocators, "cuebuilder/common", "cleared_recap_(.*)\\.png", Bounds.fromWidthHeight(334, 68, 141, 27),
                 Set.of(), Set.of(), "ClearedRecap", "unitycues/common/cueClearedRecap.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/common", "cleared_recap_(.*)\\.png", Bounds.fromWidthHeight(299, 465, 86, 26),
@@ -393,19 +393,19 @@ public class CueBuilder {
         //endregion
 
         //region CueX
-        cueLocators.add(new CueLocator("cuebuilder/raid/raid-summon.png", Bounds.fromWidthHeight(616, 97, 48, 48),
+        cueLocators.add(new CueLocator("cuebuilder/raid/raid-summon.png", Bounds.fromLength(616, 97, 48),
                 Set.of(), Set.of(), "X", "unitycues/common/cueX.png", true, ""));
-        cueLocators.add(new CueLocator("cuebuilder/blockers/items_20210112.png", Bounds.fromWidthHeight(566, 129, 48, 48),
+        cueLocators.add(new CueLocator("cuebuilder/blockers/items_20210112.png", Bounds.fromLength(566, 129, 48),
                 Set.of(), Set.of(), "X", "unitycues/common/cueX.png", true, ""));
-        cueLocators.add(new CueLocator("cuebuilder/dungeon/dung-zone_20210115.png", Bounds.fromWidthHeight(706, 53, 48, 48),
+        cueLocators.add(new CueLocator("cuebuilder/dungeon/dung-zone_20210115.png", Bounds.fromLength(706, 53, 48),
                 Set.of(), Set.of(), "X", "unitycues/common/cueX.png", true, ""));
-        cueLocators.add(new CueLocator("cuebuilder/common/dung-x_20210119.png", Bounds.fromWidthHeight(746, 8, 48, 48),
+        cueLocators.add(new CueLocator("cuebuilder/common/dung-x_20210119.png", Bounds.fromLength(746, 8, 48),
                 Set.of(), Set.of(), "X", "unitycues/common/cueX.png", true, ""));
-        cueLocators.add(new CueLocator("cuebuilder/common/raid-x_vmi529938.contaboserver.net_20220105_13.png", Bounds.fromWidthHeight(616, 96, 48, 48),
+        cueLocators.add(new CueLocator("cuebuilder/common/raid-x_vmi529938.contaboserver.net_20220105_13.png", Bounds.fromLength(616, 96, 48),
                 Set.of(), Set.of(), "X", "unitycues/common/cueX.png", true, ""));
-        cueLocators.add(new CueLocator("cuebuilder/common/reward-x_DESKTOP-6OOEROP_20211230.png", Bounds.fromWidthHeight(556, 128, 48, 48),
+        cueLocators.add(new CueLocator("cuebuilder/common/reward-x_DESKTOP-6OOEROP_20211230.png", Bounds.fromLength(556, 128, 48),
                 Set.of(), Set.of(), "X", "unitycues/common/cueX.png", true, ""));
-        addCueLocatorByPattern(cueLocators, "cuebuilder/bounties", "bounties_main_(.*)\\.png", Bounds.fromWidthHeight(666, 62, 48, 48),
+        addCueLocatorByPattern(cueLocators, "cuebuilder/bounties", "bounties_main_(.*)\\.png", Bounds.fromLength(666, 62, 48),
                 Set.of(), Set.of(), "X", "unitycues/common/cueX.png", "White X with red backgroud");
 
         //endregion

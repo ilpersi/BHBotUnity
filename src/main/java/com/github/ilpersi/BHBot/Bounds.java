@@ -4,6 +4,7 @@ import java.util.StringJoiner;
 
 /**
  * @author Betalord
+ * @author ilpersi
  */
 class Bounds {
     final int x1, y1, x2, y2, width, height;
@@ -15,6 +16,17 @@ class Bounds {
         this.y2 = y2;
         this.width = x2 - x1;
         this.height = y2 - y1;
+    }
+
+    /**
+     * This is a helper method to create square Bounds objects
+     * @param x1 x position on the image
+     * @param y1 y position on the image
+     * @param length length of the Bounds. This value will also be applied for the height
+     * @return a new Bounds object created using length instead of 4 points (x1, y1, x2, y2)
+     */
+    static Bounds fromLength(int x1, int y1, int length) {
+        return new Bounds(x1, y1, x1+length, y1+length);
     }
 
     /**
@@ -61,6 +73,13 @@ class Bounds {
         return fromWidthHeight(suggestedX1, suggestedY1, suggestedWidth, suggestedHeight);
     }
 
+    /**
+     * Get a Java code representation of a Bounds object. This can be useful when you are dynamically creating bounds
+     * and you want to know how you can use them in a different part of your code
+     * @param withDeclaration Set to true if the returned Java code string should also include the Bounds initialization
+     * @param fromWidthHeight Set to true if you want the returned Java code string to use the fromWidthHeight method
+     * @return A string containing the Java code to create the object
+     */
     String getJavaCode(boolean withDeclaration, boolean fromWidthHeight) {
         StringBuilder result = new StringBuilder();
         if (withDeclaration) result.append("Bounds bounds = ");

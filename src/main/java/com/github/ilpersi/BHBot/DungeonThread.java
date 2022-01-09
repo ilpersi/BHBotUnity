@@ -13,6 +13,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static java.util.Comparator.comparing;
 
@@ -2330,15 +2331,11 @@ public class DungeonThread implements Runnable {
         // If you use Firefox, as there is no way to use an existing profile,
         // speed is set to 1x everytime you (re-)start the browser
         //region Speed check
-        seg = MarvinSegment.fromCue(BHBot.cues.get("Speed1X"), bot.browser);
-        if (seg != null && isInFight) {
-
-            // Click in game is the only possible alternative as the speed cue is somehow transparent and the
-            // yellow arrows are of a different color on every run
-            bot.browser.clickInGame(35, 485);
-            bot.browser.readScreen(Misc.Durations.SECOND);
-            bot.browser.clickInGame(35, 485);
+        seg = MarvinSegment.fromCue(BHBot.cues.get("SpeedTXT"), bot.browser);
+        if (isInFight && seg != null) {
+            handleAdventureSpeed();
         }
+
         //endregion
 
         /*
@@ -3819,6 +3816,53 @@ public class DungeonThread implements Runnable {
                 }
             }
         }
+    }
+
+    /**
+     * Make sure that adventures run at the best possible speed. Altough this code looks a bit weird, this is the only
+     * possible alternative as the speed cue is somehow transparent and the yellow arrows are of a different color on every run
+     */
+    private void handleAdventureSpeed() {
+        // Screen regions we expect to be yellow
+        Bounds boundsSpeed1X = Bounds.fromLength(23, 495, 2);
+        Bounds boundsSpeed2X = Bounds.fromLength(37, 495, 2);
+        Bounds boundsSpeed3X = Bounds.fromLength(50, 495, 2);
+
+        // We refresh the screen
+        bot.browser.readScreen();
+        BufferedImage speedImg = bot.browser.getImg();
+
+        // As we do not know the exact color of the yellow, we get colors from a region and store them in a set
+        int[] pixels1X = speedImg.getRGB(boundsSpeed1X.x1, boundsSpeed1X.y1, boundsSpeed1X.width, boundsSpeed1X.height, null, 0, boundsSpeed1X.width);
+        Set<Integer> speedActive = Arrays.stream(pixels1X).boxed().collect(Collectors.toSet());
+
+        // We get colors for 2X speed region
+        int[] pixels2X = speedImg.getRGB(boundsSpeed2X.x1, boundsSpeed2X.y1, boundsSpeed2X.width, boundsSpeed2X.height, null, 0, boundsSpeed2X.width);
+        Set<Integer> speed2X = Arrays.stream(pixels2X).boxed().collect(Collectors.toSet());
+
+        // We intersect speed1X with speed 2X and check the size of the intersection
+        Set<Integer> intersection = new HashSet<>(speedActive);
+        intersection.retainAll(speed2X);
+
+        // If there is no intersection, it means that 2X speed is disabled
+        if (intersection.size() == 0) {
+            BHBot.logger.debug("Speed set to 2X");
+            bot.browser.clickInGame(boundsSpeed2X.x1, boundsSpeed2X.y1);
+//            return;
+        }
+
+        // We also check 3X speed
+        int[] pixels3X = speedImg.getRGB(boundsSpeed3X.x1, boundsSpeed3X.y1, boundsSpeed3X.width, boundsSpeed3X.height, null, 0, boundsSpeed3X.width);
+        Set<Integer> speed3X = Arrays.stream(pixels3X).boxed().collect(Collectors.toSet());
+
+        intersection = new HashSet<>(speedActive);
+        intersection.retainAll(speed3X);
+
+        if (intersection.size() == 0) {
+            BHBot.logger.debug("Speed set to 3X");
+            bot.browser.clickInGame(boundsSpeed3X.x1, boundsSpeed3X.y1);
+        }
+
     }
 
     /**
