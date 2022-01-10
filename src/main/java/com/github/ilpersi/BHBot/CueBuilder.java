@@ -459,6 +459,29 @@ public class CueBuilder {
         //endregion
 
         //region Numbers
+        //region TG Main Window Difficulty
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/tgDiffWindow", "tg_diff_win_0(.*)\\.png", null,
+                Set.of(), Set.of(), "tg_diff_win_0", "unitycues/numbers/tgDiffWindow/tg_diff_win_0.png", "TG Main Window Difficulty 0");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/tgDiffWindow", "tg_diff_win_1(.*)\\.png", null,
+                Set.of(), Set.of(), "tg_diff_win_1", "unitycues/numbers/tgDiffWindow/tg_diff_win_1.png", "TG Main Window Difficulty 1");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/tgDiffWindow", "tg_diff_win_2(.*)\\.png", null,
+                Set.of(), Set.of(), "tg_diff_win_2", "unitycues/numbers/tgDiffWindow/tg_diff_win_2.png", "TG Main Window Difficulty 2");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/tgDiffWindow", "tg_diff_win_3(.*)\\.png", null,
+                Set.of(), Set.of(), "tg_diff_win_3", "unitycues/numbers/tgDiffWindow/tg_diff_win_3.png", "TG Main Window Difficulty 3");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/tgDiffWindow", "tg_diff_win_4(.*)\\.png", null,
+                Set.of(), Set.of(), "tg_diff_win_4", "unitycues/numbers/tgDiffWindow/tg_diff_win_4.png", "TG Main Window Difficulty 4");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/tgDiffWindow", "tg_diff_win_5(.*)\\.png", null,
+                Set.of(), Set.of(), "tg_diff_win_5", "unitycues/numbers/tgDiffWindow/tg_diff_win_5.png", "TG Main Window Difficulty 5");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/tgDiffWindow", "tg_diff_win_6(.*)\\.png", null,
+                Set.of(), Set.of(), "tg_diff_win_6", "unitycues/numbers/tgDiffWindow/tg_diff_win_6.png", "TG Main Window Difficulty 6");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/tgDiffWindow", "tg_diff_win_7(.*)\\.png", null,
+                Set.of(), Set.of(), "tg_diff_win_7", "unitycues/numbers/tgDiffWindow/tg_diff_win_7.png", "TG Main Window Difficulty 7");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/tgDiffWindow", "tg_diff_win_8(.*)\\.png", null,
+                Set.of(), Set.of(), "tg_diff_win_8", "unitycues/numbers/tgDiffWindow/tg_diff_win_8.png", "TG Main Window Difficulty 8");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/tgDiffWindow", "tg_diff_win_9(.*)\\.png", null,
+                Set.of(), Set.of(), "tg_diff_win_9", "unitycues/numbers/tgDiffWindow/tg_diff_win_9.png", "TG Main Window Difficulty 9");
+        //endregion TG Main Window Difficulty
+
         //region WB Player TS
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbPlayerTS", "wb_player_ts_0(.*)\\.png", null,
                 Set.of(), Set.of(), "wb_player_ts_0", "unitycues/numbers/wbPlayerTS/wb_player_ts_0.png", "WB Player TS 0");
@@ -654,6 +677,11 @@ public class CueBuilder {
         //region T/G
         addCueLocatorByPattern(cueLocators, "cuebuilder/tierGauntlet", "tokens-bar(.*)\\.png", Bounds.fromWidthHeight(325, 54, 36, 30),
                 Set.of(), Set.of(), "TokenBar", "unitycues/tierGauntlet/cueTokenBar.png", "");
+
+        final Set<Bounds> tgDiffTransp = Set.of(Bounds.fromWidthHeight(481, 383, 106, 31), Bounds.fromWidthHeight(478, 386, 112, 25));
+        addCueLocatorByPattern(cueLocators, "cuebuilder/tierGauntlet", "tg_window_(.*)\\.png", Bounds.fromWidthHeight(471, 354, 162, 69),
+                Set.of(), tgDiffTransp, "Difficulty", "unitycues/tierGauntlet/cueDifficulty.png", "T/G Difficulty combo box");
+
         //endregion
 
         //region Treasure Chest

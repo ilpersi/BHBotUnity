@@ -319,10 +319,7 @@ class CueManager {
         addCue("Speed_Full", "cues/Speed_Full.png", new Bounds(7, 488, 65, 504)); // 3/3 speed bar in encounters
         addCue("Speed", "cues/Speed_Text.png", new Bounds(20, 506, 61, 518)); // speed text label in encounters
 
-        addCue("Trials", "cues/cueTrials.png", new Bounds(0, 0, 40, 400)); // cue for trials button (note that as of 23.9.2017 they changed the button position to the right side of the screen and modified the glyph)
-        addCue("Trials2", "cues/cueTrials2.png", new Bounds(720, 0, 770, 400)); // an alternative cue for trials (flipped horizontally, located on the right side of the screen). Used since 23.9.2017.
-        addCue("Gauntlet", "cues/cueGauntlet.png", null); // cue for gauntlet button
-        addCue("Gauntlet2", "cues/cueGauntlet2.png", null); // alternative cue for gauntlet button
+
         addCue("Play", "cues/cuePlay.png", null); // cue for play button in trials/gauntlet window
         addCue("TokenBar", "cues/cueTokenBar.png", Bounds.fromWidthHeight(310, 40, 65, 55));
         addCue("CloseGreen", "cues/cueCloseGreen.png", null); // close button used with "You have been defeated" popup in gauntlet and also "Victory" window in gauntlet
@@ -370,7 +367,6 @@ class CueManager {
         addCue("TrialsOrGauntletWindow", "cues/cueTrialsOrGauntletWindow.png", new Bounds(300, 30, 510, 105)); // cue for a trials/gauntlet window
         addCue("NotEnoughTokens", "cues/cueNotEnoughTokens.png", Bounds.fromWidthHeight(274, 228, 253, 79)); // cue to check for the not enough tokens popup
 
-        addCue("Difficulty", "cues/cueDifficulty.png", new Bounds(450, 330, 640, 450)); // selected difficulty in trials/gauntlet window
         addCue("DifficultyDisabled", "cues/cueDifficultyDisabled.png", new Bounds(450, 330, 640, 450)); // selected difficulty in trials/gauntlet window (disabled - because game is still fetching data from server)
         addCue("SelectDifficulty", "cues/cueSelectDifficulty.png", new Bounds(400, 260, 0, 0)/*not exact bounds... the lower-right part of screen!*/); // select difficulty button in trials/gauntlet
         addCue("DifficultyDropDown", "cues/cueDifficultyDropDown.png", new Bounds(260, 50, 550, 125)); // difficulty drop down menu cue
@@ -691,6 +687,19 @@ class CueManager {
 
         //region Numbers
 
+        // region TG Main Window Difficulty
+        addCue("tg_diff_win_0", "unitycues/numbers/tgDiffWindow/tg_diff_win_0.png", null);
+        addCue("tg_diff_win_1", "unitycues/numbers/tgDiffWindow/tg_diff_win_1.png", null);
+        addCue("tg_diff_win_2", "unitycues/numbers/tgDiffWindow/tg_diff_win_2.png", null);
+        addCue("tg_diff_win_3", "unitycues/numbers/tgDiffWindow/tg_diff_win_3.png", null);
+        addCue("tg_diff_win_4", "unitycues/numbers/tgDiffWindow/tg_diff_win_4.png", null);
+        addCue("tg_diff_win_5", "unitycues/numbers/tgDiffWindow/tg_diff_win_5.png", null);
+        addCue("tg_diff_win_6", "unitycues/numbers/tgDiffWindow/tg_diff_win_6.png", null);
+        addCue("tg_diff_win_7", "unitycues/numbers/tgDiffWindow/tg_diff_win_7.png", null);
+        addCue("tg_diff_win_8", "unitycues/numbers/tgDiffWindow/tg_diff_win_8.png", null);
+        addCue("tg_diff_win_9", "unitycues/numbers/tgDiffWindow/tg_diff_win_9.png", null);
+        // endregion TG Main Window Difficulty
+
         // region WB Player TS
         addCue("wb_player_ts_0", "unitycues/numbers/wbPlayerTS/wb_player_ts_0.png", null);
         addCue("wb_player_ts_1", "unitycues/numbers/wbPlayerTS/wb_player_ts_1.png", null);
@@ -784,6 +793,11 @@ class CueManager {
 
         //region T/G
         addCue("TokenBar", "unitycues/tierGauntlet/cueTokenBar.png", Bounds.fromWidthHeight(315, 40, 60, 55));
+        addCue("Trials", "unitycues/tierGauntlet/cueTrials.png", new Bounds(0, 0, 40, 400)); // cue for trials button (note that as of 23.9.2017 they changed the button position to the right side of the screen and modified the glyph)
+        addCue("Trials2", "unitycues/tierGauntlet/cueTrials2.png", new Bounds(720, 0, 770, 400)); // an alternative cue for trials (flipped horizontally, located on the right side of the screen). Used since 23.9.2017.
+        addCue("Gauntlet", "unitycues/tierGauntlet/cueGauntlet.png", null); // cue for gauntlet button
+        addCue("Gauntlet2", "unitycues/tierGauntlet/cueGauntlet2.png", null); // alternative cue for gauntlet button
+        addCue("Difficulty", "unitycues/tierGauntlet/cueDifficulty.png", Bounds.fromWidthHeight(460, 340, 185, 95)); // T/G Difficulty combo box
         //endregion
 
         //region WB

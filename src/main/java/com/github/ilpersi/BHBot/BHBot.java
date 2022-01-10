@@ -450,7 +450,7 @@ public class BHBot {
                 break;
             case "d": { // detect difficulty from screen
                 browser.readScreen();
-                int current = dungeon.detectDifficulty();
+                int current = dungeon.detectDifficulty(BHBot.cues.get("Difficulty"));;
                 logger.info("Detected difficulty: " + current);
 
                 if (params.length > 1) {

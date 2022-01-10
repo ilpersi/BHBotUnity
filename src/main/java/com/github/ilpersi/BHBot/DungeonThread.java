@@ -539,7 +539,7 @@ public class DungeonThread implements Runnable {
 
                                 BHBot.logger.info("Attempting " + (trials ? "trials" : "gauntlet") + " at level " + targetDifficulty + "...");
 
-                                int difficulty = detectDifficulty();
+                                int difficulty = detectDifficulty(BHBot.cues.get("Difficulty"));
                                 if (difficulty == 0) { // error!
                                     BHBot.logger.error("Due to an error#1 in difficulty detection, " + (trials ? "trials" : "gauntlet") + " will be skipped.");
                                     bot.browser.closePopupSecurely(BHBot.cues.get("TrialsOrGauntletWindow"), BHBot.cues.get("X"));
@@ -3888,7 +3888,7 @@ public class DungeonThread implements Runnable {
      *                        no value, a picutre of the input im will be save in the debug screenshot folder
      * @return The value of the read number or 0 if it was not possible to read the number
      */
-    private int readNumFromImg(BufferedImage im, String numberPrefix, HashSet<Integer> intToSkip, boolean breakOnMatch, boolean logEmptyResults) {
+    static int readNumFromImg(BufferedImage im, String numberPrefix, HashSet<Integer> intToSkip, boolean breakOnMatch, boolean logEmptyResults) {
         // You can have multiple prefixes separated by a comma
         String[] prefixes = numberPrefix.split(",");
         List<ScreenNum> nums = new ArrayList<>();
@@ -3989,21 +3989,19 @@ public class DungeonThread implements Runnable {
         return new int[]{Integer.parseInt(rangesStr[0]), Integer.parseInt(rangesStr[1])};
     }
 
-    int detectDifficulty() {
-        return detectDifficulty(BHBot.cues.get("Difficulty"));
-    }
-
     /**
      * Detects selected difficulty in trials/gauntlet window. <br>
      * NOTE: Trials/gauntlet window must be open for this to work! <br>
      *
+     * @param difficulty The Cue to be used to search for the difficulty integer
      * @return 0 in case of an error, or the selected difficulty level instead.
      */
-    private int detectDifficulty(Cue difficulty) {
+    int detectDifficulty(Cue difficulty) {
         bot.browser.readScreen(2 * Misc.Durations.SECOND); // note that sometimes the cue will be gray (disabled) since the game is fetching data from the server - in that case we'll have to wait a bit
 
         MarvinSegment seg = MarvinSegment.fromCue(difficulty, bot.browser);
         if (seg == null) {
+            Misc.saveScreen("detect-difficulty-disabled", "errors", BHBot.includeMachineNameInScreenshots, bot.browser.getImg());
             seg = MarvinSegment.fromCue(BHBot.cues.get("DifficultyDisabled"), bot.browser);
             if (seg != null) { // game is still fetching data from the server... we must wait a bit!
                 Misc.sleep(5 * Misc.Durations.SECOND);
@@ -4016,7 +4014,7 @@ public class DungeonThread implements Runnable {
             return 0; // error
         }
 
-        MarvinImage im = new MarvinImage(bot.browser.getImg().getSubimage(seg.x1 + 35, seg.y1 + 30, 55, 19), "PNG");
+        MarvinImage im = new MarvinImage(bot.browser.getImg().getSubimage(seg.x1 + 26, seg.y1 + 32, 70, 25), "PNG");
 
         // make it white-gray (to facilitate cue recognition):
         im.toBlackWhite(new Color(25, 25, 25), new Color(255, 255, 255), 254);
