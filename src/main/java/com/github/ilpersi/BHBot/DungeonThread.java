@@ -3988,6 +3988,10 @@ public class DungeonThread implements Runnable {
      * @return 0 in case of an error, or the selected difficulty level instead.
      */
     int detectTGDifficulty(Cue difficulty) {
+        final HashMap<Integer, String> readMaps = new HashMap<>();
+        readMaps.put(254, "tg_diff_win_11_");
+        readMaps.put(255, "tg_diff_win_10_");
+
         bot.browser.readScreen(2 * Misc.Durations.SECOND); // note that sometimes the cue will be gray (disabled) since the game is fetching data from the server - in that case we'll have to wait a bit
 
         MarvinSegment seg = MarvinSegment.fromCue(difficulty, bot.browser);
@@ -4005,19 +4009,23 @@ public class DungeonThread implements Runnable {
             return 0; // error
         }
 
-        MarvinImage im = new MarvinImage(bot.browser.getImg().getSubimage(seg.x1 + 26, seg.y1 + 32, 70, 25), "PNG");
+        // We get the  region with the difficulty number
+        BufferedImage numImg = bot.browser.getImg().getSubimage(seg.x1 + 26, seg.y1 + 32, 70, 25);
 
-        // make it white-gray (to facilitate cue recognition):
         int result = 0;
-        int[] customMaxes = {254, 255};
 
-        for (int customMax: customMaxes) {
+        for (Map.Entry<Integer, String> readMap: readMaps.entrySet()) {
+            int customMax = readMap.getKey();
+            String numberPrefix = readMap.getValue();
+
+            // We transform it in B&W using available customMax
+            MarvinImage im = new MarvinImage(numImg, "PNG");
             im.toBlackWhite(new Color(25, 25, 25), new Color(255, 255, 255), customMax);
             im.update();
 
             BufferedImage imb = im.getBufferedImage();
 
-            result = readNumFromImg(imb, "", new HashSet<>(), false, false);
+            result = readNumFromImg(imb, numberPrefix, new HashSet<>(), false, false);
 
             if (result != 0) break;
         }
@@ -5778,38 +5786,54 @@ public class DungeonThread implements Runnable {
         return false;
     }
 
-
+    /**
+     * Used internally to make sure that the difficulty detection fro T/G is working as expected.
+     * This method assumes that the main T/G window with the difficulty dropdown is opened.
+     *
+     * @return The found difficulty number.
+     */
     int debugTGDifficulty() {
         // Check the conversion parameters are correct
         final Color Black = new Color(25, 25, 25);
         final Color White = new Color(255, 255, 255);
-        final int customMax = 254;
-        final Cue difficulty = BHBot.cues.get("Difficulty");
+        final Cue difficultyCue = BHBot.cues.get("Difficulty");
+
+        final HashMap<Integer, String> readMaps = new HashMap<>();
+        readMaps.put(254, "tg_diff_win_11_");
+        readMaps.put(255, "tg_diff_win_10_");
 
         bot.browser.readScreen();
 
         // We check that the difficulty screen is opened
-        MarvinSegment seg = MarvinSegment.fromCue(difficulty, bot.browser);
+        MarvinSegment seg = MarvinSegment.fromCue(difficultyCue, bot.browser);
         if (seg == null) {
             BHBot.logger.warn("Impossible to find difficulty cue. Make sure that the T/G Window is opened.");
             return 0;
         }
 
-        // We get the B&W image of the number
-        MarvinImage im = new MarvinImage(bot.browser.getImg().getSubimage(seg.x1 + 26, seg.y1 + 32, 70, 25), "PNG");
-        im.toBlackWhite(Black, White, customMax);
-        im.update();
-        BufferedImage numImg = im.getBufferedImage();
+        int result = 0;
+        BufferedImage numImg = bot.browser.getImg().getSubimage(seg.x1 + 26, seg.y1 + 32, 70, 25);
 
-        // We read difficulty
-        int diff = readNumFromImg(numImg, "tg_diff_win_", new HashSet<>(), false, false);
+        for (Map.Entry<Integer, String> readMap: readMaps.entrySet()) {
+            int customMax = readMap.getKey();
+            String numberPrefix = readMap.getValue();
+
+            MarvinImage toBlackAndWhite = new MarvinImage(numImg, "PNG");
+            toBlackAndWhite.toBlackWhite(Black, White, customMax);
+            toBlackAndWhite.update();
+
+            result = DungeonThread.readNumFromImg(toBlackAndWhite.getBufferedImage(), numberPrefix, new HashSet<>(), true, false);
+
+            if (result != 0) break;
+        }
 
         // We save the image and the read difficulty for troubleshooting purpose
-        String tgDiffFileName = "tg_diff_" + diff;
+        String tgDiffFileName = "tg_diff_" + result;
         String tgFile = Misc.saveScreen(tgDiffFileName, "tg_debug_diff", true, numImg);
+        BHBot.logger.debug("Detected difficulty is: " + tgFile);
         BHBot.logger.debug("Image saved to: " + tgFile);
 
-        return diff;
+        return result;
     }
 
 }
