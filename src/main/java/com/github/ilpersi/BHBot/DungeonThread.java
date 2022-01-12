@@ -539,7 +539,7 @@ public class DungeonThread implements Runnable {
 
                                 BHBot.logger.info("Attempting " + (trials ? "trials" : "gauntlet") + " at level " + targetDifficulty + "...");
 
-                                int difficulty = detectDifficulty(BHBot.cues.get("Difficulty"));
+                                int difficulty = detectTGDifficulty(BHBot.cues.get("Difficulty"));
                                 if (difficulty == 0) { // error!
                                     BHBot.logger.error("Due to an error#1 in difficulty detection, " + (trials ? "trials" : "gauntlet") + " will be skipped.");
                                     bot.browser.closePopupSecurely(BHBot.cues.get("TrialsOrGauntletWindow"), BHBot.cues.get("X"));
@@ -1386,7 +1386,7 @@ public class DungeonThread implements Runnable {
                                     bot.browser.clickInGame(p.x, p.y);
 
                                     // select difficulty if needed:
-                                    int difficulty = detectDifficulty(BHBot.cues.get("DifficultyExpedition"));
+                                    int difficulty = detectTGDifficulty(BHBot.cues.get("DifficultyExpedition"));
                                     if (difficulty == 0) { // error!
                                         BHBot.logger.warn("Due to an error in difficulty detection, Expedition will be skipped.");
                                         seg = MarvinSegment.fromCue(BHBot.cues.get("X"), bot.browser);
@@ -3866,15 +3866,6 @@ public class DungeonThread implements Runnable {
     }
 
     /**
-     * Reads number from given image. This is the legacy version, see the detailed version below.
-     *
-     * @return 0 in case of error.
-     */
-    private int readNumFromImg(BufferedImage im) {
-        return readNumFromImg(im, "", new HashSet<>(), false, false);
-    }
-
-    /**
      * Reads number from a given image
      *
      * @param im The BufferedImage to read the number from
@@ -3996,7 +3987,7 @@ public class DungeonThread implements Runnable {
      * @param difficulty The Cue to be used to search for the difficulty integer
      * @return 0 in case of an error, or the selected difficulty level instead.
      */
-    int detectDifficulty(Cue difficulty) {
+    int detectTGDifficulty(Cue difficulty) {
         bot.browser.readScreen(2 * Misc.Durations.SECOND); // note that sometimes the cue will be gray (disabled) since the game is fetching data from the server - in that case we'll have to wait a bit
 
         MarvinSegment seg = MarvinSegment.fromCue(difficulty, bot.browser);
@@ -4017,12 +4008,21 @@ public class DungeonThread implements Runnable {
         MarvinImage im = new MarvinImage(bot.browser.getImg().getSubimage(seg.x1 + 26, seg.y1 + 32, 70, 25), "PNG");
 
         // make it white-gray (to facilitate cue recognition):
-        im.toBlackWhite(new Color(25, 25, 25), new Color(255, 255, 255), 254);
-        im.update();
+        int result = 0;
+        int[] customMaxes = {254, 255};
 
-        BufferedImage imb = im.getBufferedImage();
+        for (int customMax: customMaxes) {
+            im.toBlackWhite(new Color(25, 25, 25), new Color(255, 255, 255), customMax);
+            im.update();
 
-        return readNumFromImg(imb);
+            BufferedImage imb = im.getBufferedImage();
+
+            result = readNumFromImg(imb, "", new HashSet<>(), false, false);
+
+            if (result != 0) break;
+        }
+
+        return result;
     }
 
     /* World boss reading and changing section */
@@ -4392,7 +4392,7 @@ public class DungeonThread implements Runnable {
                 MarvinImage topLvlMImg = new MarvinImage(topLvlBImg);
                 topLvlMImg.toBlackWhite(difficultyBlack, difficultyWhite, customMax);
                 topLvlMImg.update();
-                int topLvl = readNumFromImg(topLvlMImg.getBufferedImage());
+                int topLvl = readNumFromImg(topLvlMImg.getBufferedImage(), "", new HashSet<>(), false, false);
                 if (topLvl == 0) {
                     BHBot.logger.error("Impossible to read difficulty range top level.");
                     return 0;
@@ -4403,7 +4403,7 @@ public class DungeonThread implements Runnable {
                 MarvinImage secondLvlMImg = new MarvinImage(secondLvlBImg);
                 secondLvlMImg.toBlackWhite(difficultyBlack, difficultyWhite, customMax);
                 secondLvlMImg.update();
-                int secondLvl = readNumFromImg(secondLvlMImg.getBufferedImage());
+                int secondLvl = readNumFromImg(secondLvlMImg.getBufferedImage(), "", new HashSet<>(), false, false);
                 if (secondLvl == 0) {
                     BHBot.logger.error("Impossible to read difficulty range second level.");
                     return 0;
@@ -4503,7 +4503,7 @@ public class DungeonThread implements Runnable {
         subm.toBlackWhite(new Color(25, 25, 25), new Color(255, 255, 255), 254);
         subm.update();
         BufferedImage sub = subm.getBufferedImage();
-        int num = readNumFromImg(sub);
+        int num = readNumFromImg(sub, "", new HashSet<>(), false, false);
 //		BHBot.logger.info("num = " + Integer.toString(num));
         if (num == 0) {
             BHBot.logger.error("Error: unable to read difficulty level from a drop-down menu!");
@@ -4582,7 +4582,7 @@ public class DungeonThread implements Runnable {
             im.toBlackWhite(new Color(25, 25, 25), new Color(255, 255, 255), 254);
             im.update();
             BufferedImage imb = im.getBufferedImage();
-            d = readNumFromImg(imb);
+            d = readNumFromImg(imb, "", new HashSet<>(), false, false);
             if (d != 0)
                 break; // success
 
@@ -5776,6 +5776,40 @@ public class DungeonThread implements Runnable {
         }
 
         return false;
+    }
+
+
+    int debugTGDifficulty() {
+        // Check the conversion parameters are correct
+        final Color Black = new Color(25, 25, 25);
+        final Color White = new Color(255, 255, 255);
+        final int customMax = 254;
+        final Cue difficulty = BHBot.cues.get("Difficulty");
+
+        bot.browser.readScreen();
+
+        // We check that the difficulty screen is opened
+        MarvinSegment seg = MarvinSegment.fromCue(difficulty, bot.browser);
+        if (seg == null) {
+            BHBot.logger.warn("Impossible to find difficulty cue. Make sure that the T/G Window is opened.");
+            return 0;
+        }
+
+        // We get the B&W image of the number
+        MarvinImage im = new MarvinImage(bot.browser.getImg().getSubimage(seg.x1 + 26, seg.y1 + 32, 70, 25), "PNG");
+        im.toBlackWhite(Black, White, customMax);
+        im.update();
+        BufferedImage numImg = im.getBufferedImage();
+
+        // We read difficulty
+        int diff = readNumFromImg(numImg, "tg_diff_win_", new HashSet<>(), false, false);
+
+        // We save the image and the read difficulty for troubleshooting purpose
+        String tgDiffFileName = "tg_diff_" + diff;
+        String tgFile = Misc.saveScreen(tgDiffFileName, "tg_debug_diff", true, numImg);
+        BHBot.logger.debug("Image saved to: " + tgFile);
+
+        return diff;
     }
 
 }

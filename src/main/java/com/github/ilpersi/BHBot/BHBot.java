@@ -449,9 +449,7 @@ public class BHBot {
 
                 break;
             case "d": { // detect difficulty from screen
-                browser.readScreen();
-                int current = dungeon.detectDifficulty(BHBot.cues.get("Difficulty"));;
-                logger.info("Detected difficulty: " + current);
+                int current = dungeon.debugTGDifficulty();
 
                 if (params.length > 1) {
                     int goal = Integer.parseInt(params[1]);
@@ -825,6 +823,10 @@ public class BHBot {
                         break;
                     case "runes":
                         dungeon.runeManager.detectEquippedMinorRunes(true, true);
+                        break;
+                    case"tgdiff":
+                        // Use this command to troubleshoot T/G difficulty in main window
+                        dungeon.debugTGDifficulty();
                         break;
                     default:
                         break;
