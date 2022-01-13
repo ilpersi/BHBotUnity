@@ -2448,20 +2448,16 @@ public class DungeonThread implements Runnable {
                         Cue XWithBounds;
                         Bounds xBounds;
                         switch (bot.getState()) {
-                            case WorldBoss:
-                                XWithBounds = new Cue(BHBot.cues.get("X"), Bounds.fromWidthHeight(640, 75, 60, 60));
-                                break;
-                            case Raid:
+                            case WorldBoss -> XWithBounds = new Cue(BHBot.cues.get("X"), Bounds.fromWidthHeight(640, 75, 60, 60));
+                            case Raid -> {
                                 xBounds = bot.settings.useUnityEngine ? Bounds.fromWidthHeight(605, 85, 70, 70) : Bounds.fromWidthHeight(610, 90, 60, 60);
                                 XWithBounds = new Cue(BHBot.cues.get("X"), xBounds);
-                                break;
-                            case Dungeon:
+                            }
+                            case Dungeon -> {
                                 xBounds = bot.settings.useUnityEngine ? Bounds.fromWidthHeight(695, 40, 70, 75) : null;
                                 XWithBounds = new Cue(BHBot.cues.get("X"), xBounds);
-                                break;
-                            default:
-                                XWithBounds = new Cue(BHBot.cues.get("X"), null);
-                                break;
+                            }
+                            default -> XWithBounds = new Cue(BHBot.cues.get("X"), null);
                         }
                         bot.browser.closePopupSecurely(XWithBounds, XWithBounds);
                     } else {
@@ -2490,18 +2486,11 @@ public class DungeonThread implements Runnable {
             seg = MarvinSegment.fromCue(BHBot.cues.get("VictoryRecap"), bot.browser);
             if (seg != null) {
 
-                Bounds townBounds;
-                switch (bot.getState()) {
-                    case Gauntlet:
-                        townBounds = Bounds.fromWidthHeight(320, 420, 160, 65);
-                        break;
-                    case WorldBoss:
-                        townBounds = Bounds.fromWidthHeight(502, 459, 133, 38);
-                        break;
-                    default:
-                        townBounds = null;
-                        break;
-                }
+                Bounds townBounds = switch (bot.getState()) {
+                    case Gauntlet -> Bounds.fromWidthHeight(320, 420, 160, 65);
+                    case WorldBoss -> Bounds.fromWidthHeight(502, 459, 133, 38);
+                    default -> null;
+                };
 
 //                // Sometime the victory pop-up is show without the close button, this check is there to ignore it
 //                seg = MarvinSegment.fromCue(BHBot.cues.get("CloseGreen"), 2 * Misc.Durations.SECOND, townBounds, bot.browser);
@@ -2541,16 +2530,11 @@ public class DungeonThread implements Runnable {
                 // close the activity window to return us to the main screen
                 bot.browser.readScreen(3 * Misc.Durations.SECOND); //wait for slide-in animation to finish
 
-                Cue XWithBounds;
                 //noinspection SwitchStatementWithTooFewBranches
-                switch (bot.getState()) {
-                    case WorldBoss:
-                        XWithBounds = new Cue(BHBot.cues.get("X"), Bounds.fromWidthHeight(637, 80, 64, 61));
-                        break;
-                    default:
-                        XWithBounds = new Cue(BHBot.cues.get("X"), null);
-                        break;
-                }
+                Cue XWithBounds = switch (bot.getState()) {
+                    case WorldBoss -> new Cue(BHBot.cues.get("X"), Bounds.fromWidthHeight(637, 80, 64, 61));
+                    default -> new Cue(BHBot.cues.get("X"), null);
+                };
 
                 bot.browser.closePopupSecurely(XWithBounds, BHBot.cues.get("X"));
 
@@ -2678,17 +2662,11 @@ public class DungeonThread implements Runnable {
 
             Misc.saveScreen("defeat-pop-up-" + bot.getState(), "debug", BHBot.includeMachineNameInScreenshots, bot.browser.getImg());
 
-            Bounds townBounds;
-            switch (bot.getState()) {
-                case WorldBoss:
-                    townBounds = Bounds.fromWidthHeight(426, 460, 132, 36);
-                    break;
-                case Dungeon:
-                    townBounds = Bounds.fromWidthHeight(351, 458, 133, 40);
-                    break;
-                default:
-                    townBounds = null;
-            }
+            Bounds townBounds = switch (bot.getState()) {
+                case WorldBoss -> Bounds.fromWidthHeight(426, 460, 132, 36);
+                case Dungeon -> Bounds.fromWidthHeight(351, 458, 133, 40);
+                default -> null;
+            };
 
             seg = MarvinSegment.fromCue("Town", 3 * Misc.Durations.SECOND, townBounds, bot.browser);
 
@@ -2703,18 +2681,11 @@ public class DungeonThread implements Runnable {
 
             if (bot.getState() != BHBot.State.Expedition) {
 
-                Bounds xBounds;
-                switch (bot.getState()) {
-                    case Dungeon:
-                        xBounds = Bounds.fromWidthHeight(678, 37, 96, 90);
-                        break;
-                    case WorldBoss:
-                        xBounds = Bounds.fromWidthHeight(639, 81, 63, 58);
-                        break;
-                    default:
-                        xBounds = null;
-                        break;
-                }
+                Bounds xBounds = switch (bot.getState()) {
+                    case Dungeon -> Bounds.fromWidthHeight(678, 37, 96, 90);
+                    case WorldBoss -> Bounds.fromWidthHeight(639, 81, 63, 58);
+                    default -> null;
+                };
 
                 Cue xButton = new Cue(BHBot.cues.get("X"), xBounds);
 
@@ -3129,75 +3100,48 @@ public class DungeonThread implements Runnable {
             return null;
         }
 
-        switch (currentExpedition) {
-            case 1: // Hallowed Dimension
-                switch (targetPortal) {
-                    case "p1":
-                        return "Googarum's";
-                    case "p2":
-                        return "Svord's";
-                    case "p3":
-                        return "Twimbos";
-                    case "p4":
-                        return "X5-T34M's";
-                    default:
-                        return null;
-                }
-            case 2: // Inferno dimension
-                switch (targetPortal) {
-                    case "p1":
-                        return "Raleib's";
-                    case "p2":
-                        return "Blemo's";
-                    case "p3":
-                        return "Gummy's";
-                    case "p4":
-                        return "Zarlocks";
-                    default:
-                        return null;
-                }
-            case 3:
-                switch (targetPortal) {
-                    case "p1":
-                        return "Zorgo Crossing";
-                    case "p2":
-                        return "Yackerz Tundra";
-                    case "p3":
-                        return "Vionot Sewer";
-                    case "p4":
-                        return "Grampa Hef's Heart";
-                    default:
-                        return null;
-                }
-            case 4: // Idol dimension
-                switch (targetPortal) {
-                    case "p1":
-                        return "Blublix";
-                    case "p2":
-                        return "Mowhi";
-                    case "p3":
-                        return "Wizbot";
-                    case "p4":
-                        return "Astamus";
-                    default:
-                        return null;
-                }
-            case 5: // Battle Bards!
-                switch (targetPortal) {
-                    case "p1":
-                        return "Hero Fest";
-                    case "p2":
-                        return "Burning Fam";
-                    case "p3":
-                        return "Melvapaloozo";
-                    case "p4":
-                        return "Bitstock";
-                    default:
-                        return null;
-                }
-            default:
-                return null;
-        }
+        return switch (currentExpedition) {
+            case 1 -> // Hallowed Dimension
+                    switch (targetPortal) {
+                        case "p1" -> "Googarum's";
+                        case "p2" -> "Svord's";
+                        case "p3" -> "Twimbos";
+                        case "p4" -> "X5-T34M's";
+                        default -> null;
+                    };
+            case 2 -> // Inferno dimension
+                    switch (targetPortal) {
+                        case "p1" -> "Raleib's";
+                        case "p2" -> "Blemo's";
+                        case "p3" -> "Gummy's";
+                        case "p4" -> "Zarlocks";
+                        default -> null;
+                    };
+            case 3 -> switch (targetPortal) {
+                case "p1" -> "Zorgo Crossing";
+                case "p2" -> "Yackerz Tundra";
+                case "p3" -> "Vionot Sewer";
+                case "p4" -> "Grampa Hef's Heart";
+                default -> null;
+            };
+            case 4 -> // Idol dimension
+                    switch (targetPortal) {
+                        case "p1" -> "Blublix";
+                        case "p2" -> "Mowhi";
+                        case "p3" -> "Wizbot";
+                        case "p4" -> "Astamus";
+                        default -> null;
+                    };
+            case 5 -> // Battle Bards!
+                    switch (targetPortal) {
+                        case "p1" -> "Hero Fest";
+                        case "p2" -> "Burning Fam";
+                        case "p3" -> "Melvapaloozo";
+                        case "p4" -> "Bitstock";
+                        default -> null;
+                    };
+            default -> null;
+        };
     }
 
     /**
@@ -3218,24 +3162,13 @@ public class DungeonThread implements Runnable {
             return null;
         }
 
-        int portalInt;
-        switch (targetPortal) {
-            case "p1":
-                portalInt = 1;
-                break;
-            case "p2":
-                portalInt = 2;
-                break;
-            case "p3":
-                portalInt = 3;
-                break;
-            case "p4":
-                portalInt = 4;
-                break;
-            default:
-                portalInt = 0;
-                break;
-        }
+        int portalInt = switch (targetPortal) {
+            case "p1" -> 1;
+            case "p2" -> 2;
+            case "p3" -> 3;
+            case "p4" -> 4;
+            default -> 0;
+        };
 
         // we check for white border to understand if the portal is enabled
         Point[] portalCheck = new Point[4];
@@ -5230,17 +5163,14 @@ public class DungeonThread implements Runnable {
             return new Bounds(544, 188, 661, 225); //1st opponent
         }
 
-        switch (opponent) {
-            case 1:
-                return new Bounds(545, 188, 660, 225); //1st opponent
-            case 2:
-                return new Bounds(545, 243, 660, 279); //2nd opponent
-            case 3:
-                return new Bounds(544, 296, 660, 335); //1st opponent
-            case 4:
-                return new Bounds(544, 351, 660, 388); //1st opponent
-        }
-        return null;
+        return switch (opponent) {
+            case 1 -> new Bounds(545, 188, 660, 225); //1st opponent
+            case 2 -> new Bounds(545, 243, 660, 279); //2nd opponent
+            case 3 -> new Bounds(544, 296, 660, 335); //1st opponent
+            case 4 -> new Bounds(544, 351, 660, 388);
+            default -> //1st opponent
+                    null;
+        };
     }
 
     void softReset() {
@@ -5394,18 +5324,13 @@ public class DungeonThread implements Runnable {
 
     // TODO Merge with ItemGrade Enum
     private String getItemTier(String tier) {
-        switch (tier) {
-            case "m":
-                return "Mythic";
-            case "s":
-                return "Set";
-            case "l":
-                return "Legendary";
-            case "h":
-                return "Heroic";
-            default:
-                return "unknown_tier";
-        }
+        return switch (tier) {
+            case "m" -> "Mythic";
+            case "s" -> "Set";
+            case "l" -> "Legendary";
+            case "h" -> "Heroic";
+            default -> "unknown_tier";
+        };
     }
 
     /**
@@ -5433,41 +5358,27 @@ public class DungeonThread implements Runnable {
         }
 
         public static String letterToName(String s) {
-            switch (s) {
-                case "m":
-                    return "mainhand";
-                case "o":
-                    return "offhand";
-                case "h":
-                    return "head";
-                case "b":
-                    return "body";
-                case "n":
-                    return "neck";
-                case "r":
-                    return "ring";
-                default:
-                    return "unknown_item";
-            }
+            return switch (s) {
+                case "m" -> "mainhand";
+                case "o" -> "offhand";
+                case "h" -> "head";
+                case "b" -> "body";
+                case "n" -> "neck";
+                case "r" -> "ring";
+                default -> "unknown_item";
+            };
         }
 
         public static EquipmentType letterToType(String s) {
-            switch (s) {
-                case "m":
-                    return Mainhand;
-                case "o":
-                    return Offhand;
-                case "h":
-                    return Head;
-                case "b":
-                    return Body;
-                case "n":
-                    return Neck;
-                case "r":
-                    return Ring;
-                default:
-                    return null; // should not happen!
-            }
+            return switch (s) {
+                case "m" -> Mainhand;
+                case "o" -> Offhand;
+                case "h" -> Head;
+                case "b" -> Body;
+                case "n" -> Neck;
+                case "r" -> Ring;
+                default -> null; // should not happen!
+            };
         }
 
 //		public int maxPos() {
