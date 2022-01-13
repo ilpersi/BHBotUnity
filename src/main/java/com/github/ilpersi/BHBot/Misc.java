@@ -537,6 +537,7 @@ public class Misc {
             final int loopLimit = 10;
             int loopCnt = 0;
 
+            BHBot.logger.debug("Machine name cache is empty. Getting hostname.");
 
             // Sometimes more than one attempt is required to correctly get the machine name.
             while ("".equals(Misc.machineName) && loopCnt < loopLimit) {
@@ -551,6 +552,7 @@ public class Misc {
                 loopCnt++;
 
             }
+            BHBot.logger.debug("Retrieved hostname: " + Misc.machineName);
         }
 
         return Misc.machineName;

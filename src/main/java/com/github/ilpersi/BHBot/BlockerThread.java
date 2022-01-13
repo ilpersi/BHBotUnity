@@ -77,7 +77,7 @@ public class BlockerThread implements Runnable {
 
                 MarvinSegment uhoh = MarvinSegment.fromCue(BHBot.cues.get("UhOh"), bot.browser);
                 if (uhoh != null) {
-                    //region You have been disconnected
+                    //region You have been disconnected / Connecting to Server
                     // check for "You have been disconnected" dialog:
                     MarvinSegment dc = MarvinSegment.fromCue(BHBot.cues.get("Disconnected"), bot.browser);
                     MarvinSegment con = MarvinSegment.fromCue(BHBot.cues.get("Connecting"), bot.browser);
@@ -92,7 +92,7 @@ public class BlockerThread implements Runnable {
                             bot.dungeon.shrineManager.resetUsedInAdventure();
                         } else {
                             bot.scheduler.isUserInteracting = true;
-                            // probably user has logged in, that's why we got disconnected. Lets leave him alone for some time and then resume!
+                            // probably user has logged in, that's why we got disconnected. Let's leave him alone for some time and then resume!
                             BHBot.logger.info("Disconnect has been detected. Probably due to user interaction. Sleeping for " + Misc.millisToHumanForm((long) bot.settings.reconnectTimer * Misc.Durations.MINUTE) + "...");
                             bot.scheduler.pause(bot.settings.reconnectTimer * Misc.Durations.MINUTE);
                         }
@@ -201,7 +201,7 @@ public class BlockerThread implements Runnable {
                     }
                     // TODO Add bounds
                     seg = MarvinSegment.fromCue(BHBot.cues.get("X"), bot.browser);
-                    // TODO Chec if seg is null
+                    // TODO Check if seg is null
                     bot.browser.clickOnSeg(seg);
                     BHBot.logger.info("Daily reward claimed successfully.");
                     bot.browser.readScreen(2 * Misc.Durations.SECOND);
@@ -259,7 +259,7 @@ public class BlockerThread implements Runnable {
                         bot.saveGameScreen("recently-disconnected-timeout", "errors");
                     }
 
-                    // We check if the restored status requires autoShrine and we reset it if needed
+                    // We check if the restored status requires autoShrine, and we reset it if needed
                     if (bot.settings.autoShrine.contains(bot.getState().getShortcut())) {
                         bot.dungeon.shrineManager.updateShrineSettings(false, false); //in case we are stuck in a dungeon lets enable shrines/boss
                     }
@@ -310,7 +310,7 @@ public class BlockerThread implements Runnable {
             bot.scheduler.restoreIdleTime(); // revert changes to idle time
             if (bot.finished || (!bot.running && BHBot.State.Main.equals(bot.getState()))) break; // skip sleeping if finished flag has been set or bot is not running!
 
-            BHBot.logger.trace("Bocker Thread Sleeping");
+            BHBot.logger.trace("Blocker Thread Sleeping");
             Misc.sleep(250);
         }
 
