@@ -258,7 +258,6 @@ class CueManager {
         addCue("AreYouThere", "cues/cueAreYouThere.png", Bounds.fromWidthHeight(250, 240, 300, 45));
         addCue("Yes", "cues/cueYes.png", null);
 
-        addCue("Disconnected", "cues/cueDisconnected.png", Bounds.fromWidthHeight(299, 232, 202, 70)); // cue for "You have been disconnected" popup
         addCue("Reconnect", "cues/cueReconnectButton.png", new Bounds(320, 330, 400, 360)); // used with "You have been disconnected" dialog and also with the "maintenance" dialog
         addCue("Reload", "cues/cueReload.png", new Bounds(320, 330, 360, 360)); // used in "There is a new update required to play" dialog (happens on Friday night)
         addCue("Maintenance", "cues/cueMaintenance.png", new Bounds(230, 200, 320, 250)); // cue for "Bit Heroes is currently down for maintenance. Please check back shortly!"
@@ -592,6 +591,7 @@ class CueManager {
         addCue("Items", "unitycues/blockers/cueItems.png", Bounds.fromWidthHeight(325, 105, 145, 80)); // Imes Cue for daily reward
         addCue("RecentlyDisconnected", "unitycues/blockers/cueRecentlyDisconnected.png", Bounds.fromWidthHeight(260, 195, 280, 135));
         addCue("NotInAGuild", "unitycues/blockers/cueNotInAGuild.png", Bounds.fromWidthHeight(255, 215, 290, 90)); // You are currently non in a Guild popup
+        addCue("Connecting", "unitycues/blockers/cueConnecting.png", Bounds.fromWidthHeight(290, 215, 215, 85)); // Connecting to server popup
         //endregion
 
         //region Bounties

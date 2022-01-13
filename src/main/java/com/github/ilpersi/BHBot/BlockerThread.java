@@ -80,7 +80,8 @@ public class BlockerThread implements Runnable {
                     //region You have been disconnected
                     // check for "You have been disconnected" dialog:
                     MarvinSegment dc = MarvinSegment.fromCue(BHBot.cues.get("Disconnected"), bot.browser);
-                    if (dc != null) {
+                    MarvinSegment con = MarvinSegment.fromCue(BHBot.cues.get("Connecting"), bot.browser);
+                    if (dc != null || con != null) {
                         if (bot.scheduler.isUserInteracting || bot.scheduler.dismissReconnectOnNextIteration) {
                             bot.scheduler.isUserInteracting = false;
                             bot.scheduler.dismissReconnectOnNextIteration = false;

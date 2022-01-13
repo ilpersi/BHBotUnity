@@ -332,6 +332,8 @@ public class CueBuilder {
                 Set.of(), Set.of(), "RecentlyDisconnected", "unitycues/blockers/cueRecentlyDisconnected.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/blockers", "not_in_guild_(.*)\\.png", Bounds.fromWidthHeight(267, 226, 264, 65),
                 Set.of(), Set.of(), "NotInAGuild", "unitycues/blockers/cueNotInAGuild.png", "You are currently non in a Guild popup");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/blockers", "connecting_(.*)\\.png", Bounds.fromWidthHeight(301, 229, 194, 61),
+                Set.of(), Set.of(), "Connecting", "unitycues/blockers/cueConnecting.png", "Connecting to server popup");
         //endregion
 
         //region Bounties
