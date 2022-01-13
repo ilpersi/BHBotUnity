@@ -1,19 +1,25 @@
 package com.github.ilpersi.BHBot;
 
-import java.text.MessageFormat;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class SettingsManager {
     private final BHBot bot;
 
-    // this variables are used to store the current status of the settings
+    // This variable is used to store the current status of the settings
     private boolean initialized;
 
-    SettingsManager (BHBot bot, boolean skipInitialization) {
+    // In configuration settings how should the click position be managed?
+    enum ClickPosition {
+        ABSOLUTE, // Absolute to the screen
+        RELATIVE // Relative to a found Cue
+    }
+
+    // Record used to manage the desired configuration settings
+    record SettingConfiguration(String cueName, ClickPosition clickPosition, int x, int y, int barPosition) {
+    }
+
+    SettingsManager(BHBot bot, boolean skipInitialization) {
         this.bot = bot;
 
         if (skipInitialization) {
@@ -29,14 +35,17 @@ public class SettingsManager {
         }
     }
 
-    private void checkBotSettings() {
+    /**
+     * This method is taking care of setting the
+     */
+    void checkBotSettings() {
         if (openSettings(Misc.Durations.SECOND)) {
 
-            final Bounds scrolAtBottomBounds = Bounds.fromWidthHeight(605, 355, 35, 45);
+            final Bounds scrollAtBottomBounds = Bounds.fromWidthHeight(605, 355, 35, 45);
             final Bounds downArrowBounds = Bounds.fromWidthHeight(614, 375, 18, 19);
             final Bounds settingsArea = Bounds.fromWidthHeight(162, 162, 449, 259);
 
-            final Cue scrolAtBottomCue = new Cue(BHBot.cues.get("ScrollerAtBottomSettings"), scrolAtBottomBounds);
+            final Cue scrollAtBottomCue = new Cue(BHBot.cues.get("ScrollerAtBottomSettings"), scrollAtBottomBounds);
             final Cue downArrowCue = new Cue(BHBot.cues.get("DropDownDown"), downArrowBounds);
 
             MarvinSegment downArrowSeg = MarvinSegment.fromCue(downArrowCue, Misc.Durations.SECOND, bot.browser);
@@ -46,21 +55,17 @@ public class SettingsManager {
                 return;
             }
 
-            // rel is for relative clicks and the x and y coords are relative to the coordinates where cue is found
-            // abs is for absolute clicks and the x and y coords are absolute on the screen
-            HashMap<String, String> settingConfigs = new HashMap<>();
-            settingConfigs.put("settingsMusic", "rel:4;5:1");
-            settingConfigs.put("settingsSound", "rel:4;5:1");
-            settingConfigs.put("settingsNotification", "rel:20;20:3");
-            settingConfigs.put("settingsWBReq", "rel:24;24:7");
-            settingConfigs.put("settingsReducedFX", "rel:22;22:10");
-            settingConfigs.put("settingsBattleTXT", "rel:22;24:10");
-            settingConfigs.put("settingsAnimations", "rel:22;21:11");
-            settingConfigs.put("settingsMerchants", "rel:20;22:21");
-            settingConfigs.put("settingsTips", "rel:19;21:23");
-
-            // Regular expression to understand how the bot should click on settings based on the previous hashmap
-            Pattern clickRegex = Pattern.compile("(?<click>rel|abs):(?<x>\\d+);(?<y>\\d+):(?<barPosition>\\d{1,2})");
+            // When Kong modifies/adds new settings, review this arraylist
+            ArrayList<SettingConfiguration> settingConfigurations = new ArrayList<>();
+            settingConfigurations.add(new SettingConfiguration("settingsMusic", ClickPosition.RELATIVE, 4, 5, 1));
+            settingConfigurations.add(new SettingConfiguration("settingsSound", ClickPosition.RELATIVE, 4, 5, 1));
+            settingConfigurations.add(new SettingConfiguration("settingsNotification", ClickPosition.RELATIVE, 20, 20, 3));
+            settingConfigurations.add(new SettingConfiguration("settingsWBReq", ClickPosition.RELATIVE, 24, 24, 7));
+            settingConfigurations.add(new SettingConfiguration("settingsReducedFX", ClickPosition.RELATIVE, 22, 22, 10));
+            settingConfigurations.add(new SettingConfiguration("settingsBattleTXT", ClickPosition.RELATIVE, 22, 24, 10));
+            settingConfigurations.add(new SettingConfiguration("settingsAnimations", ClickPosition.RELATIVE, 22, 21, 11));
+            settingConfigurations.add(new SettingConfiguration("settingsMerchants", ClickPosition.RELATIVE, 20, 22, 21));
+            settingConfigurations.add(new SettingConfiguration("settingsTips", ClickPosition.RELATIVE, 19, 21, 23));
 
             HashSet<String> alreadyFound = new HashSet<>();
 
@@ -73,73 +78,57 @@ public class SettingsManager {
                 if (menuPos > 1)
                     bot.browser.clickOnSeg(downArrowSeg);
 
-                for (Map.Entry<String, String> settingConf : settingConfigs.entrySet()) {
+                for (SettingConfiguration setting : settingConfigurations) {
                     // We get cueName and position details
-                    String cueName = settingConf.getKey();
-                    String clickDetails = settingConf.getValue();
 
                     // if the two collections have the same size, it means we do not need to search anymore
-                    if (alreadyFound.size() == settingConfigs.size()) {
+                    if (alreadyFound.size() == settingConfigurations.size()) {
                         BHBot.logger.debug("All the desired settings are configured.");
                         break outer;
                     }
 
                     // if we found cueName already, we skip
-                    if (alreadyFound.contains(cueName)) continue;
+                    if (alreadyFound.contains(setting.cueName)) continue;
 
-                    // we get clicking details
-                    Matcher clickMatcher = clickRegex.matcher(clickDetails);
-                    if (clickMatcher.find()) {
+                    // if we expect the setting on a different bar position, we skp
+                    if (menuPos != setting.barPosition) continue;
 
-                        // we extract info from reges groups
-                        String clickType = clickMatcher.group("click");
-                        int xPos = Integer.parseInt(clickMatcher.group("x"));
-                        int yPos = Integer.parseInt(clickMatcher.group("y"));
-                        int barPosition = Integer.parseInt(clickMatcher.group("barPosition"));
+                    // We make sure to search for the cue in the right screen area
+                    Cue settingCue = new Cue(BHBot.cues.get(setting.cueName), settingsArea);
 
-                        if (menuPos != barPosition) continue;
-
-                        // We make sure to search for the cue in the right screen area
-                        Cue settingCue = new Cue(BHBot.cues.get(cueName), settingsArea);
-
-                        // we search for the cue and if we find it, we click based on the settings
-                        MarvinSegment settingSeg = MarvinSegment.fromCue(settingCue, Misc.Durations.SECOND, bot.browser);
-                        if (settingSeg != null) {
-                            int clickX, clickY;
-                            if ("rel".equalsIgnoreCase(clickType)) {
-                                clickX = settingSeg.x1 + xPos;
-                                clickY = settingSeg.y1 + yPos;
-                            } else if ("abs".equalsIgnoreCase(clickType)) {
-                                clickX = xPos;
-                                clickY = yPos;
-                            }
-                            else {
-                                // this should never happen, as it will not match the regex
-                                BHBot.logger.warn("Unknown click position logic while searching for settings in SettingManager.");
-                                continue;
-                            }
-
-                            bot.browser.clickInGame(clickX, clickY);
-                            // As there may be additional settings in the same page, we make sure to refresh the image
-                            bot.browser.readScreen(Misc.Durations.SECOND / 2);
-
-                            alreadyFound.add(cueName);
+                    // we search for the cue and if we find it, we click based on the settings
+                    MarvinSegment settingSeg = MarvinSegment.fromCue(settingCue, Misc.Durations.SECOND, bot.browser);
+                    if (settingSeg != null) {
+                        int clickX, clickY;
+                        if (ClickPosition.RELATIVE.equals(setting.clickPosition)) {
+                            clickX = settingSeg.x1 + setting.x;
+                            clickY = settingSeg.y1 + setting.y;
+                        } else if (ClickPosition.ABSOLUTE.equals(setting.clickPosition)) {
+                            clickX = setting.x;
+                            clickY = setting.y;
                         } else {
-                            BHBot.logger.warn(String.format("Impossible to find %s at bar position %d", cueName, barPosition));
+                            // this should never happen, as the enum has only two options
+                            BHBot.logger.warn("Unknown click position logic while searching for settings in SettingManager.");
+                            continue;
                         }
-                    } else {
-                        BHBot.logger.warn(String.format("Wrong setting configuration: %S -> %s", cueName, clickDetails));
-                    }
 
+                        bot.browser.clickInGame(clickX, clickY);
+                        // As there may be additional settings in the same page, we make sure to refresh the image
+                        bot.browser.readScreen(Misc.Durations.SECOND / 2);
+
+                        alreadyFound.add(setting.cueName);
+                    } else {
+                        BHBot.logger.debug(String.format("Impossible to find %s at bar position %d", setting.cueName, setting.barPosition));
+                    }
                 }
 
                 // We do not scroll down anymore if we found all settings already!
-                if (alreadyFound.size() == settingConfigs.size()) {
+                if (alreadyFound.size() == settingConfigurations.size()) {
                     BHBot.logger.debug("All the desired settings are configured.");
                     break;
                 }
 
-                bottomSeg = MarvinSegment.fromCue(scrolAtBottomCue, Misc.Durations.SECOND / 2, bot.browser);
+                bottomSeg = MarvinSegment.fromCue(scrollAtBottomCue, Misc.Durations.SECOND / 2, bot.browser);
                 bot.browser.readScreen();
                 menuPos += 1;
             } while (bottomSeg == null);
@@ -152,7 +141,7 @@ public class SettingsManager {
     }
 
     /**
-     * This method will take care of opening the settings menu. This method assumes that no other window is curretnly
+     * This method will take care of opening the settings menu. This method assumes that no other window is currently
      * opened and the character main screen is clean.
      *
      * @param delay How much time before we time out?
