@@ -60,9 +60,11 @@ public class DungeonThread implements Runnable {
     private long XEALS_CHECK_INTERVAL = 5 * Misc.Durations.MINUTE;
     private long TICKETS_CHECK_INTERVAL = 5 * Misc.Durations.MINUTE;
     private long TOKENS_CHECK_INTERVAL = 5 * Misc.Durations.MINUTE;
-    private long BADGES_CHECK_INTERVAL = 5 * Misc.Durations.MINUTE;
+    @SuppressWarnings("FieldCanBeLocal")
+    private final long SETTINGS_CHECK_INTERVAL = Misc.Durations.HOUR;
     @SuppressWarnings("FieldCanBeLocal")
     private final long BONUS_CHECK_INTERVAL = 5 * Misc.Durations.MINUTE;
+    private long BADGES_CHECK_INTERVAL = 5 * Misc.Durations.MINUTE;
 
     private long timeLastEnergyCheck = 0; // when did we check for Energy the last time?
     private long timeLastXealsCheck = 0; // when did we check for Xeals the last time?
@@ -73,6 +75,7 @@ public class DungeonThread implements Runnable {
     private long timeLastExpBadgesCheck = 0; // when did we check for badges the last time?
     private long timeLastInvBadgesCheck = 0; // when did we check for badges the last time?
     private long timeLastGVGBadgesCheck = 0; // when did we check for badges the last time?
+    private long timeLastSettingsCheck = Misc.getTime(); // when did we check for settings the last time?
     private long timeLastBountyCheck = 0; // when did we check for bounties the last time?
     private long timeLastBonusCheck = 0; // when did we check for bonuses (active consumables) the last time?
     long timeLastFishingBaitsCheck = 0; // when did we check for fishing baits the last time?
@@ -286,6 +289,11 @@ public class DungeonThread implements Runnable {
 
                     if (!bot.settings.debugBoot) {
                         settings.initialize();
+                        // We reset the last time we checked settings
+                        timeLastSettingsCheck = Misc.getTime();
+                        // On some machines checking settings is slow, so we reset the idle timer
+                        bot.scheduler.resetIdleTime();
+
                         shrineManager.initialize();
                         runeManager.initialize();
                     } else {
@@ -293,6 +301,15 @@ public class DungeonThread implements Runnable {
                             BHBot.logger.debug("Debug boot detected: autoRune, autoShrine, Settings not initialized.");
                             debugBootWarning = true;
                         }
+                    }
+
+                    // We periodically check settings to make sure they are properly configured
+                    if (Misc.getTime() - timeLastSettingsCheck > SETTINGS_CHECK_INTERVAL) {
+                        settings.checkBotSettings();
+                        // We reset the last time we checked settings
+                        timeLastSettingsCheck = Misc.getTime();
+                        // On some machines checking settings is slow, so we reset the idle timer
+                        bot.scheduler.resetIdleTime();
                     }
 
                     // check for bonuses:
