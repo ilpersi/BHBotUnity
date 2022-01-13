@@ -410,14 +410,14 @@ public class DungeonThread implements Runnable {
                                 Cue raidDifficultyCue;
                                 switch (raidSetting.difficulty) {
                                     case 1:
-                                        raidDifficultyCue = bot.settings.useUnityEngine ? BHBot.cues.get("RaidNormal") : new Cue(BHBot.cues.get("Normal"), null);
+                                        raidDifficultyCue = BHBot.cues.get("RaidNormal");
                                         break;
                                     case 2:
-                                        raidDifficultyCue = bot.settings.useUnityEngine ? BHBot.cues.get("RaidHard") : new Cue(BHBot.cues.get("Hard"), null);
+                                        raidDifficultyCue = BHBot.cues.get("RaidHard");
                                         break;
                                     case 3:
                                     default:
-                                        raidDifficultyCue = bot.settings.useUnityEngine ? BHBot.cues.get("RaidHeroic") : new Cue(BHBot.cues.get("Heroic"), Bounds.fromWidthHeight(535, 225, 110, 35));
+                                        raidDifficultyCue = BHBot.cues.get("RaidHeroic");
                                         break;
                                 }
 
@@ -427,7 +427,7 @@ public class DungeonThread implements Runnable {
                                 //team selection screen
                                 /* Solo-for-bounty code */
                                 if (raidSetting.solo) { //if the level is soloable then clear the team to complete bounties
-                                    Cue raidClearCue = bot.settings.useUnityEngine ? BHBot.cues.get("TeamClear") : new Cue(BHBot.cues.get("Clear"), Bounds.fromWidthHeight(310, 440, 110, 50));
+                                    Cue raidClearCue = BHBot.cues.get("TeamClear");
 
                                     seg = MarvinSegment.fromCue(raidClearCue, Misc.Durations.SECOND * 3, bot.browser);
                                     if (seg != null) {
@@ -440,7 +440,7 @@ public class DungeonThread implements Runnable {
                                     }
                                 }
 
-                                Cue acceptCue = bot.settings.useUnityEngine ? BHBot.cues.get("TeamAccept") : new Cue(BHBot.cues.get("Accept"), Bounds.fromWidthHeight(465, 445, 110, 40));
+                                Cue acceptCue = BHBot.cues.get("TeamAccept");
                                 bot.browser.closePopupSecurely(acceptCue, acceptCue);
 
                                 if (raidSetting.solo) {
@@ -855,7 +855,7 @@ public class DungeonThread implements Runnable {
                                     }
                                 }
 
-                                Cue dungeonAccept = bot.settings.useUnityEngine ? BHBot.cues.get("TeamAccept") : new Cue(BHBot.cues.get("Accept"), Bounds.fromWidthHeight(465, 445, 110, 45));
+                                Cue dungeonAccept = BHBot.cues.get("TeamAccept");
                                 bot.browser.closePopupSecurely(dungeonAccept, dungeonAccept);
 
                                 if (dungeonSetting.solo) {
@@ -2363,13 +2363,13 @@ public class DungeonThread implements Runnable {
         if (isInFight) {
             seg = MarvinSegment.fromCue(BHBot.cues.get("Merchant"), bot.browser);
             if (seg != null) {
-                seg = bot.settings.useUnityEngine ? MarvinSegment.fromCue(BHBot.cues.get("MerchantDecline"), bot.browser) : MarvinSegment.fromCue(BHBot.cues.get("Decline"), 5 * Misc.Durations.SECOND, bot.browser);
+                seg = MarvinSegment.fromCue(BHBot.cues.get("MerchantDecline"), bot.browser);
                 if (seg != null) {
                     bot.browser.clickOnSeg(seg);
                 } else BHBot.logger.error("Merchant 'decline' cue not found");
 
                 bot.browser.readScreen(Misc.Durations.SECOND);
-                seg = bot.settings.useUnityEngine ? MarvinSegment.fromCue(BHBot.cues.get("YesGreen"), 5 * Misc.Durations.SECOND, Bounds.fromWidthHeight(300, 345, 65, 35), bot.browser) : MarvinSegment.fromCue(BHBot.cues.get("YesGreen"), 5 * Misc.Durations.SECOND, bot.browser);
+                seg = MarvinSegment.fromCue(BHBot.cues.get("YesGreen"), 5 * Misc.Durations.SECOND, Bounds.fromWidthHeight(300, 345, 65, 35), bot.browser);
                 if (seg != null) {
                     bot.browser.clickOnSeg(seg);
                 } else BHBot.logger.error("Merchant 'yes' cue not found");
@@ -2450,11 +2450,11 @@ public class DungeonThread implements Runnable {
                         switch (bot.getState()) {
                             case WorldBoss -> XWithBounds = new Cue(BHBot.cues.get("X"), Bounds.fromWidthHeight(640, 75, 60, 60));
                             case Raid -> {
-                                xBounds = bot.settings.useUnityEngine ? Bounds.fromWidthHeight(605, 85, 70, 70) : Bounds.fromWidthHeight(610, 90, 60, 60);
+                                xBounds = Bounds.fromWidthHeight(605, 85, 70, 70);
                                 XWithBounds = new Cue(BHBot.cues.get("X"), xBounds);
                             }
                             case Dungeon -> {
-                                xBounds = bot.settings.useUnityEngine ? Bounds.fromWidthHeight(695, 40, 70, 75) : null;
+                                xBounds = Bounds.fromWidthHeight(695, 40, 70, 75);
                                 XWithBounds = new Cue(BHBot.cues.get("X"), xBounds);
                             }
                             default -> XWithBounds = new Cue(BHBot.cues.get("X"), null);
@@ -2740,9 +2740,9 @@ public class DungeonThread implements Runnable {
         final String declineMessage = seg != null ? "No skeleton keys, skipping.." : "Skeleton treasure found, declining.";
         final String acceptMessage = bot.settings.openSkeleton == 1 ? "Skeleton treasure found, attempting to use key" : "Raid Skeleton treasure found, attempting to use key";
 
-        Bounds declineBounds = bot.settings.useUnityEngine ? Bounds.fromWidthHeight(411, 373, 134, 39) : Bounds.fromWidthHeight(400, 360, 150, 65);
-        Bounds greenYesBounds = bot.settings.useUnityEngine ? Bounds.fromWidthHeight(290, 335, 85, 55) : Bounds.fromWidthHeight(245, 335, 155, 55);
-        Bounds openBounds = bot.settings.useUnityEngine ? Bounds.fromWidthHeight(276, 340, 114, 43) : Bounds.fromWidthHeight(250, 360, 150, 65);
+        Bounds declineBounds = Bounds.fromWidthHeight(411, 373, 134, 39);
+        Bounds greenYesBounds = Bounds.fromWidthHeight(290, 335, 85, 55);
+        Bounds openBounds = Bounds.fromWidthHeight(276, 340, 114, 43);
 
         // we don't have skeleton keys or setting does not allow us to open chests
         if (seg != null || bot.settings.openSkeleton == 0) {
