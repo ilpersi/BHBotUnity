@@ -366,13 +366,10 @@ class CueManager {
         addCue("TrialsOrGauntletWindow", "cues/cueTrialsOrGauntletWindow.png", new Bounds(300, 30, 510, 105)); // cue for a trials/gauntlet window
         addCue("NotEnoughTokens", "cues/cueNotEnoughTokens.png", Bounds.fromWidthHeight(274, 228, 253, 79)); // cue to check for the not enough tokens popup
 
-        addCue("DifficultyDisabled", "cues/cueDifficultyDisabled.png", new Bounds(450, 330, 640, 450)); // selected difficulty in trials/gauntlet window (disabled - because game is still fetching data from server)
-        addCue("SelectDifficulty", "cues/cueSelectDifficulty.png", new Bounds(400, 260, 0, 0)/*not exact bounds... the lower-right part of screen!*/); // select difficulty button in trials/gauntlet
         addCue("DifficultyDropDown", "cues/cueDifficultyDropDown.png", new Bounds(260, 50, 550, 125)); // difficulty drop down menu cue
         addCue("DifficultyExpedition", "cues/cueDifficultyExpedition.png", null); // selected difficulty in trials/gauntlet window
         addCue("SelectDifficultyExpedition", "cues/cueSelectDifficultyExpedition.png", null);
         addCue("DropDownUp", "cues/cueDropDownUp.png", null); // up arrow in difficulty drop down menu (found in trials/gauntlet, for example)
-        addCue("DropDownDown", "cues/cueDropDownDown.png", null); // down arrow in difficulty drop down menu (found in trials/gauntlet, for example)
         addCue("Cost", "cues/cueCost.png", new Bounds(400, 150, 580, 240)); // used both for PvP and Gauntlet/Trials costs. Note that bounds are very wide, because position of this cue in PvP is different from that in Gauntlet/Trials!
         addCue("SelectCost", "cues/cueSelectCost.png", new Bounds(555, 170, 595, 205)); // cue for select cost found in both PvP and Gauntlet/Trials windows. Note that bounds are wide, because position of this cue in PvP is different from that in Gauntlet/Trials!
         addCue("CostDropDown", "cues/cueCostDropDown.png", new Bounds(260, 45, 320, 70)); // cue for cost selection drop down window
@@ -403,7 +400,6 @@ class CueManager {
         addCue("small9", "cues/numbers/small9.png", null);
 
         // T/G Gauntlet difficulty related
-        addCue("ScrollerAtTop", "cues/cueScrollerAtTop.png", null);
         addCue("ScrollerNone", "cues/cueScrollerNone.png", Bounds.fromWidthHeight(525, 120, 30, 330));
 
 
@@ -812,6 +808,8 @@ class CueManager {
         addCue("Gauntlet", "unitycues/tierGauntlet/cueGauntlet.png", null); // cue for gauntlet button
         addCue("Gauntlet2", "unitycues/tierGauntlet/cueGauntlet2.png", null); // alternative cue for gauntlet button
         addCue("Difficulty", "unitycues/tierGauntlet/cueDifficulty.png", Bounds.fromWidthHeight(460, 340, 185, 95)); // T/G Difficulty combo box
+        addCue("DifficultyDisabled", "unitycues/tierGauntlet/cueDifficultyDisabled.png", Bounds.fromWidthHeight(455, 340, 190, 100)); // Greyed out TG Difficulty drop down
+        addCue("SelectDifficulty", "unitycues/tierGauntlet/cueSelectDifficulty.png", Bounds.fromWidthHeight(575, 365, 70, 65)); // Difficulty arrow pointing down
         //endregion
 
         //region WB

@@ -665,9 +665,9 @@ public class CueBuilder {
         addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "scroller_23(.*)\\.png", Bounds.fromWidthHeight(616, 368, 14, 24),
                 Set.of(), Set.of(), "ScrollerAtBottomSettings", "unitycues/scrollBars/cueScrollerAtBottomSettings.png", "Cue used when a scroll bar is at the bottom position in the settings menu.");
 
-        addCueLocatorByPattern(cueLocators, "cuebuilder/autoConsume", "filter_btn_(.*)\\.png", Bounds.fromWidthHeight(684, 433, 13, 13),
+        addCueLocatorByPattern(cueLocators, "cuebuilder/autoConsume", "filter_btn_(.*)\\.png", Bounds.fromLength(683, 432, 14),
                 Set.of(), Set.of(), "DropDownDown", "unitycues/scrollBars/cueDropDownDown.png", "The arrow pointing down in scroll bars.");
-        addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "scroller_01(.*)\\.png", Bounds.fromWidthHeight(616, 378, 13, 13),
+        addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "scroller_01(.*)\\.png", Bounds.fromLength(616, 378, 14),
                 Set.of(), Set.of(), "DropDownDown", "unitycues/scrollBars/cueDropDownDown.png", "The arrow pointing down in scroll bars.");
 
         addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "settings_01(.*)\\.png", Bounds.fromWidthHeight(614, 216, 18, 14),
@@ -706,7 +706,10 @@ public class CueBuilder {
         final Set<Bounds> tgDiffTransp = Set.of(Bounds.fromWidthHeight(481, 383, 106, 31), Bounds.fromWidthHeight(478, 386, 112, 25));
         addCueLocatorByPattern(cueLocators, "cuebuilder/tierGauntlet", "tg_window_(.*)\\.png", Bounds.fromWidthHeight(471, 354, 162, 69),
                 Set.of(), tgDiffTransp, "Difficulty", "unitycues/tierGauntlet/cueDifficulty.png", "T/G Difficulty combo box");
-
+        addCueLocatorByPattern(cueLocators, "cuebuilder/tierGauntlet", "tg_difficulty_disabled_(.*)\\.png", Bounds.fromWidthHeight(468, 352, 167, 74),
+                Set.of(), tgDiffTransp, "DifficultyDisabled", "unitycues/tierGauntlet/cueDifficultyDisabled.png", "Greyed out TG Difficulty drop down is");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/tierGauntlet", "tg_window_(.*)\\.png", Bounds.fromWidthHeight(587, 377, 45, 43),
+                Set.of(), tgDiffTransp, "SelectDifficulty", "unitycues/tierGauntlet/cueSelectDifficulty.png", "Difficulty arrow pointing down");
         //endregion
 
         //region Treasure Chest
