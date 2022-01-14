@@ -81,7 +81,7 @@ public class Misc {
         File f = new File(screenshotPath + name);
         while (f.exists()) {
             num++;
-            name = prefix + "_" + dateFormat.format(date) + "_" + num + ".png";
+            name = prefix + machineName + dateFormat.format(date) + "_" + num + ".png";
             f = new File(screenshotPath + name);
         }
 
@@ -537,8 +537,6 @@ public class Misc {
             final int loopLimit = 10;
             int loopCnt = 0;
 
-            BHBot.logger.debug("Machine name cache is empty. Getting hostname.");
-
             // Sometimes more than one attempt is required to correctly get the machine name.
             while ("".equals(Misc.machineName) && loopCnt < loopLimit) {
 
@@ -552,7 +550,6 @@ public class Misc {
                 loopCnt++;
 
             }
-            BHBot.logger.debug("Retrieved hostname: " + Misc.machineName);
         }
 
         return Misc.machineName;
