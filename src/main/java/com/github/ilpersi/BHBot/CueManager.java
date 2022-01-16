@@ -369,7 +369,6 @@ class CueManager {
         addCue("DifficultyDropDown", "cues/cueDifficultyDropDown.png", new Bounds(260, 50, 550, 125)); // difficulty drop down menu cue
         addCue("DifficultyExpedition", "cues/cueDifficultyExpedition.png", null); // selected difficulty in trials/gauntlet window
         addCue("SelectDifficultyExpedition", "cues/cueSelectDifficultyExpedition.png", null);
-        addCue("DropDownUp", "cues/cueDropDownUp.png", null); // up arrow in difficulty drop down menu (found in trials/gauntlet, for example)
         addCue("Cost", "cues/cueCost.png", new Bounds(400, 150, 580, 240)); // used both for PvP and Gauntlet/Trials costs. Note that bounds are very wide, because position of this cue in PvP is different from that in Gauntlet/Trials!
         addCue("SelectCost", "cues/cueSelectCost.png", new Bounds(555, 170, 595, 205)); // cue for select cost found in both PvP and Gauntlet/Trials windows. Note that bounds are wide, because position of this cue in PvP is different from that in Gauntlet/Trials!
         addCue("CostDropDown", "cues/cueCostDropDown.png", new Bounds(260, 45, 320, 70)); // cue for cost selection drop down window
@@ -869,6 +868,7 @@ class CueManager {
         addCue("ScrollerAtTop", "unitycues/scrollBars/cueScrollerAtTop.png", null);
         addCue("ScrollerAtBottomSettings", "unitycues/scrollBars/cueScrollerAtBottomSettings.png", null);
         addCue("DropDownDown", "unitycues/scrollBars/cueDropDownDown.png", null); // down arrow in difficulty drop down menu (found in trials/gauntlet, for example)
+        addCue("DropDownUp", "unitycues/scrollBars/cueDropDownUp.png", null); // The arrow pointing up in scroll bars.
         addCue("StripScrollerTopPos", "unitycues/scrollBars/cueStripScrollerTopPos.png", null); // Scroll bar top position for strip menu
         addCue("SettingsScrollerTopPos", "unitycues/scrollBars/cueSettingsScrollerTopPos.png", null); // Scroll bar top position for settings menu
         //endregion

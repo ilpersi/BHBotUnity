@@ -665,9 +665,9 @@ public class CueBuilder {
         addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "scroller_23(.*)\\.png", Bounds.fromWidthHeight(616, 368, 14, 24),
                 Set.of(), Set.of(), "ScrollerAtBottomSettings", "unitycues/scrollBars/cueScrollerAtBottomSettings.png", "Cue used when a scroll bar is at the bottom position in the settings menu.");
 
-        addCueLocatorByPattern(cueLocators, "cuebuilder/autoConsume", "filter_btn_(.*)\\.png", Bounds.fromLength(683, 432, 14),
-                Set.of(), Set.of(), "DropDownDown", "unitycues/scrollBars/cueDropDownDown.png", "The arrow pointing down in scroll bars.");
-        addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "scroller_01(.*)\\.png", Bounds.fromLength(616, 378, 14),
+        addCueLocatorByPattern(cueLocators, "cuebuilder/scrollBars", "dropdown_up-(.*)\\.png", null,
+                Set.of(), Set.of(), "DropDownUp", "unitycues/scrollBars/cueDropDownUp.png", "The arrow pointing up in scroll bars.");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/scrollBars", "dropdown_down-(.*)\\.png", null,
                 Set.of(), Set.of(), "DropDownDown", "unitycues/scrollBars/cueDropDownDown.png", "The arrow pointing down in scroll bars.");
 
         addCueLocatorByPattern(cueLocators, "cuebuilder/settings", "settings_01(.*)\\.png", Bounds.fromWidthHeight(614, 216, 18, 14),
@@ -804,6 +804,8 @@ public class CueBuilder {
                     System.out.println("It was impossible to delete file \"" + cueFile.getAbsolutePath() + "\". Cue generation interrupted");
                     return;
                 }
+            } else {
+                System.out.println("Destination file not found: " + cuePath);
             }
         }
 
