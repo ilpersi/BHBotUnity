@@ -5648,10 +5648,10 @@ public class DungeonThread implements Runnable {
             StringBuilder fileNameTS = new StringBuilder();
             fileNameTS.append("wb-")
                     .append(counters.get(BHBot.State.WorldBoss).getTotal() + 1)
-                    .append("-T").append(totalTS);
+                    .append("-T").append(String.format("%,d", totalTS));
 
             for (int iPartyMember = 0; iPartyMember < playersTS.length; iPartyMember++) {
-                fileNameTS.append("-").append(iPartyMember + 1).append("P").append(playersTS[iPartyMember]);
+                fileNameTS.append("-").append(iPartyMember + 1).append("P").append(String.format("%,d", playersTS[iPartyMember]));
             }
 
             String finalFileName = fileNameTS.toString();
