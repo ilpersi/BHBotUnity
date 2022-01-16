@@ -98,12 +98,16 @@ public class DungeonThread implements Runnable {
     // Weekly Sunday screenshots cache
     HashMap<String, Boolean> sundayScreenshots = new HashMap<>();
 
+    int adventureSpeed;
+
     DungeonThread(BHBot bot) {
         this.bot = bot;
 
         activitysIterator = bot.settings.activitiesEnabled.iterator();
         reviveManager = new AutoReviveManager(bot);
         dungSignatures = new DungeonSignature(this.bot);
+
+        adventureSpeed = 1;
     }
 
     static void printFamiliars() {
@@ -3773,6 +3777,10 @@ public class DungeonThread implements Runnable {
      * possible alternative as the speed cue is somehow transparent and the yellow arrows are of a different color on every run
      */
     private void handleAdventureSpeed() {
+
+        // Speed is already at maximum
+        if (adventureSpeed == 3) return;
+
         // Screen regions we expect to be yellow
         Bounds boundsSpeed1X = Bounds.fromLength(23, 495, 2);
         Bounds boundsSpeed2X = Bounds.fromLength(37, 495, 2);
@@ -3786,33 +3794,43 @@ public class DungeonThread implements Runnable {
         int[] pixels1X = speedImg.getRGB(boundsSpeed1X.x1, boundsSpeed1X.y1, boundsSpeed1X.width, boundsSpeed1X.height, null, 0, boundsSpeed1X.width);
         Set<Integer> speedActive = Arrays.stream(pixels1X).boxed().collect(Collectors.toSet());
 
-        // We get colors for 2X speed region
-        int[] pixels2X = speedImg.getRGB(boundsSpeed2X.x1, boundsSpeed2X.y1, boundsSpeed2X.width, boundsSpeed2X.height, null, 0, boundsSpeed2X.width);
-        Set<Integer> speed2X = Arrays.stream(pixels2X).boxed().collect(Collectors.toSet());
+        Set<Integer> intersection;
 
-        // We intersect speed1X with speed 2X and check the size of the intersection
-        Set<Integer> intersection = new HashSet<>(speedActive);
-        intersection.retainAll(speed2X);
+        if (adventureSpeed < 2) {
+            intersection = new HashSet<>(speedActive);
 
-        // If there is no intersection, it means that 2X speed is disabled
-        if (intersection.size() == 0) {
-            BHBot.logger.debug("Speed set to 2X");
-            bot.browser.clickInGame(boundsSpeed2X.x1, boundsSpeed2X.y1);
-//            return;
+            // We get colors for 2X speed region
+            int[] pixels2X = speedImg.getRGB(boundsSpeed2X.x1, boundsSpeed2X.y1, boundsSpeed2X.width, boundsSpeed2X.height, null, 0, boundsSpeed2X.width);
+            Set<Integer> speed2X = Arrays.stream(pixels2X).boxed().collect(Collectors.toSet());
+
+            // We intersect speed1X with speed 2X and check the size of the intersection
+            intersection.retainAll(speed2X);
+
+            // If there is no intersection, it means that 2X speed is disabled
+            if (intersection.size() == 0) {
+                BHBot.logger.debug("Speed set to 2X");
+                bot.browser.clickInGame(boundsSpeed2X.x1, boundsSpeed2X.y1);
+            }
+
+            adventureSpeed = 2;
         }
 
-        // We also check 3X speed
-        int[] pixels3X = speedImg.getRGB(boundsSpeed3X.x1, boundsSpeed3X.y1, boundsSpeed3X.width, boundsSpeed3X.height, null, 0, boundsSpeed3X.width);
-        Set<Integer> speed3X = Arrays.stream(pixels3X).boxed().collect(Collectors.toSet());
+        if (adventureSpeed < 3) {
+            intersection = new HashSet<>(speedActive);
 
-        intersection = new HashSet<>(speedActive);
-        intersection.retainAll(speed3X);
+            // We also check 3X speed
+            int[] pixels3X = speedImg.getRGB(boundsSpeed3X.x1, boundsSpeed3X.y1, boundsSpeed3X.width, boundsSpeed3X.height, null, 0, boundsSpeed3X.width);
+            Set<Integer> speed3X = Arrays.stream(pixels3X).boxed().collect(Collectors.toSet());
 
-        if (intersection.size() == 0) {
-            BHBot.logger.debug("Speed set to 3X");
-            bot.browser.clickInGame(boundsSpeed3X.x1, boundsSpeed3X.y1);
+            intersection.retainAll(speed3X);
+
+            if (intersection.size() == 0) {
+                BHBot.logger.debug("Speed set to 3X");
+                bot.browser.clickInGame(boundsSpeed3X.x1, boundsSpeed3X.y1);
+            }
+
+            adventureSpeed = 3;
         }
-
     }
 
     /**

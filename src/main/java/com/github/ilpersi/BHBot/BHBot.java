@@ -1263,6 +1263,7 @@ public class BHBot {
         dungeon.encounterManager = new EncounterManager(this);
         dungeon.reviveManager.reset();
         dungeon.positionChecker = new DungeonPositionChecker();
+        dungeon.adventureSpeed = 1;
     }
 
     enum State {
