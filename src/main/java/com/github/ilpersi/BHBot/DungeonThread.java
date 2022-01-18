@@ -320,6 +320,7 @@ public class DungeonThread implements Runnable {
                     if (bot.settings.autoConsume && (Misc.getTime() - timeLastBonusCheck > BONUS_CHECK_INTERVAL)) {
                         timeLastBonusCheck = Misc.getTime();
                         handleConsumables();
+                        bot.scheduler.resetIdleTime();
                     }
 
                     String currentActivity = activitySelector(); //else select the activity to attempt
@@ -5019,7 +5020,7 @@ public class DungeonThread implements Runnable {
             if (!consumables.isEmpty()) {
                 // lets scroll down, we only search for the arrow once
                 if (DropDownDown == null)
-                    DropDownDown = MarvinSegment.fromCue(BHBot.cues.get("DropDownDown"), 5 * Misc.Durations.SECOND, Bounds.fromWidthHeight(681, 427, 19, 22), bot.browser);
+                    DropDownDown = MarvinSegment.fromCue(BHBot.cues.get("DropDownDown"), 5 * Misc.Durations.SECOND, Bounds.fromWidthHeight(665, 420, 40, 35), bot.browser);
 
                 // We were not able to find the down arrow
                 if (DropDownDown == null) {
