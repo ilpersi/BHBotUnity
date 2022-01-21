@@ -291,7 +291,6 @@ class CueManager {
         addCue("D4Accept", "cues/cueD4Accept.png", null);
         addCue("Cleared", "cues/cueCleared.png", new Bounds(208, 113, 608, 394)); // used for example when raid has been finished
         addCue("Rerun", "cues/cueRerun.png", null); // used for example when raid has been finished ("Cleared" popup)
-        addCue("Persuade", "cues/cuePersuade.png", new Bounds(116, 311, 286, 380));
         addCue("View", "cues/cueView.png", new Bounds(390, 415, 600, 486));
         addCue("Bribe", "cues/cueBribe.png", new Bounds(505, 305, 684, 375));
         addCue("SkeletonTreasure", "cues/cueSkeletonTreasure.png", new Bounds(185, 165, 295, 280)); // skeleton treasure found in dungeons (it's a dialog/popup cue)
@@ -652,6 +651,7 @@ class CueManager {
         addCue("Persuade", "unitycues/familiarEncounter/cuePersuade.png", Bounds.fromWidthHeight(120, 315, 160, 55));
         addCue("Bribe", "unitycues/familiarEncounter/cueBribe.png", Bounds.fromWidthHeight(540, 315, 120, 55));
         addCue("DeclineRed", "unitycues/familiarEncounter/cueDeclineRed.png", Bounds.fromWidthHeight(240, 430, 135, 50)); // decline persuation attempts
+        addCue("YouCurrentlyOwn", "unitycues/familiarEncounter/cueYouCurrentlyOwn.png", Bounds.fromWidthHeight(135, 395, 275, 40)); // You currently own text in familiar encounters
         //endregion
         //region Familiar bribing cues
         addCue("RareFamiliar", "unitycues/familiarEncounter/type/cue02RareFamiliar.png", Bounds.fromWidthHeight(527, 261, 158, 59)); // Rare Bribe cue

@@ -2330,7 +2330,7 @@ public class DungeonThread implements Runnable {
          */
         //region Encounter
         if ((bot.getState() == BHBot.State.Raid || bot.getState() == BHBot.State.Dungeon) && isInFight) {
-            seg = MarvinSegment.fromCue(BHBot.cues.get("FamiliarEncounter"), bot.browser);
+            seg = MarvinSegment.fromCue(BHBot.cues.get("YouCurrentlyOwn"), bot.browser);
             if (seg != null) {
                 encounterManager.processFamiliarEncounter();
             }
