@@ -11,8 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class EncounterManager {
-    private final BHBot bot;
+public record EncounterManager(BHBot bot) {
     static HashMap<String, FamiliarDetails> famMD5Table = new HashMap<>();
 
     public enum FamiliarType {
@@ -75,10 +74,6 @@ public class EncounterManager {
             this.name = familiarName;
             this.type = familiarType;
         }
-    }
-
-    EncounterManager(BHBot bot) {
-        this.bot = bot;
     }
 
     void processFamiliarEncounter() {
@@ -315,7 +310,7 @@ public class EncounterManager {
         String updatedFamiliar = "";
 
         for (String fa : bot.settings.familiars) { //cycle through array
-            String fString = fa.toUpperCase().split(" ")[0]; //case sensitive for a match so convert to upper case
+            String fString = fa.toUpperCase().split(" ")[0]; // case-sensitive for a match so convert to upper case
             int currentCounter = Integer.parseInt(fa.split(" ")[1]); //set the bribe counter to an int
             if (fam.equals(fString)) { //when match is found from the function
                 familiarToUpdate = fa; //write current status to String
@@ -330,7 +325,7 @@ public class EncounterManager {
             String line;
             StringBuilder inputBuffer = new StringBuilder();
 
-            //print lines to string with linebreaks
+            //print lines to string with linebreak
             while ((line = file.readLine()) != null) {
                 inputBuffer.append(line);
                 inputBuffer.append(System.getProperty("line.separator"));
@@ -356,39 +351,24 @@ public class EncounterManager {
     }
 
     /**
-     * This methods extract an image only containing the familiar name. The logic is based on the type of the familiar.
+     * This method extract an image only containing the familiar name. The logic is based on the type of the familiar.
      * Once that the type is known, the name will be extracted using a specific value for the color
      *
-     * @param screenImg      A Buffered Image containing the image
-     * @param familiarType   What is the type of the familiar we are looking to find the name
+     * @param screenImg    A Buffered Image containing the image
+     * @param familiarType What is the type of the familiar we are looking to find the name
      * @return A Buffered Image containing just the familiar name
      */
     static BufferedImage getFamiliarNameImg(BufferedImage screenImg, FamiliarType familiarType, Bounds nameBounds) {
         // int familiarTxtColor;
-        Color familiarTxtCol;
-        switch (familiarType) {
-            case COMMON:
-                familiarTxtCol = new Color(151, 255, 125);
-                // familiarTxtColor = -6881668;
-                break;
-            case RARE:
-                familiarTxtCol = new Color(147, 158, 244);
-                // familiarTxtColor = -7168525;
-                break;
-            case EPIC:
-                familiarTxtCol = new Color(255, 128, 125);
-                // familiarTxtColor = -98436;
-                break;
-            case LEGENDARY:
-                familiarTxtCol = new Color(255, 255, 0);
-                // familiarTxtColor = -66048;
-                break;
-            case ERROR:
-            default:
-                familiarTxtCol = null;
-                // familiarTxtColor = 0;
-                break;
-        }
+        Color familiarTxtCol = switch (familiarType) {
+            case COMMON -> new Color(151, 255, 125);
+            case RARE -> new Color(147, 158, 244);
+            case EPIC -> new Color(255, 128, 125);
+            case LEGENDARY -> new Color(255, 255, 0);
+            // case ERROR -> null;
+            default -> null;
+            // familiarTxtColor = 0;
+        };
 
         // if (familiarTxtColor == 0 ) return null;
         if (familiarTxtCol == null) return null;
@@ -486,6 +466,7 @@ public class EncounterManager {
         EncounterManager.famMD5Table.put("+VDI0b+EoGCyyJiABpxt6A==", new FamiliarDetails("Blemb", FamiliarType.EPIC));
         EncounterManager.famMD5Table.put("wj/v0X2ZV8L2F3VIAu4Deg==", new FamiliarDetails("Blubber", FamiliarType.EPIC));
         EncounterManager.famMD5Table.put("EgLFmoFWj16J/Ycx2nFKwA==", new FamiliarDetails("Driffin", FamiliarType.EPIC));
+        EncounterManager.famMD5Table.put("s/qnNyf/YkWyeVdShnvuew==", new FamiliarDetails("Driffin", FamiliarType.EPIC));
         EncounterManager.famMD5Table.put("29mjb3Ov6JP2jvivqSKBTg==", new FamiliarDetails("Ferumar", FamiliarType.EPIC));
         EncounterManager.famMD5Table.put("OUtCwnWIkr/wOBbAAaKbLw==", new FamiliarDetails("Ferumar", FamiliarType.EPIC));
         EncounterManager.famMD5Table.put("UPQAH/bYXdEEpVdzuJtRQA==", new FamiliarDetails("Hanfarin", FamiliarType.EPIC));
@@ -518,6 +499,7 @@ public class EncounterManager {
         EncounterManager.famMD5Table.put("i90mq777qYo7MT6NmG1GVA==", new FamiliarDetails("Gobby", FamiliarType.LEGENDARY));
         EncounterManager.famMD5Table.put("IYuGa2ky9DEyXsRD9iq3/w==", new FamiliarDetails("Gobby", FamiliarType.LEGENDARY));
         EncounterManager.famMD5Table.put("F/NM+ZWXFtsA7nP4fLtEhg==", new FamiliarDetails("Kakunapac", FamiliarType.LEGENDARY));
+        EncounterManager.famMD5Table.put("VJ8A8pXyvJqWa5hQq1CJTg==", new FamiliarDetails("Kaleido", FamiliarType.LEGENDARY));
         EncounterManager.famMD5Table.put("QT3sBIYLjF324QE9LzlHDA==", new FamiliarDetails("Neistall", FamiliarType.LEGENDARY));
         //endregion
 
