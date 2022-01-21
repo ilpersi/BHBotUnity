@@ -89,43 +89,28 @@ public class BHBot {
         // manage command line options
         for (int i = 0; i < args.length; i++) { //select settings file to load
             switch (args[i]) {
-                case "chromedriver":
-                case "chromedriverpath":
-                case "chromeDriverExePath":
-                case "geckoDriverExePath":
-                case "browserDriverExePath":
+                case "chromedriver", "chromedriverpath", "chromeDriverExePath", "geckoDriverExePath", "browserDriverExePath" -> {
                     bot.browserDriverExePath = args[i + 1];
                     i++;
-                    continue;
-                case "chromedriveraddress":  //change chrome driver port
-                case "chromeDriverAddress":
-                case "geckoDriverAddress":
-                case "browserDriverAddress":
+                }  //change chrome driver port
+                case "chromedriveraddress", "chromeDriverAddress", "geckoDriverAddress", "browserDriverAddress" -> {
                     bot.browserDriverAddress = args[i + 1];
                     i++;
-                    continue;
-                case "chromium":
-                case "chromiumpath":
-                case "chromiumExePath":
-                case "firefoxExePath":
-                case "browserExePath":
+                }
+                case "chromium", "chromiumpath", "chromiumExePath", "firefoxExePath", "browserExePath" -> {
                     bot.browserExePath = args[i + 1];
                     i++;
-                    continue;
-                case "init":  //start bot in idle mode
-                case "idle":  //start bot in idle mode
-                    Settings.configurationFile = "LOAD_IDLE_SETTINGS";
-                    continue;
-                case "settings":
-                case "configurationFile":
+                }  //start bot in idle mode
+                case "init", "idle" -> //start bot in idle mode
+                        Settings.configurationFile = "LOAD_IDLE_SETTINGS";
+                case "settings", "configurationFile" -> {
                     Settings.configurationFile = args[i + 1];
                     i++;
-                    continue;
-                case "userdatadir":
-                case "userDataDir":
-                case "browserProfile":
+                }
+                case "userdatadir", "userDataDir", "browserProfile" -> {
                     browserProfile = args[i + 1];
                     i++;
+                }
             }
         }
 
@@ -558,13 +543,8 @@ public class BHBot {
                 }
 
                 switch (params[1]) {
-                    case "pos":
-                    case "positions":
-                        Misc.findScrollBarPositions(dungeon.bot, false);
-                        break;
-                    case "screen":
-                        Misc.findScrollBarPositions(dungeon.bot, true);
-                        break;
+                    case "pos", "positions" -> Misc.findScrollBarPositions(dungeon.bot, false);
+                    case "screen" -> Misc.findScrollBarPositions(dungeon.bot, true);
                 }
 
                 break;
@@ -756,78 +736,57 @@ public class BHBot {
                 }
 
                 switch (params[1]) {
-                    case "ai":
-                    case "autoignore":
+                    case "ai", "autoignore" -> {
                         Boolean ignoreBoss = null;
                         Boolean ignoreShrines = null;
-
                         if (params.length > 2) {
                             switch (params[2].toLowerCase()) {
-                                case "off":
-                                case "0":
-                                case "no":
-                                case "do":
-                                    ignoreBoss = false;
-                                    break;
-                                case "on":
-                                case "1":
-                                case "yes":
-                                case "y":
-                                    ignoreBoss = true;
-                                    break;
+                                case "off", "0", "no", "do" -> ignoreBoss = false;
+                                case "on", "1", "yes", "y" -> ignoreBoss = true;
                             }
                         }
-
                         if (params.length > 3) {
                             switch (params[3].toLowerCase()) {
-                                case "off":
-                                case "0":
-                                case "no":
-                                case "do":
-                                    ignoreShrines = false;
-                                    break;
-                                case "on":
-                                case "1":
-                                case "yes":
-                                case "y":
-                                    ignoreShrines = true;
-                                    break;
+                                case "off", "0", "no", "do" -> ignoreShrines = false;
+                                case "on", "1", "yes", "y" -> ignoreShrines = true;
                             }
                         }
-
                         if (ignoreBoss == null) {
                             BHBot.logger.warn("No value is set for ignoreBoss, setting it to false.");
                             ignoreBoss = true;
                         }
-
                         if (ignoreShrines == null) {
                             BHBot.logger.warn("No value is set for ignoreShrines, setting it to false.");
                             ignoreShrines = false;
                         }
-
                         if (!dungeon.shrineManager.updateShrineSettings(ignoreBoss, ignoreShrines)) {
                             logger.error("Something went wrong when checking auto ignore settings!");
                         }
-                        break;
-                    case "e":
-                    case "expeditionread":
-                        dungeon.expeditionReadTest();
-                        break;
-                    case "notification":
+                    }
+                    case "dropdown" -> {
+                        MarvinSegment Up = MarvinSegment.fromCue("DropDownUp", browser);
+                        MarvinSegment Down = MarvinSegment.fromCue("DropDownDown", browser);
+
+                        if (Up != null) {
+                            BHBot.logger.debug("Up arrow cue found: " + Up);
+                        }
+                        if (Down != null) {
+                            BHBot.logger.debug("Down arrow cue found: " + Down);
+                        }
+                    }
+                    case "e", "expeditionread" -> dungeon.expeditionReadTest();
+                    case "notification" -> {
                         // We split on spaces so we re-build the original message
                         String notificationMessage = params.length > 2 ? String.join(" ", Arrays.copyOfRange(params, 2, params.length)) : "Test message from BHbot!";
-
                         notificationManager.sendTestNotification(notificationMessage);
-                        break;
-                    case "runes":
-                        dungeon.runeManager.detectEquippedMinorRunes(true, true);
-                        break;
-                    case"tgdiff":
-                        // Use this command to troubleshoot T/G difficulty in main window
-                        dungeon.debugTGDifficulty();
-                        break;
-                    default:
-                        break;
+                    }
+                    case "runes" -> dungeon.runeManager.detectEquippedMinorRunes(true, true);
+                    case "tgdiff" ->
+                            // Use this command to troubleshoot T/G difficulty in main window
+                            dungeon.debugTGDifficulty();
+                    default -> {
+                        BHBot.logger.debug("Unknown test command: " + params[1]);
+                    }
                 }
                 break;
             default:
@@ -958,6 +917,7 @@ public class BHBot {
         ctx.start(configFactory.getConfiguration(ctx, ConfigurationSource.NULL_SOURCE));
     }
 
+    @SuppressWarnings("unused")
     private static void checkNewRelease() {
 
         HttpClient client = HttpClient.newHttpClient();
@@ -1298,13 +1258,6 @@ public class BHBot {
 
         public String getShortcut() {
             return shortcut;
-        }
-
-        public String getNameFromShortcut(String shortcut) {
-            for (State state : State.values())
-                if (state.shortcut != null && state.shortcut.equals(shortcut))
-                    return state.name;
-            return null;
         }
 
         static State fromShortcut(String shortcut) {
