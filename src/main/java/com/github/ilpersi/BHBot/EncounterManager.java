@@ -6,13 +6,18 @@ import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
-public record EncounterManager(BHBot bot) {
+public final class EncounterManager {
     static HashMap<String, FamiliarDetails> famMD5Table = new HashMap<>();
+    private final BHBot bot;
+
+    private final Bounds MD5_BOUNDS = new Bounds(105, 60, 640, 105);
+
+    public EncounterManager(BHBot bot) {
+        this.bot = bot;
+    }
 
     public enum FamiliarType {
         ERROR("Error", 0),
@@ -103,7 +108,7 @@ public record EncounterManager(BHBot bot) {
                 (bot.settings.familiars.size() == 0);
 
         if (!skipBribeNames) {
-            bribeInfo = verifyBribeNames();
+            bribeInfo = verifyBribeNames(familiarLevel);
         }
 
         if ((bot.settings.bribeLevel > 0 && familiarLevel.getValue() >= bot.settings.bribeLevel) ||
@@ -133,8 +138,7 @@ public record EncounterManager(BHBot bot) {
         // if (bot.settings.contributeFamiliars) {
 
         // We build the MD5 string for the current encounter
-        Bounds familiarNameBounds = new Bounds(105, 60, 640, 105);
-        BufferedImage famNameImg = EncounterManager.getFamiliarNameImg(bot.browser.getImg(), familiarLevel, familiarNameBounds);
+        BufferedImage famNameImg = EncounterManager.getFamiliarNameImg(bot.browser.getImg(), familiarLevel, this.MD5_BOUNDS);
         String famNameMD5 = Misc.imgToMD5(famNameImg);
 
         // We check if the familiar is known
@@ -148,7 +152,7 @@ public record EncounterManager(BHBot bot) {
             if (famNameImg == null) famNameImg = bot.browser.getImg();
 
             if (!Misc.contributeImage(famNameImg, persuasionLog.toString(), null)) {
-                Misc.contributeImage(bot.browser.getImg(), persuasionLog.toString(), familiarNameBounds);
+                Misc.contributeImage(bot.browser.getImg(), persuasionLog.toString(), this.MD5_BOUNDS);
             }
         } else {
             BHBot.logger.debug(MessageFormat.format("MD5 familiar detected: {0}", encounterDetails.name));
@@ -197,39 +201,37 @@ public record EncounterManager(BHBot bot) {
     /**
      * Will verify if in the current persuasion screen one of the bribeNames is present
      */
-    private BribeSettings verifyBribeNames() {
+    private BribeSettings verifyBribeNames(FamiliarType familiarLevel) {
 
         List<String> wrongNames = new ArrayList<>();
         BribeSettings result = new BribeSettings();
         String familiarName;
         int toBribeCnt;
 
-        for (String familiarDetails : bot.settings.familiars) {
-            // familiar details from settings
-            String[] details = familiarDetails.toLowerCase().split(" ");
-            familiarName = details[0];
-            toBribeCnt = Integer.parseInt(details[1]);
+        final BufferedImage famNameImg = EncounterManager.getFamiliarNameImg(bot.browser.getImg(), familiarLevel, this.MD5_BOUNDS);
+        final String famNameMD5 = Misc.imgToMD5(famNameImg);
 
-            Cue familiarCue = BHBot.cues.getOrNull(familiarName);
+        // We check if the familiar is known
+        FamiliarDetails encounterDetails = EncounterManager.famMD5Table.getOrDefault(famNameMD5, null);
 
-            if (familiarCue != null) {
-                if (toBribeCnt > 0) {
-                    // The familiar screen is opened, we we search for cues without timeout
-                    if (MarvinSegment.fromCue(familiarCue, bot.browser) != null) {
+        if (encounterDetails != null) {
+            for (String familiarDetails : bot.settings.familiars) {
+                // familiar details from settings
+                String[] details = familiarDetails.toLowerCase().split(" ");
+                familiarName = details[0];
+                toBribeCnt = Integer.parseInt(details[1]);
+
+                if (familiarName.equals(encounterDetails.name.toLowerCase())) {
+                    if (toBribeCnt > 0) {
                         BHBot.logger.autobribe(MessageFormat.format("Detected familiar {0} as valid in familiars", familiarDetails));
                         result.toBribeCnt = toBribeCnt;
                         result.familiarName = familiarName;
                         break;
-
+                    } else {
+                        BHBot.logger.warn(MessageFormat.format("Count for familiar {0} is 0! Temporary removing it form the settings...", familiarName));
+                        wrongNames.add(familiarDetails);
                     }
-
-                } else {
-                    BHBot.logger.warn(MessageFormat.format("Count for familiar {0} is 0! Temporary removing it form the settings...", familiarName));
-                    wrongNames.add(familiarDetails);
                 }
-            } else {
-                BHBot.logger.warn(MessageFormat.format("Impossible to find a cue for familiar {0}, it will be temporary removed from settings.", familiarName));
-                wrongNames.add(familiarDetails);
             }
         }
 
@@ -512,7 +514,7 @@ public record EncounterManager(BHBot bot) {
      * Print the full list of MD5 hashes
      */
     static void printMD5() {
-        for (Map.Entry<String, EncounterManager.FamiliarDetails> famDetails : EncounterManager.famMD5Table.entrySet()) {
+        for (Map.Entry<String, FamiliarDetails> famDetails : EncounterManager.famMD5Table.entrySet()) {
             BHBot.logger.debug(MessageFormat.format("MD5 ''{0}'' - > {1}", famDetails.getKey(), famDetails.getValue().name));
         }
     }
@@ -523,7 +525,7 @@ public record EncounterManager(BHBot bot) {
      * @param famName The name of the desired familiar
      */
     static void printMD5(String famName) {
-        for (Map.Entry<String, EncounterManager.FamiliarDetails> famDetails : EncounterManager.famMD5Table.entrySet()) {
+        for (Map.Entry<String, FamiliarDetails> famDetails : EncounterManager.famMD5Table.entrySet()) {
             if (famName.equalsIgnoreCase(famDetails.getValue().name)) {
                 BHBot.logger.debug(MessageFormat.format("MD5 ''{0}'' - > {1}", famDetails.getKey(), famDetails.getValue().name));
                 return;
