@@ -682,6 +682,19 @@ class CueManager {
         //endregion
 
         //region Numbers
+        //region TG Difficulty range 16px
+        addCue("tg_diff_range_16_0", "unitycues/numbers/tgDiffRange16/tg_diff_range_16_0.png", null);
+        addCue("tg_diff_range_16_1", "unitycues/numbers/tgDiffRange16/tg_diff_range_16_1.png", null);
+        addCue("tg_diff_range_16_2", "unitycues/numbers/tgDiffRange16/tg_diff_range_16_2.png", null);
+        addCue("tg_diff_range_16_3", "unitycues/numbers/tgDiffRange16/tg_diff_range_16_3.png", null);
+        addCue("tg_diff_range_16_4", "unitycues/numbers/tgDiffRange16/tg_diff_range_16_4.png", null);
+        addCue("tg_diff_range_16_5", "unitycues/numbers/tgDiffRange16/tg_diff_range_16_5.png", null);
+        addCue("tg_diff_range_16_6", "unitycues/numbers/tgDiffRange16/tg_diff_range_16_6.png", null);
+        addCue("tg_diff_range_16_7", "unitycues/numbers/tgDiffRange16/tg_diff_range_16_7.png", null);
+        addCue("tg_diff_range_16_8", "unitycues/numbers/tgDiffRange16/tg_diff_range_16_8.png", null);
+        addCue("tg_diff_range_16_9", "unitycues/numbers/tgDiffRange16/tg_diff_range_16_9.png", null);
+        addCue("tg_diff_range_16_hyphen", "unitycues/numbers/tgDiffRange16/tg_diff_range_16_hyphen.png", null);
+        //endregion TG Difficulty range 16px
 
         // region TG Main Window Difficulty 10px
         addCue("tg_diff_win_10_0", "unitycues/numbers/tgDiffWindow10/tg_diff_win_10_0.png", null);

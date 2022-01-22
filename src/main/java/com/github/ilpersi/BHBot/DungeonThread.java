@@ -4241,7 +4241,7 @@ public class DungeonThread implements Runnable {
     private int selectDifficultyFromRange(int newDifficulty) {
 
         // Bounds for difficulty range
-        Bounds difficultyRangeBounds = Bounds.fromWidthHeight(305, 140, 160, 35);
+        Bounds difficultyRangeBounds = Bounds.fromWidthHeight(310, 135, 160, 35);
         // offset to read different ranges
         final int yOffset = 60;
 
@@ -4251,32 +4251,18 @@ public class DungeonThread implements Runnable {
         final int customMax = 254;
 
         // Scroller cues
-        Cue scrollerAtTop = new Cue(BHBot.cues.get("ScrollerAtTop"), Bounds.fromWidthHeight(520, 115, 35, 90));
+        ScrollBarManager difficultyRangeSB = new ScrollBarManager(bot.browser);
+        // Cue scrollerAtTop = new Cue(BHBot.cues.get("ScrollerAtTop"), Bounds.fromWidthHeight(520, 115, 35, 90));
         // Scroller max clicks
         final int MAX_CLICKS = 30;
 
-        int cntAttempt = 0;
 
         // We make sure the scroll is at the top position. This is just failsafe in all the tests this was always the default behavior
-        MarvinSegment seg = MarvinSegment.fromCue("ScrollerNone", Misc.Durations.SECOND / 2, bot.browser);
-        if (seg == null) {
-            seg = MarvinSegment.fromCue(scrollerAtTop, Misc.Durations.SECOND / 2, bot.browser);
-
-            while (seg == null) {
-                if (cntAttempt > MAX_CLICKS) {
-                    BHBot.logger.error("It was impossible to move the scroller to the top position for the difficulty range.");
-                    return 0;
-                }
-                bot.browser.clickInGame(540, 133);
-
-                seg = MarvinSegment.fromCue(scrollerAtTop, Misc.Durations.SECOND / 2, bot.browser);
-                cntAttempt++;
-            }
-        }
+        difficultyRangeSB.scrollToTop(null);
 
         bot.browser.readScreen(Misc.Durations.SECOND / 2);
 
-        cntAttempt = 0;
+        int cntAttempt = 0;
         int rangeCnt = 0;
         int minDifficulty;
         do {
@@ -4292,34 +4278,34 @@ public class DungeonThread implements Runnable {
 
             // we need to click on the bottom arrow to have new ranges on monitor
             if (rangePos == 0 && rangeCnt > 0) {
-                seg = MarvinSegment.fromCue(BHBot.cues.get("DropDownDown"), bot.browser);
-                if (seg == null) {
+                if (!difficultyRangeSB.canScrollDown) {
                     BHBot.logger.error("Error: unable to detect down arrow in trials/gauntlet difficulty range drop-down menu!");
                     bot.saveGameScreen("select_difficulty_range_arrow_down", "errors");
                     return 0;
                 }
 
                 for (int barPos = 0; barPos < 5; barPos++) {
-                    bot.browser.clickOnSeg(seg);
+                    // bot.browser.clickOnSeg(seg);
+                    difficultyRangeSB.scrollDown(Misc.Durations.SECOND / 2);
                 }
-                bot.browser.readScreen(Misc.Durations.SECOND / 2);
+                // bot.browser.readScreen(Misc.Durations.SECOND / 2);
             }
 
             // We use rangePos to read the right difficulty range
             int posOffset = rangePos * yOffset;
             BufferedImage topRangeImg = bot.browser.getImg().getSubimage(difficultyRangeBounds.x1, difficultyRangeBounds.y1 + posOffset, difficultyRangeBounds.width, difficultyRangeBounds.height);
             MarvinImage im = new MarvinImage(topRangeImg);
-            im.toBlackWhite(difficultyBlack, difficultyWhite, customMax);
+            im.toBlackWhite(110);
             im.update();
 
-            int[] diffRange = readNumRangeFromImg(im.getBufferedImage(), "", new HashSet<>(), "hyphen", "-");
+            int[] diffRange = readNumRangeFromImg(im.getBufferedImage(), "tg_diff_range_16_", new HashSet<>(), "hyphen", "-");
             BHBot.logger.debug("Detected difficulty range: " + Arrays.toString(diffRange));
             if (diffRange.length != 2) {
                 BHBot.logger.error("It was impossible to read the top difficulty range");
                 return 0;
             }
 
-            // We save difficulty bounds for readability sake
+            // We save difficulty bounds for readability’s sake
             int rangeMinDifficulty = diffRange[0], rangeMaxDifficulty = diffRange[1];
             minDifficulty = rangeMinDifficulty;
 
@@ -4338,6 +4324,8 @@ public class DungeonThread implements Runnable {
                 // We wait for the difficulty selection to come out
                 bot.browser.readScreen(Misc.Durations.SECOND);
 
+                ScrollBarManager difficultySB = new ScrollBarManager(bot.browser);
+
                 // Bounds of the top difficulty value
                 Bounds topLvlBounds = Bounds.fromWidthHeight(350, 150, 70, 35);
 
@@ -4353,7 +4341,7 @@ public class DungeonThread implements Runnable {
                 MarvinImage topLvlMImg = new MarvinImage(topLvlBImg);
                 topLvlMImg.toBlackWhite(difficultyBlack, difficultyWhite, customMax);
                 topLvlMImg.update();
-                int topLvl = readNumFromImg(topLvlMImg.getBufferedImage(), "", new HashSet<>(), false, false);
+                int topLvl = readNumFromImg(topLvlMImg.getBufferedImage(), "wb_tier_button_", new HashSet<>(), false, false);
                 if (topLvl == 0) {
                     BHBot.logger.error("Impossible to read difficulty range top level.");
                     return 0;
@@ -4364,7 +4352,7 @@ public class DungeonThread implements Runnable {
                 MarvinImage secondLvlMImg = new MarvinImage(secondLvlBImg);
                 secondLvlMImg.toBlackWhite(difficultyBlack, difficultyWhite, customMax);
                 secondLvlMImg.update();
-                int secondLvl = readNumFromImg(secondLvlMImg.getBufferedImage(), "", new HashSet<>(), false, false);
+                int secondLvl = readNumFromImg(secondLvlMImg.getBufferedImage(), "wb_tier_button_", new HashSet<>(), false, false);
                 if (secondLvl == 0) {
                     BHBot.logger.error("Impossible to read difficulty range second level.");
                     return 0;
@@ -4406,8 +4394,7 @@ public class DungeonThread implements Runnable {
                     return matchedDifficulty;
                 } else {
                     // We check that the arrow down on the scroller is there
-                    seg = MarvinSegment.fromCue(BHBot.cues.get("DropDownDown"), bot.browser);
-                    if (seg == null) {
+                    if (!difficultySB.canScrollDown) {
                         BHBot.logger.error("Error: unable to detect down arrow in trials/gauntlet second step difficulty range drop-down menu!");
                         bot.saveGameScreen("select_difficulty_range_2nd_step_arrow_down", "errors");
                         return 0;
@@ -4419,7 +4406,7 @@ public class DungeonThread implements Runnable {
                      * matched difficulty we found earlier
                      * */
                     for (int idxI = 5; idxI < possibleDifficulties.size(); idxI++) {
-                        bot.browser.clickOnSeg(seg);
+                        difficultySB.scrollDown(100);
 
                         if (possibleDifficulties.get(idxI) == matchedDifficulty) {
                             // We can finally click on the difficulty value!!

@@ -677,9 +677,9 @@ public class BHBot {
                 if (params.length > 1)
                     fileName = params[1];
 
-                dungeon.bot.saveGameScreen(fileName);
+                String filePath = dungeon.bot.saveGameScreen(fileName);
 
-                logger.info("Screenshot '" + fileName + "' saved.");
+                logger.info("Screenshot '" + fileName + "' saved as " + filePath + ".");
                 break;
             case "start":
                 dungeon = new DungeonThread(this);
@@ -784,9 +784,7 @@ public class BHBot {
                     case "tgdiff" ->
                             // Use this command to troubleshoot T/G difficulty in main window
                             dungeon.debugTGDifficulty();
-                    default -> {
-                        BHBot.logger.debug("Unknown test command: " + params[1]);
-                    }
+                    default -> BHBot.logger.debug("Unknown test command: " + params[1]);
                 }
                 break;
             default:

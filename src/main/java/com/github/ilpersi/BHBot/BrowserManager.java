@@ -480,7 +480,15 @@ public class BrowserManager {
         while (popupSeg != null) {
             if (closeSeg != null) {
                 bot.browser.clickOnSeg(closeSeg);
-                if (MarvinSegment.waitForNull(close, WAIT_DELAY, bot.browser)) return true;
+
+                // if (MarvinSegment.waitForNull(close, WAIT_DELAY, bot.browser)) return true;
+                int curCnt = 0;
+                final int MAX_CNT = 10;
+                do {
+                    closeSeg = MarvinSegment.fromCue(close, Misc.Durations.SECOND / 2, null, bot.browser);
+                    curCnt++;
+                } while (closeSeg != null && curCnt < MAX_CNT);
+                return closeSeg == null;
             }
 
             if (Misc.getTime() > timeOut) {
