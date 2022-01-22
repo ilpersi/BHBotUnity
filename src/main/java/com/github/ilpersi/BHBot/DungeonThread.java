@@ -412,19 +412,11 @@ public class DungeonThread implements Runnable {
                                 bot.browser.readScreen();
                                 detectCharacterDialogAndHandleIt();
 
-                                Cue raidDifficultyCue;
-                                switch (raidSetting.difficulty) {
-                                    case 1:
-                                        raidDifficultyCue = BHBot.cues.get("RaidNormal");
-                                        break;
-                                    case 2:
-                                        raidDifficultyCue = BHBot.cues.get("RaidHard");
-                                        break;
-                                    case 3:
-                                    default:
-                                        raidDifficultyCue = BHBot.cues.get("RaidHeroic");
-                                        break;
-                                }
+                                Cue raidDifficultyCue = switch (raidSetting.difficulty) {
+                                    case 1 -> BHBot.cues.get("RaidNormal");
+                                    case 2 -> BHBot.cues.get("RaidHard");
+                                    /*case 3,*/ default -> BHBot.cues.get("RaidHeroic");
+                                };
 
                                 seg = MarvinSegment.fromCue(raidDifficultyCue, Misc.Durations.SECOND * 3, bot.browser);
                                 bot.browser.clickOnSeg(seg);
@@ -817,19 +809,11 @@ public class DungeonThread implements Runnable {
                                     specialDungeon = true;
                                     seg = MarvinSegment.fromCue(BHBot.cues.get("Enter"), 5 * Misc.Durations.SECOND, bot.browser);
                                 } else { //else select appropriate difficulty
-                                    Cue cueDifficulty;
-                                    switch (dungeonSetting.difficulty) {
-                                        case 1:
-                                            cueDifficulty = BHBot.cues.get("DungNormal");
-                                            break;
-                                        case 2:
-                                            cueDifficulty = BHBot.cues.get("DungHard");
-                                            break;
-                                        case 3:
-                                        default:
-                                            cueDifficulty = BHBot.cues.get("DungHeroic");
-                                            break;
-                                    }
+                                    Cue cueDifficulty = switch (dungeonSetting.difficulty) {
+                                        case 1 -> BHBot.cues.get("DungNormal");
+                                        case 2 -> BHBot.cues.get("DungHard");
+                                        /*case 3,*/ default -> BHBot.cues.get("DungHeroic");
+                                    };
 
                                     seg = MarvinSegment.fromCue(cueDifficulty, 5 * Misc.Durations.SECOND, bot.browser);
                                 }
