@@ -107,12 +107,8 @@ public class MarvinImage implements Cloneable {
         }
 
         switch (imgSource.getColorModel()) {
-            case COLOR_MODEL_RGB:
-                copyIntColorArray(imgSource, imgDestine);
-                break;
-            case COLOR_MODEL_BINARY:
-                copyBinaryColorArray(imgSource, imgDestine);
-                break;
+            case COLOR_MODEL_RGB -> copyIntColorArray(imgSource, imgDestine);
+            case COLOR_MODEL_BINARY -> copyBinaryColorArray(imgSource, imgDestine);
         }
     }
 
@@ -135,12 +131,8 @@ public class MarvinImage implements Cloneable {
         for (int i = y; i < y + height; i++) {
             for (int j = x; j < x + width; j++) {
                 switch (colorModel) {
-                    case COLOR_MODEL_RGB:
-                        ret.setIntColor(j - x, i - y, this.getIntColor(j, i));
-                        break;
-                    case COLOR_MODEL_BINARY:
-                        ret.setBinaryColor(j - x, i - y, this.getBinaryColor(j, i));
-                        break;
+                    case COLOR_MODEL_RGB -> ret.setIntColor(j - x, i - y, this.getIntColor(j, i));
+                    case COLOR_MODEL_BINARY -> ret.setBinaryColor(j - x, i - y, this.getBinaryColor(j, i));
                 }
             }
         }
@@ -155,12 +147,8 @@ public class MarvinImage implements Cloneable {
     public void update() {
         int w = image.getWidth();
         switch (colorModel) {
-            case COLOR_MODEL_RGB:
-                image.setRGB(0, 0, image.getWidth(), image.getHeight(), arrIntColor, 0, w);
-                break;
-            case COLOR_MODEL_BINARY:
-                image.setRGB(0, 0, image.getWidth(), image.getHeight(), MarvinColorModelConverter.binaryToRgb(arrBinaryColor), 0, w);
-                break;
+            case COLOR_MODEL_RGB -> image.setRGB(0, 0, image.getWidth(), image.getHeight(), arrIntColor, 0, w);
+            case COLOR_MODEL_BINARY -> image.setRGB(0, 0, image.getWidth(), image.getHeight(), MarvinColorModelConverter.binaryToRgb(arrBinaryColor), 0, w);
         }
     }
 
@@ -211,14 +199,14 @@ public class MarvinImage implements Cloneable {
 
     public void allocColorArray() {
         switch (colorModel) {
-            case COLOR_MODEL_RGB:
+            case COLOR_MODEL_RGB -> {
                 arrBinaryColor = null;
                 arrIntColor = new int[width * height];
-                break;
-            case COLOR_MODEL_BINARY:
+            }
+            case COLOR_MODEL_BINARY -> {
                 arrIntColor = null;
                 arrBinaryColor = new boolean[width * height];
-                break;
+            }
         }
     }
 
@@ -406,7 +394,7 @@ public class MarvinImage implements Cloneable {
 
         // Only for RGB images
         switch (colorModel) {
-            case COLOR_MODEL_RGB:
+            case COLOR_MODEL_RGB -> {
                 pixels = width * height;
                 pixelData = new int[pixels];
                 for (int i = 0; i < pixels; i++) {
@@ -415,7 +403,8 @@ public class MarvinImage implements Cloneable {
                 image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
                 image.setRGB(0, 0, width, height, pixelData, 0, width);
                 return image;
-            case COLOR_MODEL_BINARY:
+            }
+            case COLOR_MODEL_BINARY -> {
                 pixels = width * height;
                 pixelData = new int[pixels];
                 for (int i = 0; i < pixels; i++) {
@@ -428,6 +417,7 @@ public class MarvinImage implements Cloneable {
                 image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
                 image.setRGB(0, 0, width, height, pixelData, 0, width);
                 return image;
+            }
         }
         return null;
     }
@@ -529,7 +519,7 @@ public class MarvinImage implements Cloneable {
      *
      * @param height height
      * @param width width
-     * @return the bufffered Image
+     * @return the buffered Image
      */
     public BufferedImage getBufferedImage(int width, int height) {
         // using the new approach of Java 2D API
@@ -610,7 +600,7 @@ public class MarvinImage implements Cloneable {
     }
 
     /**
-     * Multiple of gradient windwos per masc relation of x y
+     * Multiple of gradient windows per masc relation of x y
      *
      * @return int[]
      */
@@ -878,12 +868,11 @@ public class MarvinImage implements Cloneable {
      * to manage the conversion to B&W. Compared to the previous method, this one is more flexible and gives better
      * results when different shades of colors are present.
      *
-     * @param treshold The gray scale threshold
+     * @param threshold The gray scale threshold
      */
-    @SuppressWarnings("SameParameterValue")
-    void toBlackWhite(int treshold) {
+    void toBlackWhite(int threshold) {
         // We create a new MarvinImage with the B&W conversion
-        MarvinImage BWImage = MarvinColorModelConverter.rgbToBinary(this, treshold);
+        MarvinImage BWImage = MarvinColorModelConverter.rgbToBinary(this, threshold);
 
         // We update the properties of the current MarvinImage so that it is managed as a B&W Image
         colorModel = COLOR_MODEL_BINARY;
