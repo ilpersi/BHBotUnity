@@ -308,7 +308,7 @@ public class BrowserManager {
         scrollGameIntoView();
     }
 
-    synchronized BufferedImage takeScreenshot(boolean ofGame) {
+    BufferedImage takeScreenshot(boolean ofGame) {
 
 
         try {
@@ -505,7 +505,7 @@ public class BrowserManager {
         return true;
     }
 
-    synchronized void readScreen() {
+    void readScreen() {
         readScreen(true);
     }
 
@@ -513,7 +513,7 @@ public class BrowserManager {
      * @param game if true, then screenshot of a WebElement will be taken that contains the flash game. If false, then simply a screenshot of a browser will be taken.
      */
     @SuppressWarnings("SameParameterValue")
-    synchronized void readScreen(boolean game) {
+    void readScreen(boolean game) {
         readScreen(0, game);
     }
 
@@ -528,7 +528,7 @@ public class BrowserManager {
      * @param wait first sleeps 'wait' milliseconds and then reads the screen. It's a handy utility method that does two things in one command.
      * @param game if true, then screenshot of a WebElement will be taken that contains the flash game. If false, then simply a screenshot of a browser will be taken.
      */
-    synchronized void readScreen(int wait, boolean game) {
+    void readScreen(int wait, boolean game) {
         if (wait != 0)
             Misc.sleep(wait);
         img = takeScreenshot(game);
@@ -561,7 +561,7 @@ public class BrowserManager {
         }
     }
 
-    synchronized public BufferedImage getImg() {
+    public BufferedImage getImg() {
         if (img == null)
             readScreen();
 

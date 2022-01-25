@@ -392,7 +392,11 @@ public class CueBuilder {
                 Bounds.fromWidthHeight(550, 126, 58, 53), Bounds.fromWidthHeight(535, 194, 19, 148));
         addCueLocatorByPattern(cueLocators, "cuebuilder/bounties", "bounties_confirm_(.*)\\.png", Bounds.fromWidthHeight(219, 146, 367, 231),
                 Set.of(), weeklyTransparent, "WeeklyRewards", "unitycues/common/cueWeeklyRewards.png", "Weekly rewards gump");
-        //endregion
+
+        Set<Bounds> choiceTransp = Set.of(Bounds.fromWidthHeight(266, 138, 247, 44));
+        addCueLocatorByPattern(cueLocators, "cuebuilder/common", "top_choice_(.*)\\.png", Bounds.fromWidthHeight(260, 133, 258, 54),
+                Set.of(), choiceTransp, "TopChoice", "unitycues/common/cueTopChoice.png", "Top Choice border in selection windows");
+        //endregion Common
 
         //region CueX
         cueLocators.add(new CueLocator("cuebuilder/raid/raid-summon.png", Bounds.fromLength(616, 97, 48),

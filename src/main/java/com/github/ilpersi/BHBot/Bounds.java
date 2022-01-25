@@ -1,5 +1,6 @@
 package com.github.ilpersi.BHBot;
 
+import java.util.Objects;
 import java.util.StringJoiner;
 
 /**
@@ -113,5 +114,18 @@ class Bounds {
                 .add("width = '" + width + "'")
                 .add("height = '" + height + "'")
                 .toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Bounds bounds = (Bounds) o;
+        return x1 == bounds.x1 && y1 == bounds.y1 && x2 == bounds.x2 && y2 == bounds.y2;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x1, y1, x2, y2);
     }
 }

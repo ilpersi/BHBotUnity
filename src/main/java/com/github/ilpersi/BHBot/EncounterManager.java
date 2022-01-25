@@ -15,11 +15,11 @@ public final class EncounterManager {
 
     private final Bounds MD5_BOUNDS = new Bounds(105, 60, 640, 105);
 
-    public EncounterManager(BHBot bot) {
+    EncounterManager(BHBot bot) {
         this.bot = bot;
     }
 
-    public enum FamiliarType {
+    enum FamiliarType {
         ERROR("Error", 0),
         COMMON("Common", 1),
         RARE("Rare", 2),
@@ -44,7 +44,7 @@ public final class EncounterManager {
 
     }
 
-    public enum PersuationType {
+    enum PersuationType {
         DECLINE("Decline"),
         PERSUADE("Persuasion"),
         BRIBE("Bribe");

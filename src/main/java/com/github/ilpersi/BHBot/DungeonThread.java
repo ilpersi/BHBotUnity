@@ -1806,19 +1806,25 @@ public class DungeonThread implements Runnable {
                                         timeLastXealsCheck = Misc.getTime() - ((XEALS_CHECK_INTERVAL) - Misc.Durations.MINUTE);
                                         closeWorldBoss();
                                     } else {
-                                        bot.browser.readScreen();
-                                        MarvinSegment segStart = MarvinSegment.fromCue(BHBot.cues.get("DarkBlueStart"), 3 * Misc.Durations.SECOND, bot.browser);
+                                        BHBot.logger.debug("After lobby full");
+                                        // bot.browser.readScreen();
+                                        MarvinSegment segStart = MarvinSegment.fromCue(BHBot.cues.get("DarkBlueStart"), 2 * Misc.Durations.SECOND, bot.browser);
+                                        BHBot.logger.debug("After Initial button search");
                                         if (segStart != null) {
                                             while (segStart != null) {
+                                                BHBot.logger.debug("WB before closePopupSecurely(BHBot.cues.get(\"DarkBlueStart\")");
                                                 bot.browser.closePopupSecurely(BHBot.cues.get("DarkBlueStart"), BHBot.cues.get("DarkBlueStart")); //start World Boss
-                                                bot.browser.readScreen();
+                                                BHBot.logger.debug("WB after closePopupSecurely(BHBot.cues.get(\"DarkBlueStart\")");
+                                                // bot.browser.readScreen();
                                                 seg = MarvinSegment.fromCue(BHBot.cues.get("TeamNotFull"), 2 * Misc.Durations.SECOND, bot.browser); //check if we have the team not full screen an clear it
+                                                BHBot.logger.debug("Team not full result " + seg);
                                                 if (seg != null) {
                                                     bot.browser.readScreen(2 * Misc.Durations.SECOND); //wait for animation to finish
                                                     bot.browser.clickInGame(330, 360); //yesgreen cue has issues so we use XY to click on Yes
+                                                    BHBot.logger.debug("After team not full click");
                                                 }
 
-                                                segStart = MarvinSegment.fromCue(BHBot.cues.get("DarkBlueStart"), 5 * Misc.Durations.SECOND, bot.browser);
+                                                segStart = MarvinSegment.fromCue(BHBot.cues.get("DarkBlueStart"), 2 * Misc.Durations.SECOND, null, bot.browser);
                                             }
                                             BHBot.logger.info(worldBossDifficultyText + " T" + wbSetting.tier + " " + wbType.getName() + " started!");
                                             bot.setState(BHBot.State.WorldBoss);
@@ -4240,15 +4246,13 @@ public class DungeonThread implements Runnable {
      */
     private int selectDifficultyFromRange(int newDifficulty) {
 
-        // Bounds for difficulty range
-        Bounds difficultyRangeBounds = Bounds.fromWidthHeight(310, 135, 160, 35);
         // offset to read different ranges
         final int yOffset = 60;
 
         // Color definition for B&W conversion
         Color difficultyBlack = new Color(25, 25, 25);
         Color difficultyWhite = new Color(255, 255, 255);
-        final int customMax = 254;
+        final int customMax = 255;
 
         // Scroller cues
         ScrollBarManager difficultyRangeSB = new ScrollBarManager(bot.browser);
@@ -4261,6 +4265,18 @@ public class DungeonThread implements Runnable {
         difficultyRangeSB.scrollToTop(null);
 
         bot.browser.readScreen(Misc.Durations.SECOND / 2);
+
+        // Bounds for difficulty range. The position can change, so we look for the border, and we dynamically apply it
+        Bounds difficultyRangeBounds;
+        final int x1Diff = 30, y1Diff = 5, wDiff = -58, hDiff = -29;
+        MarvinSegment topChoice = MarvinSegment.fromCue("TopChoice", Misc.Durations.SECOND, bot.browser);
+        if (topChoice == null) {
+            BHBot.logger.error("Error: unable to find top choice border in trials/gauntlet difficulty range drop-down menu!");
+            bot.saveGameScreen("select_difficulty_range_top_choice", "errors");
+            return 0;
+        } else {
+            difficultyRangeBounds = Bounds.fromWidthHeight(topChoice.x1 + x1Diff, topChoice.y1 + y1Diff, topChoice.width + wDiff, topChoice.height + hDiff);
+        }
 
         int cntAttempt = 0;
         int rangeCnt = 0;
@@ -4278,6 +4294,7 @@ public class DungeonThread implements Runnable {
 
             // we need to click on the bottom arrow to have new ranges on monitor
             if (rangePos == 0 && rangeCnt > 0) {
+
                 if (!difficultyRangeSB.canScrollDown) {
                     BHBot.logger.error("Error: unable to detect down arrow in trials/gauntlet difficulty range drop-down menu!");
                     bot.saveGameScreen("select_difficulty_range_arrow_down", "errors");
@@ -4285,10 +4302,19 @@ public class DungeonThread implements Runnable {
                 }
 
                 for (int barPos = 0; barPos < 5; barPos++) {
-                    // bot.browser.clickOnSeg(seg);
                     difficultyRangeSB.scrollDown(Misc.Durations.SECOND / 2);
+                    if (difficultyRangeSB.isAtBottom()) break;
                 }
-                // bot.browser.readScreen(Misc.Durations.SECOND / 2);
+
+                // As we scrolled down, we update the position of the top choice border
+                topChoice = MarvinSegment.fromCue("TopChoice", Misc.Durations.SECOND, bot.browser);
+                if (topChoice == null) {
+                    BHBot.logger.error("Error: unable to find top choice border in trials/gauntlet difficulty range drop-down menu!");
+                    bot.saveGameScreen("select_difficulty_range_top_choice", "errors");
+                    return 0;
+                } else {
+                    difficultyRangeBounds = Bounds.fromWidthHeight(topChoice.x1 + x1Diff, topChoice.y1 + y1Diff, topChoice.width + wDiff, topChoice.height + hDiff);
+                }
             }
 
             // We use rangePos to read the right difficulty range

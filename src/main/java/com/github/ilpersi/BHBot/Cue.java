@@ -1,6 +1,7 @@
 package com.github.ilpersi.BHBot;
 
 import java.awt.image.BufferedImage;
+import java.util.Objects;
 
 /**
  * @author Betalord
@@ -39,5 +40,18 @@ public class Cue {
                 ", path='" + path + '\'' +
                 ", bounds=" + bounds +
                 ']';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Cue cue = (Cue) o;
+        return name.equals(cue.name) && bounds.equals(cue.bounds);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, bounds);
     }
 }

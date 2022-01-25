@@ -622,7 +622,8 @@ class CueManager {
         addCue("VictoryRecap", "unitycues/common/cueVictoryRecap.png", Bounds.fromWidthHeight(330, 55, 150, 55)); // Victory message when completing adventures
         addCue("DefeatRecap", "unitycues/common/cueDefeatRecap.png", Bounds.fromWidthHeight(335, 55, 135, 50)); // Defeat message when completing adventures
         addCue("WeeklyRewards", "unitycues/common/cueWeeklyRewards.png", Bounds.fromWidthHeight(205, 135, 395, 255)); // Weekly rewards gump
-        //endregion
+        addCue("TopChoice", "unitycues/common/cueTopChoice.png", null); // Top Choice border in selection windows
+        //endregion Common
 
         //region Dungeon
         //region Dungeon cues
@@ -749,7 +750,7 @@ class CueManager {
         // endregion
 
         // region WB Tier Buttons
-        // These are used when selectin World Boss tier
+        // These are used when selecting World Boss tier
         addCue("wb_tier_button_0", "unitycues/numbers/wbTierButton/wb_tier_button_0.png", null);
         addCue("wb_tier_button_1", "unitycues/numbers/wbTierButton/wb_tier_button_1.png", null);
         addCue("wb_tier_button_2", "unitycues/numbers/wbTierButton/wb_tier_button_2.png", null);
