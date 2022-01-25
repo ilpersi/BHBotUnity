@@ -55,6 +55,8 @@ public class SettingsManager {
                 return;
             }
 
+            ScrollBarManager settingsSB = new ScrollBarManager(bot.browser);
+
             // When Kong modifies/adds new settings, review this arraylist
             ArrayList<SettingConfiguration> settingConfigurations = new ArrayList<>();
             settingConfigurations.add(new SettingConfiguration("settingsMusic", ClickPosition.RELATIVE, 4, 5, 1));
@@ -76,7 +78,7 @@ public class SettingsManager {
             outer:
             do {
                 if (menuPos > 1)
-                    bot.browser.clickOnSeg(downArrowSeg);
+                    settingsSB.scrollDown(0);
 
                 for (SettingConfiguration setting : settingConfigurations) {
                     // We get cueName and position details
@@ -128,10 +130,8 @@ public class SettingsManager {
                     break;
                 }
 
-                bottomSeg = MarvinSegment.fromCue(scrollAtBottomCue, Misc.Durations.SECOND / 2, bot.browser);
-                bot.browser.readScreen();
                 menuPos += 1;
-            } while (bottomSeg == null);
+            } while (!settingsSB.isAtBottom());
 
             closeSettings();
         } else {
