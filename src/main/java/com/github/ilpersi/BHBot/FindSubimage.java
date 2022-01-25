@@ -46,16 +46,25 @@ class FindSubimage {
     static List<MarvinSegment> findSubimage(BufferedImage imageIn, BufferedImage subimage, double similarity, boolean findAll, boolean treatTransparentAsObscured, int startX, int startY, int endX, int endY) {
         List<MarvinSegment> segments = new ArrayList<>();
 
-        if (endX == 0) endX = imageIn.getWidth(); // endX was not set
-        if (endY == 0) endY = imageIn.getHeight(); // endY was not set
+        int imgInWidth = imageIn.getWidth();
+        int imgInHeight = imageIn.getHeight();
+
+        int subImgWidth = subimage.getWidth();
+        int subImgHeight = subimage.getHeight();
+
+        if (endX == 0) endX = imgInWidth; // endX was not set
+        if (endY == 0) endY = imgInHeight; // endY was not set
 
         // It may be possible, using Bounds.fromWidthHeight that images close to the
         // sides, get over them. This is making sure that this never happens
-        if (endX > imageIn.getWidth()) endX = imageIn.getWidth();
-        if (endY > imageIn.getHeight()) endY = imageIn.getHeight();
+        if (endX > imgInWidth) endX = imgInWidth;
+        if (endY > imgInHeight) endY = imgInHeight;
 
-        int subImagePixels = subimage.getWidth() * subimage.getHeight();
-        boolean[][] processed = new boolean[imageIn.getWidth()][imageIn.getHeight()];
+        int subImagePixels = subImgWidth * subImgHeight;
+        boolean[][] processed = new boolean[imgInWidth][imgInHeight];
+
+        int[] imageInRGB = imageIn.getRGB(0,0, imgInWidth, imgInHeight, null, 0, imgInWidth);
+        int[] subImageRGB = subimage.getRGB(0,0, subImgWidth, subImgHeight, null, 0, subImgWidth);
 
         // Full image
         try {
@@ -70,21 +79,21 @@ class FindSubimage {
                     int notMatched = 0;
                     boolean match = true;
                     // subimage
-                    if (y + subimage.getHeight() < imageIn.getHeight() && x + subimage.getWidth() < imageIn.getWidth()) {
+                    if (y + subImgHeight < imgInHeight && x + subImgWidth < imgInWidth) {
 
 
                         outerLoop:
-                        for (int i = 0; i < subimage.getHeight(); i++) {
-                            for (int j = 0; j < subimage.getWidth(); j++) {
+                        for (int i = 0; i < subImgHeight; i++) {
+                            for (int j = 0; j < subImgWidth; j++) {
 
                                 if (processed[x + j][y + i]) {
                                     match = false;
                                     break outerLoop;
                                 }
 
-                                Color c1 = new Color(imageIn.getRGB(x + j, y + i), true);
+                                Color c1 = new Color(imageInRGB[((y + i)*imgInWidth)+(x + j)], true);
 
-                                Color c2 = new Color(subimage.getRGB(j, i), true);
+                                Color c2 = new Color(subImageRGB[(i*subImgWidth)+j], true);
 
                                 if (c2.getAlpha() == 0) {
                                     if (!treatTransparentAsObscured)
@@ -119,14 +128,14 @@ class FindSubimage {
                     }
 
                     if (match) {
-                        segments.add(new MarvinSegment(x, y, x + subimage.getWidth(), y + subimage.getHeight()));
+                        segments.add(new MarvinSegment(x, y, x + subImgWidth, y + subImgHeight));
 
                         if (!findAll) {
                             break mainLoop;
                         }
 
-                        for (int i = 0; i < subimage.getHeight(); i++) {
-                            for (int j = 0; j < subimage.getWidth(); j++) {
+                        for (int i = 0; i < subImgHeight; i++) {
+                            for (int j = 0; j < subImgWidth; j++) {
                                 processed[x + j][y + i] = true;
                             }
                         }
@@ -137,8 +146,8 @@ class FindSubimage {
             BHBot.logger.debug("ArrayIndexOutOfBounds Exception in FindSubimage", e);
             Misc.saveScreen("ArrayIndexOutOfBounds-In", "find-errors", BHBot.includeMachineNameInScreenshots, imageIn);
             Misc.saveScreen("ArrayIndexOutOfBounds-Sub", "find-errors", BHBot.includeMachineNameInScreenshots, subimage);
-            BHBot.logger.debug(String.format("Image In  -> W: %d H: %d", imageIn.getWidth(), imageIn.getWidth()));
-            BHBot.logger.debug(String.format("Image Sub -> W: %d H: %d", subimage.getWidth(), subimage.getWidth()));
+            BHBot.logger.debug(String.format("Image In  -> W: %d H: %d", imgInWidth, imgInHeight));
+            BHBot.logger.debug(String.format("Image Sub -> W: %d H: %d", subImgWidth, subImgHeight));
             BHBot.logger.debug(String.format("startX: %d, startY: %d, endX: %d, endY: %d", startX, startY, endX, endY));
             BHBot.logger.debug(Misc.getStackTrace());
         }
