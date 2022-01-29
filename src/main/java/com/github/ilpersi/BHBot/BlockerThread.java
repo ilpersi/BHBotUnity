@@ -21,6 +21,9 @@ public class BlockerThread implements Runnable {
         }
 
         while (!bot.finished && bot.running) {
+
+            Misc.sleep(125);
+
             try {
                 bot.scheduler.process();
                 if (bot.scheduler.isPaused()) {
@@ -311,7 +314,7 @@ public class BlockerThread implements Runnable {
             if (bot.finished || (!bot.running && BHBot.State.Main.equals(bot.getState()))) break; // skip sleeping if finished flag has been set or bot is not running!
 
             BHBot.logger.trace("Blocker Thread Sleeping");
-            Misc.sleep(250);
+            Misc.sleep(125);
         }
 
         BHBot.logger.info("Blocker thread stopped.");
