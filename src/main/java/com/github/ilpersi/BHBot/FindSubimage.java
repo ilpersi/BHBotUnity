@@ -1,6 +1,5 @@
 package com.github.ilpersi.BHBot;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,25 +16,17 @@ import java.util.List;
  */
 class FindSubimage {
 
-	/*public static MarvinSegment findImage(BufferedImage imageIn, BufferedImage subimage) {
-		List<MarvinSegment> r = findSubimage(imageIn, subimage, 1.0, false, false, 0, 0, 0, 0);
-		if (r.isEmpty())
-			return null;
-		else
-			return r.get(0);
-	}*/
-
-    static MarvinSegment findImage(BufferedImage imageIn, BufferedImage subimage, int startX, int startY, int endX, int endY) {
-        List<MarvinSegment> r = findSubimage(imageIn, subimage, 1.0, false, false, startX, startY, endX, endY);
+	static MarvinSegment findImage(BufferedImage imageIn, BufferedImage subImage, int startX, int startY, int endX, int endY) {
+        List<MarvinSegment> r = findSubimage(imageIn, subImage, 1.0, false, false, startX, startY, endX, endY);
         return r.isEmpty() ? null : r.get(0);
     }
 
     /**
      * @param imageIn                    imageIn
-     * @param subimage                   subimage
+     * @param subImage                   subImage
      * @param similarity                 similarity
      * @param findAll                    findAll
-     * @param treatTransparentAsObscured this is a special flag that is used rarely. When true, it will consider all transparent pixels from the 'subimage' as pixels that must be lower than 200 accumulative value in the 'imageIn'. We use it for example when detecting "Loading" superimposed message (and background is obscured, with white(255,255,255) having a value of 64,64,64, which is the maximum value with obscured background.
+     * @param treatTransparentAsObscured this is a special flag that is used rarely. When true, it will consider all transparent pixels from the 'subImage' as pixels that must be lower than 200 accumulative value in the 'imageIn'. We use it for example when detecting "Loading" superimposed message (and background is obscured, with white(255,255,255) having a value of 64,64,64, which is the maximum value with obscured background.
      * @param startX                     startX
      * @param startY                     startY
      * @param endX                       may be 0 (will be ignored in this case)
@@ -43,14 +34,14 @@ class FindSubimage {
      * @return a list of found subimages
      */
     @SuppressWarnings("SameParameterValue")
-    static List<MarvinSegment> findSubimage(BufferedImage imageIn, BufferedImage subimage, double similarity, boolean findAll, boolean treatTransparentAsObscured, int startX, int startY, int endX, int endY) {
+    static List<MarvinSegment> findSubimage(BufferedImage imageIn, BufferedImage subImage, double similarity, boolean findAll, boolean treatTransparentAsObscured, int startX, int startY, int endX, int endY) {
         List<MarvinSegment> segments = new ArrayList<>();
 
         int imgInWidth = imageIn.getWidth();
         int imgInHeight = imageIn.getHeight();
 
-        int subImgWidth = subimage.getWidth();
-        int subImgHeight = subimage.getHeight();
+        int subImgWidth = subImage.getWidth();
+        int subImgHeight = subImage.getHeight();
 
         if (endX == 0) endX = imgInWidth; // endX was not set
         if (endY == 0) endY = imgInHeight; // endY was not set
@@ -64,7 +55,7 @@ class FindSubimage {
         boolean[][] processed = new boolean[imgInWidth][imgInHeight];
 
         int[] imageInRGB = imageIn.getRGB(0,0, imgInWidth, imgInHeight, null, 0, imgInWidth);
-        int[] subImageRGB = subimage.getRGB(0,0, subImgWidth, subImgHeight, null, 0, subImgWidth);
+        int[] subImageRGB = subImage.getRGB(0,0, subImgWidth, subImgHeight, null, 0, subImgWidth);
 
         // Full image
         try {
@@ -78,9 +69,8 @@ class FindSubimage {
 
                     int notMatched = 0;
                     boolean match = true;
-                    // subimage
+                    // subImage
                     if (y + subImgHeight < imgInHeight && x + subImgWidth < imgInWidth) {
-
 
                         outerLoop:
                         for (int i = 0; i < subImgHeight; i++) {
@@ -91,15 +81,23 @@ class FindSubimage {
                                     break outerLoop;
                                 }
 
-                                Color c1 = new Color(imageInRGB[((y + i)*imgInWidth)+(x + j)], true);
+                                int imageInIndex = ((y + i)*imgInWidth)+(x + j);
+                                // int c1Alpha = (imageInRGB[imageInIndex] >> 24) & 0xff;
+                                int c1Red = (imageInRGB[imageInIndex] >> 16) & 0xff;
+                                int c1Green = (imageInRGB[imageInIndex] >> 8) & 0xff;
+                                int c1Blue = (imageInRGB[imageInIndex]) & 0xff;
 
-                                Color c2 = new Color(subImageRGB[(i*subImgWidth)+j], true);
+                                int subImageIndex = (i*subImgWidth)+j;
+                                int c2Alpha = (subImageRGB[subImageIndex] >> 24) & 0xff;
+                                int c2Red = (subImageRGB[subImageIndex] >> 16) & 0xff;
+                                int c2Green = (subImageRGB[subImageIndex] >> 8) & 0xff;
+                                int c2Blue = (subImageRGB[subImageIndex]) & 0xff;
 
-                                if (c2.getAlpha() == 0) {
+                                if (c2Alpha == 0) {
                                     if (!treatTransparentAsObscured)
                                         continue; // we don't match transparent pixels!
                                     // treat transparent pixel as obscured background:
-                                    int total = c1.getRed() + c1.getGreen() + c1.getBlue();
+                                    int total = c1Red + c1Green + c1Blue;
                                     if (total > 200) {
                                         notMatched++;
 
@@ -110,9 +108,9 @@ class FindSubimage {
                                     }
                                 } else if
                                 (
-                                        Math.abs(c1.getRed() - c2.getRed()) > 5 ||
-                                                Math.abs(c1.getGreen() - c2.getGreen()) > 5 ||
-                                                Math.abs(c1.getBlue() - c2.getBlue()) > 5
+                                        Math.abs(c1Red - c2Red) > 5 ||
+                                                Math.abs(c1Green - c2Green) > 5 ||
+                                                Math.abs(c1Blue - c2Blue) > 5
                                 ) {
                                     notMatched++;
 
@@ -145,7 +143,7 @@ class FindSubimage {
         } catch (java.lang.ArrayIndexOutOfBoundsException e) {
             BHBot.logger.debug("ArrayIndexOutOfBounds Exception in FindSubimage", e);
             Misc.saveScreen("ArrayIndexOutOfBounds-In", "find-errors", BHBot.includeMachineNameInScreenshots, imageIn);
-            Misc.saveScreen("ArrayIndexOutOfBounds-Sub", "find-errors", BHBot.includeMachineNameInScreenshots, subimage);
+            Misc.saveScreen("ArrayIndexOutOfBounds-Sub", "find-errors", BHBot.includeMachineNameInScreenshots, subImage);
             BHBot.logger.debug(String.format("Image In  -> W: %d H: %d", imgInWidth, imgInHeight));
             BHBot.logger.debug(String.format("Image Sub -> W: %d H: %d", subImgWidth, subImgHeight));
             BHBot.logger.debug(String.format("startX: %d, startY: %d, endX: %d, endY: %d", startX, startY, endX, endY));
