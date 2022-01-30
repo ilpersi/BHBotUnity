@@ -11,7 +11,6 @@ import org.openqa.selenium.logging.LogEntry;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.CapabilityType;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import javax.imageio.ImageIO;
@@ -87,22 +86,18 @@ public class BrowserManager {
                 options.setCapability(CapabilityType.LOGGING_PREFS, logPrefs);
             }
 
-            DesiredCapabilities capabilities = DesiredCapabilities.chrome();
-            capabilities.setCapability("chrome.verbose", false);
-            capabilities.setCapability(ChromeOptions.CAPABILITY, options);
-
             if (bot.settings.autoStartChromeDriver) {
                 driver = new ChromeDriver(options);
                 caps = ((ChromeDriver) driver).getCapabilities();
             } else {
-                URL driverAddress = null;
+                URL driverAddress;
                 try {
                     driverAddress = new URL("http://" + bot.browserDriverAddress);
+                    driver = new RemoteWebDriver(driverAddress, options);
+                    caps = ((RemoteWebDriver) driver).getCapabilities();
                 } catch (MalformedURLException e) {
                     BHBot.logger.error("Malformed URL when connecting to Web driver: ", e);
                 }
-                driver = new RemoteWebDriver(driverAddress, capabilities);
-                caps = ((RemoteWebDriver) driver).getCapabilities();
             }
         } else {
 //            ProfilesIni profileIni = new ProfilesIni();
@@ -155,21 +150,18 @@ public class BrowserManager {
                 options.setCapability(CapabilityType.LOGGING_PREFS, logPrefs);
             }
 
-            DesiredCapabilities capabilities = DesiredCapabilities.firefox();
-            capabilities.setCapability(FirefoxOptions.FIREFOX_OPTIONS, options);
-
             if (bot.settings.autoStartChromeDriver) {
                 driver = new FirefoxDriver(options);
                 caps = ((FirefoxDriver) driver).getCapabilities();
             } else {
-                URL driverAddress = null;
+                URL driverAddress;
                 try {
                     driverAddress = new URL("http://" + bot.browserDriverAddress);
+                    driver = new RemoteWebDriver(driverAddress, options);
+                    caps = ((RemoteWebDriver) driver).getCapabilities();
                 } catch (MalformedURLException e) {
                     BHBot.logger.error("Malformed URL when connecting to Web driver: ", e);
                 }
-                driver = new RemoteWebDriver(driverAddress, capabilities);
-                caps = ((RemoteWebDriver) driver).getCapabilities();
             }
         }
 
@@ -383,7 +375,8 @@ public class BrowserManager {
         } catch (RasterFormatException e) {
             jsExecutor.executeScript("arguments[0].scrollIntoView(true);", game);
             throw e;
-        } catch (RuntimeException e) {
+        }
+        catch (RuntimeException e) {
             BHBot.logger.error("Runtime error when taking screenshot: ", e);
             restart(false);
             return new BufferedImage(800, 520, BufferedImage.TYPE_INT_RGB);
@@ -569,7 +562,7 @@ public class BrowserManager {
     }
 
     private int getChromeVersion() {
-        String[] versionArray = caps.getVersion().split("\\.");
+        String[] versionArray = caps.getBrowserVersion().split("\\.");
         return Integer.parseInt(versionArray[0]);
     }
 
@@ -679,6 +672,8 @@ public class BrowserManager {
      *
      */
     void serializeCookies() {
+        if (driver == null ) return;
+
         HashSet<Cookie> cookies = new HashSet<>(driver.manage().getCookies());
 
         try {

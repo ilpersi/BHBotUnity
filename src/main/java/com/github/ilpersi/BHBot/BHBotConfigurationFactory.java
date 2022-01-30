@@ -10,6 +10,7 @@ import org.apache.logging.log4j.core.config.ConfigurationSource;
 import org.apache.logging.log4j.core.config.builder.api.AppenderComponentBuilder;
 import org.apache.logging.log4j.core.config.builder.api.ComponentBuilder;
 import org.apache.logging.log4j.core.config.builder.api.ConfigurationBuilder;
+import org.apache.logging.log4j.core.config.builder.api.LoggerComponentBuilder;
 import org.apache.logging.log4j.core.config.builder.impl.BuiltConfiguration;
 import org.apache.logging.log4j.core.config.plugins.Plugin;
 
@@ -27,11 +28,22 @@ public class BHBotConfigurationFactory extends ConfigurationFactory {
         // baseDir for logs
         builder.addProperty("baseDir", BHBot.logBaseDir);
 
+        // Disable log entries for io.netty
+        LoggerComponentBuilder nettyDisabler = builder.newLogger("io.netty", Level.WARN);
+        builder.add(nettyDisabler);
+
+        // Disable log entries for org.asynchttpclient.netty
+        LoggerComponentBuilder nettyDisabler2 = builder.newLogger("org.asynchttpclient.netty", Level.WARN);
+        builder.add(nettyDisabler2);
+
         // STD OUT
         AppenderComponentBuilder stdOutBuilder = builder.newAppender("StdOut", "CONSOLE")
                 .addAttribute("target", ConsoleAppender.Target.SYSTEM_OUT);
         stdOutBuilder.add(builder.newLayout("PatternLayout")
-                .addAttribute("pattern", "%d{ABSOLUTE} %highlight{%level}{FATAL=bg_red, ERROR=bg_red, WARN=bg_yellow, AUTOBRIBE=cyan, AUTOREVIVE=cyan, AUTOSHRINE=cyan, AUTORUNE=cyan, STATS=magenta, READOUT=yellow, INFO=green, DEBUG=blue} - %msg%n"));
+                .addAttribute("pattern", "%d{ABSOLUTE} %highlight{%level}{FATAL=bg_red, ERROR=bg_red, WARN=bg_yellow, AUTOBRIBE=cyan, AUTOREVIVE=cyan, AUTOSHRINE=cyan, AUTORUNE=cyan, STATS=magenta, READOUT=yellow, INFO=green, DEBUG=blue} - %msg%n")
+                // If you need to know the class triggering the log message, just replace the previous line with this one
+                //.addAttribute("pattern", "%logger %d{HH:mm:ss.SSS} %p %m %ex%n")
+                .addAttribute("disableAnsi", "false"));
         stdOutBuilder.add(builder.newFilter("ThresholdFilter", Filter.Result.DENY,
                 Filter.Result.ACCEPT).addAttribute("level", Level.ERROR));
         builder.add(stdOutBuilder);
@@ -40,7 +52,8 @@ public class BHBotConfigurationFactory extends ConfigurationFactory {
         AppenderComponentBuilder stdErrBuilder = builder.newAppender("StdErr", "CONSOLE").
                 addAttribute("target", ConsoleAppender.Target.SYSTEM_ERR);
         stdErrBuilder.add(builder.newLayout("PatternLayout")
-                .addAttribute("pattern", "%d{ABSOLUTE} %style{%highlight{%level}{FATAL=bg_red, ERROR=red, WARN=bg_yellow, AUTOBRIBE=cyan, AUTOREVIVE=cyan, AUTOSHRINE=cyan, AUTORUNE=cyan, STATS=magenta, READOUT=yellow, INFO=green, DEBUG=blue} - %msg%n}{red}"));
+                .addAttribute("pattern", "%d{ABSOLUTE} %style{%highlight{%level}{FATAL=bg_red, ERROR=red, WARN=bg_yellow, AUTOBRIBE=cyan, AUTOREVIVE=cyan, AUTOSHRINE=cyan, AUTORUNE=cyan, STATS=magenta, READOUT=yellow, INFO=green, DEBUG=blue} - %msg%n}{red}")
+                .addAttribute("disableAnsi", "false"));
         stdErrBuilder.add(builder.newFilter("ThresholdFilter", Filter.Result.ACCEPT,
                 Filter.Result.DENY).addAttribute("level", Level.ERROR));
         builder.add(stdErrBuilder);
