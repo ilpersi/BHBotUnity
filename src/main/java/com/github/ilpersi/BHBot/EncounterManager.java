@@ -13,25 +13,27 @@ public final class EncounterManager {
     static HashMap<String, FamiliarDetails> famMD5Table = new HashMap<>();
     private final BHBot bot;
 
-    private final Bounds MD5_BOUNDS = new Bounds(105, 60, 640, 105);
+    private static final Bounds MD5_NAME_BOUNDS = new Bounds(105, 60, 640, 105);
 
     EncounterManager(BHBot bot) {
         this.bot = bot;
     }
 
     enum FamiliarType {
-        ERROR("Error", 0),
-        COMMON("Common", 1),
-        RARE("Rare", 2),
-        EPIC("Epic", 3),
-        LEGENDARY("Legendary", 4);
+        ERROR("Error", 0, new Color(0, 0, 0)),
+        COMMON("Common", 1, new Color(151, 255, 125)),
+        RARE("Rare", 2, new Color(147, 158, 244)),
+        EPIC("Epic", 3, new Color(255, 128, 125)),
+        LEGENDARY("Legendary", 4, new Color(255, 255, 0));
 
         private final String name;
         private final int type;
+        private final Color color;
 
-        FamiliarType(String name, int type) {
+        FamiliarType(String name, int type, Color color) {
             this.name = name;
             this.type = type;
+            this.color = color;
         }
 
         public int getValue() {
@@ -42,6 +44,9 @@ public final class EncounterManager {
             return this.name;
         }
 
+        public Color getColor() {
+            return color;
+        }
     }
 
     enum PersuationType {
@@ -138,7 +143,7 @@ public final class EncounterManager {
         // if (bot.settings.contributeFamiliars) {
 
         // We build the MD5 string for the current encounter
-        BufferedImage famNameImg = EncounterManager.getFamiliarNameImg(bot.browser.getImg(), familiarLevel, this.MD5_BOUNDS);
+        BufferedImage famNameImg = EncounterManager.getFamiliarNameImg(bot.browser.getImg(), familiarLevel);
         String famNameMD5 = Misc.imgToMD5(famNameImg);
 
         // We check if the familiar is known
@@ -152,7 +157,7 @@ public final class EncounterManager {
             if (famNameImg == null) famNameImg = bot.browser.getImg();
 
             if (!Misc.contributeImage(famNameImg, persuasionLog.toString(), null)) {
-                Misc.contributeImage(bot.browser.getImg(), persuasionLog.toString(), this.MD5_BOUNDS);
+                Misc.contributeImage(bot.browser.getImg(), persuasionLog.toString(), this.MD5_NAME_BOUNDS);
             }
         } else {
             BHBot.logger.debug(MessageFormat.format("MD5 familiar detected: {0}", encounterDetails.name));
@@ -208,7 +213,7 @@ public final class EncounterManager {
         String familiarName;
         int toBribeCnt;
 
-        final BufferedImage famNameImg = EncounterManager.getFamiliarNameImg(bot.browser.getImg(), familiarLevel, this.MD5_BOUNDS);
+        final BufferedImage famNameImg = EncounterManager.getFamiliarNameImg(bot.browser.getImg(), familiarLevel);
         final String famNameMD5 = Misc.imgToMD5(famNameImg);
 
         // We check if the familiar is known
@@ -360,13 +365,13 @@ public final class EncounterManager {
      * @param familiarType What is the type of the familiar we are looking to find the name
      * @return A Buffered Image containing just the familiar name
      */
-    static BufferedImage getFamiliarNameImg(BufferedImage screenImg, FamiliarType familiarType, Bounds nameBounds) {
+    static BufferedImage getFamiliarNameImg(BufferedImage screenImg, FamiliarType familiarType) {
         // int familiarTxtColor;
         Color familiarTxtCol = switch (familiarType) {
-            case COMMON -> new Color(151, 255, 125);
-            case RARE -> new Color(147, 158, 244);
-            case EPIC -> new Color(255, 128, 125);
-            case LEGENDARY -> new Color(255, 255, 0);
+            case COMMON -> FamiliarType.COMMON.getColor();
+            case RARE -> FamiliarType.RARE.getColor();
+            case EPIC -> FamiliarType.EPIC.getColor();
+            case LEGENDARY -> FamiliarType.LEGENDARY.getColor();
             // case ERROR -> null;
             default -> null;
             // familiarTxtColor = 0;
@@ -375,12 +380,7 @@ public final class EncounterManager {
         // if (familiarTxtColor == 0 ) return null;
         if (familiarTxtCol == null) return null;
 
-
-        BufferedImage nameImgRect;
-        if (nameBounds != null)
-            nameImgRect = screenImg.getSubimage(nameBounds.x1, nameBounds.y1, nameBounds.width, nameBounds.height);
-        else
-            nameImgRect = screenImg;
+        BufferedImage nameImgRect = screenImg.getSubimage(MD5_NAME_BOUNDS.x1, MD5_NAME_BOUNDS.y1, MD5_NAME_BOUNDS.width, MD5_NAME_BOUNDS.height);
 
         int minX = nameImgRect.getWidth();
         int minY = nameImgRect.getHeight();
