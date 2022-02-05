@@ -11,6 +11,7 @@
 
 # Run time folders
 chrome_*/
+firefox_*/
 logs/
 screenshots/
 plans/

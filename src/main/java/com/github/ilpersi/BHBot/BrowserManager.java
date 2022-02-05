@@ -100,13 +100,8 @@ public class BrowserManager {
                 }
             }
         } else {
-//            ProfilesIni profileIni = new ProfilesIni();
-//            FirefoxProfile profile = profileIni.getProfile(browserProfile);
 
-            FirefoxOptions options = new FirefoxOptions();
-//            options.setProfile(profile);
-
-            // Geckodriver is quite verbose so we redirect the log to null
+            // Geckodriver is quite verbose, so we redirect the log to null
             if (System.getProperty("os.name").contains("Windows"))
                 System.setProperty(FirefoxDriver.SystemProperty.BROWSER_LOGFILE, "NUL");
             else if (System.getProperty("os.name").contains("Linux"))
@@ -123,9 +118,7 @@ public class BrowserManager {
             pref.enable(LogType.PROFILER, Level.WARNING);
             pref.enable(LogType.SERVER, Level.WARNING);
 
-            //set Chromium binary location
-            options.setBinary(bot.browserExePath);
-            options.setCapability(CapabilityType.LOGGING_PREFS, pref);
+            System.setProperty(FirefoxDriver.SystemProperty.BROWSER_BINARY, bot.browserExePath);
 
             if (bot.settings.autoStartChromeDriver) {
                 System.setProperty(GeckoDriverService.GECKO_DRIVER_EXE_PROPERTY, bot.browserDriverExePath);
@@ -135,6 +128,13 @@ public class BrowserManager {
                     System.clearProperty(GeckoDriverService.GECKO_DRIVER_EXE_PROPERTY);
                 }
             }
+
+            FirefoxProfile profile = new FirefoxProfile();
+            profile.setPreference("browser.cache.disk.parent_directory", browserProfile);
+
+            FirefoxOptions options = new FirefoxOptions();
+            options.setProfile(profile);
+            // options.setCapability(CapabilityType.LOGGING_PREFS, pref);
 
             /*
              * When we connect the driver, if we don't know the do_not_share_url and if the configs require it,
@@ -146,7 +146,6 @@ public class BrowserManager {
                 LoggingPreferences logPrefs = new LoggingPreferences();
                 logPrefs.enable(LogType.PERFORMANCE, Level.ALL);
                 // https://stackoverflow.com/a/56536604/1280443
-                options.setCapability("goog:loggingPrefs", logPrefs);
                 options.setCapability(CapabilityType.LOGGING_PREFS, logPrefs);
             }
 

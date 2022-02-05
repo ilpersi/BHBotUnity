@@ -107,7 +107,7 @@ public class BHBot {
                     Settings.configurationFile = args[i + 1];
                     i++;
                 }
-                case "userdatadir", "userDataDir", "browserProfile" -> {
+                case "userdatadir", "userDataDir", "browserProfile", "cacheDir" -> {
                     browserProfile = args[i + 1];
                     i++;
                 }
@@ -163,7 +163,7 @@ public class BHBot {
 
         // We only set a default value if not argument is provided
         if ("".equals(browserProfile)) {
-            browserProfile = bot.settings.useFirefox ? "default" : "./chrome_profile";
+            browserProfile = bot.settings.useFirefox ? "./firefox_cache" : "./chrome_profile";
         }
 
         logger = BHBotLogger.create();
