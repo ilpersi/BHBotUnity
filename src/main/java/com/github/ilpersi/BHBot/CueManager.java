@@ -478,10 +478,6 @@ class CueManager {
 
         //Familiar bribing cues
         addCue("NotEnoughGems", "cues/cueNotEnoughGems.png", null); // used when not enough gems are available
-        addCue("CommonFamiliar", "cues/familiars/type/cue01CommonFamiliar.png", new Bounds(525, 240, 674, 365)); // Common Bribe cue
-        addCue("RareFamiliar", "cues/familiars/type/cue02RareFamiliar.png", new Bounds(525, 240, 674, 365)); // Rare Bribe cue
-        addCue("EpicFamiliar", "cues/familiars/type/cue03EpicFamiliar.png", new Bounds(525, 240, 674, 365)); // Epic Bribe cue
-        addCue("LegendaryFamiliar", "cues/familiars/type/cue04LegendaryFamiliar.png", new Bounds(525, 240, 674, 365)); // Epic Bribe cue
 
         //AutoRevive cues
         addCue("Potions", "cues/autorevive/cuePotions.png", new Bounds(0, 370, 90, 460)); //Potions button
