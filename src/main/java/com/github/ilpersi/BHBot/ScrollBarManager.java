@@ -7,13 +7,19 @@ import java.awt.image.BufferedImage;
  */
 class ScrollBarManager {
 
+    /**
+     * Action performed on a scroll bar
+     */
     enum barAction {
         NONE,
         SCROLL_UP,
         SCROLL_DOWN
     }
 
+    // Browser manager instance used to take screenshots
     private final BrowserManager browserManager;
+
+    // Arrow up/down found segments
     private final MarvinSegment arrowUp;
     private final MarvinSegment arrowDown;
 
@@ -25,12 +31,16 @@ class ScrollBarManager {
     private String btmPosMD5 = null;
     private String curPosMD5 = null;
 
+    // Can the scrollbar scroll down/up?
     boolean canScrollDown = false;
     boolean canScrollUp = false;
 
     private barAction lastAction;
     private final int barMargin = 10;
 
+    /**
+     * @param browserManager A BrowserManager instance used to take screenshots and perform click actions
+     */
     ScrollBarManager(BrowserManager browserManager) {
         this.browserManager = browserManager;
         this.arrowDown = MarvinSegment.fromCue("DropDownDown", browserManager);
@@ -62,6 +72,9 @@ class ScrollBarManager {
 
     }
 
+    /**
+     * @return Checks if scroll bar has reached one of the ends (either the top one or the bottom one)
+     */
     private boolean isScrollLimit() {
 
         // If we can't scroll, we can't really tell if the bar has reached the possible limit
