@@ -12,6 +12,7 @@ import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.remote.UnreachableBrowserException;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -374,6 +375,11 @@ public class BrowserManager {
         } catch (RasterFormatException e) {
             jsExecutor.executeScript("arguments[0].scrollIntoView(true);", game);
             throw e;
+        }
+        catch (UnreachableBrowserException e) {
+            BHBot.logger.error("UnreachableBrowserException when taking screenshot: ", e);
+            restart(false);
+            return new BufferedImage(800, 520, BufferedImage.TYPE_INT_RGB);
         }
         catch (RuntimeException e) {
             BHBot.logger.error("Runtime error when taking screenshot: ", e);
