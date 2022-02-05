@@ -6,8 +6,10 @@ import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.text.MessageFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public final class EncounterManager {
     static HashMap<String, FamiliarDetails> famMD5Table = new HashMap<>();
@@ -91,18 +93,7 @@ public final class EncounterManager {
 
         BHBot.logger.autobribe("Familiar encountered");
 
-        FamiliarType familiarLevel;
-        if (MarvinSegment.fromCue(BHBot.cues.get("CommonFamiliar"), bot.browser) != null) {
-            familiarLevel = FamiliarType.COMMON;
-        } else if (MarvinSegment.fromCue(BHBot.cues.get("RareFamiliar"), bot.browser) != null) {
-            familiarLevel = FamiliarType.RARE;
-        } else if (MarvinSegment.fromCue(BHBot.cues.get("EpicFamiliar"), bot.browser) != null) {
-            familiarLevel = FamiliarType.EPIC;
-        } else if (MarvinSegment.fromCue(BHBot.cues.get("LegendaryFamiliar"), bot.browser) != null) {
-            familiarLevel = FamiliarType.LEGENDARY;
-        } else {
-            familiarLevel = FamiliarType.ERROR; // error
-        }
+        FamiliarType familiarLevel = getFamiliarType(bot.browser.getImg());
 
         PersuationType persuasion;
         BribeSettings bribeInfo = new BribeSettings();
@@ -157,7 +148,7 @@ public final class EncounterManager {
             if (famNameImg == null) famNameImg = bot.browser.getImg();
 
             if (!Misc.contributeImage(famNameImg, persuasionLog.toString(), null)) {
-                Misc.contributeImage(bot.browser.getImg(), persuasionLog.toString(), this.MD5_NAME_BOUNDS);
+                Misc.contributeImage(bot.browser.getImg(), persuasionLog.toString(), MD5_NAME_BOUNDS);
             }
         } else {
             BHBot.logger.debug(MessageFormat.format("MD5 familiar detected: {0}", encounterDetails.name));
@@ -538,5 +529,32 @@ public final class EncounterManager {
             }
         }
         BHBot.logger.warn(MessageFormat.format("Familiar name not found: {0}", famName));
+    }
+
+    static FamiliarType getFamiliarType(BufferedImage encounterImg) {
+        int[] encounterImgInRGB = encounterImg.getRGB(MD5_NAME_BOUNDS.x1, MD5_NAME_BOUNDS.y1, MD5_NAME_BOUNDS.width, MD5_NAME_BOUNDS.height, null, 0, MD5_NAME_BOUNDS.width);
+
+        for (int i = 0; i < MD5_NAME_BOUNDS.height; i++) {
+            for (int j = 0; j < MD5_NAME_BOUNDS.width; j++) {
+
+                int imgIndex = (i * MD5_NAME_BOUNDS.width) + j;
+
+                int pixelRed = (encounterImgInRGB[imgIndex] >> 16) & 0xff;
+                int pixelGreen = (encounterImgInRGB[imgIndex] >> 8) & 0xff;
+                int pixelBlue = (encounterImgInRGB[imgIndex]) & 0xff;
+
+                if (FamiliarType.COMMON.color.getRed() == pixelRed && FamiliarType.COMMON.color.getGreen() == pixelGreen && FamiliarType.COMMON.color.getBlue() == pixelBlue) {
+                    return FamiliarType.COMMON;
+                } else if (FamiliarType.RARE.color.getRed() == pixelRed && FamiliarType.RARE.color.getGreen() == pixelGreen && FamiliarType.RARE.color.getBlue() == pixelBlue) {
+                    return FamiliarType.RARE;
+                } else if (FamiliarType.EPIC.color.getRed() == pixelRed && FamiliarType.EPIC.color.getGreen() == pixelGreen && FamiliarType.EPIC.color.getBlue() == pixelBlue) {
+                    return FamiliarType.EPIC;
+                } else if (FamiliarType.LEGENDARY.color.getRed() == pixelRed && FamiliarType.LEGENDARY.color.getGreen() == pixelGreen && FamiliarType.LEGENDARY.color.getBlue() == pixelBlue) {
+                    return FamiliarType.LEGENDARY;
+                }
+            }
+        }
+
+        return FamiliarType.ERROR;
     }
 }
