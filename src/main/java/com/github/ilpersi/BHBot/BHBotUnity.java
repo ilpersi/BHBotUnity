@@ -442,6 +442,28 @@ public class BHBotUnity {
                 }
                 break;
             }
+            case "dr", "diffrange":
+                Bounds difficultyRangeBounds;
+                final int x1Diff = 30, y1Diff = 5, wDiff = -58, hDiff = -29;
+                MarvinSegment topChoice = MarvinSegment.fromCue("TopChoice", Misc.Durations.SECOND, browser);
+
+                if (topChoice == null) break;
+
+                final int yOffset = 60;
+                difficultyRangeBounds = Bounds.fromWidthHeight(topChoice.x1 + x1Diff, topChoice.y1 + y1Diff, topChoice.width + wDiff, topChoice.height + hDiff);
+
+                for (int i = 0; i < 5; i++) {
+                    int posOffset = i * yOffset;
+                    BufferedImage topRangeImg = browser.getImg().getSubimage(difficultyRangeBounds.x1, difficultyRangeBounds.y1 + posOffset, difficultyRangeBounds.width, difficultyRangeBounds.height);
+                    MarvinImage im = new MarvinImage(topRangeImg);
+                    im.toBlackWhite(110);
+                    im.update();
+
+                    int[] diffRange = adventure.readNumRangeFromImg(im.getBufferedImage(), "tg_diff_range_16_", new HashSet<>(), "hyphen", "-");
+                    BHBotUnity.logger.debug("Detected difficulty range: " + Arrays.toString(diffRange));
+                }
+
+                break;
             case "do":
                 switch (params[1]) {
                     case "baits":

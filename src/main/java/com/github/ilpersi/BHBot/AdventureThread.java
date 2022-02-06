@@ -3894,7 +3894,7 @@ public class AdventureThread implements Runnable {
      * In case of error an empty array is returned and you have to check this in your own code.
      */
     @SuppressWarnings("SameParameterValue")
-    private int[] readNumRangeFromImg(BufferedImage im, String numberPrefix, HashSet<Integer> intToSkip, String rangeSeparatorName, String rangeSeparatorValue) {
+    int[] readNumRangeFromImg(BufferedImage im, String numberPrefix, HashSet<Integer> intToSkip, String rangeSeparatorName, String rangeSeparatorValue) {
         List<ScreenNum> nums = new ArrayList<>();
 
         for (int i = 0; i < 10; i++) {
