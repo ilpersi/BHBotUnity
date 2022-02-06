@@ -26,7 +26,7 @@ public class BHBotConfigurationFactory extends ConfigurationFactory {
         builder.setStatusLevel(Level.ERROR);
 
         // baseDir for logs
-        builder.addProperty("baseDir", BHBot.logBaseDir);
+        builder.addProperty("baseDir", BHBotUnity.logBaseDir);
 
         // Disable log entries for io.netty
         LoggerComponentBuilder nettyDisabler = builder.newLogger("io.netty", Level.WARN);
@@ -74,12 +74,12 @@ public class BHBotConfigurationFactory extends ConfigurationFactory {
                 .addAttribute("maxDepth", "2")
                 //.addAttribute("testMode", true)
                 .addComponent(builder.newComponent("IfLastModified")
-                        .addAttribute("age", "" + BHBot.logMaxDays + "d"));
+                        .addAttribute("age", "" + BHBotUnity.logMaxDays + "d"));
 
         // DefaultRolloverStrategy Component
         @SuppressWarnings("rawtypes")
         ComponentBuilder defaulRolloverStrategy = builder.newComponent("DefaultRolloverStrategy")
-                .addAttribute("max", BHBot.logMaxDays)
+                .addAttribute("max", BHBotUnity.logMaxDays)
                 .addAttribute("compressionLevel", 9)
                 .addComponent(delete);
 
@@ -95,7 +95,7 @@ public class BHBotConfigurationFactory extends ConfigurationFactory {
 
 
         builder.add(
-                builder.newRootLogger(BHBot.logLevel)
+                builder.newRootLogger(BHBotUnity.logLevel)
                         .add(builder.newAppenderRef("StdOut"))
                         .add(builder.newAppenderRef("StdErr"))
                         .add(builder.newAppenderRef("Rolling"))

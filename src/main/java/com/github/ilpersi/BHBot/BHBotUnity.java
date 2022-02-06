@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.*;
 
 
-public class BHBot {
+public class BHBotUnity {
 
     private static final String PROGRAM_NAME = "BHBotUnity";
     static CueManager cues;
@@ -54,8 +54,8 @@ public class BHBot {
     private Thread dungeonThread;
     private Thread blockerThread;
 
-    private BHBot.State state; // at which stage of the game/menu are we currently?
-    private BHBot.State lastJoinedState = null;
+    private BHBotUnity.State state; // at which stage of the game/menu are we currently?
+    private BHBotUnity.State lastJoinedState = null;
     private final String LAST_JOINED_CSV = "./data/last_status.csv";
 
     private long lastStateChange = Misc.getTime();
@@ -75,7 +75,7 @@ public class BHBot {
     Settings.ActivitiesScheduleSetting currentScheduling = null;
 
     public static void main(String[] args) {
-        BHBot bot = new BHBot();
+        BHBotUnity bot = new BHBotUnity();
         bot.notificationManager = new NotificationManager(bot);
         bot.excManager = new ExceptionManager(bot);
 
@@ -192,7 +192,7 @@ public class BHBot {
 
         Properties properties = new Properties();
         try {
-            properties.load(BHBot.class.getResourceAsStream("/pom.properties"));
+            properties.load(BHBotUnity.class.getResourceAsStream("/pom.properties"));
             BHBotVersion = properties.getProperty("version");
         } catch (IOException e) {
             logger.error("Impossible to get pom.properties from jar", e);
@@ -269,7 +269,7 @@ public class BHBot {
             // When the bot is not running, we check if an active schedule is available
             if (!bot.running) {
                 if (bot.settings.activitiesSchedule.isEmpty()) {
-                    BHBot.logger.debug("Scheduling is empty, using default configuration.");
+                    BHBotUnity.logger.debug("Scheduling is empty, using default configuration.");
                     bot.browser = new BrowserManager(bot, browserProfile);
                     bot.running = true;
                     bot.scheduler.resetIdleTime(true);
@@ -277,7 +277,7 @@ public class BHBot {
                     continue;
                 } else {
 
-                    BHBot.logger.trace("Checking for available schedulings");
+                    BHBotUnity.logger.trace("Checking for available schedulings");
                     for (Settings.ActivitiesScheduleSetting s : bot.settings.activitiesSchedule) {
                         if (s.isActive()) {
 
@@ -295,7 +295,7 @@ public class BHBot {
                             try {
                                 bot.settings.load(Settings.configurationFile);
                             } catch (FileNotFoundException e) {
-                                BHBot.logger.error("It was impossible to load setting file for scheduling : " + s);
+                                BHBotUnity.logger.error("It was impossible to load setting file for scheduling : " + s);
                                 continue;
                             }
 
@@ -310,14 +310,14 @@ public class BHBot {
                             bot.running = true;
                             bot.scheduler.resetIdleTime(true);
                             bot.processCommand("start");
-                            BHBot.logger.info("Current scheduler is: " + s);
+                            BHBotUnity.logger.info("Current scheduler is: " + s);
                             break;
                         }
                     }
                 }
             }
 
-            BHBot.logger.trace("Main Thread Sleeping");
+            BHBotUnity.logger.trace("Main Thread Sleeping");
             Misc.sleep(500);
 
         }
@@ -427,7 +427,7 @@ public class BHBot {
 
                     cues.reloadFromDisk(params[2]);
 
-                    BHBot.logger.info("Reloaded Cues from " + params[2]);
+                    BHBotUnity.logger.info("Reloaded Cues from " + params[2]);
                 }
 
                 break;
@@ -437,7 +437,7 @@ public class BHBot {
                 if (params.length > 1) {
                     int goal = Integer.parseInt(params[1]);
                     logger.info("Goal difficulty: " + goal);
-                    int result = dungeon.selectDifficulty(current, goal, BHBot.cues.get("SelectDifficulty"), 1, false);
+                    int result = dungeon.selectDifficulty(current, goal, BHBotUnity.cues.get("SelectDifficulty"), 1, false);
                     logger.info("Difficulty change result: " + result);
                 }
                 break;
@@ -528,7 +528,7 @@ public class BHBot {
                 try {
                     settings.load(file);
                 } catch (FileNotFoundException e) {
-                    BHBot.logger.error("It was impossible to find setting file: " + file + ".");
+                    BHBotUnity.logger.error("It was impossible to find setting file: " + file + ".");
                     break;
                 }
 
@@ -538,7 +538,7 @@ public class BHBot {
                 break;
             case "menu":
                 if (params.length <= 1) {
-                    BHBot.logger.error("Not enough parameters for menu command. Available commands are 'pos', 'screen'");
+                    BHBotUnity.logger.error("Not enough parameters for menu command. Available commands are 'pos', 'screen'");
                     break;
                 }
 
@@ -560,7 +560,7 @@ public class BHBot {
                 try {
                     settings.load("plans/" + params[1] + ".ini");
                 } catch (FileNotFoundException e) {
-                    BHBot.logger.error("It was impossible to find plan plans/" + params[1] + ".ini" + "!");
+                    BHBotUnity.logger.error("It was impossible to find plan plans/" + params[1] + ".ini" + "!");
                     break;
                 }
 
@@ -574,14 +574,14 @@ public class BHBot {
                 break;
             case "print":
                 if (params.length < 2) {
-                    BHBot.logger.error("Missing parameters for print command: print familiars|version");
+                    BHBotUnity.logger.error("Missing parameters for print command: print familiars|version");
                     break;
                 }
 
                 switch (params[1]) {
                     case "config-file":
-                        BHBot.logger.info("Initial configuration file: " + Settings.initialConfigurationFile);
-                        BHBot.logger.info("Current configuration file: " + Settings.configurationFile);
+                        BHBotUnity.logger.info("Initial configuration file: " + Settings.initialConfigurationFile);
+                        BHBotUnity.logger.info("Current configuration file: " + Settings.configurationFile);
                         break;
                     case "familiars":
                     case "familiar":
@@ -594,12 +594,12 @@ public class BHBot {
                         else if (params.length == 3)
                             EncounterManager.printMD5(params[2]);
                         else
-                            BHBot.logger.warn("USAGE: print fam-md5 [familiarName]");
+                            BHBotUnity.logger.warn("USAGE: print fam-md5 [familiarName]");
                         break;
                     case "schedule":
                     case "scheduling":
                         if (settings.activitiesSchedule.size() == 0) {
-                            BHBot.logger.info("No scheduling are present at the moment.");
+                            BHBotUnity.logger.info("No scheduling are present at the moment.");
                         } else {
                             StringBuilder schedulingStr = new StringBuilder("Current available schedules are:\n");
 
@@ -608,7 +608,7 @@ public class BHBot {
                                         .append(activityScheduling).append("\n");
                             }
 
-                            BHBot.logger.info(schedulingStr.toString());
+                            BHBotUnity.logger.info(schedulingStr.toString());
                         }
                         break;
                     case "screen-rect":
@@ -627,7 +627,7 @@ public class BHBot {
                             cnt += 1;
 
                             Rectangle screenRect = new Rectangle(minx, miny, maxx - minx, maxy - miny);
-                            BHBot.logger.info("[Screen " + cnt + "] =>" + screenRect + " Scale => " + String.format("%.02f%%", scale));
+                            BHBotUnity.logger.info("[Screen " + cnt + "] =>" + screenRect + " Scale => " + String.format("%.02f%%", scale));
                         }
                         break;
                     case "stats":
@@ -666,7 +666,7 @@ public class BHBot {
                 try {
                     Settings.resetIniFile();
                 } catch (IOException e) {
-                    BHBot.logger.error("It was impossible to reset ini file: " + Settings.configurationFile);
+                    BHBotUnity.logger.error("It was impossible to reset ini file: " + Settings.configurationFile);
                 }
                 break;
             case "restart":
@@ -731,7 +731,7 @@ public class BHBot {
             case "test":
 
                 if (params.length <= 1) {
-                    BHBot.logger.error("Not enough parameters for test command");
+                    BHBotUnity.logger.error("Not enough parameters for test command");
                     break;
                 }
 
@@ -752,11 +752,11 @@ public class BHBot {
                             }
                         }
                         if (ignoreBoss == null) {
-                            BHBot.logger.warn("No value is set for ignoreBoss, setting it to false.");
+                            BHBotUnity.logger.warn("No value is set for ignoreBoss, setting it to false.");
                             ignoreBoss = true;
                         }
                         if (ignoreShrines == null) {
-                            BHBot.logger.warn("No value is set for ignoreShrines, setting it to false.");
+                            BHBotUnity.logger.warn("No value is set for ignoreShrines, setting it to false.");
                             ignoreShrines = false;
                         }
                         if (!dungeon.shrineManager.updateShrineSettings(ignoreBoss, ignoreShrines)) {
@@ -768,10 +768,10 @@ public class BHBot {
                         MarvinSegment Down = MarvinSegment.fromCue("DropDownDown", browser);
 
                         if (Up != null) {
-                            BHBot.logger.debug("Up arrow cue found: " + Up);
+                            BHBotUnity.logger.debug("Up arrow cue found: " + Up);
                         }
                         if (Down != null) {
-                            BHBot.logger.debug("Down arrow cue found: " + Down);
+                            BHBotUnity.logger.debug("Down arrow cue found: " + Down);
                         }
                     }
                     case "e", "expeditionread" -> dungeon.expeditionReadTest();
@@ -784,7 +784,7 @@ public class BHBot {
                     case "tgdiff" ->
                             // Use this command to troubleshoot T/G difficulty in main window
                             dungeon.debugTGDifficulty();
-                    default -> BHBot.logger.debug("Unknown test command: " + params[1]);
+                    default -> BHBotUnity.logger.debug("Unknown test command: " + params[1]);
                 }
                 break;
             default:
@@ -1043,10 +1043,10 @@ public class BHBot {
                         }
                         br.close();
                     } catch (IOException e) {
-                        BHBot.logger.error("Impossible to read file last status file: " + stateCSV.getAbsolutePath(), e);
+                        BHBotUnity.logger.error("Impossible to read file last status file: " + stateCSV.getAbsolutePath(), e);
                     }
                 } catch (FileNotFoundException e) {
-                    BHBot.logger.error("Last status file not found in: " + stateCSV.getAbsolutePath(), e);
+                    BHBotUnity.logger.error("Last status file not found in: " + stateCSV.getAbsolutePath(), e);
                 }
 
 
@@ -1084,7 +1084,7 @@ public class BHBot {
             writer.write(String.format("last_status;%s", lastJoinedState.getShortcut()));
             writer.close();
         } catch (IOException e) {
-            BHBot.logger.error("It was impossible to save last status to CSV file", e);
+            BHBotUnity.logger.error("It was impossible to save last status to CSV file", e);
         }
     }
 
@@ -1096,15 +1096,15 @@ public class BHBot {
      * @return name of the path in which the screenshot has been saved (successfully or not)
      */
     synchronized String saveGameScreen(String prefix) {
-        return Misc.saveScreen(prefix, null, BHBot.includeMachineNameInScreenshots, browser.takeScreenshot(true));
+        return Misc.saveScreen(prefix, null, BHBotUnity.includeMachineNameInScreenshots, browser.takeScreenshot(true));
     }
 
     synchronized String saveGameScreen(String prefix, BufferedImage img) {
-        return Misc.saveScreen(prefix, null, BHBot.includeMachineNameInScreenshots, img);
+        return Misc.saveScreen(prefix, null, BHBotUnity.includeMachineNameInScreenshots, img);
     }
 
     synchronized String saveGameScreen(String prefix, String subFolder) {
-        return Misc.saveScreen(prefix, subFolder, BHBot.includeMachineNameInScreenshots, browser.takeScreenshot(true));
+        return Misc.saveScreen(prefix, subFolder, BHBotUnity.includeMachineNameInScreenshots, browser.takeScreenshot(true));
     }
 
     void dumpCrashLog(Exception originalException) {

@@ -14,11 +14,11 @@ import java.util.regex.Pattern;
 
 public class DungeonSignature {
 
-    private final BHBot bot;
+    private final BHBotUnity bot;
     private LinkedHashMap<String, Integer> zoneSignatures;
     final String JSON_FILE_PATH = "./data/dungeon_signatures.json";
 
-    DungeonSignature(BHBot bot) {
+    DungeonSignature(BHBotUnity bot) {
         this.zoneSignatures = new LinkedHashMap<>();
         this.bot = bot;
     }
@@ -29,7 +29,7 @@ public class DungeonSignature {
      */
     int zoneFromSignature(String signature) {
         if (this.zoneSignatures.size() == 0) {
-            BHBot.logger.debug("Loading signatures from JSON.");
+            BHBotUnity.logger.debug("Loading signatures from JSON.");
             loadFromJSON();
         }
 
@@ -37,7 +37,7 @@ public class DungeonSignature {
 
         // JSON exists, but signatures changed
         if (zone == 0) {
-            BHBot.logger.debug("Signatures not up to date, rebuilding.");
+            BHBotUnity.logger.debug("Signatures not up to date, rebuilding.");
             buildSignatures();
             this.saveToJson();
 
@@ -56,7 +56,7 @@ public class DungeonSignature {
         File signaturesFile = new File(JSON_FILE_PATH);
 
         if (!signaturesFile.exists()) {
-            BHBot.logger.debug("JSON file does not exist, creating it.");
+            BHBotUnity.logger.debug("JSON file does not exist, creating it.");
             buildSignatures();
             this.saveToJson();
         } else {
@@ -67,9 +67,9 @@ public class DungeonSignature {
                 reader = new JsonReader(new FileReader(JSON_FILE_PATH));
                 this.zoneSignatures = gson.fromJson(reader, new TypeToken<LinkedHashMap<String, Integer>>(){}.getType());
 
-                BHBot.logger.debug("Loaded " + this.zoneSignatures.size() + " signatures from JSON.");
+                BHBotUnity.logger.debug("Loaded " + this.zoneSignatures.size() + " signatures from JSON.");
             } catch (FileNotFoundException e) {
-                BHBot.logger.error("It was impossible to read dungeon signatures from JSON file.", e);
+                BHBotUnity.logger.error("It was impossible to read dungeon signatures from JSON file.", e);
             }
 
         }
@@ -80,35 +80,35 @@ public class DungeonSignature {
      * This method assumes that the dungeon window is opened.
      */
     private void buildSignatures() {
-        BHBot.logger.info("Building dungeon signatures.");
+        BHBotUnity.logger.info("Building dungeon signatures.");
         final int CLICK_DELAY = 500;
 
         // We reset the signature hashmap
         this.zoneSignatures.clear();
 
         // We make sure the dungeon window is opened
-        MarvinSegment seg = MarvinSegment.fromCue(BHBot.cues.get("DungeonZones"), bot.browser);
+        MarvinSegment seg = MarvinSegment.fromCue(BHBotUnity.cues.get("DungeonZones"), bot.browser);
         if (seg == null) {
-            BHBot.logger.error("Dungeon selection window is not opened. Impossible to build zone cues!");
+            BHBotUnity.logger.error("Dungeon selection window is not opened. Impossible to build zone cues!");
             return;
         }
 
         // We scroll left until we are at zone 1
-        seg = MarvinSegment.fromCue(BHBot.cues.get("LeftArrow"), bot.browser);
+        seg = MarvinSegment.fromCue(BHBotUnity.cues.get("LeftArrow"), bot.browser);
         while (seg != null) {
             bot.browser.clickOnSeg(seg);
-            seg = MarvinSegment.fromCue(BHBot.cues.get("LeftArrow"), bot.browser);
+            seg = MarvinSegment.fromCue(BHBotUnity.cues.get("LeftArrow"), bot.browser);
         }
 
         bot.browser.readScreen(CLICK_DELAY);
         int zoneCount = 0;
         do {
-            seg = MarvinSegment.fromCue(BHBot.cues.get("RightArrow"), bot.browser);
+            seg = MarvinSegment.fromCue(BHBotUnity.cues.get("RightArrow"), bot.browser);
             zoneCount++;
 
             String signature = this.getCurrentZoneSignature();
             this.zoneSignatures.put(signature, zoneCount);
-            BHBot.logger.debug(signature + " -> " + zoneCount);
+            BHBotUnity.logger.debug(signature + " -> " + zoneCount);
 
             if (seg != null) {
                 bot.browser.clickOnSeg(seg);
@@ -143,7 +143,7 @@ public class DungeonSignature {
             writer.write(jsonString);
             writer.close();
         } catch (IOException e) {
-            BHBot.logger.error("It was impossible to save dungeon signatures to JSON file", e);
+            BHBotUnity.logger.error("It was impossible to save dungeon signatures to JSON file", e);
         }
     }
 

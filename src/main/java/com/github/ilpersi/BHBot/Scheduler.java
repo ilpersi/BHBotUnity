@@ -87,14 +87,14 @@ class Scheduler {
     void pause() {
         paused = true;
         pauseDuration = PAUSED_INDEFINITELY;
-        BHBot.logger.info("Paused.");
+        BHBotUnity.logger.info("Paused.");
     }
 
     synchronized void pause(int duration) {
         paused = true;
         pauseDuration = duration;
         pauseStart = Misc.getTime();
-        BHBot.logger.info("Paused for " + Misc.millisToHumanForm((long) duration) + ".");
+        BHBotUnity.logger.info("Paused for " + Misc.millisToHumanForm((long) duration) + ".");
     }
 
     synchronized void resume() {
@@ -110,7 +110,7 @@ class Scheduler {
          * the "reconnect" dialog. With this flag, we make sure he does just that.
          */
         dismissReconnectOnNextIteration = true;
-        BHBot.logger.info("Resumed.");
+        BHBotUnity.logger.info("Resumed.");
     }
 
     /**
@@ -125,19 +125,19 @@ class Scheduler {
     }
 
     synchronized void resetIdleTime(boolean resetBackup) {
-        BHBot.logger.trace("resetIdleTime(" + resetBackup + ")");
+        BHBotUnity.logger.trace("resetIdleTime(" + resetBackup + ")");
         idleTime = Misc.getTime();
 
         if (resetBackup) backupIdleTime();
     }
 
     void backupIdleTime() {
-        BHBot.logger.trace("backupIdleTime()");
+        BHBotUnity.logger.trace("backupIdleTime()");
         idleTimeBackup = idleTime;
     }
 
     synchronized void restoreIdleTime() {
-        BHBot.logger.trace("restoreIdleTime()");
+        BHBotUnity.logger.trace("restoreIdleTime()");
         idleTime = idleTimeBackup;
     }
 }

@@ -89,7 +89,7 @@ class AutoRuneManager {
         }
 
         public Cue getRuneCue() {
-            return BHBot.cues.get(getRuneCueName());
+            return BHBotUnity.cues.get(getRuneCueName());
         }
 
 
@@ -102,7 +102,7 @@ class AutoRuneManager {
         }
 
         public Cue getRuneSelectCue() {
-            return BHBot.cues.get(getRuneSelectCueName());
+            return BHBotUnity.cues.get(getRuneSelectCueName());
         }
 
         @Override
@@ -111,14 +111,14 @@ class AutoRuneManager {
         }
     }
 
-    private final BHBot bot;
+    private final BHBotUnity bot;
     private boolean initialized;
     private MinorRune leftMinorRune;
     private MinorRune rightMinorRune;
 
     private boolean autoBossRuned = false;
 
-    AutoRuneManager(BHBot bot, boolean skipInitialization) {
+    AutoRuneManager(BHBotUnity bot, boolean skipInitialization) {
         this.bot = bot;
 
         if (skipInitialization) {
@@ -130,16 +130,16 @@ class AutoRuneManager {
         // One time check for equipped minor runes
         if (!bot.settings.autoRuneDefault.isEmpty() && !initialized) {
 
-            BHBot.logger.info("Startup check to determined configured minor runes");
+            BHBotUnity.logger.info("Startup check to determined configured minor runes");
             if (!detectEquippedMinorRunes(true, true)) {
-                BHBot.logger.error("It was not possible to perform the equipped runes start-up check! Disabling autoRune..");
+                BHBotUnity.logger.error("It was not possible to perform the equipped runes start-up check! Disabling autoRune..");
                 bot.settings.autoRuneDefault.clear();
                 bot.settings.autoRune.clear();
                 bot.settings.autoBossRune.clear();
 
             }
-            BHBot.logger.info(getRuneName(leftMinorRune.getRuneCueName()) + " equipped in left slot.");
-            BHBot.logger.info(getRuneName(rightMinorRune.getRuneCueName()) + " equipped in right slot.");
+            BHBotUnity.logger.info(getRuneName(leftMinorRune.getRuneCueName()) + " equipped in left slot.");
+            BHBotUnity.logger.info(getRuneName(rightMinorRune.getRuneCueName()) + " equipped in right slot.");
             initialized = true;
             bot.browser.readScreen(2 * Misc.Durations.SECOND); // delay to close the settings window completely before we check for raid button else the settings window is hiding it
         }
@@ -179,23 +179,23 @@ class AutoRuneManager {
 
         if (exitRunesMenu) {
             Misc.sleep(500);
-            bot.browser.closePopupSecurely(BHBot.cues.get("RunesLayout"), BHBot.cues.get("X"));
+            bot.browser.closePopupSecurely(BHBotUnity.cues.get("RunesLayout"), BHBotUnity.cues.get("X"));
             Misc.sleep(500);
-            bot.browser.closePopupSecurely(BHBot.cues.get("StripSelectorButton"), new Cue(BHBot.cues.get("X"), Bounds.fromWidthHeight(670, 45, 65, 70)));
+            bot.browser.closePopupSecurely(BHBotUnity.cues.get("StripSelectorButton"), new Cue(BHBotUnity.cues.get("X"), Bounds.fromWidthHeight(670, 45, 65, 70)));
         }
 
         boolean success = true;
         if (leftMinorRune == null) {
-            BHBot.logger.warn("Error: Unable to detect left minor rune!");
+            BHBotUnity.logger.warn("Error: Unable to detect left minor rune!");
             success = false;
         } else {
-            BHBot.logger.debug(leftMinorRune + " equipped in left slot.");
+            BHBotUnity.logger.debug(leftMinorRune + " equipped in left slot.");
         }
         if (rightMinorRune == null) {
-            BHBot.logger.warn("Error: Unable to detect right minor rune!");
+            BHBotUnity.logger.warn("Error: Unable to detect right minor rune!");
             success = false;
         } else {
-            BHBot.logger.debug(rightMinorRune + " equipped in right slot.");
+            BHBotUnity.logger.debug(rightMinorRune + " equipped in right slot.");
         }
 
         return success;
@@ -257,22 +257,22 @@ class AutoRuneManager {
         // Open character menu
         if (bot.dungeon.openCharacterMenu()) return true;
 
-        MarvinSegment seg = MarvinSegment.fromCue(BHBot.cues.get("Runes"), 5 * Misc.Durations.SECOND, bot.browser);
+        MarvinSegment seg = MarvinSegment.fromCue(BHBotUnity.cues.get("Runes"), 5 * Misc.Durations.SECOND, bot.browser);
         if (seg == null) {
-            Misc.saveScreen("no-rune-button", "errors", BHBot.includeMachineNameInScreenshots, bot.browser.getImg());
-            BHBot.logger.warn("Error: unable to detect runes button! Skipping...");
-            BHBot.logger.debug(Misc.getStackTrace());
+            Misc.saveScreen("no-rune-button", "errors", BHBotUnity.includeMachineNameInScreenshots, bot.browser.getImg());
+            BHBotUnity.logger.warn("Error: unable to detect runes button! Skipping...");
+            BHBotUnity.logger.debug(Misc.getStackTrace());
             return true;
         }
 
         // We make sure to click on the runes button
-        bot.browser.closePopupSecurely(BHBot.cues.get("Runes"), BHBot.cues.get("Runes"));
+        bot.browser.closePopupSecurely(BHBotUnity.cues.get("Runes"), BHBotUnity.cues.get("Runes"));
 
-        seg = MarvinSegment.fromCue(BHBot.cues.get("RunesLayout"), 5 * Misc.Durations.SECOND, bot.browser);
+        seg = MarvinSegment.fromCue(BHBotUnity.cues.get("RunesLayout"), 5 * Misc.Durations.SECOND, bot.browser);
         if (seg == null) {
-            BHBot.logger.warn("Error: unable to detect rune layout! Skipping...");
-            Misc.saveScreen("no-rune-layout", "errors", BHBot.includeMachineNameInScreenshots, bot.browser.getImg());
-            seg = MarvinSegment.fromCue(BHBot.cues.get("X"), 5 * Misc.Durations.SECOND, bot.browser);
+            BHBotUnity.logger.warn("Error: unable to detect rune layout! Skipping...");
+            Misc.saveScreen("no-rune-layout", "errors", BHBotUnity.includeMachineNameInScreenshots, bot.browser.getImg());
+            seg = MarvinSegment.fromCue(BHBotUnity.cues.get("X"), 5 * Misc.Durations.SECOND, bot.browser);
             if (seg != null) {
                 bot.browser.clickOnSeg(seg);
             }
@@ -282,18 +282,18 @@ class AutoRuneManager {
         return false;
     }
 
-    void processAutoRune(BHBot.State state) {
+    void processAutoRune(BHBotUnity.State state) {
         List<String> desiredRunesAsStrs;
         if (bot.settings.autoRuneDefault.isEmpty()) {
-            BHBot.logger.debug("autoRunesDefault not defined; aborting autoRunes");
+            BHBotUnity.logger.debug("autoRunesDefault not defined; aborting autoRunes");
             return;
         }
 
         if (!bot.settings.autoRune.containsKey(state.getShortcut())) {
-            BHBot.logger.debug("No autoRunes assigned for " + state.getName() + ", using defaults.");
+            BHBotUnity.logger.debug("No autoRunes assigned for " + state.getName() + ", using defaults.");
             desiredRunesAsStrs = bot.settings.autoRuneDefault;
         } else {
-            BHBot.logger.info("Configuring autoRunes for " + state.getName());
+            BHBotUnity.logger.info("Configuring autoRunes for " + state.getName());
             desiredRunesAsStrs = bot.settings.autoRune.get(state.getShortcut());
         }
 
@@ -303,19 +303,19 @@ class AutoRuneManager {
         }
 
         if (!switchMinorRunes(desiredRunes))
-            BHBot.logger.info("AutoRune failed!");
+            BHBotUnity.logger.info("AutoRune failed!");
 
     }
 
     void handleMinorBossRunes() {
         if (bot.settings.autoRuneDefault.isEmpty()) {
-            BHBot.logger.debug("autoRunesDefault not defined; aborting autoBossRunes");
+            BHBotUnity.logger.debug("autoRunesDefault not defined; aborting autoBossRunes");
             return;
         }
 
         String activity = bot.getState().getShortcut();
         if (!bot.settings.autoBossRune.containsKey(activity)) {
-            BHBot.logger.info("No autoBossRunes assigned for " + bot.getState().getName() + ", skipping.");
+            BHBotUnity.logger.info("No autoBossRunes assigned for " + bot.getState().getName() + ", skipping.");
             return;
         }
 
@@ -325,29 +325,29 @@ class AutoRuneManager {
             return;
 
         if (!switchMinorRunes(desiredRunes))
-            BHBot.logger.autorune("AutoBossRune failed!");
+            BHBotUnity.logger.autorune("AutoBossRune failed!");
 
     }
 
     void handleAutoBossRune(long outOfEncounterTimestamp, long inEncounterTimestamp) { //seperate function so we can run autoRune without autoShrine
         MarvinSegment guildButtonSeg;
-        guildButtonSeg = MarvinSegment.fromCue(BHBot.cues.get("GuildButton"), bot.browser);
+        guildButtonSeg = MarvinSegment.fromCue(BHBotUnity.cues.get("GuildButton"), bot.browser);
 
-        if ((bot.getState() == BHBot.State.Raid && !bot.settings.autoShrine.contains("r") && bot.settings.autoBossRune.containsKey("r")) ||
-                (bot.getState() == BHBot.State.Trials && !bot.settings.autoShrine.contains("t") && bot.settings.autoBossRune.containsKey("t")) ||
-                (bot.getState() == BHBot.State.Expedition && !bot.settings.autoShrine.contains("e") && bot.settings.autoBossRune.containsKey("e")) ||
-                (bot.getState() == BHBot.State.Dungeon && bot.settings.autoBossRune.containsKey("d")) ) {
+        if ((bot.getState() == BHBotUnity.State.Raid && !bot.settings.autoShrine.contains("r") && bot.settings.autoBossRune.containsKey("r")) ||
+                (bot.getState() == BHBotUnity.State.Trials && !bot.settings.autoShrine.contains("t") && bot.settings.autoBossRune.containsKey("t")) ||
+                (bot.getState() == BHBotUnity.State.Expedition && !bot.settings.autoShrine.contains("e") && bot.settings.autoBossRune.containsKey("e")) ||
+                (bot.getState() == BHBotUnity.State.Dungeon && bot.settings.autoBossRune.containsKey("d")) ) {
             if (!autoBossRuned) {
                 if ((((outOfEncounterTimestamp - inEncounterTimestamp) >= bot.settings.battleDelay) && guildButtonSeg != null)) {
-                    BHBot.logger.autorune(bot.settings.battleDelay + "s since last encounter, changing runes for boss encounter");
+                    BHBotUnity.logger.autorune(bot.settings.battleDelay + "s since last encounter, changing runes for boss encounter");
 
                     handleMinorBossRunes();
 
                     bot.dungeon.setAutoOff(1000);
 
                     if (!bot.dungeon.shrineManager.updateShrineSettings(false, false)) {
-                        BHBot.logger.error("Impossible to disable Ignore Boss in handleAutoBossRune!");
-                        BHBot.logger.warn("Resetting encounter timer to try again in 30 seconds.");
+                        BHBotUnity.logger.error("Impossible to disable Ignore Boss in handleAutoBossRune!");
+                        BHBotUnity.logger.warn("Resetting encounter timer to try again in 30 seconds.");
                         // inEncounterTimestamp = Misc.getTime() / 1000;
                         return;
                     }
@@ -364,14 +364,14 @@ class AutoRuneManager {
         List<MinorRuneEffect> desiredRunes = new ArrayList<>();
 
         if (desiredRunesAsStrs.size() != 2) {
-            BHBot.logger.error("Got malformed autoRunes, using defaults: " + String.join(" ", desiredRunesAsStrs));
+            BHBotUnity.logger.error("Got malformed autoRunes, using defaults: " + String.join(" ", desiredRunesAsStrs));
             desiredRunesAsStrs = bot.settings.autoRuneDefault;
         }
 
         String strLeftRune = desiredRunesAsStrs.get(0);
         MinorRuneEffect desiredLeftRune = MinorRuneEffect.getEffectFromName(strLeftRune);
         if (desiredLeftRune == null) {
-            BHBot.logger.error("No rune type found for left rune name " + strLeftRune);
+            BHBotUnity.logger.error("No rune type found for left rune name " + strLeftRune);
             desiredLeftRune = leftMinorRune.getRuneEffect();
         }
         desiredRunes.add(desiredLeftRune);
@@ -379,7 +379,7 @@ class AutoRuneManager {
         String strRightRune = desiredRunesAsStrs.get(1);
         MinorRuneEffect desiredRightRune = MinorRuneEffect.getEffectFromName(strRightRune);
         if (desiredRightRune == null) {
-            BHBot.logger.error("No rune type found for right rune name " + strRightRune);
+            BHBotUnity.logger.error("No rune type found for right rune name " + strRightRune);
             desiredRightRune = rightMinorRune.getRuneEffect();
         }
 
@@ -393,24 +393,24 @@ class AutoRuneManager {
         MinorRuneEffect desiredRightRune = desiredRunes.get(1);
 
         if (leftMinorRune == null) {
-            BHBot.logger.warn("Left minor rune is unknown");
+            BHBotUnity.logger.warn("Left minor rune is unknown");
         }
 
         if (rightMinorRune == null) {
-            BHBot.logger.warn("Right minor rune is unknown");
+            BHBotUnity.logger.warn("Right minor rune is unknown");
         }
 
         if ( (leftMinorRune != null &&  desiredLeftRune.equals(leftMinorRune.getRuneEffect()) )
                 && (rightMinorRune != null && desiredRightRune.equals(rightMinorRune.getRuneEffect()) )) {
-            BHBot.logger.debug("No runes found that need switching.");
+            BHBotUnity.logger.debug("No runes found that need switching.");
             return true; // Nothing to do
         }
 
         if (leftMinorRune == null || !desiredLeftRune.equals(leftMinorRune.getRuneEffect())) {
-            BHBot.logger.debug("Left minor rune needs to be switched.");
+            BHBotUnity.logger.debug("Left minor rune needs to be switched.");
         }
         if (rightMinorRune == null || !desiredRightRune.equals(rightMinorRune.getRuneEffect())) {
-            BHBot.logger.debug("Right minor rune needs to be switched.");
+            BHBotUnity.logger.debug("Right minor rune needs to be switched.");
         }
 
         return false;
@@ -422,26 +422,26 @@ class AutoRuneManager {
         MinorRuneEffect desiredRightRune = desiredRunes.get(1);
 
         if (!detectEquippedMinorRunes(true, false)) {
-            BHBot.logger.error("Unable to detect runes, pre-equip.");
+            BHBotUnity.logger.error("Unable to detect runes, pre-equip.");
             return false;
         }
 
         if (desiredLeftRune != leftMinorRune.getRuneEffect()) {
-            BHBot.logger.debug("Switching left minor rune.");
+            BHBotUnity.logger.debug("Switching left minor rune.");
             Misc.sleep(500); //sleep for window animation to finish
             bot.browser.clickInGame(280, 290); // Click on left rune
             if (!switchSingleMinorRune(desiredLeftRune)) {
-                BHBot.logger.error("Failed to switch left minor rune.");
+                BHBotUnity.logger.error("Failed to switch left minor rune.");
                 return false;
             }
         }
 
         if (desiredRightRune != rightMinorRune.getRuneEffect()) {
-            BHBot.logger.debug("Switching right minor rune.");
+            BHBotUnity.logger.debug("Switching right minor rune.");
             Misc.sleep(500); //sleep for window animation to finish
             bot.browser.clickInGame(520, 290); // Click on right rune
             if (!switchSingleMinorRune(desiredRightRune)) {
-                BHBot.logger.error("Failed to switch right minor rune.");
+                BHBotUnity.logger.error("Failed to switch right minor rune.");
                 return false;
             }
         }
@@ -449,18 +449,18 @@ class AutoRuneManager {
         Misc.sleep(Misc.Durations.SECOND); //sleep while we wait for window animation
 
         if (!detectEquippedMinorRunes(false, true)) {
-            BHBot.logger.error("Unable to detect runes, post-equip.");
+            BHBotUnity.logger.error("Unable to detect runes, post-equip.");
             return false;
         }
 
         Misc.sleep(2 * Misc.Durations.SECOND);
         boolean success = true;
         if (desiredLeftRune != leftMinorRune.getRuneEffect()) {
-            BHBot.logger.error("Left minor rune failed to switch for unknown reason.");
+            BHBotUnity.logger.error("Left minor rune failed to switch for unknown reason.");
             success = false;
         }
         if (desiredRightRune != rightMinorRune.getRuneEffect()) {
-            BHBot.logger.error("Right minor rune failed to switch for unknown reason.");
+            BHBotUnity.logger.error("Right minor rune failed to switch for unknown reason.");
             success = false;
         }
 
@@ -471,18 +471,18 @@ class AutoRuneManager {
     private Boolean switchSingleMinorRune(MinorRuneEffect desiredRune) {
         bot.browser.readScreen(500); //sleep for window animation to finish
 
-        MarvinSegment seg = MarvinSegment.fromCue(BHBot.cues.get("RunesSwitch"), 5 * Misc.Durations.SECOND, bot.browser);
+        MarvinSegment seg = MarvinSegment.fromCue(BHBotUnity.cues.get("RunesSwitch"), 5 * Misc.Durations.SECOND, bot.browser);
         if (seg == null) {
-            BHBot.logger.error("Failed to find rune switch button.");
+            BHBotUnity.logger.error("Failed to find rune switch button.");
             return false;
         }
         bot.browser.clickOnSeg(seg);
 
         bot.browser.readScreen(500); //sleep for window animation to finish
 
-        seg = MarvinSegment.fromCue(BHBot.cues.get("RunesPicker"), 5 * Misc.Durations.SECOND, bot.browser);
+        seg = MarvinSegment.fromCue(BHBotUnity.cues.get("RunesPicker"), 5 * Misc.Durations.SECOND, bot.browser);
         if (seg == null) {
-            BHBot.logger.error("Failed to find rune picker.");
+            BHBotUnity.logger.error("Failed to find rune picker.");
             return false;
         }
 
@@ -491,35 +491,35 @@ class AutoRuneManager {
             DungeonThread.ItemGrade runeGrade = DungeonThread.ItemGrade.getGradeFromValue(runeGradeVal);
 
             if (runeGrade == null) {
-                BHBot.logger.error(runeGradeVal + " produced null runeGrade in switchSingleMinorRune");
+                BHBotUnity.logger.error(runeGradeVal + " produced null runeGrade in switchSingleMinorRune");
                 return false;
             }
 
             MinorRune thisRune = MinorRune.getRune(desiredRune, runeGrade);
 
             if (thisRune == null) {
-                BHBot.logger.debug(desiredRune.toString() + " " + runeGrade.toString() + "not defined in switchSingleMinorRune");
+                BHBotUnity.logger.debug(desiredRune.toString() + " " + runeGrade.toString() + "not defined in switchSingleMinorRune");
                 continue;
             }
 
             Cue runeCue = thisRune.getRuneSelectCue();
             if (runeCue == null) {
-                BHBot.logger.error("Unable to find cue for rune " + getRuneName(thisRune.getRuneCueName()));
+                BHBotUnity.logger.error("Unable to find cue for rune " + getRuneName(thisRune.getRuneCueName()));
                 continue;
             }
             seg = MarvinSegment.fromCue(runeCue, bot.browser);
             if (seg == null) {
-                BHBot.logger.debug("Unable to find " + getRuneName(thisRune.getRuneCueName()) + " in rune picker.");
+                BHBotUnity.logger.debug("Unable to find " + getRuneName(thisRune.getRuneCueName()) + " in rune picker.");
                 continue;
             }
-            BHBot.logger.autorune("Switched to " + getRuneName(thisRune.getRuneCueName()));
+            BHBotUnity.logger.autorune("Switched to " + getRuneName(thisRune.getRuneCueName()));
             bot.browser.clickOnSeg(seg);
             Misc.sleep(Misc.Durations.SECOND);
             return true;
         }
 
-        BHBot.logger.error("Unable to find rune of type " + desiredRune);
-        bot.browser.closePopupSecurely(BHBot.cues.get("RunesPicker"), BHBot.cues.get("X"));
+        BHBotUnity.logger.error("Unable to find rune of type " + desiredRune);
+        bot.browser.closePopupSecurely(BHBotUnity.cues.get("RunesPicker"), BHBotUnity.cues.get("X"));
         Misc.sleep(Misc.Durations.SECOND);
         return false;
     }

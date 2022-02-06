@@ -141,13 +141,13 @@ class FindSubimage {
                 }
             }
         } catch (java.lang.ArrayIndexOutOfBoundsException e) {
-            BHBot.logger.debug("ArrayIndexOutOfBounds Exception in FindSubimage", e);
-            Misc.saveScreen("ArrayIndexOutOfBounds-In", "find-errors", BHBot.includeMachineNameInScreenshots, imageIn);
-            Misc.saveScreen("ArrayIndexOutOfBounds-Sub", "find-errors", BHBot.includeMachineNameInScreenshots, subImage);
-            BHBot.logger.debug(String.format("Image In  -> W: %d H: %d", imgInWidth, imgInHeight));
-            BHBot.logger.debug(String.format("Image Sub -> W: %d H: %d", subImgWidth, subImgHeight));
-            BHBot.logger.debug(String.format("startX: %d, startY: %d, endX: %d, endY: %d", startX, startY, endX, endY));
-            BHBot.logger.debug(Misc.getStackTrace());
+            BHBotUnity.logger.debug("ArrayIndexOutOfBounds Exception in FindSubimage", e);
+            Misc.saveScreen("ArrayIndexOutOfBounds-In", "find-errors", BHBotUnity.includeMachineNameInScreenshots, imageIn);
+            Misc.saveScreen("ArrayIndexOutOfBounds-Sub", "find-errors", BHBotUnity.includeMachineNameInScreenshots, subImage);
+            BHBotUnity.logger.debug(String.format("Image In  -> W: %d H: %d", imgInWidth, imgInHeight));
+            BHBotUnity.logger.debug(String.format("Image Sub -> W: %d H: %d", subImgWidth, subImgHeight));
+            BHBotUnity.logger.debug(String.format("startX: %d, startY: %d, endX: %d, endY: %d", startX, startY, endX, endY));
+            BHBotUnity.logger.debug(Misc.getStackTrace());
         }
 
         return segments;

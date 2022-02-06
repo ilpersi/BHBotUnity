@@ -5,10 +5,10 @@ import net.pushover.client.*;
 import java.io.File;
 
 public class PushOverManager {
-    private BHBot bot;
+    private BHBotUnity bot;
     private PushoverClient poClient = new PushoverRestClient();
 
-    PushOverManager(BHBot bot) {
+    PushOverManager(BHBotUnity bot) {
         this.bot = bot;
     }
 
@@ -38,7 +38,7 @@ public class PushOverManager {
                                 .setImage(attachment)
                                 .build());
             } catch (PushoverException e) {
-                BHBot.logger.error("Error while sending Pushover message", e);
+                BHBotUnity.logger.error("Error while sending Pushover message", e);
             }
         }
     }

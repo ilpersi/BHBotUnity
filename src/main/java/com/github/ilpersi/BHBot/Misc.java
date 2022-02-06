@@ -41,18 +41,18 @@ public class Misc {
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
         // sub-folder logic management
-        String screenshotPath = BHBot.screenshotPath;
+        String screenshotPath = BHBotUnity.screenshotPath;
         if (subFolder != null) {
-            File subFolderPath = new File(BHBot.screenshotPath + subFolder + "/");
+            File subFolderPath = new File(BHBotUnity.screenshotPath + subFolder + "/");
             if (!subFolderPath.exists()) {
                 if (!subFolderPath.mkdir()) {
-                    BHBot.logger.error("Impossible to create screenshot sub folder in " + subFolder);
+                    BHBotUnity.logger.error("Impossible to create screenshot sub folder in " + subFolder);
                     return null;
                 } else {
                     try {
-                        BHBot.logger.info("Created screenshot sub-folder " + subFolderPath.getCanonicalPath());
+                        BHBotUnity.logger.info("Created screenshot sub-folder " + subFolderPath.getCanonicalPath());
                     } catch (IOException e) {
-                        BHBot.logger.error("Error while getting Canonical Path for newly created screenshots sub-folder", e);
+                        BHBotUnity.logger.error("Error while getting Canonical Path for newly created screenshots sub-folder", e);
                     }
                 }
             }
@@ -89,7 +89,7 @@ public class Misc {
         try {
             ImageIO.write(img, "png", f);
         } catch (Exception e) {
-            BHBot.logger.error("Impossible to take a screenshot!");
+            BHBotUnity.logger.error("Impossible to take a screenshot!");
         }
 
         return f.getPath();
@@ -114,7 +114,7 @@ public class Misc {
         do {
             shotCnt++;
             bot.readScreen();
-            Misc.saveScreen(startDate + "-" + prefix + "-" + shotCnt, "continuous-screenshots", BHBot.includeMachineNameInScreenshots, bot.getImg());
+            Misc.saveScreen(startDate + "-" + prefix + "-" + shotCnt, "continuous-screenshots", BHBotUnity.includeMachineNameInScreenshots, bot.getImg());
             Misc.sleep(delay);
         } while (Misc.getTime() <= timeout);
     }
@@ -168,7 +168,7 @@ public class Misc {
 
             return lines;
         } catch (IOException e) {
-            BHBot.logger.error("Impossible to read file: " + file, e);
+            BHBotUnity.logger.error("Impossible to read file: " + file, e);
             return null;
         }
     }
@@ -185,7 +185,7 @@ public class Misc {
             File parent = f.getParentFile();
             if (parent != null && !parent.exists())
                 if (!parent.mkdirs()) {
-                    BHBot.logger.error("Error with parent.mkdirs() in saveTetFile!");
+                    BHBotUnity.logger.error("Error with parent.mkdirs() in saveTetFile!");
                     return false;
                 }
 
@@ -196,7 +196,7 @@ public class Misc {
                 bw.close();
             }
         } catch (IOException e) {
-            BHBot.logger.error("saveTextFile could not save contents in file: " + file, e);
+            BHBotUnity.logger.error("saveTextFile could not save contents in file: " + file, e);
             return false;
         }
         return true;
@@ -276,7 +276,7 @@ public class Misc {
         try {
             encoded = Base64.getEncoder().encode(Files.readAllBytes(Paths.get(toEncode.getAbsolutePath())));
         } catch (IOException e) {
-            BHBot.logger.error("Error in encodeFileToBase64Binary", e);
+            BHBotUnity.logger.error("Error in encodeFileToBase64Binary", e);
             return "";
         }
         return new String(encoded, StandardCharsets.US_ASCII);
@@ -328,7 +328,7 @@ public class Misc {
                 properties.load(gitResource);
             }
         } catch (IOException e) {
-            BHBot.logger.error("Impossible to get GIT information", e);
+            BHBotUnity.logger.error("Impossible to get GIT information", e);
         }
         return properties;
     }
@@ -337,7 +337,7 @@ public class Misc {
         try {
             Thread.sleep(milliseconds);
         } catch (InterruptedException e) {
-            BHBot.logger.debug("Interrupting sleep");
+            BHBotUnity.logger.debug("Interrupting sleep");
             Thread.currentThread().interrupt();
         }
     }
@@ -350,7 +350,7 @@ public class Misc {
      * @param takeScreen should we take a screen of the current bar position?
      * @author ilpersi
      */
-    static void findScrollBarPositions(BHBot bot, boolean takeScreen) {
+    static void findScrollBarPositions(BHBotUnity bot, boolean takeScreen) {
         int lastPosition = -1;
 
         ArrayList<Integer> positions = new ArrayList<>();
@@ -359,12 +359,12 @@ public class Misc {
 
         MarvinSegment segDropDown = MarvinSegment.fromCue("DropDownDown", 5 * Misc.Durations.SECOND, null, bot.browser);
         if (segDropDown == null) {
-            BHBot.logger.error("Error: unable to find down arrow findScrollBarPositions!");
+            BHBotUnity.logger.error("Error: unable to find down arrow findScrollBarPositions!");
             return;
         }
 
-        MarvinSegment seg = MarvinSegment.fromCue(BHBot.cues.get("StripScrollerTopPos"), 2 * Misc.Durations.SECOND, bot.browser);
-        Cue topPos = seg == null ? BHBot.cues.get("SettingsScrollerTopPos") : BHBot.cues.get("StripScrollerTopPos");
+        MarvinSegment seg = MarvinSegment.fromCue(BHBotUnity.cues.get("StripScrollerTopPos"), 2 * Misc.Durations.SECOND, bot.browser);
+        Cue topPos = seg == null ? BHBotUnity.cues.get("SettingsScrollerTopPos") : BHBotUnity.cues.get("StripScrollerTopPos");
 
         int posCnt = 0;
 
@@ -372,7 +372,7 @@ public class Misc {
             MarvinSegment scrollTopSeg = MarvinSegment.fromCue(topPos, 2 * Misc.Durations.SECOND, bot.browser);
 
             if (scrollTopSeg == null) {
-                BHBot.logger.error("Error: unable to find scroller in findScrollBarPositions!");
+                BHBotUnity.logger.error("Error: unable to find scroller in findScrollBarPositions!");
                 return;
             }
 
@@ -385,7 +385,7 @@ public class Misc {
 
                 if (takeScreen) {
                     String screenName = String.format("scroller_%02d", posCnt);
-                    Misc.saveScreen(screenName, "ScrollBarPositions", BHBot.includeMachineNameInScreenshots, bot.browser.getImg());
+                    Misc.saveScreen(screenName, "ScrollBarPositions", BHBotUnity.includeMachineNameInScreenshots, bot.browser.getImg());
                 }
 
                 bot.browser.clickOnSeg(segDropDown);
@@ -401,10 +401,10 @@ public class Misc {
             posOutput.append(pos);
         }
         posOutput.append("}");
-        BHBot.logger.info(posOutput.toString());
+        BHBotUnity.logger.info(posOutput.toString());
 
         if (takeScreen) {
-            BHBot.logger.info("Saved " + posCnt + " screens for scrollbar positions");
+            BHBotUnity.logger.info("Saved " + posCnt + " screens for scrollbar positions");
         }
 
     }
@@ -435,13 +435,13 @@ public class Misc {
         try {
             ImageIO.write(subImg, "png", nameImgFile);
         } catch (IOException e) {
-            BHBot.logger.error("Error while creating rune contribution file", e);
+            BHBotUnity.logger.error("Error while creating rune contribution file", e);
         }
 
         String encodedContent = Misc.encodeFileToBase64Binary(nameImgFile);
 
         if ("".equals(encodedContent)) {
-            BHBot.logger.debug("It was impossible to contribute image: " + imgName);
+            BHBotUnity.logger.debug("It was impossible to contribute image: " + imgName);
             return false;
         }
 
@@ -470,11 +470,11 @@ public class Misc {
         try {
             client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (IOException | InterruptedException e) {
-            BHBot.logger.error("Exception while contributing Image " + imgName, e);
+            BHBotUnity.logger.error("Exception while contributing Image " + imgName, e);
         }
 
         if (!nameImgFile.delete()) {
-            BHBot.logger.error("Impossible to delete contribution image: " + nameImgFile.getAbsolutePath());
+            BHBotUnity.logger.error("Impossible to delete contribution image: " + nameImgFile.getAbsolutePath());
         }
 
         return true;
@@ -510,7 +510,7 @@ public class Misc {
         try {
             ImageIO.write(img, "png", outputStream);
         } catch (IOException e) {
-            BHBot.logger.error("imgToMd5: impossible to write image to outputStream", e);
+            BHBotUnity.logger.error("imgToMd5: impossible to write image to outputStream", e);
             return "";
         }
         byte[] data = outputStream.toByteArray();
@@ -519,7 +519,7 @@ public class Misc {
         try {
             md = MessageDigest.getInstance("MD5");
         } catch (NoSuchAlgorithmException e) {
-            BHBot.logger.error("imgToMd5: error while digesting MD5 hash", e);
+            BHBotUnity.logger.error("imgToMd5: error while digesting MD5 hash", e);
             return "";
         }
         md.update(data);
@@ -544,7 +544,7 @@ public class Misc {
                     InetAddress localMachine = InetAddress.getLocalHost();
                     Misc.machineName = localMachine.getHostName();
                 } catch (UnknownHostException e) {
-                    BHBot.logger.warn("Impossible to get local host information.", e);
+                    BHBotUnity.logger.warn("Impossible to get local host information.", e);
                 }
 
                 loopCnt++;

@@ -16,9 +16,9 @@ import java.util.*;
 import java.util.function.Supplier;
 
 public class DiscordManager {
-    private final BHBot bot;
+    private final BHBotUnity bot;
 
-    DiscordManager(BHBot bot) {
+    DiscordManager(BHBotUnity bot) {
         this.bot = bot;
     }
 
@@ -26,7 +26,7 @@ public class DiscordManager {
         if (bot.settings.enableDiscord) {
 
             if ("https://discordapp.com/api/webhooks/your_hook/your_token".equals(bot.settings.discordWebHookUrl)) {
-                BHBot.logger.warn("Discord webhook not correctly configured! Disabling Discord notifications");
+                BHBotUnity.logger.warn("Discord webhook not correctly configured! Disabling Discord notifications");
                 bot.settings.enableDiscord = false;
                 return;
             }
@@ -69,11 +69,11 @@ public class DiscordManager {
                 response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
                 if (response.statusCode() != 200) {
-                    BHBot.logger.warn("Invalid HTTP Status when sending Discord notification: '" + response.statusCode() + "'!");
+                    BHBotUnity.logger.warn("Invalid HTTP Status when sending Discord notification: '" + response.statusCode() + "'!");
                 }
 
             } catch (IOException | InterruptedException e) {
-                BHBot.logger.error("Exception while getting latest version info from Git Hub", e);
+                BHBotUnity.logger.error("Exception while getting latest version info from Git Hub", e);
             }
         }
     }

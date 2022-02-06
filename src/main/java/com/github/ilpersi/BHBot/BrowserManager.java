@@ -36,7 +36,7 @@ public class BrowserManager {
     private String doNotShareUrl = "";
 
     private BufferedImage img = null; // latest screen capture
-    private final BHBot bot;
+    private final BHBotUnity bot;
 
     private final String browserProfile;
 
@@ -45,7 +45,7 @@ public class BrowserManager {
     private final String COOKIE_DAT_PATH_FORMAT = "./data/cookies_%s.dat";
     boolean cookiesLoaded = false;
 
-    BrowserManager(BHBot bot, String browserProfile) {
+    BrowserManager(BHBotUnity bot, String browserProfile) {
         this.bot = bot;
         this.browserProfile = browserProfile;
     }
@@ -67,7 +67,7 @@ public class BrowserManager {
             if (bot.settings.autoStartChromeDriver) {
                 System.setProperty("webdriver.chrome.driver", bot.browserDriverExePath);
             } else {
-                BHBot.logger.info("chromedriver auto start is off, make sure it is started before running BHBot");
+                BHBotUnity.logger.info("chromedriver auto start is off, make sure it is started before running BHBot");
                 if (System.getProperty("webdriver.chrome.driver", null) != null) {
                     System.clearProperty("webdriver.chrome.driver");
                 }
@@ -97,7 +97,7 @@ public class BrowserManager {
                     driver = new RemoteWebDriver(driverAddress, options);
                     caps = ((RemoteWebDriver) driver).getCapabilities();
                 } catch (MalformedURLException e) {
-                    BHBot.logger.error("Malformed URL when connecting to Web driver: ", e);
+                    BHBotUnity.logger.error("Malformed URL when connecting to Web driver: ", e);
                 }
             }
         } else {
@@ -124,7 +124,7 @@ public class BrowserManager {
             if (bot.settings.autoStartChromeDriver) {
                 System.setProperty(GeckoDriverService.GECKO_DRIVER_EXE_PROPERTY, bot.browserDriverExePath);
             } else {
-                BHBot.logger.info("geckodriver auto start is off, make sure it is started before running BHBot");
+                BHBotUnity.logger.info("geckodriver auto start is off, make sure it is started before running BHBot");
                 if (System.getProperty(GeckoDriverService.GECKO_DRIVER_EXE_PROPERTY, null) != null) {
                     System.clearProperty(GeckoDriverService.GECKO_DRIVER_EXE_PROPERTY);
                 }
@@ -160,7 +160,7 @@ public class BrowserManager {
                     driver = new RemoteWebDriver(driverAddress, options);
                     caps = ((RemoteWebDriver) driver).getCapabilities();
                 } catch (MalformedURLException e) {
-                    BHBot.logger.error("Malformed URL when connecting to Web driver: ", e);
+                    BHBotUnity.logger.error("Malformed URL when connecting to Web driver: ", e);
                 }
             }
         }
@@ -175,7 +175,7 @@ public class BrowserManager {
             for (LogEntry le : driver.manage().logs().get(LogType.PERFORMANCE)) {
                 Matcher regexMatcher = regex.matcher(le.getMessage());
                 if (regexMatcher.find()) {
-                    BHBot.logger.debug("DO NOT SHARE URL found!");
+                    BHBotUnity.logger.debug("DO NOT SHARE URL found!");
                     doNotShareUrl = regexMatcher.group(1);
                     break;
                 }
@@ -189,7 +189,7 @@ public class BrowserManager {
             }
             driver = null;
         } catch (Exception e) {
-            BHBot.logger.error("Error while quitting from Chromium", e);
+            BHBotUnity.logger.error("Error while quitting from Chromium", e);
         }
 
         // disable some annoying INFO messages:
@@ -225,19 +225,19 @@ public class BrowserManager {
                 driver.close();
                 driver.quit();
             } catch (org.openqa.selenium.NoSuchSessionException e) {
-                BHBot.logger.debug("Error while closing driver in BrowserManager.");
+                BHBotUnity.logger.debug("Error while closing driver in BrowserManager.");
             }
         }
     }
 
     synchronized void hideBrowser() {
         driver.manage().window().setPosition(new Point(-10000, 0)); // just to make sure
-        BHBot.logger.info("Chrome window has been hidden.");
+        BHBotUnity.logger.info("Chrome window has been hidden.");
     }
 
     synchronized void showBrowser() {
         driver.manage().window().setPosition(new Point(0, 0));
-        BHBot.logger.info("Chrome window has been restored.");
+        BHBotUnity.logger.info("Chrome window has been restored.");
     }
 
     synchronized void scrollGameIntoView() {
@@ -268,23 +268,23 @@ public class BrowserManager {
         try {
             weUsername = driver.findElement(By.cssSelector("body#play > div#lightbox > div#lbContent > div#kongregate_lightbox_wrapper > div#lightbox_form > div#lightboxlogin > div#new_session_shared_form > form > dl > dd > input#username"));
         } catch (NoSuchElementException e) {
-            BHBot.logger.warn("Problem: username field not found in the login form (perhaps it was not loaded yet?)!");
+            BHBotUnity.logger.warn("Problem: username field not found in the login form (perhaps it was not loaded yet?)!");
             return;
         }
         weUsername.clear();
         weUsername.sendKeys(bot.settings.username);
-        BHBot.logger.info("Username entered into the login form.");
+        BHBotUnity.logger.info("Username entered into the login form.");
 
         WebElement wePassword;
         try {
             wePassword = driver.findElement(By.cssSelector("body#play > div#lightbox > div#lbContent > div#kongregate_lightbox_wrapper > div#lightbox_form > div#lightboxlogin > div#new_session_shared_form > form > dl > dd > input#password"));
         } catch (NoSuchElementException e) {
-            BHBot.logger.warn("Problem: password field not found in the login form (perhaps it was not loaded yet?)!");
+            BHBotUnity.logger.warn("Problem: password field not found in the login form (perhaps it was not loaded yet?)!");
             return;
         }
         wePassword.clear();
         wePassword.sendKeys(bot.settings.password);
-        BHBot.logger.info("Password entered into the login form.");
+        BHBotUnity.logger.info("Password entered into the login form.");
 
         // press the "sign-in" button:
         WebElement btnSignIn;
@@ -295,7 +295,7 @@ public class BrowserManager {
         }
         btnSignIn.click();
 
-        BHBot.logger.info("Signed-in manually (we were signed-out).");
+        BHBotUnity.logger.info("Signed-in manually (we were signed-out).");
 
         scrollGameIntoView();
     }
@@ -320,7 +320,7 @@ public class BrowserManager {
                 try {
                     list = listStr.split(",");
                 } catch (NullPointerException e) {
-                    BHBot.logger.trace("JS Executor error while getting windows dimensions.", e);
+                    BHBotUnity.logger.trace("JS Executor error while getting windows dimensions.", e);
                     return new BufferedImage(800, 520, BufferedImage.TYPE_INT_RGB);
                 }
 
@@ -334,7 +334,7 @@ public class BrowserManager {
                     result = bImageFromConvert.getSubimage(x, y, width, height);
                 } catch (java.awt.image.RasterFormatException e) {
                     jsExecutor.executeScript("arguments[0].scrollIntoView(true);", game);
-                    BHBot.logger.trace("Error when taking screenshot based on getBoundingClientRect()", e);
+                    BHBotUnity.logger.trace("Error when taking screenshot based on getBoundingClientRect()", e);
                     return new BufferedImage(800, 520, BufferedImage.TYPE_INT_RGB);
                 }
 
@@ -344,20 +344,20 @@ public class BrowserManager {
                 return bImageFromConvert;
         } catch (StaleElementReferenceException e) {
             // sometimes the game element is not available, if this happen we just return an empty image
-            BHBot.logger.debug("Stale image detected while taking a screenshot. Trying to reset game element.");
+            BHBotUnity.logger.debug("Stale image detected while taking a screenshot. Trying to reset game element.");
 
             // For more details about this line of code, have a look here: https://www.selenium.dev/exceptions/#stale_element_reference
             try {
                 game = driver.findElement(byElement);
             } catch (Exception ex) {
-                BHBot.logger.error("It was impossible to reset the game element! Generating an empty screenshot.");
+                BHBotUnity.logger.error("It was impossible to reset the game element! Generating an empty screenshot.");
             }
 
             return new BufferedImage(800, 520, BufferedImage.TYPE_INT_RGB);
 
         } catch (TimeoutException | IOException e) {
             // sometimes Chrome/Chromium crashes and it is impossible to take screenshots from it
-            BHBot.logger.warn("Selenium could not take a screenshot. A monitor screenshot will be taken using AWT.", e);
+            BHBotUnity.logger.warn("Selenium could not take a screenshot. A monitor screenshot will be taken using AWT.", e);
 
             if (bot.settings.hideWindowOnRestart) showBrowser();
 
@@ -366,7 +366,7 @@ public class BrowserManager {
             try {
                 screen = new Robot().createScreenCapture(screenRect);
             } catch (AWTException ex) {
-                BHBot.logger.error("Impossible to perform a monitor screenshot", ex);
+                BHBotUnity.logger.error("Impossible to perform a monitor screenshot", ex);
                 screen = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
             }
 
@@ -377,12 +377,12 @@ public class BrowserManager {
             throw e;
         }
         catch (UnreachableBrowserException e) {
-            BHBot.logger.error("UnreachableBrowserException when taking screenshot: ", e);
+            BHBotUnity.logger.error("UnreachableBrowserException when taking screenshot: ", e);
             restart(false);
             return new BufferedImage(800, 520, BufferedImage.TYPE_INT_RGB);
         }
         catch (RuntimeException e) {
-            BHBot.logger.error("Runtime error when taking screenshot: ", e);
+            BHBotUnity.logger.error("Runtime error when taking screenshot: ", e);
             restart(false);
             return new BufferedImage(800, 520, BufferedImage.TYPE_INT_RGB);
         }
@@ -465,7 +465,7 @@ public class BrowserManager {
         long timeOut = Misc.getTime() + timeOutDuration;
         while (popupSeg == null) {
             if (Misc.getTime() > timeOut) {
-                BHBot.logger.error("Error: unable to close popup <" + popup + "> securely: popup cue not detected!");
+                BHBotUnity.logger.error("Error: unable to close popup <" + popup + "> securely: popup cue not detected!");
                 Misc.saveScreen("closePopupSecurely-popup-not-detected-" + popup.name, "errors", true, bot.browser.getImg());
                 return false;
             }
@@ -490,8 +490,8 @@ public class BrowserManager {
             }
 
             if (Misc.getTime() > timeOut) {
-                BHBot.logger.error("Error: unable to close popup <" + popup + "> securely: either close button < " + close + " > has not been detected or popup would not close!");
-                BHBot.logger.error(Misc.getStackTrace());
+                BHBotUnity.logger.error("Error: unable to close popup <" + popup + "> securely: either close button < " + close + " > has not been detected or popup would not close!");
+                BHBotUnity.logger.error(Misc.getStackTrace());
                 Misc.saveScreen("closePopupSecurely-close-error-" + popup.name + "-" + close.name, "errors", true, bot.browser.getImg());
                 return false;
             }
@@ -532,7 +532,7 @@ public class BrowserManager {
         img = takeScreenshot(game);
 
         // This setting should only be enabled for development purpose. Performance impact is very high.
-        if (bot.settings.dumpReadScreen) Misc.saveScreen("screen-dump", "screen-dump", BHBot.includeMachineNameInScreenshots, img);
+        if (bot.settings.dumpReadScreen) Misc.saveScreen("screen-dump", "screen-dump", BHBotUnity.includeMachineNameInScreenshots, img);
     }
 
     /**
@@ -550,12 +550,12 @@ public class BrowserManager {
             try {
                 screenImg = ImageIO.read(screenImgFile);
             } catch (IOException e) {
-                BHBot.logger.error("Error when loading game screen ", e);
+                BHBotUnity.logger.error("Error when loading game screen ", e);
             }
 
             img = screenImg;
         } else {
-            BHBot.logger.error("Impossible to load screen file: " + screenImgFile.getAbsolutePath());
+            BHBotUnity.logger.error("Impossible to load screen file: " + screenImgFile.getAbsolutePath());
         }
     }
 
@@ -601,7 +601,7 @@ public class BrowserManager {
                 for (Cookie cookie: cookies) {
                     driver.manage().addCookie(cookie);
                 }
-                BHBot.logger.info("Loaded cookies from file " + String.format(COOKIE_DAT_PATH_FORMAT, bot.settings.username));
+                BHBotUnity.logger.info("Loaded cookies from file " + String.format(COOKIE_DAT_PATH_FORMAT, bot.settings.username));
                 refresh();
             }
 
@@ -618,7 +618,7 @@ public class BrowserManager {
         if (bot.settings.username.length() > 0 && !bot.settings.username.equalsIgnoreCase("yourusername"))
             btnClose.click();
         else {
-            BHBot.logger.warn("Login form detected and no username provided in the settings!");
+            BHBotUnity.logger.warn("Login form detected and no username provided in the settings!");
             return;
         }
 
@@ -657,15 +657,15 @@ public class BrowserManager {
         try {
             tooManyLogins = driver.findElement(By.xpath("//*[@id=\"lightboxlogin_message\"]"));
         } catch (NoSuchElementException e)  {
-            BHBot.logger.info("Signed-in manually (sign-in prompt was open).");
+            BHBotUnity.logger.info("Signed-in manually (sign-in prompt was open).");
 
             this.serializeCookies();
             return;
         }
 
-        BHBot.logger.debug("tooManyLogins != null TEXT: " + tooManyLogins.getText());
+        BHBotUnity.logger.debug("tooManyLogins != null TEXT: " + tooManyLogins.getText());
         if (tooManyLogins.getText().contains("login too many times")) {
-            BHBot.logger.warn("Too many login attempts, pausing for 30 minutes");
+            BHBotUnity.logger.warn("Too many login attempts, pausing for 30 minutes");
             bot.scheduler.pause(Misc.Durations.MINUTE * bot.settings.tooManyLoginsTimer);
             driver.navigate().refresh();
         }
@@ -687,9 +687,9 @@ public class BrowserManager {
             ObjectOutputStream oss = new ObjectOutputStream(fileOut);
             oss.writeObject(cookies);
         } catch (FileNotFoundException e) {
-            BHBot.logger.debug("FileNotFoundException while dumping cookies.", e);
+            BHBotUnity.logger.debug("FileNotFoundException while dumping cookies.", e);
         } catch (IOException e) {
-            BHBot.logger.debug("IOException while dumping cookies.", e);
+            BHBotUnity.logger.debug("IOException while dumping cookies.", e);
         }
     }
 
@@ -710,11 +710,11 @@ public class BrowserManager {
                 //noinspection unchecked
                 return (HashSet<Cookie>) ois.readObject();
             } catch (FileNotFoundException e) {
-                BHBot.logger.debug("FileNotFoundException while deserializing cookies.", e);
+                BHBotUnity.logger.debug("FileNotFoundException while deserializing cookies.", e);
             } catch (IOException e) {
-                BHBot.logger.debug("IOException while deserializing cookies.", e);
+                BHBotUnity.logger.debug("IOException while deserializing cookies.", e);
             } catch (ClassNotFoundException e) {
-                BHBot.logger.debug("ClassNotFoundException while deserializing cookies.", e);
+                BHBotUnity.logger.debug("ClassNotFoundException while deserializing cookies.", e);
             }
         }
 

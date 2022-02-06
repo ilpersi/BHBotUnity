@@ -49,7 +49,7 @@ class ScrollBarManager {
 
         // We check that DropDownDown cue is there
         if (arrowDown == null) {
-            BHBot.logger.error("ScrollBarManager not initialized correctly: DropDownDown cue not found!");
+            BHBotUnity.logger.error("ScrollBarManager not initialized correctly: DropDownDown cue not found!");
         } else {
             canScrollDown = true;
             btmPosCheckBounds = Bounds.fromWidthHeight(arrowDown.x1, arrowDown.y1 - barMargin, arrowDown.width, arrowDown.height + barMargin);
@@ -57,7 +57,7 @@ class ScrollBarManager {
 
         // We check that DropDownUp cue is there
         if (arrowUp == null) {
-            BHBot.logger.error("ScrollBarManager not initialized correctly: DropDownUp cue not found!");
+            BHBotUnity.logger.error("ScrollBarManager not initialized correctly: DropDownUp cue not found!");
         } else {
             canScrollUp = true;
             topPosCheckBounds = Bounds.fromWidthHeight(this.arrowUp.x1, arrowUp.y1, arrowUp.width, arrowUp.height + barMargin);

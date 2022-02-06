@@ -52,12 +52,12 @@ public class CueCompare {
                 }
             }
             result = matchingPixels / totalPixels;
-            BHBot.logger.trace(matchingPixels);
-            BHBot.logger.trace(totalPixels);
-            BHBot.logger.trace(String.format("%.2f%%",result * 100) + " similarity between last two screenshots.");
+            BHBotUnity.logger.trace(matchingPixels);
+            BHBotUnity.logger.trace(totalPixels);
+            BHBotUnity.logger.trace(String.format("%.2f%%",result * 100) + " similarity between last two screenshots.");
             return result >= sensitivity;
         } else {
-            BHBot.logger.error("Compare failed.");
+            BHBotUnity.logger.error("Compare failed.");
             return false;
         }
     }
@@ -100,7 +100,7 @@ public class CueCompare {
                         try {
                             ImageIO.write(img3, "png", nameImgFile);
                         } catch (IOException e) {
-                            BHBot.logger.error("Error while creating comparison file", e);
+                            BHBotUnity.logger.error("Error while creating comparison file", e);
                         }
                     } else {
                         System.out.println("Invalid merged image in createDiffImage.");

@@ -65,7 +65,7 @@ class CueManager {
                 try {
                     cueImg = ImageIO.read(cueFile);
                 } catch (IOException e) {
-                    BHBot.logger.error("Error when loading image file in CueManger.get", e);
+                    BHBotUnity.logger.error("Error when loading image file in CueManger.get", e);
                     return null;
                 }
             } else {
@@ -102,23 +102,23 @@ class CueManager {
             try {
                 decodedURL = URLDecoder.decode(f, StandardCharsets.UTF_8.toString());
             } catch (UnsupportedEncodingException e) {
-                BHBot.logger.error("Error while decoding URL: ", e);
+                BHBotUnity.logger.error("Error while decoding URL: ", e);
             }
 
             if (decodedURL != null) {
                 resourceURL = classLoader.getResourceAsStream(decodedURL);
             }
-            BHBot.logger.trace("Encoded IMG URI is: " + decodedURL);
+            BHBotUnity.logger.trace("Encoded IMG URI is: " + decodedURL);
         }
 
         if (resourceURL != null) {
             try {
                 img = ImageIO.read(resourceURL);
             } catch (IOException e) {
-                BHBot.logger.error("Error while loading Image", e);
+                BHBotUnity.logger.error("Error while loading Image", e);
             }
         } else {
-            BHBot.logger.error("Error with resource: " + f);
+            BHBotUnity.logger.error("Error with resource: " + f);
         }
 
         return img;
@@ -144,7 +144,7 @@ class CueManager {
 
                 InputStream in = classLoader.getResourceAsStream(cuesPath);
                 if (in == null) {
-                    BHBot.logger.error("Impossible to create InputStream in getCueDetails");
+                    BHBotUnity.logger.error("Impossible to create InputStream in getCueDetails");
                     return cueDetails;
                 }
 
@@ -156,7 +156,7 @@ class CueManager {
                         resource = br.readLine();
                         if (resource == null) break;
                     } catch (IOException e) {
-                        BHBot.logger.error("Error while reading resources in getCueDetails", e);
+                        BHBotUnity.logger.error("Error while reading resources in getCueDetails", e);
                         continue;
                     }
                     int dotPosition = resource.lastIndexOf('.');
@@ -169,7 +169,7 @@ class CueManager {
                     }
                 }
             } else if ("jar".equals(url.getProtocol())) { // Run from JAR
-                BHBot.logger.debug("Reading JAR File for cues in path " + cuesPath);
+                BHBotUnity.logger.debug("Reading JAR File for cues in path " + cuesPath);
                 String path = url.getPath();
                 String jarPath = path.substring(5, path.indexOf("!"));
 
@@ -177,7 +177,7 @@ class CueManager {
                 try {
                     decodedURL = URLDecoder.decode(jarPath, StandardCharsets.UTF_8.name());
                 } catch (UnsupportedEncodingException e) {
-                    BHBot.logger.error("Impossible to decode pat for jar: " + jarPath, e);
+                    BHBotUnity.logger.error("Impossible to decode pat for jar: " + jarPath, e);
                     return cueDetails;
                 }
 
@@ -185,7 +185,7 @@ class CueManager {
                 try {
                     jar = new JarFile(decodedURL);
                 } catch (IOException e) {
-                    BHBot.logger.error("Impossible to open JAR file : " + decodedURL, e);
+                    BHBotUnity.logger.error("Impossible to open JAR file : " + decodedURL, e);
                     return cueDetails;
                 }
 
@@ -200,15 +200,15 @@ class CueManager {
                         if (resource == null) continue;
 
                         String resourcePath = resource.toString();
-                        BHBot.logger.trace("resourcePath: " + resourcePath);
+                        BHBotUnity.logger.trace("resourcePath: " + resourcePath);
                         if (!resourcePath.contains("!")) {
-                            BHBot.logger.warn("Unexpected resource filename in load Cue Folder");
+                            BHBotUnity.logger.warn("Unexpected resource filename in load Cue Folder");
                             continue;
                         }
 
                         String[] fileDetails = resourcePath.split("!");
                         String resourceRelativePath = fileDetails[1];
-                        BHBot.logger.trace("resourceRelativePath : " + resourceRelativePath);
+                        BHBotUnity.logger.trace("resourceRelativePath : " + resourceRelativePath);
                         int lastSlashPosition = resourceRelativePath.lastIndexOf('/');
                         String fileName = resourceRelativePath.substring(lastSlashPosition + 1);
 
@@ -217,7 +217,7 @@ class CueManager {
                         if ("png".equalsIgnoreCase(fileExtension)) {
                             String cueName = fileName.substring(0, dotPosition);
 
-                            BHBot.logger.trace("cueName: " + cueName.toLowerCase());
+                            BHBotUnity.logger.trace("cueName: " + cueName.toLowerCase());
 
                             // resourceRelativePath begins with a '/' char and we want to be sure to remove it
                             CueDetails details = new CueDetails(cueName.toLowerCase(), resourceRelativePath.substring(1));
@@ -534,7 +534,7 @@ class CueManager {
         newFamCnt += loadCueFolder("cues/familiars/02 Rare", null, false, new Bounds(145, 50, 575, 125));
         newFamCnt += loadCueFolder("cues/familiars/03 Epic", null, false, new Bounds(145, 50, 575, 125));
         newFamCnt += loadCueFolder("cues/familiars/04 Legendary", null, false, new Bounds(145, 50, 575, 125));
-        BHBot.logger.debug("Found " + newFamCnt + " familiar cues.");
+        BHBotUnity.logger.debug("Found " + newFamCnt + " familiar cues.");
 
         // We build Unity Cues on top of the standard ones
         updateUnityCues();
@@ -661,7 +661,7 @@ class CueManager {
         newFamCnt += loadCueFolder("unitycues/familiarEncounter/02 Rare", null, false, new Bounds(145, 50, 575, 125));
         newFamCnt += loadCueFolder("unitycues/familiarEncounter/03 Epic", null, false, new Bounds(145, 50, 575, 125));
         newFamCnt += loadCueFolder("unitycues/familiarEncounter/04 Legendary", null, false, new Bounds(145, 50, 575, 125));
-        BHBot.logger.debug("Found " + newFamCnt + " Unity familiar cues.");
+        BHBotUnity.logger.debug("Found " + newFamCnt + " Unity familiar cues.");
         //endregion
         //endregion
 
@@ -902,17 +902,17 @@ class CueManager {
         } else if (addedCues.containsKey(cueKey)) {
             oldBounds = addedCues.get(cueKey).cueBounds;
         } else {
-            BHBot.logger.info("No cue found to override, skipping.");
+            BHBotUnity.logger.info("No cue found to override, skipping.");
             return;
         }
 
         File newCueImgFile = new File(cuePath);
         if (!newCueImgFile.exists()) {
-            BHBot.logger.error("New Cue path does not exists.");
+            BHBotUnity.logger.error("New Cue path does not exists.");
             return;
         }
         if (newCueImgFile.isDirectory()) {
-            BHBot.logger.error("New Cue is a directory, skipping.");
+            BHBotUnity.logger.error("New Cue is a directory, skipping.");
             return;
         }
 
@@ -920,7 +920,7 @@ class CueManager {
         try {
             newCueImg = ImageIO.read(newCueImgFile);
         } catch (IOException e) {
-            BHBot.logger.error("Error when loading image file.", e);
+            BHBotUnity.logger.error("Error when loading image file.", e);
             return;
         }
 

@@ -78,12 +78,12 @@
                         <configuration>
                             <archive>
                                 <manifest>
-                                    <Main-Class>com.github.ilpersi.BHBot.BHBot</Main-Class>
+                                    <Main-Class>com.github.ilpersi.BHBot.BHBotUnity</Main-Class>
                                     <addClasspath>true</addClasspath>
                                 </manifest>
                                 <manifestEntries>
                                     <Multi-Release>true</Multi-Release>
-                                    <Main-Class>com.github.ilpersi.BHBot.BHBot</Main-Class>
+                                    <Main-Class>com.github.ilpersi.BHBot.BHBotUnity</Main-Class>
                                 </manifestEntries>
                             </archive>
                             <outputDirectory>${basedir}</outputDirectory>

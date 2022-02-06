@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AutoReviveManager {
-    private final BHBot bot;
+    private final BHBotUnity bot;
 
     enum PotionType {
         MINOR("Minor", '1'),
@@ -49,11 +49,11 @@ public class AutoReviveManager {
     // Revived party members
     private final boolean[] revived = {false, false, false, false, false};
 
-    AutoReviveManager (BHBot bot) {
+    AutoReviveManager (BHBotUnity bot) {
         this.bot = bot;
 
         for (PotionType pt : PotionType.values()) {
-            for (BHBot.State state : BHBot.State.values()) {
+            for (BHBotUnity.State state : BHBotUnity.State.values()) {
                 String key = pt.toString() + "-" + state.toString();
                 totalUsed.put(key, 0);
             }
@@ -66,25 +66,25 @@ public class AutoReviveManager {
 
         // we make sure that we stick with the limits
         if (usedPotions >= bot.settings.potionLimit) {
-            BHBot.logger.autorevive("Potion limit reached, skipping revive check");
+            BHBotUnity.logger.autorevive("Potion limit reached, skipping revive check");
             bot.scheduler.resetIdleTime(true);
             return;
         }
 
-        seg = MarvinSegment.fromCue(BHBot.cues.get("Potions"), Misc.Durations.SECOND, bot.browser);
+        seg = MarvinSegment.fromCue(BHBotUnity.cues.get("Potions"), Misc.Durations.SECOND, bot.browser);
         if (seg != null) {
             bot.browser.clickOnSeg(seg);
             bot.browser.readScreen(Misc.Durations.SECOND);
 
             // If no potions are needed, we re-enable the Auto function
-            seg = MarvinSegment.fromCue(BHBot.cues.get("NoPotions"), Misc.Durations.SECOND, bot.browser); // Everyone is Full HP
+            seg = MarvinSegment.fromCue(BHBotUnity.cues.get("NoPotions"), Misc.Durations.SECOND, bot.browser); // Everyone is Full HP
             if (seg != null) {
                 seg = MarvinSegment.fromCue("Close", Misc.Durations.SECOND, new Bounds(300, 330, 500, 400), bot.browser);
                 if (seg != null) {
-                    BHBot.logger.autorevive("None of the team members need a consumable, exiting from autoRevive");
+                    BHBotUnity.logger.autorevive("None of the team members need a consumable, exiting from autoRevive");
                     bot.browser.clickOnSeg(seg);
                 } else {
-                    BHBot.logger.error("No potions cue detected, without close button, restarting!");
+                    BHBotUnity.logger.error("No potions cue detected, without close button, restarting!");
                     bot.saveGameScreen("autorevive-no-potions-no-close", bot.browser.getImg());
                     bot.restart(true, false);
                 }
@@ -113,10 +113,10 @@ public class AutoReviveManager {
                     break;
             }
 
-            if ((bot.getState() == BHBot.State.Trials && bot.settings.autoRevive.contains("t")) ||
-                    (bot.getState() == BHBot.State.Gauntlet && bot.settings.autoRevive.contains("g")) ||
-                    (bot.getState() == BHBot.State.Raid && bot.settings.autoRevive.contains("r")) ||
-                    (bot.getState() == BHBot.State.Expedition && bot.settings.autoRevive.contains("e"))) {
+            if ((bot.getState() == BHBotUnity.State.Trials && bot.settings.autoRevive.contains("t")) ||
+                    (bot.getState() == BHBotUnity.State.Gauntlet && bot.settings.autoRevive.contains("g")) ||
+                    (bot.getState() == BHBotUnity.State.Raid && bot.settings.autoRevive.contains("r")) ||
+                    (bot.getState() == BHBotUnity.State.Expedition && bot.settings.autoRevive.contains("e"))) {
 
                 // from char to potion name
 //                HashMap<Character, String> potionTranslate = new HashMap<>();
@@ -131,7 +131,7 @@ public class AutoReviveManager {
 
                     //if we have reached potionLimit we exit autoRevive
                     if (usedPotions == bot.settings.potionLimit) {
-                        BHBot.logger.autorevive("Potion limit reached, exiting from Auto Revive");
+                        BHBotUnity.logger.autorevive("Potion limit reached, exiting from Auto Revive");
                         bot.browser.readScreen(Misc.Durations.SECOND);
                         break;
                     }
@@ -142,26 +142,26 @@ public class AutoReviveManager {
                     //check if there is a gravestone to see if we need to revive
                     //we MouseOver to make sure the grave is in the foreground and not covered
                     bot.browser.moveMouseToPos(slotPos.x, slotPos.y);
-                    if (MarvinSegment.fromCue(BHBot.cues.get("GravestoneHighlighted"), 3 * Misc.Durations.SECOND, bot.browser) == null)
+                    if (MarvinSegment.fromCue(BHBotUnity.cues.get("GravestoneHighlighted"), 3 * Misc.Durations.SECOND, bot.browser) == null)
                         continue;
 
                     // If we revive a team member we need to reopen the potion menu again
-                    seg = MarvinSegment.fromCue(BHBot.cues.get("UnitSelect"), Misc.Durations.SECOND, bot.browser);
+                    seg = MarvinSegment.fromCue(BHBotUnity.cues.get("UnitSelect"), Misc.Durations.SECOND, bot.browser);
                     if (seg == null) {
-                        seg = MarvinSegment.fromCue(BHBot.cues.get("Potions"), Misc.Durations.SECOND * 2, bot.browser);
+                        seg = MarvinSegment.fromCue(BHBotUnity.cues.get("Potions"), Misc.Durations.SECOND * 2, bot.browser);
                         if (seg != null) {
                             bot.browser.clickOnSeg(seg);
                             bot.browser.readScreen(Misc.Durations.SECOND);
 
                             // If no potions are needed, we re-enable the Auto function
-                            seg = MarvinSegment.fromCue(BHBot.cues.get("NoPotions"), Misc.Durations.SECOND, bot.browser); // Everyone is Full HP
+                            seg = MarvinSegment.fromCue(BHBotUnity.cues.get("NoPotions"), Misc.Durations.SECOND, bot.browser); // Everyone is Full HP
                             if (seg != null) {
-                                seg = MarvinSegment.fromCue(BHBot.cues.get("Close"), Misc.Durations.SECOND, new Bounds(300, 330, 500, 400), bot.browser);
+                                seg = MarvinSegment.fromCue(BHBotUnity.cues.get("Close"), Misc.Durations.SECOND, new Bounds(300, 330, 500, 400), bot.browser);
                                 if (seg != null) {
-                                    BHBot.logger.autorevive("None of the team members need a consumable, exiting from autoRevive");
+                                    BHBotUnity.logger.autorevive("None of the team members need a consumable, exiting from autoRevive");
                                     bot.browser.clickOnSeg(seg);
                                 } else {
-                                    BHBot.logger.error("Error while reopening the potions menu: no close button found!");
+                                    BHBotUnity.logger.error("Error while reopening the potions menu: no close button found!");
                                     bot.saveGameScreen("autorevive-no-potions-for-error", bot.browser.getImg());
                                     bot.restart(true, false);
                                 }
@@ -174,12 +174,12 @@ public class AutoReviveManager {
                     bot.browser.clickInGame(slotPos.x, slotPos.y);
                     bot.browser.readScreen(Misc.Durations.SECOND);
 
-                    MarvinSegment superHealSeg = MarvinSegment.fromCue(BHBot.cues.get("SuperAvailable"), bot.browser);
+                    MarvinSegment superHealSeg = MarvinSegment.fromCue(BHBotUnity.cues.get("SuperAvailable"), bot.browser);
 
                     if (superHealSeg != null) {
                         // If super potion is available, we skip it
                         int superPotionMaxChecks = 10, superPotionCurrentCheck = 0;
-                        while (superPotionCurrentCheck < superPotionMaxChecks && MarvinSegment.fromCue(BHBot.cues.get("SuperAvailable"), bot.browser) != null) {
+                        while (superPotionCurrentCheck < superPotionMaxChecks && MarvinSegment.fromCue(BHBotUnity.cues.get("SuperAvailable"), bot.browser) != null) {
                             bot.browser.clickInGame(656, 434);
                             bot.browser.readScreen(500);
                             superPotionCurrentCheck++;
@@ -188,13 +188,13 @@ public class AutoReviveManager {
 
                     // We check what revives are available, and we save the seg for future reuse
                     HashMap<PotionType, MarvinSegment> availablePotions = new HashMap<>();
-                    availablePotions.put(PotionType.MINOR, MarvinSegment.fromCue(BHBot.cues.get("MinorAvailable"), bot.browser));
-                    availablePotions.put(PotionType.AVERAGE, MarvinSegment.fromCue(BHBot.cues.get("AverageAvailable"), bot.browser));
-                    availablePotions.put(PotionType.MAJOR, MarvinSegment.fromCue(BHBot.cues.get("MajorAvailable"), bot.browser));
+                    availablePotions.put(PotionType.MINOR, MarvinSegment.fromCue(BHBotUnity.cues.get("MinorAvailable"), bot.browser));
+                    availablePotions.put(PotionType.AVERAGE, MarvinSegment.fromCue(BHBotUnity.cues.get("AverageAvailable"), bot.browser));
+                    availablePotions.put(PotionType.MAJOR, MarvinSegment.fromCue(BHBotUnity.cues.get("MajorAvailable"), bot.browser));
 
                     // No more potions are available
                     if (availablePotions.get(PotionType.MINOR) == null && availablePotions.get(PotionType.AVERAGE) == null && availablePotions.get(PotionType.MAJOR) == null) {
-                        BHBot.logger.warn("No potions are avilable, autoRevive well be temporary disabled!");
+                        BHBotUnity.logger.warn("No potions are avilable, autoRevive well be temporary disabled!");
                         bot.settings.autoRevive = new ArrayList<>();
                         bot.scheduler.resetIdleTime(true);
 
@@ -204,18 +204,18 @@ public class AutoReviveManager {
 
                     // We manage tank priority using the best potion we have
                     if (slotNum == (bot.settings.tankPosition) &&
-                            ((bot.getState() == BHBot.State.Trials && bot.settings.tankPriority.contains("t")) ||
-                                    (bot.getState() == BHBot.State.Gauntlet && bot.settings.tankPriority.contains("g")) ||
-                                    (bot.getState() == BHBot.State.Raid && bot.settings.tankPriority.contains("r")) ||
-                                    (bot.getState() == BHBot.State.Expedition && bot.settings.tankPriority.contains("e")))) {
+                            ((bot.getState() == BHBotUnity.State.Trials && bot.settings.tankPriority.contains("t")) ||
+                                    (bot.getState() == BHBotUnity.State.Gauntlet && bot.settings.tankPriority.contains("g")) ||
+                                    (bot.getState() == BHBotUnity.State.Raid && bot.settings.tankPriority.contains("r")) ||
+                                    (bot.getState() == BHBotUnity.State.Expedition && bot.settings.tankPriority.contains("e")))) {
                         for (char potion : "321".toCharArray()) {
                             PotionType pt = PotionType.fromChar(potion);
                             seg = availablePotions.get(pt);
                             if (seg != null) {
-                                BHBot.logger.autorevive("Handling tank priority (position: " + bot.settings.tankPosition + ") with " + pt.toString() + " revive.");
+                                BHBotUnity.logger.autorevive("Handling tank priority (position: " + bot.settings.tankPosition + ") with " + pt.toString() + " revive.");
                                 bot.browser.clickOnSeg(seg);
                                 bot.browser.readScreen(Misc.Durations.SECOND);
-                                seg = MarvinSegment.fromCue(BHBot.cues.get("YesGreen"), Misc.Durations.SECOND, new Bounds(230, 320, 550, 410), bot.browser);
+                                seg = MarvinSegment.fromCue(BHBotUnity.cues.get("YesGreen"), Misc.Durations.SECOND, new Bounds(230, 320, 550, 410), bot.browser);
                                 bot.browser.clickOnSeg(seg);
                                 revived[bot.settings.tankPosition - 1] = true;
                                 increaseUsedPotion(pt, bot.getState());
@@ -233,10 +233,10 @@ public class AutoReviveManager {
                             PotionType pt = PotionType.fromChar(potion);
                             seg = availablePotions.get(pt);
                             if (seg != null) {
-                                BHBot.logger.autorevive("Using " + pt.toString() + " revive on slot " + slotNum + ".");
+                                BHBotUnity.logger.autorevive("Using " + pt.toString() + " revive on slot " + slotNum + ".");
                                 bot.browser.clickOnSeg(seg);
                                 bot.browser.readScreen(Misc.Durations.SECOND);
-                                seg = MarvinSegment.fromCue(BHBot.cues.get("YesGreen"), Misc.Durations.SECOND, new Bounds(230, 320, 550, 410), bot.browser);
+                                seg = MarvinSegment.fromCue(BHBotUnity.cues.get("YesGreen"), Misc.Durations.SECOND, new Bounds(230, 320, 550, 410), bot.browser);
                                 bot.browser.clickOnSeg(seg);
                                 revived[slotNum - 1] = true;
                                 increaseUsedPotion(pt, bot.getState());
@@ -255,9 +255,9 @@ public class AutoReviveManager {
         }*/
 
         // If the unit selection screen is still open, we need to close it
-        seg = MarvinSegment.fromCue(BHBot.cues.get("UnitSelect"), Misc.Durations.SECOND, bot.browser);
+        seg = MarvinSegment.fromCue(BHBotUnity.cues.get("UnitSelect"), Misc.Durations.SECOND, bot.browser);
         if (seg != null) {
-            seg = MarvinSegment.fromCue(BHBot.cues.get("X"), Misc.Durations.SECOND, bot.browser);
+            seg = MarvinSegment.fromCue(BHBotUnity.cues.get("X"), Misc.Durations.SECOND, bot.browser);
             if (seg != null) {
                 bot.browser.clickOnSeg(seg);
                 bot.browser.readScreen(Misc.Durations.SECOND);
@@ -275,12 +275,12 @@ public class AutoReviveManager {
         revived[4] = false;
     }
 
-    private void increaseUsedPotion(PotionType pt, BHBot.State state) {
+    private void increaseUsedPotion(PotionType pt, BHBotUnity.State state) {
         String key = pt.toString() + "-" + state.toString();
         totalUsed.put(key, totalUsed.get(key) +1);
     }
 
-    Integer getCounter(PotionType pt, BHBot.State state) {
+    Integer getCounter(PotionType pt, BHBotUnity.State state) {
         String key = pt.toString() + "-" + state.toString();
         return totalUsed.get(key);
     }

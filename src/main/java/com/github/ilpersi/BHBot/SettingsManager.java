@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 public class SettingsManager {
-    private final BHBot bot;
+    private final BHBotUnity bot;
 
     // This variable is used to store the current status of the settings
     private boolean initialized;
@@ -19,7 +19,7 @@ public class SettingsManager {
     record SettingConfiguration(String cueName, ClickPosition clickPosition, int x, int y, int barPosition) {
     }
 
-    SettingsManager(BHBot bot, boolean skipInitialization) {
+    SettingsManager(BHBotUnity bot, boolean skipInitialization) {
         this.bot = bot;
 
         if (skipInitialization) {
@@ -29,7 +29,7 @@ public class SettingsManager {
 
     void initialize() {
         if (!initialized) {
-            BHBot.logger.info("Initializing settings to desired configurations");
+            BHBotUnity.logger.info("Initializing settings to desired configurations");
             checkBotSettings();
             initialized = true;
         }
@@ -45,12 +45,12 @@ public class SettingsManager {
             final Bounds downArrowBounds = Bounds.fromWidthHeight(614, 375, 18, 19);
             final Bounds settingsArea = Bounds.fromWidthHeight(162, 162, 449, 259);
 
-            final Cue scrollAtBottomCue = new Cue(BHBot.cues.get("ScrollerAtBottomSettings"), scrollAtBottomBounds);
-            final Cue downArrowCue = new Cue(BHBot.cues.get("DropDownDown"), downArrowBounds);
+            final Cue scrollAtBottomCue = new Cue(BHBotUnity.cues.get("ScrollerAtBottomSettings"), scrollAtBottomBounds);
+            final Cue downArrowCue = new Cue(BHBotUnity.cues.get("DropDownDown"), downArrowBounds);
 
             MarvinSegment downArrowSeg = MarvinSegment.fromCue(downArrowCue, Misc.Durations.SECOND, bot.browser);
             if (downArrowSeg == null) {
-                BHBot.logger.error("Impossible to find arrow down button in settings manager!");
+                BHBotUnity.logger.error("Impossible to find arrow down button in settings manager!");
                 closeSettings();
                 return;
             }
@@ -85,7 +85,7 @@ public class SettingsManager {
 
                     // if the two collections have the same size, it means we do not need to search anymore
                     if (alreadyFound.size() == settingConfigurations.size()) {
-                        BHBot.logger.debug("All the desired settings are configured.");
+                        BHBotUnity.logger.debug("All the desired settings are configured.");
                         break outer;
                     }
 
@@ -96,7 +96,7 @@ public class SettingsManager {
                     if (menuPos != setting.barPosition) continue;
 
                     // We make sure to search for the cue in the right screen area
-                    Cue settingCue = new Cue(BHBot.cues.get(setting.cueName), settingsArea);
+                    Cue settingCue = new Cue(BHBotUnity.cues.get(setting.cueName), settingsArea);
 
                     // we search for the cue and if we find it, we click based on the settings
                     MarvinSegment settingSeg = MarvinSegment.fromCue(settingCue, Misc.Durations.SECOND, bot.browser);
@@ -110,7 +110,7 @@ public class SettingsManager {
                             clickY = setting.y;
                         } else {
                             // this should never happen, as the enum has only two options
-                            BHBot.logger.warn("Unknown click position logic while searching for settings in SettingManager.");
+                            BHBotUnity.logger.warn("Unknown click position logic while searching for settings in SettingManager.");
                             continue;
                         }
 
@@ -120,13 +120,13 @@ public class SettingsManager {
 
                         alreadyFound.add(setting.cueName);
                     } else {
-                        BHBot.logger.debug(String.format("Impossible to find %s at bar position %d", setting.cueName, setting.barPosition));
+                        BHBotUnity.logger.debug(String.format("Impossible to find %s at bar position %d", setting.cueName, setting.barPosition));
                     }
                 }
 
                 // We do not scroll down anymore if we found all settings already!
                 if (alreadyFound.size() == settingConfigurations.size()) {
-                    BHBot.logger.debug("All the desired settings are configured.");
+                    BHBotUnity.logger.debug("All the desired settings are configured.");
                     break;
                 }
 
@@ -135,7 +135,7 @@ public class SettingsManager {
 
             closeSettings();
         } else {
-            BHBot.logger.warn("SettingsManger could not open the settings menu!");
+            BHBotUnity.logger.warn("SettingsManger could not open the settings menu!");
         }
 
     }
@@ -150,21 +150,21 @@ public class SettingsManager {
     boolean openSettings(@SuppressWarnings("SameParameterValue") int delay) {
         bot.browser.readScreen();
 
-        MarvinSegment seg = MarvinSegment.fromCue(BHBot.cues.get("SettingsGear"), delay, bot.browser);
+        MarvinSegment seg = MarvinSegment.fromCue(BHBotUnity.cues.get("SettingsGear"), delay, bot.browser);
         if (seg != null) {
             bot.browser.clickOnSeg(seg);
-            seg = MarvinSegment.fromCue(BHBot.cues.get("Settings"), delay, bot.browser);
+            seg = MarvinSegment.fromCue(BHBotUnity.cues.get("Settings"), delay, bot.browser);
             if (seg == null) {
                 bot.saveGameScreen("open-settings-no-setting-menu", "errors");
             } else {
                 // Let's wait a bit more for the setting menu to stay in the correct position.
                 // Sometimes it bounces and this leads to errors
-                MarvinSegment.fromCue(BHBot.cues.get("Settings"), delay, bot.browser);
+                MarvinSegment.fromCue(BHBotUnity.cues.get("Settings"), delay, bot.browser);
             }
 
             return seg != null;
         } else {
-            BHBot.logger.error("Impossible to find the settings button!");
+            BHBotUnity.logger.error("Impossible to find the settings button!");
             bot.saveGameScreen("open-settings-no-btn", "errors");
             return false;
         }
@@ -176,6 +176,6 @@ public class SettingsManager {
      * @return true if settings menu was correctly closed, false otherwise.
      */
     boolean closeSettings() {
-        return bot.browser.closePopupSecurely(BHBot.cues.get("Settings"), new Cue(BHBot.cues.get("X"), new Bounds(608, 39, 711, 131)));
+        return bot.browser.closePopupSecurely(BHBotUnity.cues.get("Settings"), new Cue(BHBotUnity.cues.get("X"), new Bounds(608, 39, 711, 131)));
     }
 }

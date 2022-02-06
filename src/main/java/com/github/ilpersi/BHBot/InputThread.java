@@ -40,7 +40,7 @@ public class InputThread
                     }
                     lines.add(line);
 
-                    BHBot.logger.trace("Input Thread Sleeping");
+                    BHBotUnity.logger.trace("Input Thread Sleeping");
                     Misc.sleep(500);
                 }
             } catch (IOException e) {

@@ -1,7 +1,6 @@
 package com.github.ilpersi.BHBot;
 
 import java.awt.image.BufferedImage;
-import java.util.Arrays;
 
 /**
  * Use this class inside dungeons to understand if the player position has changed. This is useful together with autoShrines
@@ -64,11 +63,11 @@ public class DungeonPositionChecker {
 
         if (MD5Compare(tmpImgTopLef, subImgTopLef) && MD5Compare(tmpImgBottomLeft, subImgBottomLeft) &&
                 MD5Compare(tmpImgTopRight, subImgTopRight) && MD5Compare(tmpImgBottomRight, subImgBottomRight)) {
-            BHBot.logger.debug("PositionChecker: position has not changed for "  + Misc.millisToHumanForm(Misc.getTime() - lastPositionTime) + ".");
+            BHBotUnity.logger.debug("PositionChecker: position has not changed for "  + Misc.millisToHumanForm(Misc.getTime() - lastPositionTime) + ".");
         } else {
             resetStartPos = true;
             lastPositionTime = Misc.getTime();
-            BHBot.logger.debug("PositionChecker: new position detected.");
+            BHBotUnity.logger.debug("PositionChecker: new position detected.");
         }
 
         return (Misc.getTime() - lastPositionTime) >= (minPosDelay * Misc.Durations.SECOND);

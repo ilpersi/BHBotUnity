@@ -63,7 +63,7 @@ public class MarvinSegment {
             y2 = cue.bounds != null ? cue.bounds.y2 : 0;
         }
 
-        if (BHBot.debugFindImage) {
+        if (BHBotUnity.debugFindImage) {
             List<MarvinSegment> foundSegs = FindSubimage.findSubimage(src, cue.im, 1.0, false, false, x1, y1, x2, y2);
             seg = foundSegs.isEmpty() ? null : foundSegs.get(0);
 
@@ -86,7 +86,7 @@ public class MarvinSegment {
             foundSegs.forEach((foundSeg) -> mainMarvinImg.drawRect(foundSeg.x1 + OFFSET + cue.im.getWidth(), foundSeg.y1 + OFFSET, foundSeg.width, foundSeg.height, 2, highlight));
             mainMarvinImg.update();
 
-            Misc.saveScreen("" + cue.name + "-" + match, "debugFindImage", BHBot.includeMachineNameInScreenshots, mainMarvinImg.getBufferedImage());
+            Misc.saveScreen("" + cue.name + "-" + match, "debugFindImage", BHBotUnity.includeMachineNameInScreenshots, mainMarvinImg.getBufferedImage());
 
         } else {
             seg = FindSubimage.findImage(src, cue.im, x1, y1, x2, y2);
@@ -94,11 +94,11 @@ public class MarvinSegment {
 
         //source.drawRect(seg.x1, seg.y1, seg.x2-seg.x1, seg.y2-seg.y1, Color.blue);
         //MarvinImageIO.saveImage(source, "window_out.png");
-        if (BHBot.debugDetectionTimes) {
-            BHBot.logger.debug("cue detection time: " + (Misc.getTime() - timer) + "ms (" + cue.name + ") [" + (seg != null ? "true" : "false") + "]");
+        if (BHBotUnity.debugDetectionTimes) {
+            BHBotUnity.logger.debug("cue detection time: " + (Misc.getTime() - timer) + "ms (" + cue.name + ") [" + (seg != null ? "true" : "false") + "]");
         }
 
-        if (cue.bounds == null && seg != null && BHBot.debugNullBounds) {
+        if (cue.bounds == null && seg != null && BHBotUnity.debugNullBounds) {
 
             Bounds suggestedBounds = Bounds.fromMarvinSegment(seg, 10);
 
@@ -138,23 +138,23 @@ public class MarvinSegment {
                         " with: " + seg.width +
                         " height: " + seg.height;
 
-                BHBot.logger.debug(boundsDbgMsg);
+                BHBotUnity.logger.debug(boundsDbgMsg);
 
                 // Suggested bounds ready for code copy/paste
                 String suggestionBuilder = "Cue " + cue.name + "WithBounds = " +
                         "new Cue(BHBot.cues.get(\"" + cue.name + "\"), " + suggestedBounds.getJavaCode(false, true) + ");";
-                BHBot.logger.debug(suggestionBuilder);
+                BHBotUnity.logger.debug(suggestionBuilder);
 
                 // As screenshot of the found bounds on the image is saved in a dedicated folder
                 MarvinImage debugBounds = new MarvinImage(src);
                 debugBounds.drawRect(seg.x1, seg.y1, seg.width, seg.height, Color.BLUE);
                 debugBounds.drawRect(suggestedX1, suggestedY1, suggestedWidth, suggestedHeight, 3, Color.GREEN);
                 debugBounds.update();
-                String boundsFName = Misc.saveScreen("debugNullBounds_" + cueKey, "debug_null_bounds", BHBot.includeMachineNameInScreenshots, debugBounds.getBufferedImage());
-                BHBot.logger.debug("Found bounds saved in: " + boundsFName);
+                String boundsFName = Misc.saveScreen("debugNullBounds_" + cueKey, "debug_null_bounds", BHBotUnity.includeMachineNameInScreenshots, debugBounds.getBufferedImage());
+                BHBotUnity.logger.debug("Found bounds saved in: " + boundsFName);
 
                 // To make the suggestion actionable we also print the stack trace so that developers can use it
-                BHBot.logger.debug(Misc.getStackTrace());
+                BHBotUnity.logger.debug(Misc.getStackTrace());
             }
 
         }
@@ -251,19 +251,19 @@ public class MarvinSegment {
 
     // Cue detection based on String
     static MarvinSegment fromCue(String cueName, BrowserManager browserManager) {
-        return fromCue(BHBot.cues.get(cueName), 0, true, browserManager);
+        return fromCue(BHBotUnity.cues.get(cueName), 0, true, browserManager);
     }
 
     static MarvinSegment fromCue(String cueName, int timeout, Bounds bounds, BrowserManager browserManager) {
-        return fromCue(new Cue(BHBot.cues.get(cueName), bounds), timeout, true, browserManager);
+        return fromCue(new Cue(BHBotUnity.cues.get(cueName), bounds), timeout, true, browserManager);
     }
 
     static MarvinSegment fromCue(String cueName, int timeout, BrowserManager browserManager) {
-        return fromCue(BHBot.cues.get(cueName), timeout, true, browserManager);
+        return fromCue(BHBotUnity.cues.get(cueName), timeout, true, browserManager);
     }
 
     static MarvinSegment fromCue(String cueName, Bounds bounds, BrowserManager browserManager) {
-        return fromCue(new Cue(BHBot.cues.get(cueName), bounds), 0, true, browserManager);
+        return fromCue(new Cue(BHBotUnity.cues.get(cueName), bounds), 0, true, browserManager);
     }
 
     /**
@@ -281,13 +281,13 @@ public class MarvinSegment {
         try {
             imageIn = ImageIO.read(imageInFile);
         } catch (IOException e) {
-            BHBot.logger.error("Error when loading image file.", e);
+            BHBotUnity.logger.error("Error when loading image file.", e);
         }
 
         try {
             subImage = ImageIO.read(subImageFile);
         } catch (IOException e) {
-            BHBot.logger.error("Error when loading sub-image file.", e);
+            BHBotUnity.logger.error("Error when loading sub-image file.", e);
         }
 
         int startX = bounds == null ? 0 : bounds.x1;
@@ -309,7 +309,7 @@ public class MarvinSegment {
         if (!imageInFile.exists()) {
             String error = "Image in file does not exist: " + imageInPath;
             try {
-                BHBot.logger.error(error);
+                BHBotUnity.logger.error(error);
             } catch (NullPointerException e) {
                 System.out.println(error);
             }
@@ -319,7 +319,7 @@ public class MarvinSegment {
         if (!subImageFile.exists()) {
             String error = "Sub-image file does not exist: " + subImagePath;
             try {
-                BHBot.logger.error("Sub-image file does not exist.");
+                BHBotUnity.logger.error("Sub-image file does not exist.");
             } catch (NullPointerException e) {
                 System.out.println(error);
             }

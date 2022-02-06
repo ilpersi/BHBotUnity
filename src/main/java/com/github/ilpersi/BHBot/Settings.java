@@ -1635,7 +1635,7 @@ public class Settings {
         try {
             load(configurationFile);
         } catch (FileNotFoundException e) {
-            BHBot.logger.error("It was impossible to load settings from " + configurationFile + ".");
+            BHBotUnity.logger.error("It was impossible to load settings from " + configurationFile + ".");
         }
         checkDeprecatedSettings();
         sanitizeSetting();
@@ -1665,15 +1665,15 @@ public class Settings {
         boolean result = true;
 
         if (lastUsedMap.getOrDefault("worldBossTimer", null) != null) {
-            BHBot.logger.error("Unsupported 'worldBossTimer " + lastUsedMap.get("worldBossTimer") + "' setting detected: use the new World Boss setting format and restart the bot.");
+            BHBotUnity.logger.error("Unsupported 'worldBossTimer " + lastUsedMap.get("worldBossTimer") + "' setting detected: use the new World Boss setting format and restart the bot.");
             result = false;
         }
         if (lastUsedMap.getOrDefault("dungeonOnTimeout", null) != null) {
-            BHBot.logger.error("Unsupported 'dungeonOnTimeout " + lastUsedMap.get("dungeonOnTimeout") + "' setting detected: use the new World Boss setting format and restart the bot.");
+            BHBotUnity.logger.error("Unsupported 'dungeonOnTimeout " + lastUsedMap.get("dungeonOnTimeout") + "' setting detected: use the new World Boss setting format and restart the bot.");
             result = false;
         }
         if (lastUsedMap.getOrDefault("worldBossSolo", null) != null) {
-            BHBot.logger.error("Unsupported 'worldBossSolo " + lastUsedMap.get("worldBossSolo") + "' setting detected: use the new World Boss setting format and restart the bot.");
+            BHBotUnity.logger.error("Unsupported 'worldBossSolo " + lastUsedMap.get("worldBossSolo") + "' setting detected: use the new World Boss setting format and restart the bot.");
             result = false;
         }
 
@@ -1698,11 +1698,11 @@ public class Settings {
 
                 boolean isOldFormat = lastUsedMap.get("worldBoss").matches("\\s*[onm3bt]\\s[123]\\s\\d{1,2}\\s*$");
                 if (isOldFormat) {
-                    BHBot.logger.error("Unsupported format setting 'worldBoss " + lastUsedMap.get("worldBoss") + "' Please review the documentation and update to the new format.");
+                    BHBotUnity.logger.error("Unsupported format setting 'worldBoss " + lastUsedMap.get("worldBoss") + "' Please review the documentation and update to the new format.");
                     result = false;
                 }
             } catch (PatternSyntaxException ex) {
-                BHBot.logger.warn("Error while checking the worldBoss setting format");
+                BHBotUnity.logger.warn("Error while checking the worldBoss setting format");
             }
         }
 
@@ -1711,84 +1711,84 @@ public class Settings {
 
     void checkDeprecatedSettings() {
         if (lastUsedMap.getOrDefault("autoBribe", null) != null) {
-            BHBot.logger.warn("Deprecated setting detected: autoBribe. Ignoring it, use a combination of bribeLevel and familiars instead.");
+            BHBotUnity.logger.warn("Deprecated setting detected: autoBribe. Ignoring it, use a combination of bribeLevel and familiars instead.");
         }
 
         if (lastUsedMap.getOrDefault("pauseOnDisconnect", null) != null) {
-            BHBot.logger.warn("Deprecated setting detected: pauseOnDisconnect. Ignoring it, use reconnectTimer instead.");
+            BHBotUnity.logger.warn("Deprecated setting detected: pauseOnDisconnect. Ignoring it, use reconnectTimer instead.");
         }
 
         if (lastUsedMap.getOrDefault("expeditionDifficulty", null) != null) {
-            BHBot.logger.warn("Deprecated setting detected: expeditionDifficulty. Use the new expedition format instead.");
+            BHBotUnity.logger.warn("Deprecated setting detected: expeditionDifficulty. Use the new expedition format instead.");
         }
         if (lastUsedMap.getOrDefault("experimentalAutoRevive", null) != null) {
-            BHBot.logger.warn("Deprecated setting detected: experimentalAutoRevive. Old revive system is no longer available.");
+            BHBotUnity.logger.warn("Deprecated setting detected: experimentalAutoRevive. Old revive system is no longer available.");
         }
         if (lastUsedMap.getOrDefault("worldBossType", null) != null) {
-            BHBot.logger.warn("Deprecated setting detected: worldBossType. Use the new World Boss format instead.");
+            BHBotUnity.logger.warn("Deprecated setting detected: worldBossType. Use the new World Boss format instead.");
         }
         if (lastUsedMap.getOrDefault("worldBossDifficulty", null) != null) {
-            BHBot.logger.warn("Deprecated setting detected: worldBossDifficulty. Use the new World Boss format instead.");
+            BHBotUnity.logger.warn("Deprecated setting detected: worldBossDifficulty. Use the new World Boss format instead.");
         }
         if (lastUsedMap.getOrDefault("difficulty", null) != null) {
-            BHBot.logger.warn("Deprecated setting detected: difficulty. Use the new difficultyTrials and difficultyGauntlet.");
+            BHBotUnity.logger.warn("Deprecated setting detected: difficulty. Use the new difficultyTrials and difficultyGauntlet.");
         }
         if (lastUsedMap.getOrDefault("worldBossTier", null) != null) {
-            BHBot.logger.warn("Deprecated setting detected: worldBossTier. Use the new World Boss format instead.");
+            BHBotUnity.logger.warn("Deprecated setting detected: worldBossTier. Use the new World Boss format instead.");
         }
         if (lastUsedMap.getOrDefault("doRaids", null) != null) {
-            BHBot.logger.warn("Deprecated setting detected: doRaids. Use the new activitiesEnabled with 'r' letter instead.");
+            BHBotUnity.logger.warn("Deprecated setting detected: doRaids. Use the new activitiesEnabled with 'r' letter instead.");
         }
         if (lastUsedMap.getOrDefault("doDungeons", null) != null) {
-            BHBot.logger.warn("Deprecated setting detected: doDungeons. Use the new activitiesEnabled with 'd' letter instead.");
+            BHBotUnity.logger.warn("Deprecated setting detected: doDungeons. Use the new activitiesEnabled with 'd' letter instead.");
         }
         if (lastUsedMap.getOrDefault("doWorldBoss", null) != null) {
-            BHBot.logger.warn("Deprecated setting detected: doWorldBoss. Use the new activitiesEnabled with 'w' letter instead.");
+            BHBotUnity.logger.warn("Deprecated setting detected: doWorldBoss. Use the new activitiesEnabled with 'w' letter instead.");
         }
         if (lastUsedMap.getOrDefault("doTrials", null) != null) {
-            BHBot.logger.warn("Deprecated setting detected: doTrials. Use the new activitiesEnabled with 't' letter instead.");
+            BHBotUnity.logger.warn("Deprecated setting detected: doTrials. Use the new activitiesEnabled with 't' letter instead.");
         }
         if (lastUsedMap.getOrDefault("doGauntlet", null) != null) {
-            BHBot.logger.warn("Deprecated setting detected: doGauntlet. Use the new activitiesEnabled with 'g' letter instead.");
+            BHBotUnity.logger.warn("Deprecated setting detected: doGauntlet. Use the new activitiesEnabled with 'g' letter instead.");
         }
         if (lastUsedMap.getOrDefault("doPVP", null) != null) {
-            BHBot.logger.warn("Deprecated setting detected: doPVP. Use the new activitiesEnabled with 'p' letter instead.");
+            BHBotUnity.logger.warn("Deprecated setting detected: doPVP. Use the new activitiesEnabled with 'p' letter instead.");
         }
         if (lastUsedMap.getOrDefault("doExpedition", null) != null) {
-            BHBot.logger.warn("Deprecated setting detected: doExpedition. Use the new activitiesEnabled with 'e' letter instead.");
+            BHBotUnity.logger.warn("Deprecated setting detected: doExpedition. Use the new activitiesEnabled with 'e' letter instead.");
         }
         if (lastUsedMap.getOrDefault("doInvasion", null) != null) {
-            BHBot.logger.warn("Deprecated setting detected: doInvasion. Use the new activitiesEnabled with 'i' letter instead.");
+            BHBotUnity.logger.warn("Deprecated setting detected: doInvasion. Use the new activitiesEnabled with 'i' letter instead.");
         }
         if (lastUsedMap.getOrDefault("doGVG", null) != null) {
-            BHBot.logger.warn("Deprecated setting detected: doGVG. Use the new activitiesEnabled with 'v' letter instead.");
+            BHBotUnity.logger.warn("Deprecated setting detected: doGVG. Use the new activitiesEnabled with 'v' letter instead.");
         }
         if (lastUsedMap.getOrDefault("collectBounties", null) != null) {
-            BHBot.logger.warn("Deprecated setting detected: collectBounties. Use the new activitiesEnabled with 'b' letter instead.");
+            BHBotUnity.logger.warn("Deprecated setting detected: collectBounties. Use the new activitiesEnabled with 'b' letter instead.");
         }
         if (lastUsedMap.getOrDefault("difficulty", null) != null) {
-            BHBot.logger.warn("Deprecated setting detected: difficulty. Please replace with difficultyTrials and difficultyGauntlet instead.");
+            BHBotUnity.logger.warn("Deprecated setting detected: difficulty. Please replace with difficultyTrials and difficultyGauntlet instead.");
         }
         if (lastUsedMap.getOrDefault("collectFishingBaits", null) != null) {
-            BHBot.logger.warn("Deprecated setting detected: collectFishingBaits. Use the new activitiesEnabled with 'f' letter instead.");
+            BHBotUnity.logger.warn("Deprecated setting detected: collectFishingBaits. Use the new activitiesEnabled with 'f' letter instead.");
         }
         if (lastUsedMap.getOrDefault("thursdayRaids", null) != null) {
-            BHBot.logger.warn("Deprecated setting detected: thursdayRaids. Use the new wednesdayRaids instead.");
+            BHBotUnity.logger.warn("Deprecated setting detected: thursdayRaids. Use the new wednesdayRaids instead.");
         }
         if (lastUsedMap.getOrDefault("thursdayDungeons", null) != null) {
-            BHBot.logger.warn("Deprecated setting detected: thursdayDungeons. Use the new wednesdayDungeons instead.");
+            BHBotUnity.logger.warn("Deprecated setting detected: thursdayDungeons. Use the new wednesdayDungeons instead.");
         }
 
         if (lastUsedMap.getOrDefault("wednesdayRaids", null) != null) {
-            BHBot.logger.warn("Deprecated setting detected: wednesdayRaids. Use the new raids setting format instead.");
+            BHBotUnity.logger.warn("Deprecated setting detected: wednesdayRaids. Use the new raids setting format instead.");
         }
 
         if (lastUsedMap.getOrDefault("wednesdayDungeons", null) != null) {
-            BHBot.logger.warn("Deprecated setting detected: wednesdayDungeons. Use the new dungeons setting format instead.");
+            BHBotUnity.logger.warn("Deprecated setting detected: wednesdayDungeons. Use the new dungeons setting format instead.");
         }
 
         if (lastUsedMap.getOrDefault("minSolo", null) != null) {
-            BHBot.logger.warn("Deprecated setting detected: minSolo. Use the new dungeons setting format instead.");
+            BHBotUnity.logger.warn("Deprecated setting detected: minSolo. Use the new dungeons setting format instead.");
         }
     }
 
@@ -1796,7 +1796,7 @@ public class Settings {
         // we check and sanitize expeditions values
         String expeditions = lastUsedMap.getOrDefault("expeditions", "");
         if (expeditions.contains("h") || expeditions.contains("i")) {
-            BHBot.logger.warn("WARNING: invalid format detected for expeditions settings '" + expeditions + "': " +
+            BHBotUnity.logger.warn("WARNING: invalid format detected for expeditions settings '" + expeditions + "': " +
                     "a standard value of 'p1 100 100' will be used");
             lastUsedMap.put("expeditions", "p1 100 25;p2 100 25;p3 100 25;p4 100 25");
             setExpeditionsFromString("p1 100 25;p2 100 25;p3 100 25;p4 100 25");
@@ -1805,7 +1805,7 @@ public class Settings {
         // sanitize autorevive settings
         String autoRevive = lastUsedMap.getOrDefault("autoRevive", "");
         if (autoRevive.contains("1") || autoRevive.contains("2") || autoRevive.contains("3")) {
-            BHBot.logger.warn("WARNING: invalid format detected for autoRevive setting '" + autoRevive + "': " +
+            BHBotUnity.logger.warn("WARNING: invalid format detected for autoRevive setting '" + autoRevive + "': " +
                     "this feature will be disabled");
             lastUsedMap.put("autoRevive", "");
             setAutoReviveFromString("");
@@ -1814,7 +1814,7 @@ public class Settings {
         // sanitize autoshrine settings
         String autoShrine = lastUsedMap.getOrDefault("autoShrine", "");
         if (autoShrine.contains("1") || autoShrine.contains("2") || autoShrine.contains("3")) {
-            BHBot.logger.warn("WARNING: invalid format detected for autoShrine setting '" + autoShrine + "': " +
+            BHBotUnity.logger.warn("WARNING: invalid format detected for autoShrine setting '" + autoShrine + "': " +
                     "this feature will be disabled");
             lastUsedMap.put("autoShrine", "");
             setAutoShrineFromString("");
@@ -1823,7 +1823,7 @@ public class Settings {
         // sanitize tankPriority settings
         String tankPriority = lastUsedMap.getOrDefault("tankPriority", "");
         if (tankPriority.contains("1") || tankPriority.contains("2") || tankPriority.contains("3")) {
-            BHBot.logger.warn("WARNING: invalid format detected for tankPriority setting '" + tankPriority + "': " +
+            BHBotUnity.logger.warn("WARNING: invalid format detected for tankPriority setting '" + tankPriority + "': " +
                     "this feature will be disabled");
             lastUsedMap.put("tankPriority", "");
             setTankPriorityFromString("");
@@ -1832,7 +1832,7 @@ public class Settings {
         // sanitize pvpOpponent setting
         int pvpOpponentTmp = Integer.parseInt(lastUsedMap.getOrDefault("pvpOpponent", "" + pvpOpponent));
         if (pvpOpponentTmp < 1 || pvpOpponent > 4) {
-            BHBot.logger.warn("WARNING: invalid value for pvpOpponent setting '" + pvpOpponentTmp + "': " +
+            BHBotUnity.logger.warn("WARNING: invalid value for pvpOpponent setting '" + pvpOpponentTmp + "': " +
                     "setting it to '1'");
             lastUsedMap.put("pvpOpponent", "1");
             pvpOpponent = 1;
@@ -1841,7 +1841,7 @@ public class Settings {
         // sanitize gvgOpponent setting
         int gvgOpponentTmp = Integer.parseInt(lastUsedMap.getOrDefault("gvgOpponent", "" + gvgOpponent));
         if (gvgOpponentTmp < 1 || gvgOpponent > 4) {
-            BHBot.logger.warn("WARNING: invalid value for gvgOpponent setting '" + gvgOpponentTmp + "': " +
+            BHBotUnity.logger.warn("WARNING: invalid value for gvgOpponent setting '" + gvgOpponentTmp + "': " +
                     "setting it to '1'");
             lastUsedMap.put("gvgOpponent", "1");
             gvgOpponent = 1;
@@ -1858,7 +1858,7 @@ public class Settings {
         // autoRune defaults
         String autoRuneDefault = lastUsedMap.getOrDefault("autoRuneDefault", "");
         if (!autoRuneDefault.equals("") && !autoRuneDefault.matches(runeRegex)) {
-            BHBot.logger.warn("WARNING: invalid format detected for autoRuneDefault setting '" + autoRuneDefault + "': " +
+            BHBotUnity.logger.warn("WARNING: invalid format detected for autoRuneDefault setting '" + autoRuneDefault + "': " +
                     "this feature will be disabled");
             lastUsedMap.put("autoRuneDefault", "");
             setAutoRuneDefaultFromString("");
@@ -1867,7 +1867,7 @@ public class Settings {
         // autoRunes
         String autoRune = lastUsedMap.getOrDefault("autoRune", "");
         if (!autoRune.equals("") && !autoRune.matches(runeActionRegex)) {
-            BHBot.logger.warn("WARNING: invalid format detected for autoRune setting '" + autoRune + "': " +
+            BHBotUnity.logger.warn("WARNING: invalid format detected for autoRune setting '" + autoRune + "': " +
                     "this feature will be disabled" + ": " + runeActionRegex);
             lastUsedMap.put("autoRune", "");
             setAutoRuneFromString("");
@@ -1876,7 +1876,7 @@ public class Settings {
         // autoBossRunes
         String autoBossRune = lastUsedMap.getOrDefault("autoBossRune", "");
         if (!autoBossRune.equals("") && !autoBossRune.matches(runeActionRegex)) {
-            BHBot.logger.warn("WARNING: invalid format detected for autoBossRune setting '" + autoBossRune + "': " +
+            BHBotUnity.logger.warn("WARNING: invalid format detected for autoBossRune setting '" + autoBossRune + "': " +
                     "this feature will be disabled");
             lastUsedMap.put("autoBossRune", "");
             setAutoBossRuneFromString("");
@@ -1892,8 +1892,8 @@ public class Settings {
         if (resourceURL != null) {
             Files.copy(resourceURL, iniFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
             String fileCreatedMsg = "Standard ini setting file created in '" + iniFile.getPath() + "' please review it and start the bot again.";
-            if (BHBot.logger != null) {
-                BHBot.logger.info(fileCreatedMsg);
+            if (BHBotUnity.logger != null) {
+                BHBotUnity.logger.info(fileCreatedMsg);
             } else {
                 System.out.println(fileCreatedMsg);
             }
@@ -1901,8 +1901,8 @@ public class Settings {
         } else {
             String nullResourceMsg = "Impossible to load standard ini setting file from resources!";
 
-            if (BHBot.logger != null) {
-                BHBot.logger.error(nullResourceMsg);
+            if (BHBotUnity.logger != null) {
+                BHBotUnity.logger.error(nullResourceMsg);
             } else {
                 System.out.println(nullResourceMsg);
             }

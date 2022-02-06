@@ -13,11 +13,11 @@ import java.util.Map;
 
 public final class EncounterManager {
     static HashMap<String, FamiliarDetails> famMD5Table = new HashMap<>();
-    private final BHBot bot;
+    private final BHBotUnity bot;
 
     private static final Bounds MD5_NAME_BOUNDS = new Bounds(105, 60, 640, 105);
 
-    EncounterManager(BHBot bot) {
+    EncounterManager(BHBotUnity bot) {
         this.bot = bot;
     }
 
@@ -91,7 +91,7 @@ public final class EncounterManager {
     void processFamiliarEncounter() {
         MarvinSegment seg;
 
-        BHBot.logger.autobribe("Familiar encountered");
+        BHBotUnity.logger.autobribe("Familiar encountered");
 
         FamiliarType familiarLevel = getFamiliarType(bot.browser.getImg());
 
@@ -128,7 +128,7 @@ public final class EncounterManager {
 
         // We save all the errors and persuasions based on settings
         if ((familiarLevel.getValue() >= bot.settings.familiarScreenshot) || familiarLevel == FamiliarType.ERROR) {
-            Misc.saveScreen(persuasionLog.toString(), "familiars", BHBot.includeMachineNameInScreenshots, bot.browser.getImg());
+            Misc.saveScreen(persuasionLog.toString(), "familiars", BHBotUnity.includeMachineNameInScreenshots, bot.browser.getImg());
         }
 
         // if (bot.settings.contributeFamiliars) {
@@ -151,18 +151,18 @@ public final class EncounterManager {
                 Misc.contributeImage(bot.browser.getImg(), persuasionLog.toString(), MD5_NAME_BOUNDS);
             }
         } else {
-            BHBot.logger.debug(MessageFormat.format("MD5 familiar detected: {0}", encounterDetails.name));
+            BHBotUnity.logger.debug(MessageFormat.format("MD5 familiar detected: {0}", encounterDetails.name));
         }
         // }
 
         // We attempt persuasion or bribe based on settings
         if (persuasion == PersuationType.BRIBE) {
             if (!bribeFamiliar()) {
-                BHBot.logger.autobribe("Bribe attempt failed! Trying with persuasion...");
+                BHBotUnity.logger.autobribe("Bribe attempt failed! Trying with persuasion...");
                 if (persuadeFamiliar()) {
-                    BHBot.logger.autobribe(MessageFormat.format("{0} persuasion attempted.", familiarLevel.toString().toUpperCase()));
+                    BHBotUnity.logger.autobribe(MessageFormat.format("{0} persuasion attempted.", familiarLevel.toString().toUpperCase()));
                 } else {
-                    BHBot.logger.error("Impossible to persuade familiar, restarting...");
+                    BHBotUnity.logger.error("Impossible to persuade familiar, restarting...");
                     bot.restart(true, false);
                 }
             } else {
@@ -170,25 +170,25 @@ public final class EncounterManager {
             }
         } else if (persuasion == PersuationType.PERSUADE) {
             if (persuadeFamiliar()) {
-                BHBot.logger.autobribe(MessageFormat.format("{0} persuasion attempted.", familiarLevel.toString().toUpperCase()));
+                BHBotUnity.logger.autobribe(MessageFormat.format("{0} persuasion attempted.", familiarLevel.toString().toUpperCase()));
             } else {
-                BHBot.logger.error("Impossible to attempt persuasion, restarting.");
+                BHBotUnity.logger.error("Impossible to attempt persuasion, restarting.");
                 bot.restart(true, false);
             }
         } else {
-            seg = MarvinSegment.fromCue(BHBot.cues.get("DeclineRed"), 0, Bounds.fromWidthHeight(205, 420, 200, 65), bot.browser);
+            seg = MarvinSegment.fromCue(BHBotUnity.cues.get("DeclineRed"), 0, Bounds.fromWidthHeight(205, 420, 200, 65), bot.browser);
             if (seg != null) {
-                bot.browser.closePopupSecurely(BHBot.cues.get("FamiliarEncounter"), BHBot.cues.get("DeclineRed"));
+                bot.browser.closePopupSecurely(BHBotUnity.cues.get("FamiliarEncounter"), BHBotUnity.cues.get("DeclineRed"));
 
-                Cue yesGreen = new Cue(BHBot.cues.get("YesGreen"), Bounds.fromWidthHeight(290, 330, 85, 60));
+                Cue yesGreen = new Cue(BHBotUnity.cues.get("YesGreen"), Bounds.fromWidthHeight(290, 330, 85, 60));
                 if (bot.browser.closePopupSecurely(yesGreen, yesGreen)) {
-                    BHBot.logger.autobribe(MessageFormat.format("{0} persuasion declined.", familiarLevel.toString().toUpperCase()));
+                    BHBotUnity.logger.autobribe(MessageFormat.format("{0} persuasion declined.", familiarLevel.toString().toUpperCase()));
                 } else {
-                    BHBot.logger.error("Impossible to find the yes-green button after decline, restarting...");
+                    BHBotUnity.logger.error("Impossible to find the yes-green button after decline, restarting...");
                     bot.restart(true, false);
                 }
             } else {
-                BHBot.logger.error("Impossible to find the decline button, restarting...");
+                BHBotUnity.logger.error("Impossible to find the decline button, restarting...");
                 bot.restart(true, false);
             }
         }
@@ -219,12 +219,12 @@ public final class EncounterManager {
 
                 if (familiarName.equals(encounterDetails.name.toLowerCase())) {
                     if (toBribeCnt > 0) {
-                        BHBot.logger.autobribe(MessageFormat.format("Detected familiar {0} as valid in familiars", familiarDetails));
+                        BHBotUnity.logger.autobribe(MessageFormat.format("Detected familiar {0} as valid in familiars", familiarDetails));
                         result.toBribeCnt = toBribeCnt;
                         result.familiarName = familiarName;
                         break;
                     } else {
-                        BHBot.logger.warn(MessageFormat.format("Count for familiar {0} is 0! Temporary removing it form the settings...", familiarName));
+                        BHBotUnity.logger.warn(MessageFormat.format("Count for familiar {0} is 0! Temporary removing it form the settings...", familiarName));
                         wrongNames.add(familiarDetails);
                     }
                 }
@@ -246,27 +246,27 @@ public final class EncounterManager {
      * @return true if bribe attempt is correctly performed, false otherwise
      */
     private boolean bribeFamiliar() {
-        MarvinSegment seg = MarvinSegment.fromCue(BHBot.cues.get("Bribe"), bot.browser);
+        MarvinSegment seg = MarvinSegment.fromCue(BHBotUnity.cues.get("Bribe"), bot.browser);
         BufferedImage tmpScreen = bot.browser.getImg();
 
         if (seg != null) {
             bot.browser.clickOnSeg(seg);
 
             // TODO Add Bounds for YesGreen
-            seg = MarvinSegment.fromCue(BHBot.cues.get("YesGreen"), Misc.Durations.SECOND * 7, bot.browser);
+            seg = MarvinSegment.fromCue(BHBotUnity.cues.get("YesGreen"), Misc.Durations.SECOND * 7, bot.browser);
             if (seg != null) {
                 bot.browser.clickOnSeg(seg);
             } else {
-                BHBot.logger.error("Impossible to find YesGreen in bribeFamiliar");
+                BHBotUnity.logger.error("Impossible to find YesGreen in bribeFamiliar");
                 return false;
             }
 
             // TODO Add Bounds for NotEnoughGems
-            if (MarvinSegment.fromCue(BHBot.cues.get("NotEnoughGems"), Misc.Durations.SECOND * 5, bot.browser) != null) {
-                BHBot.logger.warn("Not enough gems to attempt a bribe!");
+            if (MarvinSegment.fromCue(BHBotUnity.cues.get("NotEnoughGems"), Misc.Durations.SECOND * 5, bot.browser) != null) {
+                BHBotUnity.logger.warn("Not enough gems to attempt a bribe!");
                 bot.noGemsToBribe = true;
-                if (!bot.browser.closePopupSecurely(BHBot.cues.get("NotEnoughGems"), BHBot.cues.get("No"))) {
-                    BHBot.logger.error("Impossible to close the Not Enough gems pop-up. Restarting...");
+                if (!bot.browser.closePopupSecurely(BHBotUnity.cues.get("NotEnoughGems"), BHBotUnity.cues.get("No"))) {
+                    BHBotUnity.logger.error("Impossible to close the Not Enough gems pop-up. Restarting...");
                     bot.restart(true, false);
                 }
                 return false;
@@ -287,17 +287,17 @@ public final class EncounterManager {
     private boolean persuadeFamiliar() {
 
         MarvinSegment seg;
-        seg = MarvinSegment.fromCue(BHBot.cues.get("Persuade"), bot.browser);
+        seg = MarvinSegment.fromCue(BHBotUnity.cues.get("Persuade"), bot.browser);
         if (seg != null) {
 
             bot.browser.clickOnSeg(seg); // seg = detectCue(cues.get("Persuade"))
 
-            seg = MarvinSegment.fromCue(BHBot.cues.get("YesGreen"), Misc.Durations.SECOND * 5, Bounds.fromWidthHeight(245, 330, 165, 65), bot.browser);
+            seg = MarvinSegment.fromCue(BHBotUnity.cues.get("YesGreen"), Misc.Durations.SECOND * 5, Bounds.fromWidthHeight(245, 330, 165, 65), bot.browser);
             if (seg != null) {
                 bot.browser.clickOnSeg(seg);
                 return true;
             } else {
-                BHBot.logger.error("Impossible to find the YesGreen button in persuadeFamiliar");
+                BHBotUnity.logger.error("Impossible to find the YesGreen button in persuadeFamiliar");
             }
         }
         return false;
@@ -504,7 +504,7 @@ public final class EncounterManager {
 
         //endregion
 
-        BHBot.logger.debug(MessageFormat.format("Loaded {0} familiars MD5 hashes.", EncounterManager.famMD5Table.size()));
+        BHBotUnity.logger.debug(MessageFormat.format("Loaded {0} familiars MD5 hashes.", EncounterManager.famMD5Table.size()));
     }
 
     /**
@@ -512,7 +512,7 @@ public final class EncounterManager {
      */
     static void printMD5() {
         for (Map.Entry<String, FamiliarDetails> famDetails : EncounterManager.famMD5Table.entrySet()) {
-            BHBot.logger.debug(MessageFormat.format("MD5 ''{0}'' - > {1}", famDetails.getKey(), famDetails.getValue().name));
+            BHBotUnity.logger.debug(MessageFormat.format("MD5 ''{0}'' - > {1}", famDetails.getKey(), famDetails.getValue().name));
         }
     }
 
@@ -524,11 +524,11 @@ public final class EncounterManager {
     static void printMD5(String famName) {
         for (Map.Entry<String, FamiliarDetails> famDetails : EncounterManager.famMD5Table.entrySet()) {
             if (famName.equalsIgnoreCase(famDetails.getValue().name)) {
-                BHBot.logger.debug(MessageFormat.format("MD5 ''{0}'' - > {1}", famDetails.getKey(), famDetails.getValue().name));
+                BHBotUnity.logger.debug(MessageFormat.format("MD5 ''{0}'' - > {1}", famDetails.getKey(), famDetails.getValue().name));
                 return;
             }
         }
-        BHBot.logger.warn(MessageFormat.format("Familiar name not found: {0}", famName));
+        BHBotUnity.logger.warn(MessageFormat.format("Familiar name not found: {0}", famName));
     }
 
     static FamiliarType getFamiliarType(BufferedImage encounterImg) {

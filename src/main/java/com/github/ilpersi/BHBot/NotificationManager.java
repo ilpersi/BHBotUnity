@@ -8,7 +8,7 @@ import java.io.File;
 
 public class NotificationManager {
 
-    private final BHBot bot;
+    private final BHBotUnity bot;
     private final PushOverManager poManager;
     private final DiscordManager discordManager;
 
@@ -17,7 +17,7 @@ public class NotificationManager {
 
     // private DiscordManager discordManager = new DiscordManager();
 
-    NotificationManager(BHBot bot) {
+    NotificationManager(BHBotUnity bot) {
         this.bot = bot;
         this.poManager =  new PushOverManager(bot);
         this.discordManager = new DiscordManager(bot);
@@ -49,7 +49,7 @@ public class NotificationManager {
             }
 
             if (aliveScreenFile != null && !aliveScreenFile.delete())
-                BHBot.logger.warn("Impossible to delete tmp img for startup notification.");
+                BHBotUnity.logger.warn("Impossible to delete tmp img for startup notification.");
         }
     }
 
@@ -68,7 +68,7 @@ public class NotificationManager {
                         .append(Misc.millisToHumanForm(Misc.getTime() - bot.botStartTime))
                         .append("!\n\n");
 
-                for (BHBot.State state : BHBot.State.values()) {
+                for (BHBotUnity.State state : BHBotUnity.State.values()) {
                     if (bot.dungeon.counters.get(state).getTotal() > 0) {
                         aliveMsg.append(state.getName()).append(" ")
                                 .append(bot.dungeon.counters.get(state).successRateDesc())
@@ -88,7 +88,7 @@ public class NotificationManager {
                     int ptMsgInitLen = potionTypeMsg.length();
 
                     // We loop on the used potions in dungeons
-                    for (BHBot.State state : BHBot.State.values()) {
+                    for (BHBotUnity.State state : BHBotUnity.State.values()) {
                         Integer tmpUsedPotion = bot.dungeon.reviveManager.getCounter(pt, state);
                         if (tmpUsedPotion > 0) {
                             if (potionTypeMsg.length() > ptMsgInitLen) potionTypeMsg.append(" ");
@@ -110,19 +110,19 @@ public class NotificationManager {
                 }
 
                 // Notify level for T/G
-                if (bot.dungeon.counters.get(BHBot.State.Trials).getTotal() > 0 ||
-                        bot.dungeon.counters.get(BHBot.State.Gauntlet).getTotal() > 0) {
+                if (bot.dungeon.counters.get(BHBotUnity.State.Trials).getTotal() > 0 ||
+                        bot.dungeon.counters.get(BHBotUnity.State.Gauntlet).getTotal() > 0) {
 
                     aliveMsg.append("\n");
                     // We append trial level if we did at least one trial
-                    if (bot.dungeon.counters.get(BHBot.State.Trials).getTotal() > 0) {
+                    if (bot.dungeon.counters.get(BHBotUnity.State.Trials).getTotal() > 0) {
                         aliveMsg.append("Trial Level: ")
                             .append(bot.settings.difficultyTrials)
                             .append("\n");
                     }
 
                     // We append gauntlet level if we did at least one trial
-                    if (bot.dungeon.counters.get(BHBot.State.Gauntlet).getTotal() > 0) {
+                    if (bot.dungeon.counters.get(BHBotUnity.State.Gauntlet).getTotal() > 0) {
                         aliveMsg.append("Gauntlet Level: ")
                                 .append(bot.settings.difficultyGauntlet)
                                 .append("\n");
@@ -141,7 +141,7 @@ public class NotificationManager {
                 }
 
                 if (aliveScreenFile != null && !aliveScreenFile.delete())
-                    BHBot.logger.warn("Impossible to delete tmp img for alive notification.");
+                    BHBotUnity.logger.warn("Impossible to delete tmp img for alive notification.");
             }
         }
 
@@ -183,7 +183,7 @@ public class NotificationManager {
             }
 
             if (errorPrintScreen != null && !errorPrintScreen.delete()) {
-                BHBot.logger.error("Impossible to delete error notification img.");
+                BHBotUnity.logger.error("Impossible to delete error notification img.");
             }
         }
     }
@@ -227,7 +227,7 @@ public class NotificationManager {
             }
 
             if (bribeScreen != null && !bribeScreen.delete())
-                BHBot.logger.warn("Impossible to delete tmp img file for bribe notification.");
+                BHBotUnity.logger.warn("Impossible to delete tmp img file for bribe notification.");
 
         }
     }
@@ -240,7 +240,7 @@ public class NotificationManager {
         discordManager.sendDiscordMessage(dropMsg, victoryScreenFile);
 
         if (victoryScreenFile != null && !victoryScreenFile.delete())
-            BHBot.logger.warn("Impossible to delete tmp img file for victory drop.");
+            BHBotUnity.logger.warn("Impossible to delete tmp img file for victory drop.");
     }
 
     void sendTestNotification(String testNotificationMsg) {
@@ -252,25 +252,25 @@ public class NotificationManager {
                 String poLogMessage = "Sending Pushover test message.";
                 poLogMessage += "\n\n poUserToken is: " + bot.settings.poUserToken;
                 poLogMessage += "\n poAppToken is: " + bot.settings.poAppToken;
-                BHBot.logger.info(poLogMessage);
+                BHBotUnity.logger.info(poLogMessage);
 
                 poManager.sendPushOverMessage("Test Notification", testNotificationMsg, MessagePriority.NORMAL, testScreenFile);
             } else {
-                BHBot.logger.warn("Pushover integration is disabled in the settings!");
+                BHBotUnity.logger.warn("Pushover integration is disabled in the settings!");
             }
 
             if (bot.settings.enableDiscord) {
                 String discordLogMessage = "Sending Discord test message";
                 discordLogMessage += "\n\n discordWebHookUrl is " + bot.settings.discordWebHookUrl;
-                BHBot.logger.info(discordLogMessage);
+                BHBotUnity.logger.info(discordLogMessage);
 
                 discordManager.sendDiscordMessage(testNotificationMsg, testScreenFile);
             } else {
-                BHBot.logger.warn("Discord integration is disabled in the settings!");
+                BHBotUnity.logger.warn("Discord integration is disabled in the settings!");
             }
 
             if (testScreenFile != null && !testScreenFile.delete())
-                BHBot.logger.warn("Impossible to delete tmp img for pomessage command.");
+                BHBotUnity.logger.warn("Impossible to delete tmp img for pomessage command.");
         }
     }
 
