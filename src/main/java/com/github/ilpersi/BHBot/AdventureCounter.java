@@ -1,6 +1,6 @@
 package com.github.ilpersi.BHBot;
 
-class DungeonCounter {
+class AdventureCounter {
 
     // Counters and rates
     private int victories;
@@ -17,7 +17,7 @@ class DungeonCounter {
     // String description for success rate
     private String successRateDesc;
 
-    DungeonCounter(int victoryCnt, int defeatCnt) {
+    AdventureCounter(int victoryCnt, int defeatCnt) {
 
         // We initialize all the properties
         this.victories = victoryCnt;

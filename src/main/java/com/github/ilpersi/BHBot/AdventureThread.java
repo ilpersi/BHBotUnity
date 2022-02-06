@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 import static java.util.Comparator.comparing;
 
-public class DungeonThread implements Runnable {
+public class AdventureThread implements Runnable {
 
     private int globalShards;
     private int globalBadges;
@@ -54,7 +54,7 @@ public class DungeonThread implements Runnable {
     private long kongMotionBugNexCheck;
 
     // Generic counters HashMap
-    HashMap<BHBotUnity.State, DungeonCounter> counters = new HashMap<>();
+    HashMap<BHBotUnity.State, AdventureCounter> counters = new HashMap<>();
 
     private long ENERGY_CHECK_INTERVAL = 5 * Misc.Durations.MINUTE;
     private long XEALS_CHECK_INTERVAL = 5 * Misc.Durations.MINUTE;
@@ -88,7 +88,7 @@ public class DungeonThread implements Runnable {
     AutoReviveManager reviveManager;
     AutoRuneManager runeManager;
     EncounterManager encounterManager;
-    DungeonPositionChecker positionChecker;
+    AdventurePositionChecker positionChecker;
     SettingsManager settings;
 
     DungeonSignature dungSignatures;
@@ -100,7 +100,7 @@ public class DungeonThread implements Runnable {
 
     int adventureSpeed;
 
-    DungeonThread(BHBotUnity bot) {
+    AdventureThread(BHBotUnity bot) {
         this.bot = bot;
 
         activitysIterator = bot.settings.activitiesEnabled.iterator();
@@ -5766,7 +5766,7 @@ public class DungeonThread implements Runnable {
             toBlackAndWhite.toBlackWhite(Black, White, customMax);
             toBlackAndWhite.update();
 
-            result = DungeonThread.readNumFromImg(toBlackAndWhite.getBufferedImage(), numberPrefix, new HashSet<>(), true, false);
+            result = AdventureThread.readNumFromImg(toBlackAndWhite.getBufferedImage(), numberPrefix, new HashSet<>(), true, false);
 
             if (result != 0) break;
         }

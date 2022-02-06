@@ -41,7 +41,7 @@ public class BHBotUnity {
     static long logMaxDays;
     static Level logLevel;
 
-    DungeonThread dungeon;
+    AdventureThread adventure;
     private int numFailedRestarts = 0; // in a row
 
     Settings settings = new Settings();
@@ -51,7 +51,7 @@ public class BHBotUnity {
     String browserDriverAddress = "127.0.0.1:9515";
     String browserExePath = settings.useFirefox ? "C:\\Program Files\\Mozilla Firefox\\firefox.exe" : "C:\\Users\\" + System.getProperty("user.name") + "\\AppData\\Local\\Chromium\\Application\\chrome.exe";
     String browserDriverExePath = settings.useFirefox ? "./geckodriver" : "./chromedriver.exe";
-    private Thread dungeonThread;
+    private Thread adventureThread;
     private Thread blockerThread;
 
     private BHBotUnity.State state; // at which stage of the game/menu are we currently?
@@ -331,20 +331,20 @@ public class BHBotUnity {
     }
 
     private void stop() {
-        if (dungeonThread != null && dungeonThread.isAlive()) {
+        if (adventureThread != null && adventureThread.isAlive()) {
             try {
                 // wait for 10 seconds for the main thread to terminate
                 logger.info("Waiting for dungeon thread to finish... (timeout=10s)");
-                dungeonThread.join(10 * Misc.Durations.SECOND);
+                adventureThread.join(10 * Misc.Durations.SECOND);
             } catch (InterruptedException e) {
                 logger.error("Error when joining Main Thread", e);
             }
 
-            if (dungeonThread.isAlive()) {
+            if (adventureThread.isAlive()) {
                 logger.warn("Dungeon thread is still alive. Force stopping it now...");
-                dungeonThread.interrupt();
+                adventureThread.interrupt();
                 try {
-                    dungeonThread.join(); // until thread stops
+                    adventureThread.join(); // until thread stops
                 } catch (InterruptedException e) {
                     logger.error("Error while force stopping", e);
                 }
@@ -379,19 +379,19 @@ public class BHBotUnity {
         switch (params[0]) {
             case "c": { // detect cost from screen
                 browser.readScreen();
-                int current = dungeon.detectCost();
+                int current = adventure.detectCost();
                 logger.info("Detected cost: " + current);
 
                 if (params.length > 1) {
                     int goal = Integer.parseInt(params[1]);
                     logger.info("Goal cost: " + goal);
-                    boolean result = dungeon.selectCost(current, goal);
+                    boolean result = adventure.selectCost(current, goal);
                     logger.info("Cost change result: " + result);
                 }
                 break;
             }
             case "compare":
-                dungeon.cueDifference();
+                adventure.cueDifference();
                 break;
             case "cont-shot":
             case "contshot":
@@ -432,12 +432,12 @@ public class BHBotUnity {
 
                 break;
             case "d": { // detect difficulty from screen
-                int current = dungeon.debugTGDifficulty();
+                int current = adventure.debugTGDifficulty();
 
                 if (params.length > 1) {
                     int goal = Integer.parseInt(params[1]);
                     logger.info("Goal difficulty: " + goal);
-                    int result = dungeon.selectDifficulty(current, goal, BHBotUnity.cues.get("SelectDifficulty"), 1, false);
+                    int result = adventure.selectDifficulty(current, goal, BHBotUnity.cues.get("SelectDifficulty"), 1, false);
                     logger.info("Difficulty change result: " + result);
                 }
                 break;
@@ -543,8 +543,8 @@ public class BHBotUnity {
                 }
 
                 switch (params[1]) {
-                    case "pos", "positions" -> Misc.findScrollBarPositions(dungeon.bot, false);
-                    case "screen" -> Misc.findScrollBarPositions(dungeon.bot, true);
+                    case "pos", "positions" -> Misc.findScrollBarPositions(adventure.bot, false);
+                    case "screen" -> Misc.findScrollBarPositions(adventure.bot, true);
                 }
 
                 break;
@@ -586,7 +586,7 @@ public class BHBotUnity {
                     case "familiars":
                     case "familiar":
                     case "fam":
-                        DungeonThread.printFamiliars();
+                        AdventureThread.printFamiliars();
                         break;
                     case "fam-md5":
                         if (params.length == 2)
@@ -638,9 +638,9 @@ public class BHBotUnity {
                         aliveMsg.append("Current session statistics:\n\n");
 
                         for (State state : State.values()) {
-                            if (dungeon.counters.get(state).getTotal() > 0) {
+                            if (adventure.counters.get(state).getTotal() > 0) {
                                 aliveMsg.append(state.getName()).append(" ")
-                                        .append(dungeon.counters.get(state).successRateDesc())
+                                        .append(adventure.counters.get(state).successRateDesc())
                                         .append("\n");
                             }
                         }
@@ -670,32 +670,32 @@ public class BHBotUnity {
                 }
                 break;
             case "restart":
-                dungeon.restart(false);
+                adventure.restart(false);
                 break;
             case "shot":
                 String fileName = "shot";
                 if (params.length > 1)
                     fileName = params[1];
 
-                String filePath = dungeon.bot.saveGameScreen(fileName);
+                String filePath = adventure.bot.saveGameScreen(fileName);
 
                 logger.info("Screenshot '" + fileName + "' saved as " + filePath + ".");
                 break;
             case "start":
-                dungeon = new DungeonThread(this);
-                dungeonThread = new Thread(dungeon, "DungeonThread");
-                dungeonThread.start();
+                adventure = new AdventureThread(this);
+                adventureThread = new Thread(adventure, "AdventureThread");
+                adventureThread.start();
 
                 BlockerThread blocker = new BlockerThread(this);
                 blockerThread = new Thread(blocker, "BlockerThread");
                 blockerThread.start();
                 break;
             case "softreset":
-                dungeon.softReset();
+                adventure.softReset();
                 break;
             case "readouts":
             case "resettimers":
-                dungeon.resetTimers();
+                adventure.resetTimers();
                 logger.info("Readout timers reset.");
                 break;
             case "reload":
@@ -759,7 +759,7 @@ public class BHBotUnity {
                             BHBotUnity.logger.warn("No value is set for ignoreShrines, setting it to false.");
                             ignoreShrines = false;
                         }
-                        if (!dungeon.shrineManager.updateShrineSettings(ignoreBoss, ignoreShrines)) {
+                        if (!adventure.shrineManager.updateShrineSettings(ignoreBoss, ignoreShrines)) {
                             logger.error("Something went wrong when checking auto ignore settings!");
                         }
                     }
@@ -774,16 +774,16 @@ public class BHBotUnity {
                             BHBotUnity.logger.debug("Down arrow cue found: " + Down);
                         }
                     }
-                    case "e", "expeditionread" -> dungeon.expeditionReadTest();
+                    case "e", "expeditionread" -> adventure.expeditionReadTest();
                     case "notification" -> {
                         // We split on spaces so we re-build the original message
                         String notificationMessage = params.length > 2 ? String.join(" ", Arrays.copyOfRange(params, 2, params.length)) : "Test message from BHbot!";
                         notificationManager.sendTestNotification(notificationMessage);
                     }
-                    case "runes" -> dungeon.runeManager.detectEquippedMinorRunes(true, true);
+                    case "runes" -> adventure.runeManager.detectEquippedMinorRunes(true, true);
                     case "tgdiff" ->
                             // Use this command to troubleshoot T/G difficulty in main window
-                            dungeon.debugTGDifficulty();
+                            adventure.debugTGDifficulty();
                     default -> BHBotUnity.logger.debug("Unknown test command: " + params[1]);
                 }
                 break;
@@ -1215,13 +1215,13 @@ public class BHBotUnity {
 
         // we make sure that the shrinemanager is resetted at restart time and we
         // skip the initialization if idleMode is true
-        dungeon.settings = new SettingsManager(this, settings.idleMode);
-        dungeon.shrineManager = new AutoShrineManager(this, settings.idleMode);
-        dungeon.runeManager = new AutoRuneManager(this, settings.idleMode);
-        dungeon.encounterManager = new EncounterManager(this);
-        dungeon.reviveManager.reset();
-        dungeon.positionChecker = new DungeonPositionChecker();
-        dungeon.adventureSpeed = 1;
+        adventure.settings = new SettingsManager(this, settings.idleMode);
+        adventure.shrineManager = new AutoShrineManager(this, settings.idleMode);
+        adventure.runeManager = new AutoRuneManager(this, settings.idleMode);
+        adventure.encounterManager = new EncounterManager(this);
+        adventure.reviveManager.reset();
+        adventure.positionChecker = new AdventurePositionChecker();
+        adventure.adventureSpeed = 1;
     }
 
     enum State {

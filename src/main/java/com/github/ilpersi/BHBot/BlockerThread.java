@@ -17,7 +17,7 @@ public class BlockerThread implements Runnable {
 
         // We initialize the counter HasMap using the state as key
         for (BHBotUnity.State state : BHBotUnity.State.values()) {
-            bot.dungeon.counters.put(state, new DungeonCounter(0, 0));
+            bot.adventure.counters.put(state, new AdventureCounter(0, 0));
         }
 
         while (!bot.finished && bot.running) {
@@ -92,7 +92,7 @@ public class BlockerThread implements Runnable {
                             bot.browser.clickOnSeg(seg);
                             BHBotUnity.logger.info("Disconnected dialog dismissed (reconnecting).");
                             bot.browser.readScreen(Misc.Durations.SECOND);
-                            bot.dungeon.shrineManager.resetUsedInAdventure();
+                            bot.adventure.shrineManager.resetUsedInAdventure();
                         } else {
                             bot.scheduler.isUserInteracting = true;
                             // probably user has logged in, that's why we got disconnected. Let's leave him alone for some time and then resume!
@@ -236,7 +236,7 @@ public class BlockerThread implements Runnable {
                     BHBotUnity.logger.info("'You were recently in a dungeon' dialog detected and confirmed. Resuming dungeon...");
 
                     // We make sure that autoShrine settings are reset
-                    bot.dungeon.shrineManager.resetUsedInAdventure();
+                    bot.adventure.shrineManager.resetUsedInAdventure();
 
                     // So that the screen reloads correctly
                     Misc.sleep(Misc.Durations.SECOND * 2);
@@ -264,7 +264,7 @@ public class BlockerThread implements Runnable {
 
                     // We check if the restored status requires autoShrine, and we reset it if needed
                     if (bot.settings.autoShrine.contains(bot.getState().getShortcut())) {
-                        bot.dungeon.shrineManager.updateShrineSettings(false, false); //in case we are stuck in a dungeon lets enable shrines/boss
+                        bot.adventure.shrineManager.updateShrineSettings(false, false); //in case we are stuck in a dungeon lets enable shrines/boss
                     }
                     continue;
                 }
@@ -296,7 +296,7 @@ public class BlockerThread implements Runnable {
                         seg = MarvinSegment.fromCue(BHBotUnity.cues.get("X"), 2 * Misc.Durations.SECOND, Bounds.fromWidthHeight(548, 119, 63, 69), bot.browser);
                         bot.browser.clickOnSeg(seg);
                         BHBotUnity.logger.info("Correctly collected fishing baits.");
-                        bot.dungeon.timeLastFishingBaitsCheck = Misc.getTime();
+                        bot.adventure.timeLastFishingBaitsCheck = Misc.getTime();
                         continue;
                     }
                 }

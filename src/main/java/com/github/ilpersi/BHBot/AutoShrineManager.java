@@ -44,7 +44,7 @@ public class AutoShrineManager {
 
         final int CHECK_DELAY = Misc.Durations.SECOND;
 
-        if (bot.dungeon.settings.openSettings(Misc.Durations.SECOND * 5)) {
+        if (bot.adventure.settings.openSettings(Misc.Durations.SECOND * 5)) {
 
             // When the setting menu is initially opened it is bouncing so it may be possible that by the time openSettings returns, the menu goes downward and ignore checks
             // are not in the correct position. This should prevent that from happening
@@ -115,7 +115,7 @@ public class AutoShrineManager {
             }
 
             bot.browser.readScreen(Misc.Durations.SECOND);
-            if (!bot.dungeon.settings.closeSettings()) {
+            if (!bot.adventure.settings.closeSettings()) {
                 BHBotUnity.logger.warn("It was impossible to close settings menu when updating autoShrine settings.");
             }
 
@@ -147,13 +147,13 @@ public class AutoShrineManager {
                     disableIgnoreShrines = true;
                     ignoreShrineMsg = bot.settings.battleDelay + "s since last encounter, disabling ignore shrines";
                 } else if (guildButtonSeg != null && bot.settings.positionDelay > 0
-                        && bot.dungeon.positionChecker.isSamePosition(bot.browser.getImg(), bot.settings.positionDelay)) {
+                        && bot.adventure.positionChecker.isSamePosition(bot.browser.getImg(), bot.settings.positionDelay)) {
                     disableIgnoreShrines = true;
                     ignoreShrineMsg = "Position has not changed for " + bot.settings.positionDelay + " seconds, disabling ignore shrines";
                 }
 
                 if (disableIgnoreShrines) {
-                    bot.dungeon.setAutoOff(1000);
+                    bot.adventure.setAutoOff(1000);
 
                     BHBotUnity.logger.autoshrine(ignoreShrineMsg);
 
@@ -165,7 +165,7 @@ public class AutoShrineManager {
                     //noinspection DuplicatedCode
                     bot.browser.readScreen(100);
 
-                    bot.dungeon.setAutoOn(1000);
+                    bot.adventure.setAutoOn(1000);
 
                     BHBotUnity.logger.autoshrine("Waiting " + bot.settings.shrineDelay + "s to disable ignore boss");
                     long timeToWait = Misc.getTime() + (battleDelay * Misc.Durations.SECOND);
@@ -174,14 +174,14 @@ public class AutoShrineManager {
                             (bot.getState() == BHBotUnity.State.Expedition && bot.settings.autoBossRune.containsKey("e")) || (bot.getState() == BHBotUnity.State.Dungeon && bot.settings.autoBossRune.containsKey("d"))) {
 
                         // TODO de-spagettify the boss rune feature
-                        bot.dungeon.runeManager.handleMinorBossRunes();
+                        bot.adventure.runeManager.handleMinorBossRunes();
                     }
 
                     while (Misc.getTime() < timeToWait) {
                         Misc.sleep(Misc.Durations.SECOND);
                     }
 
-                    bot.dungeon.setAutoOff(1000);
+                    bot.adventure.setAutoOff(1000);
 
                     if (!updateShrineSettings(false, false)) {
                         BHBotUnity.logger.error("Impossible to disable Ignore Boss in handleAutoShrine!");
@@ -191,7 +191,7 @@ public class AutoShrineManager {
                     //noinspection DuplicatedCode,DuplicatedCode
                     bot.browser.readScreen(100);
 
-                    bot.dungeon.setAutoOn(1000);
+                    bot.adventure.setAutoOn(1000);
 
                     bot.scheduler.resetIdleTime(true);
 

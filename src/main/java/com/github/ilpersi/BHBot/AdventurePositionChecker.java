@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
  * Use this class inside dungeons to understand if the player position has changed. This is useful together with autoShrines
  * to enable shrines as soon as possible
  */
-public class DungeonPositionChecker {
+public class AdventurePositionChecker {
 
     // Width and Height of the sample Image
     final int imgSize = 40;
@@ -29,7 +29,7 @@ public class DungeonPositionChecker {
     // Timestamp for the last position samples
     private long lastPositionTime;
 
-    DungeonPositionChecker() {
+    AdventurePositionChecker() {
         subImgTopLef = null;
         subImgBottomLeft = null;
         subImgTopRight = null;

@@ -35,40 +35,40 @@ class AutoRuneManager {
 
     @SuppressWarnings("unused")
     enum MinorRune {
-        EXP_COMMON(MinorRuneEffect.EXPERIENCE, DungeonThread.ItemGrade.COMMON),
-        EXP_RARE(MinorRuneEffect.EXPERIENCE, DungeonThread.ItemGrade.RARE),
-        EXP_EPIC(MinorRuneEffect.EXPERIENCE, DungeonThread.ItemGrade.EPIC),
-        EXP_LEGENDARY(MinorRuneEffect.EXPERIENCE, DungeonThread.ItemGrade.LEGENDARY),
-        EXP_MYTHIC(MinorRuneEffect.EXPERIENCE, DungeonThread.ItemGrade.MYTHIC),
+        EXP_COMMON(MinorRuneEffect.EXPERIENCE, AdventureThread.ItemGrade.COMMON),
+        EXP_RARE(MinorRuneEffect.EXPERIENCE, AdventureThread.ItemGrade.RARE),
+        EXP_EPIC(MinorRuneEffect.EXPERIENCE, AdventureThread.ItemGrade.EPIC),
+        EXP_LEGENDARY(MinorRuneEffect.EXPERIENCE, AdventureThread.ItemGrade.LEGENDARY),
+        EXP_MYTHIC(MinorRuneEffect.EXPERIENCE, AdventureThread.ItemGrade.MYTHIC),
 
-        ITEM_COMMON(MinorRuneEffect.ITEM_FIND, DungeonThread.ItemGrade.COMMON),
-        ITEM_RARE(MinorRuneEffect.ITEM_FIND, DungeonThread.ItemGrade.RARE),
-        ITEM_EPIC(MinorRuneEffect.ITEM_FIND, DungeonThread.ItemGrade.EPIC),
-        ITEM_LEGENDARY(MinorRuneEffect.ITEM_FIND, DungeonThread.ItemGrade.LEGENDARY),
-        ITEM_MYTHIC(MinorRuneEffect.ITEM_FIND, DungeonThread.ItemGrade.MYTHIC),
+        ITEM_COMMON(MinorRuneEffect.ITEM_FIND, AdventureThread.ItemGrade.COMMON),
+        ITEM_RARE(MinorRuneEffect.ITEM_FIND, AdventureThread.ItemGrade.RARE),
+        ITEM_EPIC(MinorRuneEffect.ITEM_FIND, AdventureThread.ItemGrade.EPIC),
+        ITEM_LEGENDARY(MinorRuneEffect.ITEM_FIND, AdventureThread.ItemGrade.LEGENDARY),
+        ITEM_MYTHIC(MinorRuneEffect.ITEM_FIND, AdventureThread.ItemGrade.MYTHIC),
 
-        GOLD_COMMON(MinorRuneEffect.GOLD, DungeonThread.ItemGrade.COMMON),
+        GOLD_COMMON(MinorRuneEffect.GOLD, AdventureThread.ItemGrade.COMMON),
         //		GOLD_RARE(MinorRuneEffect.GOLD, ItemGrade.RARE),
 //		GOLD_EPIC(MinorRuneEffect.GOLD, ItemGrade.EPIC),
-        GOLD_LEGENDARY(MinorRuneEffect.GOLD, DungeonThread.ItemGrade.LEGENDARY),
-        GOLD_MYTHIC(MinorRuneEffect.GOLD, DungeonThread.ItemGrade.MYTHIC),
+        GOLD_LEGENDARY(MinorRuneEffect.GOLD, AdventureThread.ItemGrade.LEGENDARY),
+        GOLD_MYTHIC(MinorRuneEffect.GOLD, AdventureThread.ItemGrade.MYTHIC),
 
-        CAPTURE_COMMON(MinorRuneEffect.CAPTURE, DungeonThread.ItemGrade.COMMON),
-        CAPTURE_RARE(MinorRuneEffect.CAPTURE, DungeonThread.ItemGrade.RARE),
-        CAPTURE_EPIC(MinorRuneEffect.CAPTURE, DungeonThread.ItemGrade.EPIC),
-        CAPTURE_LEGENDARY(MinorRuneEffect.CAPTURE, DungeonThread.ItemGrade.LEGENDARY),
-        CAPTURE_MYTHIC(MinorRuneEffect.CAPTURE, DungeonThread.ItemGrade.MYTHIC);
+        CAPTURE_COMMON(MinorRuneEffect.CAPTURE, AdventureThread.ItemGrade.COMMON),
+        CAPTURE_RARE(MinorRuneEffect.CAPTURE, AdventureThread.ItemGrade.RARE),
+        CAPTURE_EPIC(MinorRuneEffect.CAPTURE, AdventureThread.ItemGrade.EPIC),
+        CAPTURE_LEGENDARY(MinorRuneEffect.CAPTURE, AdventureThread.ItemGrade.LEGENDARY),
+        CAPTURE_MYTHIC(MinorRuneEffect.CAPTURE, AdventureThread.ItemGrade.MYTHIC);
 
-        public static DungeonThread.ItemGrade maxGrade = DungeonThread.ItemGrade.MYTHIC;
+        public static AdventureThread.ItemGrade maxGrade = AdventureThread.ItemGrade.MYTHIC;
         private final MinorRuneEffect effect;
-        private final DungeonThread.ItemGrade grade;
+        private final AdventureThread.ItemGrade grade;
 
-        MinorRune(MinorRuneEffect effect, DungeonThread.ItemGrade grade) {
+        MinorRune(MinorRuneEffect effect, AdventureThread.ItemGrade grade) {
             this.effect = effect;
             this.grade = grade;
         }
 
-        public static MinorRune getRune(MinorRuneEffect effect, DungeonThread.ItemGrade grade) {
+        public static MinorRune getRune(MinorRuneEffect effect, AdventureThread.ItemGrade grade) {
             for (MinorRune rune : MinorRune.values()) {
                 if (rune.effect == effect && rune.grade == grade)
                     return rune;
@@ -255,7 +255,7 @@ class AutoRuneManager {
 
     private boolean openRunesMenu() {
         // Open character menu
-        if (bot.dungeon.openCharacterMenu()) return true;
+        if (bot.adventure.openCharacterMenu()) return true;
 
         MarvinSegment seg = MarvinSegment.fromCue(BHBotUnity.cues.get("Runes"), 5 * Misc.Durations.SECOND, bot.browser);
         if (seg == null) {
@@ -343,16 +343,16 @@ class AutoRuneManager {
 
                     handleMinorBossRunes();
 
-                    bot.dungeon.setAutoOff(1000);
+                    bot.adventure.setAutoOff(1000);
 
-                    if (!bot.dungeon.shrineManager.updateShrineSettings(false, false)) {
+                    if (!bot.adventure.shrineManager.updateShrineSettings(false, false)) {
                         BHBotUnity.logger.error("Impossible to disable Ignore Boss in handleAutoBossRune!");
                         BHBotUnity.logger.warn("Resetting encounter timer to try again in 30 seconds.");
                         // inEncounterTimestamp = Misc.getTime() / 1000;
                         return;
                     }
 
-                    bot.dungeon.setAutoOn(1000);
+                    bot.adventure.setAutoOn(1000);
 
                     autoBossRuned = true;
                 }
@@ -486,9 +486,9 @@ class AutoRuneManager {
             return false;
         }
 
-        DungeonThread.ItemGrade maxRuneGrade = MinorRune.maxGrade;
+        AdventureThread.ItemGrade maxRuneGrade = MinorRune.maxGrade;
         for (int runeGradeVal = maxRuneGrade.getValue(); runeGradeVal > 0; runeGradeVal--) {
-            DungeonThread.ItemGrade runeGrade = DungeonThread.ItemGrade.getGradeFromValue(runeGradeVal);
+            AdventureThread.ItemGrade runeGrade = AdventureThread.ItemGrade.getGradeFromValue(runeGradeVal);
 
             if (runeGrade == null) {
                 BHBotUnity.logger.error(runeGradeVal + " produced null runeGrade in switchSingleMinorRune");

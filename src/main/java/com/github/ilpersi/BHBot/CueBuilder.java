@@ -929,7 +929,7 @@ public class CueBuilder {
 
                 MarvinSegment seg = FindSubimage.findImage(raidImg, raidPopUp, 0, 0, 0, 0);
                 // As images can have different shat totals we use 100 so we get the percentage
-                int shard = DungeonThread.readResourceBarPercentage(seg, 100, Misc.BarOffsets.RAID.x, Misc.BarOffsets.RAID.y, raidColors, raidImg);
+                int shard = AdventureThread.readResourceBarPercentage(seg, 100, Misc.BarOffsets.RAID.x, Misc.BarOffsets.RAID.y, raidColors, raidImg);
                 System.out.println("Raid bar is " + shard + "% full for image " + raidBarFile.getAbsolutePath());
             }
         }
@@ -984,7 +984,7 @@ public class CueBuilder {
 
                 MarvinSegment seg = FindSubimage.findImage(dungImg, energyPopUp, 0, 0, 0, 0);
                 // As images can have different shat totals we use 100 so we get the percentage
-                int energy = DungeonThread.readResourceBarPercentage(seg, 100, Misc.BarOffsets.DUNGEON.x, Misc.BarOffsets.DUNGEON.y, energyColors, dungImg);
+                int energy = AdventureThread.readResourceBarPercentage(seg, 100, Misc.BarOffsets.DUNGEON.x, Misc.BarOffsets.DUNGEON.y, energyColors, dungImg);
                 System.out.println("Energy bar is " + energy + "% full for image " + dungBarFile.getAbsolutePath());
             }
         }
@@ -1038,7 +1038,7 @@ public class CueBuilder {
 
                 MarvinSegment seg = FindSubimage.findImage(dungImg, tokenPopUp, 0, 0, 0, 0);
                 // As images can have different shat totals we use 100 so we get the percentage
-                int energy = DungeonThread.readResourceBarPercentage(seg, 100, Misc.BarOffsets.TG.x, Misc.BarOffsets.TG.y, tokenColors, dungImg);
+                int energy = AdventureThread.readResourceBarPercentage(seg, 100, Misc.BarOffsets.TG.x, Misc.BarOffsets.TG.y, tokenColors, dungImg);
                 System.out.println("Energy bar is " + energy + "% full for image " + TGBarFile.getAbsolutePath());
             }
         }
@@ -1092,7 +1092,7 @@ public class CueBuilder {
 
                 MarvinSegment seg = FindSubimage.findImage(dungImg, xealPopUp, 0, 0, 0, 0);
                 // As images can have different shat totals we use 100 so we get the percentage
-                int xeal = DungeonThread.readResourceBarPercentage(seg, 100, Misc.BarOffsets.WB.x, Misc.BarOffsets.WB.y, xealColors, dungImg);
+                int xeal = AdventureThread.readResourceBarPercentage(seg, 100, Misc.BarOffsets.WB.x, Misc.BarOffsets.WB.y, xealColors, dungImg);
                 System.out.println("Xeal bar is " + xeal + "% full for image " + XealBarFile.getAbsolutePath());
             }
         }

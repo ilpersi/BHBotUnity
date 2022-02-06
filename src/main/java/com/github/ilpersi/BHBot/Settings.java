@@ -818,7 +818,7 @@ public class Settings {
         StringBuilder wbTypeString = new StringBuilder();
 
         wbTypeString.append("[");
-        for (DungeonThread.WorldBoss wbType : DungeonThread.WorldBoss.values()) {
+        for (AdventureThread.WorldBoss wbType : AdventureThread.WorldBoss.values()) {
             // We skip the unknown boss letter
             if ("?".equals(wbType.getLetter())) continue;
 

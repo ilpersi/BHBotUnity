@@ -69,9 +69,9 @@ public class NotificationManager {
                         .append("!\n\n");
 
                 for (BHBotUnity.State state : BHBotUnity.State.values()) {
-                    if (bot.dungeon.counters.get(state).getTotal() > 0) {
+                    if (bot.adventure.counters.get(state).getTotal() > 0) {
                         aliveMsg.append(state.getName()).append(" ")
-                                .append(bot.dungeon.counters.get(state).successRateDesc())
+                                .append(bot.adventure.counters.get(state).successRateDesc())
                                 .append("\n");
                     }
                 }
@@ -89,7 +89,7 @@ public class NotificationManager {
 
                     // We loop on the used potions in dungeons
                     for (BHBotUnity.State state : BHBotUnity.State.values()) {
-                        Integer tmpUsedPotion = bot.dungeon.reviveManager.getCounter(pt, state);
+                        Integer tmpUsedPotion = bot.adventure.reviveManager.getCounter(pt, state);
                         if (tmpUsedPotion > 0) {
                             if (potionTypeMsg.length() > ptMsgInitLen) potionTypeMsg.append(" ");
                             potionTypeMsg.append(state.getShortcut())
@@ -110,19 +110,19 @@ public class NotificationManager {
                 }
 
                 // Notify level for T/G
-                if (bot.dungeon.counters.get(BHBotUnity.State.Trials).getTotal() > 0 ||
-                        bot.dungeon.counters.get(BHBotUnity.State.Gauntlet).getTotal() > 0) {
+                if (bot.adventure.counters.get(BHBotUnity.State.Trials).getTotal() > 0 ||
+                        bot.adventure.counters.get(BHBotUnity.State.Gauntlet).getTotal() > 0) {
 
                     aliveMsg.append("\n");
                     // We append trial level if we did at least one trial
-                    if (bot.dungeon.counters.get(BHBotUnity.State.Trials).getTotal() > 0) {
+                    if (bot.adventure.counters.get(BHBotUnity.State.Trials).getTotal() > 0) {
                         aliveMsg.append("Trial Level: ")
                             .append(bot.settings.difficultyTrials)
                             .append("\n");
                     }
 
                     // We append gauntlet level if we did at least one trial
-                    if (bot.dungeon.counters.get(BHBotUnity.State.Gauntlet).getTotal() > 0) {
+                    if (bot.adventure.counters.get(BHBotUnity.State.Gauntlet).getTotal() > 0) {
                         aliveMsg.append("Gauntlet Level: ")
                                 .append(bot.settings.difficultyGauntlet)
                                 .append("\n");
