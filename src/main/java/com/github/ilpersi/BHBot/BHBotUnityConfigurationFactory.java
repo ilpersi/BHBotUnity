@@ -16,7 +16,7 @@ import org.apache.logging.log4j.core.config.plugins.Plugin;
 
 import java.net.URI;
 
-@Plugin(name = "com.github.ilpersi.BHBot.BHBotConfigurationFactory", category = ConfigurationFactory.CATEGORY)
+@Plugin(name = "com.github.ilpersi.BHBotUnity.BHBotUnityConfigurationFactory", category = ConfigurationFactory.CATEGORY)
 public class BHBotUnityConfigurationFactory extends ConfigurationFactory {
 
     private static Configuration createConfiguration(final String name, ConfigurationBuilder<BuiltConfiguration> builder) {
