@@ -17,11 +17,11 @@ import org.apache.logging.log4j.util.Supplier;
  * <p>Compatible with Log4j 2.6 or higher.</p>
  */
 @SuppressWarnings("unused")
-public final class BHBotLogger extends ExtendedLoggerWrapper {
+public final class BHBotUnityLogger extends ExtendedLoggerWrapper {
     private static final long serialVersionUID = 623677089894900L;
     private final ExtendedLoggerWrapper logger;
 
-    private static final String FQCN = BHBotLogger.class.getName();
+    private static final String FQCN = BHBotUnityLogger.class.getName();
     private static final Level STATS = Level.forName("STATS", 390);
     private static final Level READOUT = Level.forName("READOUT", 395);
     private static final Level AUTOSHRINE = Level.forName("AUTOSHRINE", 399);
@@ -29,7 +29,7 @@ public final class BHBotLogger extends ExtendedLoggerWrapper {
     private static final Level AUTOBRIBE = Level.forName("AUTOBRIBE", 399);
     private static final Level AUTORUNE = Level.forName("AUTORUNE", 399);
 
-    private BHBotLogger(final Logger logger) {
+    private BHBotUnityLogger(final Logger logger) {
         super((AbstractLogger) logger, logger.getName(), logger.getMessageFactory());
         this.logger = this;
     }
@@ -39,9 +39,9 @@ public final class BHBotLogger extends ExtendedLoggerWrapper {
      *
      * @return The custom Logger for the calling class.
      */
-    public static BHBotLogger create() {
+    public static BHBotUnityLogger create() {
         final Logger wrapped = LogManager.getLogger();
-        return new BHBotLogger(wrapped);
+        return new BHBotUnityLogger(wrapped);
     }
 
     /**
@@ -52,9 +52,9 @@ public final class BHBotLogger extends ExtendedLoggerWrapper {
      *            If null it will default to the calling class.
      * @return The custom Logger.
      */
-    public static BHBotLogger create(final Class<?> loggerName) {
+    public static BHBotUnityLogger create(final Class<?> loggerName) {
         final Logger wrapped = LogManager.getLogger(loggerName);
-        return new BHBotLogger(wrapped);
+        return new BHBotUnityLogger(wrapped);
     }
 
     /**
@@ -68,9 +68,9 @@ public final class BHBotLogger extends ExtendedLoggerWrapper {
      *            a warning if mismatched.
      * @return The custom Logger.
      */
-    public static BHBotLogger create(final Class<?> loggerName, final MessageFactory messageFactory) {
+    public static BHBotUnityLogger create(final Class<?> loggerName, final MessageFactory messageFactory) {
         final Logger wrapped = LogManager.getLogger(loggerName, messageFactory);
-        return new BHBotLogger(wrapped);
+        return new BHBotUnityLogger(wrapped);
     }
 
     /**
@@ -82,9 +82,9 @@ public final class BHBotLogger extends ExtendedLoggerWrapper {
      *            the logger name.
      * @return The custom Logger.
      */
-    public static BHBotLogger create(final Object value) {
+    public static BHBotUnityLogger create(final Object value) {
         final Logger wrapped = LogManager.getLogger(value);
-        return new BHBotLogger(wrapped);
+        return new BHBotUnityLogger(wrapped);
     }
 
     /**
@@ -99,9 +99,9 @@ public final class BHBotLogger extends ExtendedLoggerWrapper {
      *            a warning if mismatched.
      * @return The custom Logger.
      */
-    public static BHBotLogger create(final Object value, final MessageFactory messageFactory) {
+    public static BHBotUnityLogger create(final Object value, final MessageFactory messageFactory) {
         final Logger wrapped = LogManager.getLogger(value, messageFactory);
-        return new BHBotLogger(wrapped);
+        return new BHBotUnityLogger(wrapped);
     }
 
     /**
@@ -111,9 +111,9 @@ public final class BHBotLogger extends ExtendedLoggerWrapper {
      *            be used.
      * @return The custom Logger.
      */
-    public static BHBotLogger create(final String name) {
+    public static BHBotUnityLogger create(final String name) {
         final Logger wrapped = LogManager.getLogger(name);
-        return new BHBotLogger(wrapped);
+        return new BHBotUnityLogger(wrapped);
     }
 
     /**
@@ -126,9 +126,9 @@ public final class BHBotLogger extends ExtendedLoggerWrapper {
      *            a warning if mismatched.
      * @return The custom Logger.
      */
-    public static BHBotLogger create(final String name, final MessageFactory messageFactory) {
+    public static BHBotUnityLogger create(final String name, final MessageFactory messageFactory) {
         final Logger wrapped = LogManager.getLogger(name, messageFactory);
-        return new BHBotLogger(wrapped);
+        return new BHBotUnityLogger(wrapped);
     }
 
     /**

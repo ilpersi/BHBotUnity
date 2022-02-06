@@ -23,9 +23,9 @@ public class InputThread
     private boolean closed = false;
 
     Thread backgroundReaderThread;
-    BHBotLogger logger;
+    BHBotUnityLogger logger;
 
-    public InputThread(InputStream input, BHBotLogger logger) {
+    public InputThread(InputStream input, BHBotUnityLogger logger) {
         this(new InputStreamReader(input));
         this.logger = logger;
     }

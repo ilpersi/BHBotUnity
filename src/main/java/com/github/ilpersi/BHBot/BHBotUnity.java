@@ -30,7 +30,7 @@ public class BHBotUnity {
     private static Properties gitProperties;
     static String screenshotPath = "./screenshots/";
     static boolean includeMachineNameInScreenshots = true;
-    static BHBotLogger logger;
+    static BHBotUnityLogger logger;
 
     // static settings
     static boolean debugDetectionTimes = false;
@@ -166,7 +166,7 @@ public class BHBotUnity {
             browserProfile = bot.settings.useFirefox ? "./firefox_cache" : "./chrome_profile";
         }
 
-        logger = BHBotLogger.create();
+        logger = BHBotUnityLogger.create();
 
         // we need to initialize the CueManager after that we started log4j, so that the cue manager can use it to log
         cues = new CueManager();
@@ -909,7 +909,7 @@ public class BHBotUnity {
     }
 
     void reloadLogger() {
-        ConfigurationFactory configFactory = new BHBotConfigurationFactory();
+        ConfigurationFactory configFactory = new BHBotUnityConfigurationFactory();
         ConfigurationFactory.setConfigurationFactory(configFactory);
         LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
         ctx.start(configFactory.getConfiguration(ctx, ConfigurationSource.NULL_SOURCE));
