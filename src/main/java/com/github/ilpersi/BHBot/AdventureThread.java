@@ -5774,7 +5774,7 @@ public class AdventureThread implements Runnable {
         // We save the image and the read difficulty for troubleshooting purpose
         String tgDiffFileName = "tg_diff_" + result;
         String tgFile = Misc.saveScreen(tgDiffFileName, "tg_debug_diff", true, numImg);
-        BHBotUnity.logger.debug("Detected difficulty is: " + tgFile);
+        BHBotUnity.logger.debug("Detected difficulty is: " + result);
         BHBotUnity.logger.debug("Image saved to: " + tgFile);
 
         return result;
