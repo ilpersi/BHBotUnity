@@ -441,6 +441,7 @@ public final class EncounterManager {
         //region RARE familiars
         EncounterManager.famMD5Table.put("JUt00pm9AwcvyqLqfwzbUw==", new FamiliarDetails("Bob", FamiliarType.RARE));
         EncounterManager.famMD5Table.put("39U/7JaT1Z5x0pd+FzbEFQ==", new FamiliarDetails("Chewy", FamiliarType.RARE));
+        EncounterManager.famMD5Table.put("xuI3tPE3lXBraFiun3JcqA==", new FamiliarDetails("Chewy", FamiliarType.RARE));
         EncounterManager.famMD5Table.put("MB3W6wapyV3mO49iDdJPfw==", new FamiliarDetails("Findle", FamiliarType.RARE));
         EncounterManager.famMD5Table.put("hoB3qmpDjEEB0hBy+rwz8g==", new FamiliarDetails("Findle", FamiliarType.RARE));
         EncounterManager.famMD5Table.put("DJGsWnnnxVHETufD0eIgBg==", new FamiliarDetails("Findle", FamiliarType.RARE));
@@ -459,6 +460,7 @@ public final class EncounterManager {
         //region EPIC familiars
         EncounterManager.famMD5Table.put("85S94YptyStkGch3cJu6cw==", new FamiliarDetails("Ahlpuch", FamiliarType.EPIC));
         EncounterManager.famMD5Table.put("+VDI0b+EoGCyyJiABpxt6A==", new FamiliarDetails("Blemb", FamiliarType.EPIC));
+        EncounterManager.famMD5Table.put("EPwSXYco6ZFGSHCbjcDMCA==", new FamiliarDetails("Blemb", FamiliarType.EPIC));
         EncounterManager.famMD5Table.put("wj/v0X2ZV8L2F3VIAu4Deg==", new FamiliarDetails("Blubber", FamiliarType.EPIC));
         EncounterManager.famMD5Table.put("3AENOdgk0m/9iKQycgs4rg==", new FamiliarDetails("Blubber", FamiliarType.EPIC));
         EncounterManager.famMD5Table.put("EgLFmoFWj16J/Ycx2nFKwA==", new FamiliarDetails("Driffin", FamiliarType.EPIC));
@@ -499,6 +501,7 @@ public final class EncounterManager {
         EncounterManager.famMD5Table.put("F/NM+ZWXFtsA7nP4fLtEhg==", new FamiliarDetails("Kakunapac", FamiliarType.LEGENDARY));
         EncounterManager.famMD5Table.put("VJ8A8pXyvJqWa5hQq1CJTg==", new FamiliarDetails("Kaleido", FamiliarType.LEGENDARY));
         EncounterManager.famMD5Table.put("WHHYsFUWVEHeXDGsUorNsw==", new FamiliarDetails("Kaleido", FamiliarType.LEGENDARY));
+        EncounterManager.famMD5Table.put("yMy0ay+C/pUteci/YtqO4A==", new FamiliarDetails("Mimzy", FamiliarType.LEGENDARY));
         EncounterManager.famMD5Table.put("QT3sBIYLjF324QE9LzlHDA==", new FamiliarDetails("Neistall", FamiliarType.LEGENDARY));
         //endregion
 
