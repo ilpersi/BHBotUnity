@@ -506,7 +506,9 @@ public class AdventureThread implements Runnable {
                             BHBotUnity.logger.readout("Tokens: " + tokens + ", required: >" + bot.settings.minTokens + ", " +
                                     (trials ? "Trials" : "Gauntlet") + " cost: " + (trials ? bot.settings.costTrials : bot.settings.costGauntlet));
 
-                            if (tokens == -1) { // error
+                            if (tokens < 0) { // error
+                                BHBotUnity.logger.error("Impossible to read token bar, closing T/G window.");
+                                bot.browser.closePopupSecurely(BHBotUnity.cues.get("TokenBar"), BHBotUnity.cues.get("X"));
                                 bot.scheduler.restoreIdleTime();
                                 continue;
                             }
@@ -1523,11 +1525,7 @@ public class AdventureThread implements Runnable {
                                 } else
                                     XEALS_CHECK_INTERVAL = 10 * Misc.Durations.MINUTE; //if we only need 1 check every 10 minutes
 
-                                bot.browser.readScreen();
-                                seg = MarvinSegment.fromCue(BHBotUnity.cues.get("X"), Misc.Durations.SECOND, bot.browser);
-                                bot.browser.clickOnSeg(seg);
-                                Misc.sleep(Misc.Durations.SECOND);
-
+                                bot.browser.closePopupSecurely(BHBotUnity.cues.get("WorldBossPopup"), BHBotUnity.cues.get("X"));
                                 continue;
 
                             } else {
@@ -2250,7 +2248,7 @@ public class AdventureThread implements Runnable {
          * Encounter detection code
          * We use guild button visibility to detect whether we are in combat
          */
-        //region Encounter Detection
+        //region isInFight Detection
         MarvinSegment guildButtonSeg = MarvinSegment.fromCue(BHBotUnity.cues.get("GuildButton"), bot.browser);
         if (guildButtonSeg != null) {
             shrineManager.setOutOfEncounterTimestamp(TimeUnit.MILLISECONDS.toSeconds(Misc.getTime()));
@@ -2318,7 +2316,7 @@ public class AdventureThread implements Runnable {
         /*
          * autoBribe/Persuasion code
          */
-        //region Encounter
+        //region Familiar Encounter
         if ((bot.getState() == BHBotUnity.State.Raid || bot.getState() == BHBotUnity.State.Dungeon) && isInFight) {
             seg = MarvinSegment.fromCue(BHBotUnity.cues.get("YouCurrentlyOwn"), bot.browser);
             if (seg != null) {
@@ -4250,16 +4248,13 @@ public class AdventureThread implements Runnable {
         final int yOffset = 60;
 
         // Color definition for B&W conversion
-        Color difficultyBlack = new Color(25, 25, 25);
-        Color difficultyWhite = new Color(255, 255, 255);
-        final int customMax = 255;
+        final int bwTreshold = 110;
 
         // Scroller cues
         ScrollBarManager difficultyRangeSB = new ScrollBarManager(bot.browser);
         // Cue scrollerAtTop = new Cue(BHBot.cues.get("ScrollerAtTop"), Bounds.fromWidthHeight(520, 115, 35, 90));
         // Scroller max clicks
         final int MAX_CLICKS = 30;
-
 
         // We make sure the scroll is at the top position. This is just failsafe in all the tests this was always the default behavior
         difficultyRangeSB.scrollToTop(null);
@@ -4353,7 +4348,7 @@ public class AdventureThread implements Runnable {
                 ScrollBarManager difficultySB = new ScrollBarManager(bot.browser);
 
                 // Bounds of the top difficulty value
-                Bounds topLvlBounds = Bounds.fromWidthHeight(350, 150, 70, 35);
+                final Bounds topLvlBounds = Bounds.fromWidthHeight(350, 145, 75, 26);
 
                 /*
                  * In higher tiers difficulty ranges are non continuous and the difference between the values increase.
@@ -4365,9 +4360,9 @@ public class AdventureThread implements Runnable {
                 // Top most difficulty value
                 BufferedImage topLvlBImg = bot.browser.getImg().getSubimage(topLvlBounds.x1, topLvlBounds.y1, topLvlBounds.width, topLvlBounds.height);
                 MarvinImage topLvlMImg = new MarvinImage(topLvlBImg);
-                topLvlMImg.toBlackWhite(difficultyBlack, difficultyWhite, customMax);
+                topLvlMImg.toBlackWhite(bwTreshold);
                 topLvlMImg.update();
-                int topLvl = readNumFromImg(topLvlMImg.getBufferedImage(), "wb_tier_button_", new HashSet<>(), false, false);
+                int topLvl = readNumFromImg(topLvlMImg.getBufferedImage(), "tg_diff_selection_17_", new HashSet<>(), false, false);
                 if (topLvl == 0) {
                     BHBotUnity.logger.error("Impossible to read difficulty range top level.");
                     return 0;
@@ -4376,9 +4371,9 @@ public class AdventureThread implements Runnable {
                 // Second difficulty value
                 BufferedImage secondLvlBImg = bot.browser.getImg().getSubimage(topLvlBounds.x1, topLvlBounds.y1 + yOffset, topLvlBounds.width, topLvlBounds.height);
                 MarvinImage secondLvlMImg = new MarvinImage(secondLvlBImg);
-                secondLvlMImg.toBlackWhite(difficultyBlack, difficultyWhite, customMax);
+                secondLvlMImg.toBlackWhite(bwTreshold);
                 secondLvlMImg.update();
-                int secondLvl = readNumFromImg(secondLvlMImg.getBufferedImage(), "wb_tier_button_", new HashSet<>(), false, false);
+                int secondLvl = readNumFromImg(secondLvlMImg.getBufferedImage(), "tg_diff_selection_17_", new HashSet<>(), false, false);
                 if (secondLvl == 0) {
                     BHBotUnity.logger.error("Impossible to read difficulty range second level.");
                     return 0;
@@ -4432,7 +4427,7 @@ public class AdventureThread implements Runnable {
                      * matched difficulty we found earlier
                      * */
                     for (int idxI = 5; idxI < possibleDifficulties.size(); idxI++) {
-                        difficultySB.scrollDown(100);
+                        difficultySB.scrollDown(500);
 
                         if (possibleDifficulties.get(idxI) == matchedDifficulty) {
                             // We can finally click on the difficulty value!!

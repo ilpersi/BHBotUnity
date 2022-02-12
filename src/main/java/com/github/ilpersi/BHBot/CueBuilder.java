@@ -467,6 +467,29 @@ public class CueBuilder {
         //endregion
 
         //region Numbers
+        //region TG Difficulty selection 17px
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/tgDiffSelection17", "tg_diff_selection_17_0(.*)\\.png", null,
+                Set.of(), Set.of(), "tg_diff_selection_17_0", "unitycues/numbers/tgDiffSelection17/tg_diff_selection_17_0.png", "TG Difficulty selection 17px 0");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/tgDiffSelection17", "tg_diff_selection_17_1(.*)\\.png", null,
+                Set.of(), Set.of(), "tg_diff_selection_17_1", "unitycues/numbers/tgDiffSelection17/tg_diff_selection_17_1.png", "TG Difficulty selection 17px 1");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/tgDiffSelection17", "tg_diff_selection_17_2(.*)\\.png", null,
+                Set.of(), Set.of(), "tg_diff_selection_17_2", "unitycues/numbers/tgDiffSelection17/tg_diff_selection_17_2.png", "TG Difficulty selection 17px 2");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/tgDiffSelection17", "tg_diff_selection_17_3(.*)\\.png", null,
+                Set.of(), Set.of(), "tg_diff_selection_17_3", "unitycues/numbers/tgDiffSelection17/tg_diff_selection_17_3.png", "TG Difficulty selection 17px 3");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/tgDiffSelection17", "tg_diff_selection_17_4(.*)\\.png", null,
+                Set.of(), Set.of(), "tg_diff_selection_17_4", "unitycues/numbers/tgDiffSelection17/tg_diff_selection_17_4.png", "TG Difficulty selection 17px 4");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/tgDiffSelection17", "tg_diff_selection_17_5(.*)\\.png", null,
+                Set.of(), Set.of(), "tg_diff_selection_17_5", "unitycues/numbers/tgDiffSelection17/tg_diff_selection_17_5.png", "TG Difficulty selection 17px 5");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/tgDiffSelection17", "tg_diff_selection_17_6(.*)\\.png", null,
+                Set.of(), Set.of(), "tg_diff_selection_17_6", "unitycues/numbers/tgDiffSelection17/tg_diff_selection_17_6.png", "TG Difficulty selection 17px 6");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/tgDiffSelection17", "tg_diff_selection_17_7(.*)\\.png", null,
+                Set.of(), Set.of(), "tg_diff_selection_17_7", "unitycues/numbers/tgDiffSelection17/tg_diff_selection_17_7.png", "TG Difficulty selection 17px 7");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/tgDiffSelection17", "tg_diff_selection_17_8(.*)\\.png", null,
+                Set.of(), Set.of(), "tg_diff_selection_17_8", "unitycues/numbers/tgDiffSelection17/tg_diff_selection_17_8.png", "TG Difficulty selection 17px 8");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/tgDiffSelection17", "tg_diff_selection_17_9(.*)\\.png", null,
+                Set.of(), Set.of(), "tg_diff_selection_17_9", "unitycues/numbers/tgDiffSelection17/tg_diff_selection_17_9.png", "TG Difficulty selection 17px 9");
+        //endregion TG Difficulty selection 17px
+
         //region TG Difficulty range 16px
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/tgDiffRange16", "tg_diff_range_16_0(.*)\\.png", null,
                 Set.of(), Set.of(), "tg_diff_range_16_0", "unitycues/numbers/tgDiffRange16/tg_diff_range_16_0.png", "TG Difficulty range 16px 0");

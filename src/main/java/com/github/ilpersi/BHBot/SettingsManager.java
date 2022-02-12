@@ -78,7 +78,7 @@ public class SettingsManager {
             outer:
             do {
                 if (menuPos > 1)
-                    settingsSB.scrollDown(0);
+                    settingsSB.scrollDown(100);
 
                 for (SettingConfiguration setting : settingConfigurations) {
                     // We get cueName and position details

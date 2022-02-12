@@ -443,27 +443,50 @@ public class BHBotUnity {
                 }
                 break;
             }
-            case "dr", "diffrange":
-                Bounds difficultyRangeBounds;
-                final int x1Diff = 30, y1Diff = 5, wDiff = -58, hDiff = -29;
-                MarvinSegment topChoice = MarvinSegment.fromCue("TopChoice", Misc.Durations.SECOND, browser);
+            case "debugds":
+                MarvinSegment topChoiceDS = MarvinSegment.fromCue("TopChoice", Misc.Durations.SECOND, browser);
+                if (topChoiceDS == null) break;
 
-                if (topChoice == null) break;
+                final int dsOffset = 60;
+                final int x1DSDiff = 90, y1DSDiff = 12, wDSDiff = -184, hDSDiff = -29;
+                final ScrollBarManager dsSB = new ScrollBarManager(browser);
 
-                final int yOffset = 60;
-                difficultyRangeBounds = Bounds.fromWidthHeight(topChoice.x1 + x1Diff, topChoice.y1 + y1Diff, topChoice.width + wDiff, topChoice.height + hDiff);
+                if (dsSB.canScrollDown) {
+                    do {
+                        browser.readScreen();
 
-                for (int i = 0; i < 5; i++) {
-                    int posOffset = i * yOffset;
-                    BufferedImage topRangeImg = browser.getImg().getSubimage(difficultyRangeBounds.x1, difficultyRangeBounds.y1 + posOffset, difficultyRangeBounds.width, difficultyRangeBounds.height);
-                    MarvinImage im = new MarvinImage(topRangeImg);
-                    im.toBlackWhite(110);
-                    im.update();
+                        topChoiceDS = MarvinSegment.fromCue("TopChoice", Misc.Durations.SECOND, browser);
 
-                    int[] diffRange = adventure.readNumRangeFromImg(im.getBufferedImage(), "tg_diff_range_16_", new HashSet<>(), "hyphen", "-");
-                    BHBotUnity.logger.debug("Detected difficulty range: " + Arrays.toString(diffRange));
+                        if (topChoiceDS != null) {
+                            // B&W Conversion
+                            MarvinImage bwDSImg = new MarvinImage(browser.getImg());
+                            bwDSImg.toBlackWhite(110);
+                            bwDSImg.update();
+                            BufferedImage bwDS = bwDSImg.getBufferedImage();
+
+                            StringBuilder fileName = new StringBuilder("ds-");
+
+                            // We get the five values available on monitor
+                            for (int i = 0; i < 5; i++) {
+                                if (i > 0) fileName.append("_");
+
+                                BufferedImage topLvlBImg = bwDS.getSubimage(topChoiceDS.x1 + x1DSDiff, (topChoiceDS.y1 + y1DSDiff) + (dsOffset * i), topChoiceDS.width + wDSDiff, topChoiceDS.height + hDSDiff);
+
+                                int diffSel = AdventureThread.readNumFromImg(topLvlBImg, "tg_diff_selection_17_", new HashSet<>(), false, false);
+                                fileName.append(diffSel);
+                            }
+
+                            Misc.saveScreen(fileName.toString(), "debug-tg-ds", true, bwDS);
+                        }
+
+                        for (int i = 0; i < 5; i++) {
+                            dsSB.scrollDown(500);
+                            browser.moveMouseAway();
+                        }
+
+
+                    } while (!dsSB.isAtBottom());
                 }
-
                 break;
             case "do":
                 switch (params[1]) {
@@ -532,6 +555,43 @@ public class BHBotUnity {
                     default:
                         logger.warn("Unknown dungeon : '" + params[1] + "'");
                         break;
+                }
+                break;
+            case "dr", "diffrange":
+                Bounds difficultyRangeBounds;
+                final int x1Diff = 30, y1Diff = 5, wDiff = -58, hDiff = -29;
+                MarvinSegment topChoice = MarvinSegment.fromCue("TopChoice", Misc.Durations.SECOND, browser);
+
+                if (topChoice == null) break;
+
+                final int yOffset = 60;
+                difficultyRangeBounds = Bounds.fromWidthHeight(topChoice.x1 + x1Diff, topChoice.y1 + y1Diff, topChoice.width + wDiff, topChoice.height + hDiff);
+
+                for (int i = 0; i < 5; i++) {
+                    int posOffset = i * yOffset;
+                    BufferedImage topRangeImg = browser.getImg().getSubimage(difficultyRangeBounds.x1, difficultyRangeBounds.y1 + posOffset, difficultyRangeBounds.width, difficultyRangeBounds.height);
+                    MarvinImage im = new MarvinImage(topRangeImg);
+                    im.toBlackWhite(110);
+                    im.update();
+
+                    int[] diffRange = adventure.readNumRangeFromImg(im.getBufferedImage(), "tg_diff_range_16_", new HashSet<>(), "hyphen", "-");
+                    BHBotUnity.logger.debug("Detected difficulty range: " + Arrays.toString(diffRange));
+                }
+
+                break;
+            case "ds":
+            case "diffsel":
+                browser.readScreen();
+                final Bounds topLvlBounds = Bounds.fromWidthHeight(350, 145, 75, 26);
+                final int diffOffset = 60;
+
+                for (int i = 0; i < 5; i++) {
+                    BufferedImage topLvlBImg = browser.getImg().getSubimage(topLvlBounds.x1, topLvlBounds.y1 + (diffOffset * i), topLvlBounds.width, topLvlBounds.height);
+                    MarvinImage topLvlMImg = new MarvinImage(topLvlBImg);
+                    topLvlMImg.toBlackWhite(110);
+                    topLvlMImg.update();
+                    int diffSel = AdventureThread.readNumFromImg(topLvlMImg.getBufferedImage(), "tg_diff_selection_17_", new HashSet<>(), false, false);
+                    BHBotUnity.logger.debug("Detected difficulty selection: " + diffSel);
                 }
                 break;
             case "exit":
