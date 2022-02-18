@@ -100,6 +100,13 @@ public class AdventureThread implements Runnable {
 
     int adventureSpeed;
 
+    // Used when reading numbers from screen
+    private record NumberInfo(String value, int xPosition) {
+        @Override
+        public String toString() {
+            return value;}
+    }
+
     AdventureThread(BHBotUnity bot) {
         this.bot = bot;
 
@@ -3839,7 +3846,7 @@ public class AdventureThread implements Runnable {
     static int readNumFromImg(BufferedImage im, String numberPrefix, HashSet<Integer> intToSkip, boolean breakOnMatch, boolean logEmptyResults) {
         // You can have multiple prefixes separated by a comma
         String[] prefixes = numberPrefix.split(",");
-        List<ScreenNum> nums = new ArrayList<>();
+        List<NumberInfo> nums = new ArrayList<>();
 
         for (String prefix: prefixes) {
             for (int i = 0; i < 10; i++) {
@@ -3847,7 +3854,7 @@ public class AdventureThread implements Runnable {
                 List<MarvinSegment> list = FindSubimage.findSubimage(im, BHBotUnity.cues.get(prefix + "" + i).im, 1.0, true, false, 0, 0, 0, 0);
                 //BHBot.logger.info("DEBUG difficulty detection: " + i + " - " + list.size());
                 for (MarvinSegment s : list) {
-                    nums.add(new ScreenNum(Integer.toString(i), s.x1));
+                    nums.add(new NumberInfo(Integer.toString(i), s.x1));
                 }
             }
 
@@ -3858,15 +3865,15 @@ public class AdventureThread implements Runnable {
         }
 
         // order list horizontally:
-        Collections.sort(nums);
+        nums = nums.stream()
+                .sorted(Comparator.comparing(NumberInfo::xPosition))
+                .collect(Collectors.toList());
 
         int result = 0;
 
         if (nums.size() > 0 ) {
             StringBuilder resultStr = new StringBuilder();
-            for (ScreenNum sn : nums) {
-                resultStr.append(sn.value);
-            }
+            nums.forEach(resultStr::append);
             result = Integer.parseInt(resultStr.toString());
         }
 
@@ -3893,14 +3900,15 @@ public class AdventureThread implements Runnable {
      */
     @SuppressWarnings("SameParameterValue")
     int[] readNumRangeFromImg(BufferedImage im, String numberPrefix, HashSet<Integer> intToSkip, String rangeSeparatorName, String rangeSeparatorValue) {
-        List<ScreenNum> nums = new ArrayList<>();
+
+        List<NumberInfo> nums = new ArrayList<>();
 
         for (int i = 0; i < 10; i++) {
             if (intToSkip.contains(i)) continue;
             List<MarvinSegment> list = FindSubimage.findSubimage(im, BHBotUnity.cues.get(numberPrefix + "" + i).im, 1.0, true, false, 0, 0, 0, 0);
             //BHBot.logger.info("DEBUG difficulty detection: " + i + " - " + list.size());
             for (MarvinSegment s : list) {
-                nums.add(new ScreenNum(Integer.toString(i), s.x1));
+                nums.add(new NumberInfo(Integer.toString(i), s.x1));
             }
         }
 
@@ -3921,16 +3929,16 @@ public class AdventureThread implements Runnable {
         }
 
         for (MarvinSegment s : list) {
-            nums.add(new ScreenNum(rangeSeparatorValue, s.x1));
+            nums.add(new NumberInfo(rangeSeparatorValue, s.x1));
         }
 
         // order list horizontally:
-        Collections.sort(nums);
+        nums = nums.stream()
+                    .sorted(Comparator.comparing(NumberInfo::xPosition))
+                    .collect(Collectors.toList());
 
         StringBuilder result = new StringBuilder();
-        for (ScreenNum sn : nums) {
-            result.append(sn.value);
-        }
+        nums.forEach(result::append);
 
         String[] rangesStr = result.toString().split(rangeSeparatorValue);
 
