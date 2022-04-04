@@ -288,7 +288,6 @@ class CueManager {
         addCue("Open", "cues/cueOpen.png", null); // skeleton treasure open button
         addCue("Decline", "cues/cueDecline.png", null); // decline skeleton treasure button (found in dungeons), also with video ad treasures (found in dungeons)
         addCue("DeclineRed", "cues/cueDeclineRed.png", null); // decline persuation attempts
-        addCue("Merchant", "cues/cueMerchant.png", null); // cue for merchant dialog/popup
         addCue("SettingsGear", "cues/cueSettingsGear.png", new Bounds(655, 450, 730, 515)); // settings button
 
         addCue("TeamNotFull", "cues/cueTeamNotFull.png", new Bounds(230, 200, 330, 250)); // warning popup when some friend left you and your team is not complete anymore
