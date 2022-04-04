@@ -562,22 +562,29 @@ public class AdventureThread implements Runnable {
 
                                 BHBotUnity.logger.info("Attempting " + (trials ? "trials" : "gauntlet") + " at level " + targetDifficulty + "...");
 
-                                int difficulty = detectTGDifficulty(BHBotUnity.cues.get("Difficulty"));
+                                int difficulty = detectDifficulty(BHBotUnity.cues.get("Difficulty"));
                                 if (difficulty == 0) { // error!
                                     BHBotUnity.logger.error("Due to an error#1 in difficulty detection, " + (trials ? "trials" : "gauntlet") + " will be skipped.");
-                                    bot.browser.closePopupSecurely(BHBotUnity.cues.get("TrialsOrGauntletWindow"), BHBotUnity.cues.get("X"));
+                                    bot.browser.closePopupSecurely(BHBotUnity.cues.get("TokenBar"), BHBotUnity.cues.get("X"));
                                     continue;
                                 }
                                 if (difficulty != targetDifficulty) {
                                     BHBotUnity.logger.info("Detected " + (trials ? "trials" : "gauntlet") + " difficulty level: " + difficulty + ", settings level: " + targetDifficulty + ". Changing..");
                                     int result = selectDifficulty(difficulty, targetDifficulty, BHBotUnity.cues.get("SelectDifficulty"), 1, true);
                                     if (result == 0) { // error!
-                                        // see if drop down menu is still open and close it:
-                                        bot.browser.readScreen(Misc.Durations.SECOND);
-                                        tryClosingWindow(BHBotUnity.cues.get("DifficultyDropDown"));
-                                        bot.browser.readScreen(5 * Misc.Durations.SECOND);
+
                                         BHBotUnity.logger.warn("Unable to change difficulty, usually because desired level is not unlocked. Running " + (trials ? "trials" : "gauntlet") + " at " + difficulty + ".");
+                                        Misc.saveScreen("tg-difficulty-select", "errors", true, bot.browser.getImg());
                                         bot.notificationManager.sendErrorNotification("T/G Error", "Unable to change " + (trials ? "trials" : "gauntlet") + " difficulty to : " + targetDifficulty + " Running: " + difficulty + " instead.");
+
+                                        // see if drop down menu is still open and close it:
+                                        if (!bot.browser.closeAllPopups("TokenBar")) {
+                                            bot.browser.readScreen(Misc.Durations.SECOND);
+                                            tryClosingWindow(BHBotUnity.cues.get("DifficultyDropDown"));
+                                            bot.browser.readScreen(3 * Misc.Durations.SECOND);
+                                            // We do not close the window as we try with the current difficulty
+                                            //tryClosingWindow(BHBotUnity.cues.get("TokenBar"));
+                                        }
 
                                         // We update the setting file with the old difficulty level
                                         String settingName = trials ? "difficultyTrials" : "difficultyGauntlet";
@@ -601,31 +608,37 @@ public class AdventureThread implements Runnable {
                                 int cost = detectCost();
                                 if (cost == 0) { // error!
                                     BHBotUnity.logger.error("Due to an error#1 in cost detection, " + (trials ? "trials" : "gauntlet") + " will be skipped.");
-                                    bot.browser.closePopupSecurely(BHBotUnity.cues.get("TrialsOrGauntletWindow"), BHBotUnity.cues.get("X"));
+                                    bot.browser.closePopupSecurely(BHBotUnity.cues.get("TokenBar"), BHBotUnity.cues.get("X"));
                                     continue;
                                 }
                                 if (cost != (trials ? bot.settings.costTrials : bot.settings.costGauntlet)) {
                                     BHBotUnity.logger.info("Detected " + (trials ? "trials" : "gauntlet") + " cost: " + cost + ", settings cost is " + (trials ? bot.settings.costTrials : bot.settings.costGauntlet) + ". Changing it...");
                                     boolean result = selectCost(cost, (trials ? bot.settings.costTrials : bot.settings.costGauntlet));
                                     if (!result) { // error!
-                                        // see if drop down menu is still open and close it:
-                                        bot.browser.readScreen(Misc.Durations.SECOND);
-                                        tryClosingWindow(BHBotUnity.cues.get("CostDropDown"));
-                                        bot.browser.readScreen(5 * Misc.Durations.SECOND);
-                                        tryClosingWindow(BHBotUnity.cues.get("TrialsOrGauntletWindow"));
                                         BHBotUnity.logger.error("Due to an error#2 in cost selection, " + (trials ? "trials" : "gauntlet") + " will be skipped.");
+                                        Misc.saveScreen("tg-cost-selection", "errors", true, bot.browser.getImg());
+                                        bot.notificationManager.sendErrorNotification("T/G Error", "Unable to change " + (trials ? "trials" : "gauntlet") + " cost to : " + (trials ? bot.settings.costTrials : bot.settings.costGauntlet) + ".");
+
+                                        // see if drop down menu is still open and close it:
+                                        if (!bot.browser.closeAllPopups()) {
+                                            bot.browser.readScreen(Misc.Durations.SECOND);
+                                            tryClosingWindow(BHBotUnity.cues.get("CostDropDown"));
+                                            bot.browser.readScreen(3 * Misc.Durations.SECOND);
+                                            tryClosingWindow(BHBotUnity.cues.get("TokenBar"));
+                                        }
+
                                         continue;
                                     }
 
                                     // We wait for the cost selector window to close
-                                    MarvinSegment.fromCue("TrialsOrGauntletWindow", Misc.Durations.SECOND * 2, bot.browser);
+                                    MarvinSegment.fromCue("TokenBar", Misc.Durations.SECOND * 2, bot.browser);
                                     bot.browser.readScreen();
                                 }
 
                                 seg = MarvinSegment.fromCue(BHBotUnity.cues.get("Play"), 2 * Misc.Durations.SECOND, bot.browser);
                                 if (seg == null) {
                                     BHBotUnity.logger.error("Error: Play button not found while trying to do " + (trials ? "trials" : "gauntlet") + ". Ignoring...");
-                                    tryClosingWindow(BHBotUnity.cues.get("TrialsOrGauntletWindow"));
+                                    tryClosingWindow(BHBotUnity.cues.get("TokenBar"));
                                     continue;
                                 }
                                 bot.browser.clickOnSeg(seg);
@@ -1401,7 +1414,7 @@ public class AdventureThread implements Runnable {
                                     bot.browser.clickInGame(p.x, p.y);
 
                                     // select difficulty if needed:
-                                    int difficulty = detectTGDifficulty(BHBotUnity.cues.get("DifficultyExpedition"));
+                                    int difficulty = detectDifficulty(BHBotUnity.cues.get("DifficultyExpedition"));
                                     if (difficulty == 0) { // error!
                                         BHBotUnity.logger.warn("Due to an error in difficulty detection, Expedition will be skipped.");
                                         seg = MarvinSegment.fromCue(BHBotUnity.cues.get("X"), bot.browser);
@@ -2578,7 +2591,7 @@ public class AdventureThread implements Runnable {
                 subm.toBlackWhite(new Color(25, 25, 25), new Color(255, 255, 255), 64);
                 subm.update();
                 BufferedImage subimagetestbw = subm.getBufferedImage();
-                int num = readNumFromImg(subimagetestbw, "small", new HashSet<>(), false, false);
+                int num = readNumFromImg(subimagetestbw, "small", Set.of(), false, false);
                 BHBotUnity.logger.info(bot.getState().getName() + " #" + counters.get(bot.getState()).getTotal() + " completed. Level reached: " + num);
                 BHBotUnity.logger.stats("Run time: " + runtime + ". Average: " + runtimeAvg + ".");
             }
@@ -3719,8 +3732,8 @@ public class AdventureThread implements Runnable {
                 }
             }
 
-            if (!bot.browser.closePopupSecurely(BHBotUnity.cues.get("TrialsOrGauntletWindow"), BHBotUnity.cues.get("X"))) {
-                BHBotUnity.logger.error("Impossible to close the 'TrialsOrGauntletWindow' window. Restarting");
+            if (!bot.browser.closePopupSecurely(BHBotUnity.cues.get("TokenBar"), BHBotUnity.cues.get("X"))) {
+                BHBotUnity.logger.error("Impossible to close the 'TokenBar' window. Restarting");
                 return null;
             }
 
@@ -3843,13 +3856,13 @@ public class AdventureThread implements Runnable {
      *                        no value, a picutre of the input im will be save in the debug screenshot folder
      * @return The value of the read number or 0 if it was not possible to read the number
      */
-    static int readNumFromImg(BufferedImage im, String numberPrefix, HashSet<Integer> intToSkip, boolean breakOnMatch, boolean logEmptyResults) {
+    static int readNumFromImg(BufferedImage im, String numberPrefix, Set<Integer> intToSkip, boolean breakOnMatch, boolean logEmptyResults) {
         // You can have multiple prefixes separated by a comma
         String[] prefixes = numberPrefix.split(",");
         List<NumberInfo> nums = new ArrayList<>();
 
         for (String prefix: prefixes) {
-            for (int i = 0; i < 10; i++) {
+            for (int i = 9; i >= 0; i--) {
                 if (intToSkip.contains(i)) continue;
                 List<MarvinSegment> list = FindSubimage.findSubimage(im, BHBotUnity.cues.get(prefix + "" + i).im, 1.0, true, false, 0, 0, 0, 0);
                 //BHBot.logger.info("DEBUG difficulty detection: " + i + " - " + list.size());
@@ -3946,13 +3959,13 @@ public class AdventureThread implements Runnable {
     }
 
     /**
-     * Detects selected difficulty in trials/gauntlet window. <br>
-     * NOTE: Trials/gauntlet window must be open for this to work! <br>
+     * Detects selected difficulty in trials/gauntlet/expedition window. <br>
+     * NOTE: Trials/gauntlet/expedtion window must be open for this to work! <br>
      *
      * @param difficulty The Cue to be used to search for the difficulty integer
      * @return 0 in case of an error, or the selected difficulty level instead.
      */
-    int detectTGDifficulty(Cue difficulty) {
+    int detectDifficulty(Cue difficulty) {
         final HashMap<Integer, String> readMaps = new HashMap<>();
         readMaps.put(254, "tg_diff_win_11_");
         readMaps.put(255, "tg_diff_win_10_");
@@ -3990,7 +4003,7 @@ public class AdventureThread implements Runnable {
 
             BufferedImage imb = im.getBufferedImage();
 
-            result = readNumFromImg(imb, numberPrefix, new HashSet<>(), false, false);
+            result = readNumFromImg(imb, numberPrefix, Set.of(), false, false);
 
             if (result != 0) break;
         }
@@ -4028,7 +4041,7 @@ public class AdventureThread implements Runnable {
 
         BufferedImage imb = im.getBufferedImage();
 
-        return readNumFromImg(imb, "wb_tier_", new HashSet<>(), false, true);
+        return readNumFromImg(imb, "wb_tier_", Set.of(), false, true);
     }
 
     /**
@@ -4056,7 +4069,7 @@ public class AdventureThread implements Runnable {
         MarvinImage topTierImg = new MarvinImage(bot.browser.getImg().getSubimage(topTierBounds.x1, topTierBounds.y1, topTierBounds.width, topTierBounds.height));
         topTierImg.toBlackWhite(new Color(25, 25, 25), new Color(255, 255, 255), 255);
         topTierImg.update();
-        int topAvailableTier = readNumFromImg(topTierImg.getBufferedImage(), "wb_tier_button_", new HashSet<>(), false, true);
+        int topAvailableTier = readNumFromImg(topTierImg.getBufferedImage(), "wb_tier_button_", Set.of(), false, true);
 
         if (topAvailableTier == 0) {
             BHBotUnity.logger.error("Impossible to detect maximum available tier in World Boss");
@@ -4167,7 +4180,7 @@ public class AdventureThread implements Runnable {
         }*/
 
         // We start from 20 intentionally: as soon a match is found, readNumFromImg will stop checking the remaining prefixes
-        return readNumFromImg(totalTSSubImg, "wb_total_ts_20_,wb_total_ts_18_,wb_total_ts_16_", new HashSet<>(), true, false);
+        return readNumFromImg(totalTSSubImg, "wb_total_ts_20_,wb_total_ts_18_,wb_total_ts_16_", Set.of(), true, false);
     }
 
     /**
@@ -4196,7 +4209,7 @@ public class AdventureThread implements Runnable {
             final int y = TSBound.y1 + (54 * partyMemberPos);
 
             BufferedImage tsSubImg = BlackAndWhiteTS.getSubimage(TSBound.x1, y, TSBound.width, TSBound.height);
-            int playerTS = readNumFromImg(tsSubImg, "wb_player_ts_", new HashSet<>(), false, false);
+            int playerTS = readNumFromImg(tsSubImg, "wb_player_ts_", Set.of(), false, false);
             results[partyMemberPos] = playerTS;
 
             /*if (bot.settings.debugWBTS) {
@@ -4267,7 +4280,7 @@ public class AdventureThread implements Runnable {
         // We make sure the scroll is at the top position. This is just failsafe in all the tests this was always the default behavior
         difficultyRangeSB.scrollToTop(null);
 
-        bot.browser.readScreen(Misc.Durations.SECOND / 2);
+        bot.browser.readScreen(Misc.Durations.SECOND);
 
         // Bounds for difficulty range. The position can change, so we look for the border, and we dynamically apply it
         Bounds difficultyRangeBounds;
@@ -4370,7 +4383,7 @@ public class AdventureThread implements Runnable {
                 MarvinImage topLvlMImg = new MarvinImage(topLvlBImg);
                 topLvlMImg.toBlackWhite(bwTreshold);
                 topLvlMImg.update();
-                int topLvl = readNumFromImg(topLvlMImg.getBufferedImage(), "tg_diff_selection_17_", new HashSet<>(), false, false);
+                int topLvl = readNumFromImg(topLvlMImg.getBufferedImage(), "tg_diff_selection_17_", Set.of(), false, false);
                 if (topLvl == 0) {
                     BHBotUnity.logger.error("Impossible to read difficulty range top level.");
                     return 0;
@@ -4381,7 +4394,7 @@ public class AdventureThread implements Runnable {
                 MarvinImage secondLvlMImg = new MarvinImage(secondLvlBImg);
                 secondLvlMImg.toBlackWhite(bwTreshold);
                 secondLvlMImg.update();
-                int secondLvl = readNumFromImg(secondLvlMImg.getBufferedImage(), "tg_diff_selection_17_", new HashSet<>(), false, false);
+                int secondLvl = readNumFromImg(secondLvlMImg.getBufferedImage(), "tg_diff_selection_17_", Set.of(), false, false);
                 if (secondLvl == 0) {
                     BHBotUnity.logger.error("Impossible to read difficulty range second level.");
                     return 0;
@@ -4480,7 +4493,7 @@ public class AdventureThread implements Runnable {
         subm.toBlackWhite(new Color(25, 25, 25), new Color(255, 255, 255), 254);
         subm.update();
         BufferedImage sub = subm.getBufferedImage();
-        int num = readNumFromImg(sub, "", new HashSet<>(), false, false);
+        int num = readNumFromImg(sub, "", Set.of(), false, false);
 //		BHBot.logger.info("num = " + Integer.toString(num));
         if (num == 0) {
             BHBotUnity.logger.error("Error: unable to read difficulty level from a drop-down menu!");
@@ -4550,36 +4563,33 @@ public class AdventureThread implements Runnable {
             return 0; // error
         }
 
-        // because the popup may still be sliding down and hence cue could be changing position, we try to read cost in a loop (until a certain timeout):
-        int d;
-        int counter = 0;
-        boolean success = true;
-        while (true) {
-            MarvinImage im = new MarvinImage(bot.browser.getImg().getSubimage(seg.x1 + 2, seg.y1 + 20, 35, 24));
-            im.toBlackWhite(new Color(25, 25, 25), new Color(255, 255, 255), 254);
+        final int xOffset = 3, yOffset = 41, w = 31, h = 22;
+
+        final HashMap<Integer, String> readMaps = new HashMap<>();
+        readMaps.put(255, "tg_diff_win_10_");
+        readMaps.put(254, "tg_diff_win_11_");
+
+        // We get the  region with the cost number
+        BufferedImage numImg = bot.browser.getImg().getSubimage(seg.x1 + xOffset, seg.y1 + yOffset, w, h);
+
+        int result = 0;
+        for (Map.Entry<Integer, String> readMap: readMaps.entrySet()) {
+            int customMax = readMap.getKey();
+            String numberPrefix = readMap.getValue();
+
+            // We transform it in B&W using available customMax
+            MarvinImage im = new MarvinImage(numImg, "PNG");
+            im.toBlackWhite(new Color(25, 25, 25), new Color(255, 255, 255), customMax);
             im.update();
+
             BufferedImage imb = im.getBufferedImage();
-            d = readNumFromImg(imb, "", new HashSet<>(), false, false);
-            if (d != 0)
-                break; // success
 
-            counter++;
-            if (counter > 10) {
-                success = false;
-                break;
-            }
-            Misc.sleep(Misc.Durations.SECOND); // sleep a bit in order for the popup to slide down
-            bot.browser.readScreen();
-            seg = MarvinSegment.fromCue(BHBotUnity.cues.get("Cost"), bot.browser);
+            result = readNumFromImg(imb, numberPrefix, Set.of(0, 6, 7, 8, 9), false, false);
+
+            if (result != 0) break;
         }
 
-        if (!success) {
-            BHBotUnity.logger.error("Error: unable to detect cost selection box value!");
-            bot.saveGameScreen("cost_value", "errors");
-            return 0;
-        }
-
-        return d;
+        return result;
     }
 
     /**
@@ -4592,13 +4602,24 @@ public class AdventureThread implements Runnable {
         if (oldCost == newCost)
             return true; // no change
 
-        MarvinSegment seg = MarvinSegment.fromCue(BHBotUnity.cues.get("SelectCost"), 5 * Misc.Durations.SECOND, bot.browser);
+        if (newCost > 5){
+            BHBotUnity.logger.warn("Maximum value for cost is 5. Found " + newCost);
+            newCost = 5;
+        }
+
+        if (newCost < 1) {
+            BHBotUnity.logger.warn("Minimum allowed cost is 1. Found " + newCost);
+            newCost = 1;
+        }
+
+        final int xOffset = 85, yOffset = 60;
+        MarvinSegment seg = MarvinSegment.fromCue(BHBotUnity.cues.get("Cost"), 5 * Misc.Durations.SECOND, bot.browser);
         if (seg == null) {
             BHBotUnity.logger.error("Error: unable to detect 'select cost' button while trying to change cost!");
             return false; // error
         }
 
-        bot.browser.clickOnSeg(seg);
+        bot.browser.clickInGame(seg.x1 + xOffset, seg.y1 + yOffset);
 
         MarvinSegment.fromCue("CostDropDown", 5 * Misc.Durations.SECOND, bot.browser); // wait for the cost selection popup window to open
 
@@ -5769,7 +5790,7 @@ public class AdventureThread implements Runnable {
             toBlackAndWhite.toBlackWhite(Black, White, customMax);
             toBlackAndWhite.update();
 
-            result = AdventureThread.readNumFromImg(toBlackAndWhite.getBufferedImage(), numberPrefix, new HashSet<>(), true, false);
+            result = AdventureThread.readNumFromImg(toBlackAndWhite.getBufferedImage(), numberPrefix, Set.of(), true, false);
 
             if (result != 0) break;
         }
@@ -5779,6 +5800,52 @@ public class AdventureThread implements Runnable {
         String tgFile = Misc.saveScreen(tgDiffFileName, "tg_debug_diff", true, numImg);
         BHBotUnity.logger.debug("Detected difficulty is: " + result);
         BHBotUnity.logger.debug("Image saved to: " + tgFile);
+
+        return result;
+    }
+
+    int debugCost() {
+        // Calculation offsets
+        final int xOffset = 3, yOffset = 41, w = 31, h = 22;
+
+        final HashMap<Integer, String> readMaps = new HashMap<>();
+        readMaps.put(255, "tg_diff_win_10_");
+        readMaps.put(254, "tg_diff_win_11_");
+
+        bot.browser.readScreen();
+
+        MarvinSegment seg = MarvinSegment.fromCue(BHBotUnity.cues.get("Cost"), 15 * Misc.Durations.SECOND, bot.browser);
+        if (seg == null) {
+            BHBotUnity.logger.error("Error: unable to detect cost selection box!");
+            bot.saveGameScreen("cost_selection", "errors");
+            return 0; // error
+        }
+
+        // We get the  region with the cost number
+        int result = 0;
+        BufferedImage numImg = bot.browser.getImg().getSubimage(seg.x1 + xOffset, seg.y1 + yOffset, w, h);
+
+        for (Map.Entry<Integer, String> readMap: readMaps.entrySet()) {
+            int customMax = readMap.getKey();
+            String numberPrefix = readMap.getValue();
+
+            // We transform it in B&W using available customMax
+            MarvinImage im = new MarvinImage(numImg, "PNG");
+            im.toBlackWhite(new Color(25, 25, 25), new Color(255, 255, 255), customMax);
+            im.update();
+
+            BufferedImage imb = im.getBufferedImage();
+
+            result = readNumFromImg(imb, numberPrefix, Set.of(0, 6, 7, 8, 9), false, true);
+
+            if (result != 0) break;
+        }
+
+        // We save the image and the read difficulty for troubleshooting purpose
+        String costFileName = "cost_" + result;
+        String costFile = Misc.saveScreen(costFileName, "debug_cost", true, numImg);
+        BHBotUnity.logger.debug("Detected cost is: " + result);
+        BHBotUnity.logger.debug("Image saved to: " + costFile);
 
         return result;
     }

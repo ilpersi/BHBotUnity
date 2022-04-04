@@ -191,6 +191,7 @@ public class BlockerThread implements Runnable {
                         bot.browser.closePopupSecurely(BHBotUnity.cues.get("DailyRewards"), BHBotUnity.cues.get("Claim"));
                     } else {
                         BHBotUnity.logger.error("Problem: 'Daily reward' popup detected, however could not detect the 'claim' button. Restarting...");
+                        bot.saveGameScreen("daily-no-claim", "errors");
                         bot.restart(true, false);
                         continue; // may happen every while, rarely though
                     }

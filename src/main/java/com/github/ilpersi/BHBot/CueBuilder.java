@@ -342,6 +342,7 @@ public class CueBuilder {
         addCueLocatorByPattern(cueLocators, "cuebuilder/bounties", "bounties_main_(.*)\\.png", Bounds.fromWidthHeight(508, 245, 74, 27),
                 Set.of(), Set.of(), "Loot", "unitycues/bounties/cueLoot.png", "Green Loot button");
         //endregion Bounties
+
         //region Common
         cueLocators.add(new CueLocator("cuebuilder/raid/raid-team.png", Bounds.fromWidthHeight(326, 453, 87, 29),
                 Set.of(new Color(255, 255, 255)), Set.of(), "TeamClear", "unitycues/common/cueTeamClear.png", false, ""));
@@ -396,6 +397,10 @@ public class CueBuilder {
         Set<Bounds> choiceTransp = Set.of(Bounds.fromWidthHeight(266, 138, 247, 44));
         addCueLocatorByPattern(cueLocators, "cuebuilder/common", "top_choice_(.*)\\.png", Bounds.fromWidthHeight(260, 133, 258, 54),
                 Set.of(), choiceTransp, "TopChoice", "unitycues/common/cueTopChoice.png", "Top Choice border in selection windows");
+
+        addCueLocatorByPattern(cueLocators, "cuebuilder/tierGauntlet", "tg_cost_(.*)\\.png", Bounds.fromWidthHeight(521, 274, 58, 15),
+                Set.of(), Set.of(), "Play", "unitycues/common/cuePlay.png", "Blue Play button.");
+
         //endregion Common
 
         //region CueX
@@ -764,6 +769,18 @@ public class CueBuilder {
                 Set.of(), tgDiffTransp, "DifficultyDisabled", "unitycues/tierGauntlet/cueDifficultyDisabled.png", "Greyed out TG Difficulty drop down is");
         addCueLocatorByPattern(cueLocators, "cuebuilder/tierGauntlet", "tg_window_(.*)\\.png", Bounds.fromWidthHeight(587, 377, 45, 43),
                 Set.of(), tgDiffTransp, "SelectDifficulty", "unitycues/tierGauntlet/cueSelectDifficulty.png", "Difficulty arrow pointing down");
+
+        final Set<Bounds> tgCostTransp = Set.of(Bounds.fromWidthHeight(518, 198, 50, 30), Bounds.fromWidthHeight(518, 201, 53, 24));
+        addCueLocatorByPattern(cueLocators, "cuebuilder/tierGauntlet", "tg_cost_(.*)\\.png", Bounds.fromWidthHeight(524, 160, 86, 71),
+                Set.of(), tgCostTransp, "Cost", "unitycues/tierGauntlet/cueCost.png", "T/G Cost combo box");
+
+        final Set<Bounds> tgCostSelectTransp = Set.of(Bounds.fromWidthHeight(298, 67, 207, 41),
+                Bounds.fromWidthHeight(292, 70, 219, 12), Bounds.fromWidthHeight(292, 94, 219, 12));
+        addCueLocatorByPattern(cueLocators, "cuebuilder/tierGauntlet", "tg_select_cost_(.*)\\.png", Bounds.fromWidthHeight(280, 62, 243, 51),
+                Set.of(), tgCostSelectTransp, "CostDropDown", "unitycues/tierGauntlet/cueCostDropDown.png", "Cost selection window");
+
+        addCueLocatorByPattern(cueLocators, "cuebuilder/tierGauntlet", "tg_difficulty_range_(.*)\\.png", Bounds.fromWidthHeight(292, 61, 219, 54),
+                Set.of(), Set.of(), "DifficultyDropDown", "unitycues/tierGauntlet/cueDifficultyDropDown.png", "Difficulty text on top of difficulty selection.");
         //endregion
 
         //region Treasure Chest

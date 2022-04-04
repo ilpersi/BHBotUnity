@@ -222,7 +222,7 @@ public class BrowserManager {
     synchronized void close() {
         if (driver != null) {
             try {
-                driver.close();
+                // driver.close();
                 driver.quit();
             } catch (org.openqa.selenium.NoSuchSessionException e) {
                 BHBotUnity.logger.debug("Error while closing driver in BrowserManager.");
@@ -501,6 +501,41 @@ public class BrowserManager {
         }
 
         return true;
+    }
+
+    boolean closeAllPopups() {
+        return closeAllPopups("Main", 10);
+    }
+
+    boolean closeAllPopups(String requiredCueName) {
+        return closeAllPopups(requiredCueName, 10);
+    }
+
+    /**
+     * This method will attempt to close all the opened windows using the "ESC" key.
+     *
+     * @param requiredCueName The method will use the esc key utill this cue is found
+     * @param maxAttempts How many attempts are performed before we return false
+     *
+     */
+    boolean closeAllPopups(String requiredCueName, Integer maxAttempts) {
+        final int MAX_CNT = maxAttempts != null ? maxAttempts : 10;
+        int curCnt = 0;
+
+        MarvinSegment seg = MarvinSegment.fromCue(requiredCueName, bot.browser);
+        while (seg == null && curCnt <= MAX_CNT) {
+            Actions act = new Actions(driver);
+            act.sendKeys(Keys.ESCAPE);
+            act.perform();
+
+            // We wait for half a second before we try again
+            seg = MarvinSegment.fromCue(requiredCueName, Misc.Durations.SECOND / 2, bot.browser);
+            curCnt++;
+        }
+
+        seg = MarvinSegment.fromCue(requiredCueName, bot.browser);
+
+        return seg != null;
     }
 
     void readScreen() {

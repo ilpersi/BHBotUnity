@@ -380,8 +380,7 @@ public class BHBotUnity {
         switch (params[0]) {
             case "c": { // detect cost from screen
                 browser.readScreen();
-                int current = adventure.detectCost();
-                logger.info("Detected cost: " + current);
+                int current = adventure.debugCost();
 
                 if (params.length > 1) {
                     int goal = Integer.parseInt(params[1]);
@@ -472,7 +471,7 @@ public class BHBotUnity {
 
                                 BufferedImage topLvlBImg = bwDS.getSubimage(topChoiceDS.x1 + x1DSDiff, (topChoiceDS.y1 + y1DSDiff) + (dsOffset * i), topChoiceDS.width + wDSDiff, topChoiceDS.height + hDSDiff);
 
-                                int diffSel = AdventureThread.readNumFromImg(topLvlBImg, "tg_diff_selection_17_", new HashSet<>(), false, false);
+                                int diffSel = AdventureThread.readNumFromImg(topLvlBImg, "tg_diff_selection_17_", Set.of(), false, false);
                                 fileName.append(diffSel);
                             }
 
@@ -590,7 +589,7 @@ public class BHBotUnity {
                     MarvinImage topLvlMImg = new MarvinImage(topLvlBImg);
                     topLvlMImg.toBlackWhite(110);
                     topLvlMImg.update();
-                    int diffSel = AdventureThread.readNumFromImg(topLvlMImg.getBufferedImage(), "tg_diff_selection_17_", new HashSet<>(), false, false);
+                    int diffSel = AdventureThread.readNumFromImg(topLvlMImg.getBufferedImage(), "tg_diff_selection_17_", Set.of(), false, false);
                     BHBotUnity.logger.debug("Detected difficulty selection: " + diffSel);
                 }
                 break;

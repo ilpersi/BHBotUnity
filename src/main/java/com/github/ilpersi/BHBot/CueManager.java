@@ -81,14 +81,6 @@ class CueManager {
         return loadedCues.get(cueKey);
     }
 
-    Cue getOrNull(String cueKey) {
-        try {
-            return get(cueKey);
-        } catch (NullPointerException ex) {
-            return null;
-        }
-    }
-
     int size () {
         return loadedCues.size();
     }
@@ -253,10 +245,7 @@ class CueManager {
     }
 
     private void buildCues() {
-        addCue("Main", "cues/cueMainScreen.png", new Bounds(90, 5, 100, 20));
         addCue("Login", "cues/cueLogin.png", new Bounds(270, 260, 330, 300)); // login window (happens seldom)
-        addCue("AreYouThere", "cues/cueAreYouThere.png", Bounds.fromWidthHeight(250, 240, 300, 45));
-        addCue("Yes", "cues/cueYes.png", null);
 
         addCue("Reconnect", "cues/cueReconnectButton.png", new Bounds(320, 330, 400, 360)); // used with "You have been disconnected" dialog and also with the "maintenance" dialog
         addCue("Reload", "cues/cueReload.png", new Bounds(320, 330, 360, 360)); // used in "There is a new update required to play" dialog (happens on Friday night)
@@ -302,14 +291,11 @@ class CueManager {
         addCue("Merchant", "cues/cueMerchant.png", null); // cue for merchant dialog/popup
         addCue("SettingsGear", "cues/cueSettingsGear.png", new Bounds(655, 450, 730, 515)); // settings button
 
-        addCue("Team", "cues/cueTeam.png", null); // Team text part of pop-ups about teams
         addCue("TeamNotFull", "cues/cueTeamNotFull.png", new Bounds(230, 200, 330, 250)); // warning popup when some friend left you and your team is not complete anymore
         addCue("TeamNotOrdered", "cues/cueTeamNotOrdered.png", new Bounds(230, 190, 350, 250)); // warning popup when some guild member left and your GvG team is not complete anymore
         addCue("GuildLeaveConfirm", "cues/cueGuildLeaveConfirm.png", new Bounds(195, 105, 605, 395)); // GVG confirm
         addCue("DisabledBattles", "cues/cueDisabledBattles.png", new Bounds(240, 210, 560, 330)); // Disabled Battles Poppup
 
-        addCue("No", "cues/cueNo.png", null); // cue for a blue "No" button used for example with "Your team is not full" dialog, or for "Replace consumable" dialog, etc. This is why we can't put concrete borders as position varies a lot.
-        addCue("AutoTeam", "cues/cueAutoTeam.png", null); // "Auto" button that automatically assigns team (in raid, GvG, ...)
         addCue("Clear", "cues/cueClear.png", null); //clear team button
 
         addCue("AutoOn", "cues/cueAutoOn.png", new Bounds(740, 180, 785, 220)); // cue for auto pilot on
@@ -330,19 +316,6 @@ class CueManager {
         addCue("IgnoreCheck", "cues/cueIgnoreCheck.png", null);
 
         addCue("ZonesButton", "cues/cueZonesButton.png", new Bounds(105, 60, 125, 75));
-        addCue("Zone1", "cues/cueZone1.png", Bounds.fromWidthHeight(290, 45, 220, 55));
-        addCue("Zone2", "cues/cueZone2.png", null);
-        addCue("Zone3", "cues/cueZone3.png", null);
-        addCue("Zone4", "cues/cueZone4.png", null);
-        addCue("Zone5", "cues/cueZone5.png", null);
-        addCue("Zone6", "cues/cueZone6.png", null);
-        addCue("Zone7", "cues/cueZone7.png", null);
-        addCue("Zone8", "cues/cueZone8.png", Bounds.fromWidthHeight(305, 45, 185, 50));
-        addCue("Zone9", "cues/cueZone9.png", null);
-        addCue("Zone10", "cues/cueZone10.png", null);
-        addCue("Zone11", "cues/cueZone11.png", null);
-        addCue("Zone12", "cues/cueZone12.png", null);
-        addCue("Zone13", "cues/cueZone13.png", Bounds.fromWidthHeight(250, 50, 300, 40));
         addCue("Enter", "cues/cueEnter.png", null); // "Enter" button found on d4 window
         addCue("NotEnoughEnergy", "cues/cueNotEnoughEnergy.png", new Bounds(260, 210, 290, 235)); // "Not enough Energy" popup cue
 
@@ -365,12 +338,9 @@ class CueManager {
         addCue("TrialsOrGauntletWindow", "cues/cueTrialsOrGauntletWindow.png", new Bounds(300, 30, 510, 105)); // cue for a trials/gauntlet window
         addCue("NotEnoughTokens", "cues/cueNotEnoughTokens.png", Bounds.fromWidthHeight(274, 228, 253, 79)); // cue to check for the not enough tokens popup
 
-        addCue("DifficultyDropDown", "cues/cueDifficultyDropDown.png", new Bounds(260, 50, 550, 125)); // difficulty drop down menu cue
         addCue("DifficultyExpedition", "cues/cueDifficultyExpedition.png", null); // selected difficulty in trials/gauntlet window
         addCue("SelectDifficultyExpedition", "cues/cueSelectDifficultyExpedition.png", null);
-        addCue("Cost", "cues/cueCost.png", new Bounds(400, 150, 580, 240)); // used both for PvP and Gauntlet/Trials costs. Note that bounds are very wide, because position of this cue in PvP is different from that in Gauntlet/Trials!
         addCue("SelectCost", "cues/cueSelectCost.png", new Bounds(555, 170, 595, 205)); // cue for select cost found in both PvP and Gauntlet/Trials windows. Note that bounds are wide, because position of this cue in PvP is different from that in Gauntlet/Trials!
-        addCue("CostDropDown", "cues/cueCostDropDown.png", new Bounds(260, 45, 320, 70)); // cue for cost selection drop down window
         addCue("0", "cues/numbers/cue0.png", null);
         addCue("1", "cues/numbers/cue1.png", null);
         addCue("2", "cues/numbers/cue2.png", null);
@@ -619,6 +589,7 @@ class CueManager {
         addCue("DefeatRecap", "unitycues/common/cueDefeatRecap.png", Bounds.fromWidthHeight(335, 55, 135, 50)); // Defeat message when completing adventures
         addCue("WeeklyRewards", "unitycues/common/cueWeeklyRewards.png", Bounds.fromWidthHeight(205, 135, 395, 255)); // Weekly rewards gump
         addCue("TopChoice", "unitycues/common/cueTopChoice.png", null); // Top Choice border in selection windows
+        addCue("Play", "unitycues/common/cuePlay.png", Bounds.fromWidthHeight(510, 260, 80, 40)); // Blue Play button.
         //endregion Common
 
         //region Dungeon
@@ -832,6 +803,9 @@ class CueManager {
         addCue("Difficulty", "unitycues/tierGauntlet/cueDifficulty.png", Bounds.fromWidthHeight(460, 340, 185, 95)); // T/G Difficulty combo box
         addCue("DifficultyDisabled", "unitycues/tierGauntlet/cueDifficultyDisabled.png", Bounds.fromWidthHeight(455, 340, 190, 100)); // Greyed out TG Difficulty drop down
         addCue("SelectDifficulty", "unitycues/tierGauntlet/cueSelectDifficulty.png", Bounds.fromWidthHeight(575, 365, 70, 65)); // Difficulty arrow pointing down
+        addCue("Cost", "unitycues/tierGauntlet/cueCost.png", Bounds.fromWidthHeight(510, 150, 110, 95)); // T/G Cost combo box
+        addCue("CostDropDown", "unitycues/tierGauntlet/cueCostDropDown.png", Bounds.fromWidthHeight(270, 50, 265, 75)); // Cost selection window
+        addCue("DifficultyDropDown", "unitycues/tierGauntlet/cueDifficultyDropDown.png", Bounds.fromWidthHeight(280, 50, 245, 75)); // Difficulty text on top of difficulty selection.
         //endregion
 
         //region WB
