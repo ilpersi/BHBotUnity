@@ -466,7 +466,11 @@ public class BrowserManager {
         while (popupSeg == null) {
             if (Misc.getTime() > timeOut) {
                 BHBotUnity.logger.error("Error: unable to close popup <" + popup + "> securely: popup cue not detected!");
-                Misc.saveScreen("closePopupSecurely-popup-not-detected-" + popup.name, "errors", true, bot.browser.getImg());
+                BHBotUnity.logger.error(Misc.getStackTrace());
+                String fName = Misc.saveScreen("closePopupSecurely-popup-not-detected-" + popup.name, "errors", true, bot.browser.getImg());
+                if (fName != null) {
+                    Misc.saveTextFile(fName.substring(0, fName.length() - 4) + ".txt", Misc.getStackTrace());
+                }
                 return false;
             }
 
@@ -492,7 +496,10 @@ public class BrowserManager {
             if (Misc.getTime() > timeOut) {
                 BHBotUnity.logger.error("Error: unable to close popup <" + popup + "> securely: either close button < " + close + " > has not been detected or popup would not close!");
                 BHBotUnity.logger.error(Misc.getStackTrace());
-                Misc.saveScreen("closePopupSecurely-close-error-" + popup.name + "-" + close.name, "errors", true, bot.browser.getImg());
+                String fName = Misc.saveScreen("closePopupSecurely-close-error-" + popup.name + "-" + close.name, "errors", true, bot.browser.getImg());
+                if (fName != null) {
+                    Misc.saveTextFile(fName.substring(0, fName.length() - 4) + ".txt", Misc.getStackTrace());
+                }
                 return false;
             }
 
