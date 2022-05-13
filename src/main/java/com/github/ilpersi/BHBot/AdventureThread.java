@@ -2451,8 +2451,15 @@ public class AdventureThread implements Runnable {
                     bot.setState(BHBotUnity.State.RerunRaid);
                 } else {
 
+                    Bounds townBounds = switch (bot.getState()) {
+                        case Raid -> Bounds.fromWidthHeight(440, 455, 95, 50);
+                        case Dungeon -> Bounds.fromWidthHeight(340, 68, 128, 28);
+                        default -> null;
+                    };
+
                     //close 'cleared' popup
-                    bot.browser.closePopupSecurely(BHBotUnity.cues.get("ClearedRecap"), BHBotUnity.cues.get("Town"));
+                    Cue cueTown = new Cue(BHBotUnity.cues.get("Town"), townBounds);
+                    bot.browser.closePopupSecurely(BHBotUnity.cues.get("ClearedRecap"), cueTown);
 
                     // close the activity window to return us to the main screen
                     if (bot.getState() != BHBotUnity.State.Expedition) {
