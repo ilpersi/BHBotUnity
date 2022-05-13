@@ -870,7 +870,7 @@ public class AdventureThread implements Runnable {
                                 bot.browser.closePopupSecurely(dungeonAccept, dungeonAccept);
 
                                 if (dungeonSetting.solo) {
-                                    Cue yesGreen = new Cue(BHBotUnity.cues.get("YesGreen"), Bounds.fromWidthHeight(290, 330, 85, 60));
+                                    Cue yesGreen = new Cue(BHBotUnity.cues.get("YesGreen"), Bounds.fromWidthHeight(290, 335, 85, 55));
 
                                     if (!bot.browser.closePopupSecurely(BHBotUnity.cues.get("TeamNotFull"), yesGreen)) {
                                         BHBotUnity.logger.error("Impossible to find Yes button in Dungeon Team!");
@@ -2382,7 +2382,7 @@ public class AdventureThread implements Runnable {
                 } else BHBotUnity.logger.error("Merchant 'decline' cue not found");
 
                 bot.browser.readScreen(Misc.Durations.SECOND);
-                seg = MarvinSegment.fromCue(BHBotUnity.cues.get("YesGreen"), 5 * Misc.Durations.SECOND, Bounds.fromWidthHeight(300, 345, 65, 35), bot.browser);
+                seg = MarvinSegment.fromCue(BHBotUnity.cues.get("YesGreen"), 5 * Misc.Durations.SECOND, Bounds.fromWidthHeight(290, 330, 85, 60), bot.browser);
                 if (seg != null) {
                     bot.browser.clickOnSeg(seg);
                 } else BHBotUnity.logger.error("Merchant 'yes' cue not found");
