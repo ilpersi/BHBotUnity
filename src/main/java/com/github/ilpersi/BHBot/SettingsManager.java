@@ -121,7 +121,7 @@ public class SettingsManager {
                     } else {
                         BHBotUnity.logger.debug(String.format("Impossible to find %s at bar position %d", setting.cueName, setting.barPosition));
                         String imgName = "no_%s_pos_%d".formatted(setting.cueName, setting.barPosition);
-                        Misc.saveScreen(imgName, "errors", true, bot.browser.getImg());
+                        Misc.saveScreen(imgName, "errors/settingsManager", true, bot.browser.getImg());
                     }
                 }
 
