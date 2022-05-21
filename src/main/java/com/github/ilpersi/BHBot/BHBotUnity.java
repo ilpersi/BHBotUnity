@@ -421,13 +421,23 @@ public class BHBotUnity {
                 }
 
                 if ("reload".equals(params[1])) {
+                    String reloadPathStr;
                     if (params.length < 3) {
-                        logger.error("No relative path has been specified.");
+                        reloadPathStr = "src/main/resources/unitycues/";
+                        File defaultCuePath = new File(reloadPathStr);
+                        if (defaultCuePath.exists()) {
+                            logger.debug("No relative path has been specified, defaulting to: " + defaultCuePath.getAbsolutePath());
+                        } else {
+                            logger.error("No relative path has been specified and default cue path is not present.");
+                            break;
+                        }
+                    } else {
+                        reloadPathStr = params[2];
                     }
 
-                    cues.reloadFromDisk(params[2]);
+                    cues.reloadFromDisk(reloadPathStr);
 
-                    BHBotUnity.logger.info("Reloaded Cues from " + params[2]);
+                    BHBotUnity.logger.info("Reloaded Cues from " + reloadPathStr);
                 }
 
                 break;
