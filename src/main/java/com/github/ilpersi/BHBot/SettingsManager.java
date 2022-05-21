@@ -41,11 +41,11 @@ public class SettingsManager {
     void checkBotSettings() {
         if (openSettings(Misc.Durations.SECOND)) {
 
-            final Bounds scrollAtBottomBounds = Bounds.fromWidthHeight(605, 355, 35, 45);
+            // final Bounds scrollAtBottomBounds = Bounds.fromWidthHeight(605, 355, 35, 45);
             final Bounds downArrowBounds = Bounds.fromWidthHeight(614, 375, 18, 19);
             final Bounds settingsArea = Bounds.fromWidthHeight(162, 162, 449, 259);
 
-            final Cue scrollAtBottomCue = new Cue(BHBotUnity.cues.get("ScrollerAtBottomSettings"), scrollAtBottomBounds);
+            // final Cue scrollAtBottomCue = new Cue(BHBotUnity.cues.get("ScrollerAtBottomSettings"), scrollAtBottomBounds);
             final Cue downArrowCue = new Cue(BHBotUnity.cues.get("DropDownDown"), downArrowBounds);
 
             MarvinSegment downArrowSeg = MarvinSegment.fromCue(downArrowCue, Misc.Durations.SECOND, bot.browser);
@@ -71,7 +71,6 @@ public class SettingsManager {
 
             HashSet<String> alreadyFound = new HashSet<>();
 
-            MarvinSegment bottomSeg;
             int menuPos = 1;
 
             // we search for all the setting in all bar positions (so we don't hard code positions)
@@ -121,6 +120,8 @@ public class SettingsManager {
                         alreadyFound.add(setting.cueName);
                     } else {
                         BHBotUnity.logger.debug(String.format("Impossible to find %s at bar position %d", setting.cueName, setting.barPosition));
+                        String imgName = "no_%s_pos_%d".formatted(setting.cueName, setting.barPosition);
+                        Misc.saveScreen(imgName, "errors", true, bot.browser.getImg());
                     }
                 }
 
