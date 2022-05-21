@@ -2452,12 +2452,12 @@ public class AdventureThread implements Runnable {
                 } else {
 
                     Bounds townBounds = switch (bot.getState()) {
-                        case Raid -> Bounds.fromWidthHeight(440, 455, 95, 50);
-                        case Dungeon -> Bounds.fromWidthHeight(340, 68, 128, 28);
+                        case Raid, Dungeon -> Bounds.fromWidthHeight(440, 455, 95, 50);
                         default -> null;
                     };
 
                     //close 'cleared' popup
+                    bot.browser.readScreen(Misc.Durations.SECOND); // The pop-up is bouncing let's wait for it to stabilize
                     Cue cueTown = new Cue(BHBotUnity.cues.get("Town"), townBounds);
                     bot.browser.closePopupSecurely(BHBotUnity.cues.get("ClearedRecap"), cueTown);
 
