@@ -451,6 +451,8 @@ public class CueBuilder {
                 Set.of(), Set.of(), "LegendaryFamiliar", "unitycues/familiarEncounter/type/cue04LegendaryFamiliar.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/familiarEncounter", "you_currently_own_(.*)\\.png", null,
                 Set.of(), Set.of(), "YouCurrentlyOwn", "unitycues/familiarEncounter/cueYouCurrentlyOwn.png", "You currently own text in familiar encounters");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/familiarEncounter", "capture_success_(.*)\\.png", null,
+                Set.of(), Set.of(), "CaptureSuccess", "unitycues/familiarEncounter/cueCaptureSuccess.png", "Capture Successful text in familiar encounters");
         //endregion
 
         //region Merchant

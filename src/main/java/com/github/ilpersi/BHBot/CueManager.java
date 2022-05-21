@@ -619,6 +619,7 @@ class CueManager {
         addCue("Bribe", "unitycues/familiarEncounter/cueBribe.png", Bounds.fromWidthHeight(540, 315, 120, 55));
         addCue("DeclineRed", "unitycues/familiarEncounter/cueDeclineRed.png", Bounds.fromWidthHeight(240, 430, 135, 50)); // decline persuation attempts
         addCue("YouCurrentlyOwn", "unitycues/familiarEncounter/cueYouCurrentlyOwn.png", Bounds.fromWidthHeight(135, 395, 275, 40)); // You currently own text in familiar encounters
+        addCue("CaptureSuccess", "unitycues/familiarEncounter/cueCaptureSuccess.png", null); // Capture Successful text in familiar encounters
         //endregion Familiar encounters
         //region Familiar bribing cues
         addCue("RareFamiliar", "unitycues/familiarEncounter/type/cue02RareFamiliar.png", Bounds.fromWidthHeight(527, 261, 158, 59)); // Rare Bribe cue

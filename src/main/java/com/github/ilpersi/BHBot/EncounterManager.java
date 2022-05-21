@@ -6,10 +6,8 @@ import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 public final class EncounterManager {
     static HashMap<String, FamiliarDetails> famMD5Table = new HashMap<>();
@@ -183,6 +181,17 @@ public final class EncounterManager {
     }
 
     /**
+     * Make sure that the successful capture screen is correctly closed
+     */
+    private void closeCaptureScreen() {
+        MarvinSegment seg = MarvinSegment.fromCue("CaptureSuccess", Misc.Durations.SECOND * 3, null);
+
+        if (seg != null) {
+            bot.browser.closePopupSecurely(BHBotUnity.cues.get("CaptureSuccess"), BHBotUnity.cues.get("Close"));
+        }
+    }
+
+    /**
      * Will verify if in the current persuasion screen one of the bribeNames is present
      */
     private BribeSettings verifyBribeNames(FamiliarType familiarLevel) {
@@ -262,6 +271,8 @@ public final class EncounterManager {
             return true;
         }
 
+        closeCaptureScreen();
+
         return false;
     }
 
@@ -287,6 +298,9 @@ public final class EncounterManager {
                 BHBotUnity.logger.error("Impossible to find the YesGreen button in persuadeFamiliar");
             }
         }
+
+        closeCaptureScreen();
+
         return false;
     }
 
@@ -401,6 +415,7 @@ public final class EncounterManager {
      */
     static void buildMD5() {
 
+        //TODO Move familiar signatures to an external JSON file
         //region Familiars MD5 Values
         //region COMMON familiars
         EncounterManager.famMD5Table.put("UNPCHOxJynGzDrS2PbfO4Q==", new FamiliarDetails("Batty", FamiliarType.COMMON));
@@ -499,7 +514,13 @@ public final class EncounterManager {
 
         //endregion
 
-        BHBotUnity.logger.debug(MessageFormat.format("Loaded {0} familiars MD5 hashes.", EncounterManager.famMD5Table.size()));
+        Set<String> uniqueFamiliars = new TreeSet<>();
+        for (Map.Entry<String, EncounterManager.FamiliarDetails> familiarEntry: EncounterManager.famMD5Table.entrySet()) {
+            uniqueFamiliars.add(familiarEntry.getValue().name());
+        }
+
+        BHBotUnity.logger.debug(MessageFormat.format("Loaded {0} familiars MD5 hashes for a total of {1} familiars.",
+                EncounterManager.famMD5Table.size(), uniqueFamiliars.size()));
     }
 
     /**
