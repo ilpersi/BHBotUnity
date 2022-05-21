@@ -43,9 +43,12 @@ public class Misc {
         // sub-folder logic management
         String screenshotPath = BHBotUnity.screenshotPath;
         if (subFolder != null) {
-            File subFolderPath = new File(BHBotUnity.screenshotPath + subFolder + "/");
+            String fullPathName = BHBotUnity.screenshotPath + subFolder;
+            if (!fullPathName.endsWith("/")) fullPathName += "/";
+
+            File subFolderPath = new File(fullPathName);
             if (!subFolderPath.exists()) {
-                if (!subFolderPath.mkdir()) {
+                if (!subFolderPath.mkdirs()) {
                     BHBotUnity.logger.error("Impossible to create screenshot sub folder in " + subFolder);
                     return null;
                 } else {
