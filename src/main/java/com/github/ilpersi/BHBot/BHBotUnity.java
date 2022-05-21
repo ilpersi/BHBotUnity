@@ -751,6 +751,9 @@ public class BHBotUnity {
                     BHBotUnity.logger.error("It was impossible to reset ini file: " + Settings.configurationFile);
                 }
                 break;
+            case "resetsignatures":
+                adventure.dungSignatures.resetSignatures();
+                break;
             case "restart":
                 adventure.restart(false);
                 break;

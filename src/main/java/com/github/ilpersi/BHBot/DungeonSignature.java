@@ -84,7 +84,7 @@ public class DungeonSignature {
         final int CLICK_DELAY = 500;
 
         // We reset the signature hashmap
-        this.zoneSignatures.clear();
+        // this.zoneSignatures.clear();
 
         // We make sure the dungeon window is opened
         MarvinSegment seg = MarvinSegment.fromCue(BHBotUnity.cues.get("DungeonZones"), bot.browser);
@@ -97,6 +97,7 @@ public class DungeonSignature {
         seg = MarvinSegment.fromCue(BHBotUnity.cues.get("LeftArrow"), bot.browser);
         while (seg != null) {
             bot.browser.clickOnSeg(seg);
+            bot.browser.readScreen(250);
             seg = MarvinSegment.fromCue(BHBotUnity.cues.get("LeftArrow"), bot.browser);
         }
 
@@ -197,5 +198,9 @@ public class DungeonSignature {
                 }
             }
         }
+    }
+
+    void resetSignatures() {
+        this.zoneSignatures.clear();
     }
 }
