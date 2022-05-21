@@ -119,20 +119,10 @@ public class AdventureThread implements Runnable {
 
     static void printFamiliars() {
 
-        List<String> folders = new ArrayList<>();
-        folders.add("cues/familiars/01 Common");
-        folders.add("cues/familiars/02 Rare");
-        folders.add("cues/familiars/03 Epic");
-        folders.add("cues/familiars/04 Legendary");
-
         Set<String> uniqueFamiliars = new TreeSet<>();
 
-        for (String cuesPath : folders) {
-            ArrayList<CueManager.CueDetails> famDetails = CueManager.getCueDetailsFromPath(cuesPath);
-
-            for (CueManager.CueDetails details : famDetails) {
-                uniqueFamiliars.add(details.name.toLowerCase());
-            }
+        for (Map.Entry<String, EncounterManager.FamiliarDetails> familiarEntry: EncounterManager.famMD5Table.entrySet()) {
+            uniqueFamiliars.add(familiarEntry.getValue().name());
         }
 
         StringBuilder familiarString = new StringBuilder();

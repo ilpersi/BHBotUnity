@@ -505,12 +505,6 @@ class CueManager {
         addCue("Expedition_Rewards", "cues/weeklyrewards/expedition.png", new Bounds(290, 130, 510, 160));
         addCue("Fishing_Rewards", "cues/weeklyrewards/fishing.png", new Bounds(290, 130, 510, 160));
 
-        int newFamCnt = loadCueFolder("cues/familiars/01 Common", null, false, new Bounds(145, 50, 575, 125));
-        newFamCnt += loadCueFolder("cues/familiars/02 Rare", null, false, new Bounds(145, 50, 575, 125));
-        newFamCnt += loadCueFolder("cues/familiars/03 Epic", null, false, new Bounds(145, 50, 575, 125));
-        newFamCnt += loadCueFolder("cues/familiars/04 Legendary", null, false, new Bounds(145, 50, 575, 125));
-        BHBotUnity.logger.debug("Found " + newFamCnt + " familiar cues.");
-
         // We build Unity Cues on top of the standard ones
         updateUnityCues();
     }
@@ -625,21 +619,14 @@ class CueManager {
         addCue("Bribe", "unitycues/familiarEncounter/cueBribe.png", Bounds.fromWidthHeight(540, 315, 120, 55));
         addCue("DeclineRed", "unitycues/familiarEncounter/cueDeclineRed.png", Bounds.fromWidthHeight(240, 430, 135, 50)); // decline persuation attempts
         addCue("YouCurrentlyOwn", "unitycues/familiarEncounter/cueYouCurrentlyOwn.png", Bounds.fromWidthHeight(135, 395, 275, 40)); // You currently own text in familiar encounters
-        //endregion
+        //endregion Familiar encounters
         //region Familiar bribing cues
         addCue("RareFamiliar", "unitycues/familiarEncounter/type/cue02RareFamiliar.png", Bounds.fromWidthHeight(527, 261, 158, 59)); // Rare Bribe cue
         addCue("CommonFamiliar", "unitycues/familiarEncounter/type/cue01CommonFamiliar.png", Bounds.fromWidthHeight(527, 261, 158, 59)); // Common Bribe cue
         addCue("EpicFamiliar", "unitycues/familiarEncounter/type/cue03EpicFamiliar.png", Bounds.fromWidthHeight(525, 265, 150, 55));
         addCue("LegendaryFamiliar", "unitycues/familiarEncounter/type/cue04LegendaryFamiliar.png", Bounds.fromWidthHeight(525, 265, 150, 55));
-        //endregion
-        //region Familiar folders
-        int newFamCnt = loadCueFolder("unitycues/familiarEncounter/01 Common", null, false, new Bounds(145, 50, 575, 125));
-        newFamCnt += loadCueFolder("unitycues/familiarEncounter/02 Rare", null, false, new Bounds(145, 50, 575, 125));
-        newFamCnt += loadCueFolder("unitycues/familiarEncounter/03 Epic", null, false, new Bounds(145, 50, 575, 125));
-        newFamCnt += loadCueFolder("unitycues/familiarEncounter/04 Legendary", null, false, new Bounds(145, 50, 575, 125));
-        BHBotUnity.logger.debug("Found " + newFamCnt + " Unity familiar cues.");
-        //endregion
-        //endregion
+        //endregion Familiar bribing cues
+        //endregion Familiar
 
         //region Merchant
         addCue("Merchant", "unitycues/merchant/cueMerchant.png", Bounds.fromWidthHeight(300, 105, 200, 70)); // cue for merchant dialog/popup
