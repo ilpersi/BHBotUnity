@@ -68,25 +68,13 @@ public final class EncounterManager {
 
     }
 
-    static class BribeSettings {
-        String familiarName;
-        int toBribeCnt;
-
+    record BribeSettings(String familiarName, int toBribeCnt){
         BribeSettings() {
-            this.familiarName = "";
-            this.toBribeCnt = 0;
+            this("", 0);
         }
     }
 
-    static class FamiliarDetails {
-        String name;
-        FamiliarType type;
-
-        FamiliarDetails(String familiarName, FamiliarType familiarType) {
-            this.name = familiarName;
-            this.type = familiarType;
-        }
-    }
+    record FamiliarDetails(String name, FamiliarType type){}
 
     void processFamiliarEncounter() {
         MarvinSegment seg;
@@ -220,8 +208,7 @@ public final class EncounterManager {
                 if (familiarName.equals(encounterDetails.name.toLowerCase())) {
                     if (toBribeCnt > 0) {
                         BHBotUnity.logger.autobribe(MessageFormat.format("Detected familiar {0} as valid in familiars", familiarDetails));
-                        result.toBribeCnt = toBribeCnt;
-                        result.familiarName = familiarName;
+                        result = new BribeSettings(familiarName, toBribeCnt);
                         break;
                     } else {
                         BHBotUnity.logger.warn(MessageFormat.format("Count for familiar {0} is 0! Temporary removing it form the settings...", familiarName));
