@@ -2699,6 +2699,9 @@ public class AdventureThread implements Runnable {
                 return;
             }
 
+            // If tips are enabled we make sure that the dialog is correctly closed
+            detectCharacterDialogAndHandleIt();
+
             if (bot.getState() != BHBotUnity.State.Expedition) {
 
                 Bounds xBounds = switch (bot.getState()) {
