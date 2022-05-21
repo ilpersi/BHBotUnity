@@ -173,20 +173,12 @@ class CueManager {
                     return cueDetails;
                 }
 
-                JarFile jar = null;
+                JarFile jar;
                 try {
                     jar = new JarFile(decodedURL);
                 } catch (IOException e) {
                     BHBotUnity.logger.error("Impossible to open JAR file : " + decodedURL, e);
                     return cueDetails;
-                } finally {
-                    if (jar != null) {
-                        try {
-                            jar.close();
-                        } catch (IOException e) {
-                            BHBotUnity.logger.warn("Impossible to close JarFile", e);
-                        }
-                    }
                 }
 
                 Enumeration<JarEntry> entries = jar.entries();
@@ -224,6 +216,12 @@ class CueManager {
                             cueDetails.add(details);
                         }
                     }
+                }
+
+                try {
+                    jar.close();
+                } catch (IOException e) {
+                    BHBotUnity.logger.warn("Impossible to close JarFile", e);
                 }
 
             }
