@@ -173,12 +173,20 @@ class CueManager {
                     return cueDetails;
                 }
 
-                JarFile jar;
+                JarFile jar = null;
                 try {
                     jar = new JarFile(decodedURL);
                 } catch (IOException e) {
                     BHBotUnity.logger.error("Impossible to open JAR file : " + decodedURL, e);
                     return cueDetails;
+                } finally {
+                    if (jar != null) {
+                        try {
+                            jar.close();
+                        } catch (IOException e) {
+                            BHBotUnity.logger.warn("Impossible to close JarFile", e);
+                        }
+                    }
                 }
 
                 Enumeration<JarEntry> entries = jar.entries();
@@ -961,7 +969,7 @@ class CueManager {
         }
 
         loadedCues.clear();
-        addedCues = newAddedCues;
+        addedCues = new HashMap<>(newAddedCues); // Shallow copy
     }
 
 }
