@@ -670,31 +670,18 @@ class CueManager {
         addCue("tg_diff_range_16_hyphen", "unitycues/numbers/tgDiffRange16/tg_diff_range_16_hyphen.png", null);
         //endregion TG Difficulty range 16px
 
-        // region TG Main Window Difficulty 10px
-        addCue("tg_diff_win_10_0", "unitycues/numbers/tgDiffWindow10/tg_diff_win_10_0.png", null);
-        addCue("tg_diff_win_10_1", "unitycues/numbers/tgDiffWindow10/tg_diff_win_10_1.png", null);
-        addCue("tg_diff_win_10_2", "unitycues/numbers/tgDiffWindow10/tg_diff_win_10_2.png", null);
-        addCue("tg_diff_win_10_3", "unitycues/numbers/tgDiffWindow10/tg_diff_win_10_3.png", null);
-        addCue("tg_diff_win_10_4", "unitycues/numbers/tgDiffWindow10/tg_diff_win_10_4.png", null);
-        addCue("tg_diff_win_10_5", "unitycues/numbers/tgDiffWindow10/tg_diff_win_10_5.png", null);
-        addCue("tg_diff_win_10_6", "unitycues/numbers/tgDiffWindow10/tg_diff_win_10_6.png", null);
-        addCue("tg_diff_win_10_7", "unitycues/numbers/tgDiffWindow10/tg_diff_win_10_7.png", null);
-        addCue("tg_diff_win_10_8", "unitycues/numbers/tgDiffWindow10/tg_diff_win_10_8.png", null);
-        addCue("tg_diff_win_10_9", "unitycues/numbers/tgDiffWindow10/tg_diff_win_10_9.png", null);
-        // endregion TG Main Window Difficulty 10px
-
-        // region TG Main Window Difficulty 11px
-        addCue("tg_diff_win_11_0", "unitycues/numbers/tgDiffWindow11/tg_diff_win_11_0.png", null);
-        addCue("tg_diff_win_11_1", "unitycues/numbers/tgDiffWindow11/tg_diff_win_11_1.png", null);
-        addCue("tg_diff_win_11_2", "unitycues/numbers/tgDiffWindow11/tg_diff_win_11_2.png", null);
-        addCue("tg_diff_win_11_3", "unitycues/numbers/tgDiffWindow11/tg_diff_win_11_3.png", null);
-        addCue("tg_diff_win_11_4", "unitycues/numbers/tgDiffWindow11/tg_diff_win_11_4.png", null);
-        addCue("tg_diff_win_11_5", "unitycues/numbers/tgDiffWindow11/tg_diff_win_11_5.png", null);
-        addCue("tg_diff_win_11_6", "unitycues/numbers/tgDiffWindow11/tg_diff_win_11_6.png", null);
-        addCue("tg_diff_win_11_7", "unitycues/numbers/tgDiffWindow11/tg_diff_win_11_7.png", null);
-        addCue("tg_diff_win_11_8", "unitycues/numbers/tgDiffWindow11/tg_diff_win_11_8.png", null);
-        addCue("tg_diff_win_11_9", "unitycues/numbers/tgDiffWindow11/tg_diff_win_11_9.png", null);
-        // endregion TG Main Window Difficulty 11px
+        // region TG Main Window Difficulty & Cost 11px
+        addCue("tg_diff_cost_win_11_0", "unitycues/numbers/tgDiffCostWindow11/tg_diff_cost_win_11_0.png", null);
+        addCue("tg_diff_cost_win_11_1", "unitycues/numbers/tgDiffCostWindow11/tg_diff_cost_win_11_1.png", null);
+        addCue("tg_diff_cost_win_11_2", "unitycues/numbers/tgDiffCostWindow11/tg_diff_cost_win_11_2.png", null);
+        addCue("tg_diff_cost_win_11_3", "unitycues/numbers/tgDiffCostWindow11/tg_diff_cost_win_11_3.png", null);
+        addCue("tg_diff_cost_win_11_4", "unitycues/numbers/tgDiffCostWindow11/tg_diff_cost_win_11_4.png", null);
+        addCue("tg_diff_cost_win_11_5", "unitycues/numbers/tgDiffCostWindow11/tg_diff_cost_win_11_5.png", null);
+        addCue("tg_diff_cost_win_11_6", "unitycues/numbers/tgDiffCostWindow11/tg_diff_cost_win_11_6.png", null);
+        addCue("tg_diff_cost_win_11_7", "unitycues/numbers/tgDiffCostWindow11/tg_diff_cost_win_11_7.png", null);
+        addCue("tg_diff_cost_win_11_8", "unitycues/numbers/tgDiffCostWindow11/tg_diff_cost_win_11_8.png", null);
+        addCue("tg_diff_cost_win_11_9", "unitycues/numbers/tgDiffCostWindow11/tg_diff_cost_win_11_9.png", null);
+        // endregion TG Main Window Difficulty & Cost 11px
 
         // region WB Player TS
         addCue("wb_player_ts_0", "unitycues/numbers/wbPlayerTS/wb_player_ts_0.png", null);

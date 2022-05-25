@@ -522,51 +522,28 @@ public class CueBuilder {
                 Set.of(), Set.of(), "tg_diff_range_16_hyphen", "unitycues/numbers/tgDiffRange16/tg_diff_range_16_hyphen.png", "TG Difficulty range 16px hyphen");
         //endregion TG Difficulty range 16px
 
-        //region TG Main Window Difficulty 10px
-        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/tgDiffWindow10", "tg_diff_win_10_0(.*)\\.png", null,
-                 Set.of(), Set.of(), "tg_diff_win_10_0", "unitycues/numbers/tgDiffWindow10/tg_diff_win_10_0.png", "TG Main Window Difficulty 10px 0");
-        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/tgDiffWindow10", "tg_diff_win_10_1(.*)\\.png", null,
-                Set.of(), Set.of(), "tg_diff_win_10_1", "unitycues/numbers/tgDiffWindow10/tg_diff_win_10_1.png", "TG Main Window Difficulty 10px 1");
-        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/tgDiffWindow10", "tg_diff_win_10_2(.*)\\.png", null,
-                Set.of(), Set.of(), "tg_diff_win_10_2", "unitycues/numbers/tgDiffWindow10/tg_diff_win_10_2.png", "TG Main Window Difficulty 10px 2");
-        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/tgDiffWindow10", "tg_diff_win_10_3(.*)\\.png", null,
-                Set.of(), Set.of(), "tg_diff_win_10_3", "unitycues/numbers/tgDiffWindow10/tg_diff_win_10_3.png", "TG Main Window Difficulty 10px 3");
-        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/tgDiffWindow10", "tg_diff_win_10_4(.*)\\.png", null,
-                Set.of(), Set.of(), "tg_diff_win_10_4", "unitycues/numbers/tgDiffWindow10/tg_diff_win_10_4.png", "TG Main Window Difficulty 10px 4");
-        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/tgDiffWindow10", "tg_diff_win_10_5(.*)\\.png", null,
-                Set.of(), Set.of(), "tg_diff_win_10_5", "unitycues/numbers/tgDiffWindow10/tg_diff_win_10_5.png", "TG Main Window Difficulty 10px 5");
-        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/tgDiffWindow10", "tg_diff_win_10_6(.*)\\.png", null,
-                Set.of(), Set.of(), "tg_diff_win_10_6", "unitycues/numbers/tgDiffWindow10/tg_diff_win_10_6.png", "TG Main Window Difficulty 10px 6");
-        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/tgDiffWindow10", "tg_diff_win_10_7(.*)\\.png", null,
-                Set.of(), Set.of(), "tg_diff_win_10_7", "unitycues/numbers/tgDiffWindow10/tg_diff_win_10_7.png", "TG Main Window Difficulty 10px 7");
-        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/tgDiffWindow10", "tg_diff_win_10_8(.*)\\.png", null,
-                Set.of(), Set.of(), "tg_diff_win_10_8", "unitycues/numbers/tgDiffWindow10/tg_diff_win_10_8.png", "TG Main Window Difficulty 10px 8");
-        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/tgDiffWindow10", "tg_diff_win_10_9(.*)\\.png", null,
-                Set.of(), Set.of(), "tg_diff_win_10_9", "unitycues/numbers/tgDiffWindow10/tg_diff_win_10_9.png", "TG Main Window Difficulty 10px 9");
-        //endregion TG Main Window Difficulty 10px
-
-        //region TG Main Window Difficulty 11px
-        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/tgDiffWindow11", "tg_diff_win_11_0(.*)\\.png", null,
-                Set.of(), Set.of(), "tg_diff_win_11_0", "unitycues/numbers/tgDiffWindow11/tg_diff_win_11_0.png", "TG Main Window Difficulty 11px 0");
-        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/tgDiffWindow11", "tg_diff_win_11_1(.*)\\.png", null,
-                Set.of(), Set.of(), "tg_diff_win_11_1", "unitycues/numbers/tgDiffWindow11/tg_diff_win_11_1.png", "TG Main Window Difficulty 11px 1");
-        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/tgDiffWindow11", "tg_diff_win_11_2(.*)\\.png", null,
-                Set.of(), Set.of(), "tg_diff_win_11_2", "unitycues/numbers/tgDiffWindow11/tg_diff_win_11_2.png", "TG Main Window Difficulty 11px 2");
-        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/tgDiffWindow11", "tg_diff_win_11_3(.*)\\.png", null,
-                Set.of(), Set.of(), "tg_diff_win_11_3", "unitycues/numbers/tgDiffWindow11/tg_diff_win_11_3.png", "TG Main Window Difficulty 11px 3");
-        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/tgDiffWindow11", "tg_diff_win_11_4(.*)\\.png", null,
-                Set.of(), Set.of(), "tg_diff_win_11_4", "unitycues/numbers/tgDiffWindow11/tg_diff_win_11_4.png", "TG Main Window Difficulty 11px 4");
-        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/tgDiffWindow11", "tg_diff_win_11_5(.*)\\.png", null,
-                Set.of(), Set.of(), "tg_diff_win_11_5", "unitycues/numbers/tgDiffWindow11/tg_diff_win_11_5.png", "TG Main Window Difficulty 11px 5");
-        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/tgDiffWindow11", "tg_diff_win_11_6(.*)\\.png", null,
-                Set.of(), Set.of(), "tg_diff_win_11_6", "unitycues/numbers/tgDiffWindow11/tg_diff_win_11_6.png", "TG Main Window Difficulty 11px 6");
-        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/tgDiffWindow11", "tg_diff_win_11_7(.*)\\.png", null,
-                Set.of(), Set.of(), "tg_diff_win_11_7", "unitycues/numbers/tgDiffWindow11/tg_diff_win_11_7.png", "TG Main Window Difficulty 11px 7");
-        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/tgDiffWindow11", "tg_diff_win_11_8(.*)\\.png", null,
-                Set.of(), Set.of(), "tg_diff_win_11_8", "unitycues/numbers/tgDiffWindow11/tg_diff_win_11_8.png", "TG Main Window Difficulty 11px 8");
-        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/tgDiffWindow11", "tg_diff_win_11_9(.*)\\.png", null,
-                Set.of(), Set.of(), "tg_diff_win_11_9", "unitycues/numbers/tgDiffWindow11/tg_diff_win_11_9.png", "TG Main Window Difficulty 11px 9");
-        //endregion TG Main Window Difficulty 11px
+        //region TG Main Window Difficulty & Cost 11px
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/tgDiffCostWindow11", "tg_diff_cost_win_11_0(.*)\\.png", null,
+                Set.of(), Set.of(), "tg_diff_cost_win_11_0", "unitycues/numbers/tgDiffCostWindow11/tg_diff_cost_win_11_0.png", "TG Main Window Difficulty & Cost 11px 0");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/tgDiffCostWindow11", "tg_diff_cost_win_11_1(.*)\\.png", null,
+                Set.of(), Set.of(), "tg_diff_cost_win_11_1", "unitycues/numbers/tgDiffCostWindow11/tg_diff_cost_win_11_1.png", "TG Main Window Difficulty & Cost 11px 1");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/tgDiffCostWindow11", "tg_diff_cost_win_11_2(.*)\\.png", null,
+                Set.of(), Set.of(), "tg_diff_cost_win_11_2", "unitycues/numbers/tgDiffCostWindow11/tg_diff_cost_win_11_2.png", "TG Main Window Difficulty & Cost 11px 2");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/tgDiffCostWindow11", "tg_diff_cost_win_11_3(.*)\\.png", null,
+                Set.of(), Set.of(), "tg_diff_cost_win_11_3", "unitycues/numbers/tgDiffCostWindow11/tg_diff_cost_win_11_3.png", "TG Main Window Difficulty & Cost 11px 3");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/tgDiffCostWindow11", "tg_diff_cost_win_11_4(.*)\\.png", null,
+                Set.of(), Set.of(), "tg_diff_cost_win_11_4", "unitycues/numbers/tgDiffCostWindow11/tg_diff_cost_win_11_4.png", "TG Main Window Difficulty & Cost 11px 4");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/tgDiffCostWindow11", "tg_diff_cost_win_11_5(.*)\\.png", null,
+                Set.of(), Set.of(), "tg_diff_cost_win_11_5", "unitycues/numbers/tgDiffCostWindow11/tg_diff_cost_win_11_5.png", "TG Main Window Difficulty & Cost 11px 5");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/tgDiffCostWindow11", "tg_diff_cost_win_11_6(.*)\\.png", null,
+                Set.of(), Set.of(), "tg_diff_cost_win_11_6", "unitycues/numbers/tgDiffCostWindow11/tg_diff_cost_win_11_6.png", "TG Main Window Difficulty & Cost 11px 6");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/tgDiffCostWindow11", "tg_diff_cost_win_11_7(.*)\\.png", null,
+                Set.of(), Set.of(), "tg_diff_cost_win_11_7", "unitycues/numbers/tgDiffCostWindow11/tg_diff_cost_win_11_7.png", "TG Main Window Difficulty & Cost 11px 7");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/tgDiffCostWindow11", "tg_diff_cost_win_11_8(.*)\\.png", null,
+                Set.of(), Set.of(), "tg_diff_cost_win_11_8", "unitycues/numbers/tgDiffCostWindow11/tg_diff_cost_win_11_8.png", "TG Main Window Difficulty & Cost 11px 8");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/tgDiffCostWindow11", "tg_diff_cost_win_11_9(.*)\\.png", null,
+                Set.of(), Set.of(), "tg_diff_cost_win_11_9", "unitycues/numbers/tgDiffCostWindow11/tg_diff_cost_win_11_9.png", "TG Main Window Difficulty & Cost 11px 9");
+        //endregion TG Main Window Difficulty & Cost 11px
 
         //region WB Player TS
         addCueLocatorByPattern(cueLocators, "cuebuilder/numbers/wbPlayerTS", "wb_player_ts_0(.*)\\.png", null,

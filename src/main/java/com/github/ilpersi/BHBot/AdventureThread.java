@@ -3893,7 +3893,7 @@ public class AdventureThread implements Runnable {
         if (logEmptyResults && (nums.size() == 0 || result == 0)) {
             BHBotUnity.logger.debug(Misc.getStackTrace());
             BHBotUnity.logger.debug("Empty number from readNumFromImg im = " + im + ", numberPrefix = " + numberPrefix + ", intToSkip = " + intToSkip);
-            Misc.saveScreen("readNumFromImg-empty", "debug", true, im);
+            Misc.saveScreen("readNumFromImg-empty", "debug/readNumFromImg", true, im);
         }
 
         return result;
@@ -3966,9 +3966,6 @@ public class AdventureThread implements Runnable {
      * @return 0 in case of an error, or the selected difficulty level instead.
      */
     int detectDifficulty(Cue difficulty) {
-        final HashMap<Integer, String> readMaps = new HashMap<>();
-        readMaps.put(254, "tg_diff_win_11_");
-        readMaps.put(255, "tg_diff_win_10_");
 
         bot.browser.readScreen(2 * Misc.Durations.SECOND); // note that sometimes the cue will be gray (disabled) since the game is fetching data from the server - in that case we'll have to wait a bit
 
@@ -3990,25 +3987,14 @@ public class AdventureThread implements Runnable {
         // We get the  region with the difficulty number
         BufferedImage numImg = bot.browser.getImg().getSubimage(seg.x1 + 26, seg.y1 + 32, 70, 25);
 
-        int result = 0;
+        // We transform it in B&W using available customMax
+        MarvinImage im = new MarvinImage(numImg, "PNG");
+        im.toBlackWhite(110);
+        im.update();
 
-        for (Map.Entry<Integer, String> readMap: readMaps.entrySet()) {
-            int customMax = readMap.getKey();
-            String numberPrefix = readMap.getValue();
+        BufferedImage imb = im.getBufferedImage();
 
-            // We transform it in B&W using available customMax
-            MarvinImage im = new MarvinImage(numImg, "PNG");
-            im.toBlackWhite(new Color(25, 25, 25), new Color(255, 255, 255), customMax);
-            im.update();
-
-            BufferedImage imb = im.getBufferedImage();
-
-            result = readNumFromImg(imb, numberPrefix, Set.of(), false, false);
-
-            if (result != 0) break;
-        }
-
-        return result;
+        return readNumFromImg(imb, "tg_diff_cost_win_11_", Set.of(), false, false);
     }
 
     /* World boss reading and changing section */
@@ -4565,31 +4551,18 @@ public class AdventureThread implements Runnable {
 
         final int xOffset = 3, yOffset = 41, w = 31, h = 22;
 
-        final HashMap<Integer, String> readMaps = new HashMap<>();
-        readMaps.put(255, "tg_diff_win_10_");
-        readMaps.put(254, "tg_diff_win_11_");
 
         // We get the  region with the cost number
         BufferedImage numImg = bot.browser.getImg().getSubimage(seg.x1 + xOffset, seg.y1 + yOffset, w, h);
 
-        int result = 0;
-        for (Map.Entry<Integer, String> readMap: readMaps.entrySet()) {
-            int customMax = readMap.getKey();
-            String numberPrefix = readMap.getValue();
+        // We transform it in B&W using available customMax
+        MarvinImage im = new MarvinImage(numImg, "PNG");
+        im.toBlackWhite(110);
+        im.update();
 
-            // We transform it in B&W using available customMax
-            MarvinImage im = new MarvinImage(numImg, "PNG");
-            im.toBlackWhite(new Color(25, 25, 25), new Color(255, 255, 255), customMax);
-            im.update();
+        BufferedImage imb = im.getBufferedImage();
 
-            BufferedImage imb = im.getBufferedImage();
-
-            result = readNumFromImg(imb, numberPrefix, Set.of(0, 6, 7, 8, 9), false, false);
-
-            if (result != 0) break;
-        }
-
-        return result;
+        return readNumFromImg(imb, "tg_diff_cost_win_11_", Set.of(0, 6, 7, 8, 9), false, false);
     }
 
     /**
@@ -5760,15 +5733,9 @@ public class AdventureThread implements Runnable {
      *
      * @return The found difficulty number.
      */
-    int debugTGDifficulty() {
+    int debugDifficulty() {
         // Check the conversion parameters are correct
-        final Color Black = new Color(25, 25, 25);
-        final Color White = new Color(255, 255, 255);
         final Cue difficultyCue = BHBotUnity.cues.get("Difficulty");
-
-        final HashMap<Integer, String> readMaps = new HashMap<>();
-        readMaps.put(254, "tg_diff_win_11_");
-        readMaps.put(255, "tg_diff_win_10_");
 
         bot.browser.readScreen();
 
@@ -5779,21 +5746,13 @@ public class AdventureThread implements Runnable {
             return 0;
         }
 
-        int result = 0;
         BufferedImage numImg = bot.browser.getImg().getSubimage(seg.x1 + 26, seg.y1 + 32, 70, 25);
 
-        for (Map.Entry<Integer, String> readMap: readMaps.entrySet()) {
-            int customMax = readMap.getKey();
-            String numberPrefix = readMap.getValue();
+        MarvinImage toBlackAndWhite = new MarvinImage(numImg, "PNG");
+        toBlackAndWhite.toBlackWhite(110);
+        toBlackAndWhite.update();
 
-            MarvinImage toBlackAndWhite = new MarvinImage(numImg, "PNG");
-            toBlackAndWhite.toBlackWhite(Black, White, customMax);
-            toBlackAndWhite.update();
-
-            result = AdventureThread.readNumFromImg(toBlackAndWhite.getBufferedImage(), numberPrefix, Set.of(), true, false);
-
-            if (result != 0) break;
-        }
+        int result = AdventureThread.readNumFromImg(toBlackAndWhite.getBufferedImage(), "tg_diff_cost_win_11_", Set.of(), true, false);
 
         // We save the image and the read difficulty for troubleshooting purpose
         String tgDiffFileName = "tg_diff_" + result;
@@ -5808,10 +5767,6 @@ public class AdventureThread implements Runnable {
         // Calculation offsets
         final int xOffset = 3, yOffset = 41, w = 31, h = 22;
 
-        final HashMap<Integer, String> readMaps = new HashMap<>();
-        readMaps.put(255, "tg_diff_win_10_");
-        readMaps.put(254, "tg_diff_win_11_");
-
         bot.browser.readScreen();
 
         MarvinSegment seg = MarvinSegment.fromCue(BHBotUnity.cues.get("Cost"), 15 * Misc.Durations.SECOND, bot.browser);
@@ -5822,24 +5777,16 @@ public class AdventureThread implements Runnable {
         }
 
         // We get the  region with the cost number
-        int result = 0;
         BufferedImage numImg = bot.browser.getImg().getSubimage(seg.x1 + xOffset, seg.y1 + yOffset, w, h);
 
-        for (Map.Entry<Integer, String> readMap: readMaps.entrySet()) {
-            int customMax = readMap.getKey();
-            String numberPrefix = readMap.getValue();
+        // We transform it in B&W using available customMax
+        MarvinImage im = new MarvinImage(numImg, "PNG");
+        im.toBlackWhite(110);
+        im.update();
 
-            // We transform it in B&W using available customMax
-            MarvinImage im = new MarvinImage(numImg, "PNG");
-            im.toBlackWhite(new Color(25, 25, 25), new Color(255, 255, 255), customMax);
-            im.update();
+        BufferedImage imb = im.getBufferedImage();
 
-            BufferedImage imb = im.getBufferedImage();
-
-            result = readNumFromImg(imb, numberPrefix, Set.of(0, 6, 7, 8, 9), false, true);
-
-            if (result != 0) break;
-        }
+        int result = readNumFromImg(imb, "tg_diff_cost_win_11_", Set.of(0, 6, 7, 8, 9), false, true);
 
         // We save the image and the read difficulty for troubleshooting purpose
         String costFileName = "cost_" + result;

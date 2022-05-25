@@ -52,8 +52,8 @@ public class BlackWhiteTools {
                              * ATTENTION IF YOU WANT THIS TO WORK CORRECTLY, REMEMBER TO CHECK THE PARAMETERS
                              * OF THE TOBLACKWHITE METHOD
                              */
-                            origImg.toBlackWhite(new Color(25, 25, 25), new Color(255, 255, 255), 255);
-//                             origImg.toBlackWhite(110);
+//                            origImg.toBlackWhite(new Color(25, 25, 25), new Color(255, 255, 255), 255);
+                            origImg.toBlackWhite(110);
                             origImg.update();
                             BufferedImage bwImage = origImg.getBufferedImage();
 

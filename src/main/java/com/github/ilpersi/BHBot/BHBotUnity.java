@@ -442,7 +442,7 @@ public class BHBotUnity {
 
                 break;
             case "d": { // detect difficulty from screen
-                int current = adventure.debugTGDifficulty();
+                int current = adventure.debugDifficulty();
 
                 if (params.length > 1) {
                     int goal = Integer.parseInt(params[1]);
@@ -878,7 +878,7 @@ public class BHBotUnity {
                     case "runes" -> adventure.runeManager.detectEquippedMinorRunes(true, true);
                     case "tgdiff" ->
                             // Use this command to troubleshoot T/G difficulty in main window
-                            adventure.debugTGDifficulty();
+                            adventure.debugDifficulty();
                     default -> BHBotUnity.logger.debug("Unknown test command: " + params[1]);
                 }
                 break;
