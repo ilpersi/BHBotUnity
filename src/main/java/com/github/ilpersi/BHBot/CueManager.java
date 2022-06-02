@@ -230,7 +230,7 @@ class CueManager {
         return cueDetails;
     }
 
-    @SuppressWarnings("SameParameterValue")
+    @SuppressWarnings({"SameParameterValue", "unused"})
     int loadCueFolder(String cuesPath, String prefix, boolean stripCueStr, Bounds bounds) {
         int totalLoaded = 0;
         
