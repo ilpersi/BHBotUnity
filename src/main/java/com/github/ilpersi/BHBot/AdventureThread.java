@@ -1049,7 +1049,11 @@ public class AdventureThread implements Runnable {
                             detectCharacterDialogAndHandleIt(); // needed for invasion
 
                             bot.browser.readScreen();
-                            int badges = getBadges();
+
+                            seg = MarvinSegment.fromCue("BadgeBar", 5 * Misc.Durations.SECOND, bot.browser);
+                            final Set<Color> badgeBarColors = Set.of(new Color (17, 208, 226), new Color (1, 133, 146));
+                            int badges = readResourceBarPercentage(seg, bot.settings.maxBadges, Misc.BarOffsets.GVG.x, Misc.BarOffsets.GVG.y, badgeBarColors, bot.browser.getImg());
+
                             globalBadges = badges;
                             BHBotUnity.logger.readout("Badges: " + badges + ", required: >" + bot.settings.minBadges + ", " + badgeEvent.toString() + " cost: " +
                                     (badgeEvent == BadgeEvent.GVG ? bot.settings.costGVG : badgeEvent == BadgeEvent.Invasion ? bot.settings.costInvasion : bot.settings.costExpedition));
@@ -1060,7 +1064,7 @@ public class AdventureThread implements Runnable {
                             }
 
                             //region GVG
-                            if (badgeEvent == BadgeEvent.GVG) {
+                            if (BadgeEvent.GVG.equals(badgeEvent)) {
                                 if ((!bot.scheduler.doGVGImmediately && (badges <= bot.settings.minBadges)) || (badges < bot.settings.costGVG)) {
 
                                     //if we have 1 resource and need 5 we don't need to check every 10 minutes, this increases the timer so we start checking again when we are one under the check limit
@@ -1121,8 +1125,8 @@ public class AdventureThread implements Runnable {
                                         }
                                     }
 
-
-                                    seg = MarvinSegment.fromCue(BHBotUnity.cues.get("Play"), 5 * Misc.Durations.SECOND, bot.browser);
+                                    Bounds gvgPlayBounds = Bounds.fromWidthHeight(510, 265, 80, 35);
+                                    seg = MarvinSegment.fromCue(BHBotUnity.cues.get("Play"), 5 * Misc.Durations.SECOND, gvgPlayBounds, bot.browser);
                                     bot.browser.clickOnSeg(seg);
                                     bot.browser.readScreen(2 * Misc.Durations.SECOND);
 
@@ -1144,7 +1148,14 @@ public class AdventureThread implements Runnable {
                                     }
 
                                     Bounds gvgOpponentBounds = opponentSelector(bot.settings.gvgOpponent);
-                                    String opponentName = (bot.settings.gvgOpponent == 1 ? "1st" : bot.settings.gvgOpponent == 2 ? "2nd" : bot.settings.gvgOpponent == 3 ? "3rd" : "4th");
+                                    String opponentName = switch (bot.settings.gvgOpponent) {
+                                        case 1 -> "1st";
+                                        case 2 -> "2nd";
+                                        case 3 -> "3rd";
+                                        case 4 -> "4th";
+                                        default ->
+                                                throw new IllegalStateException("Unexpected gvgOpponent value: " + bot.settings.gvgOpponent);
+                                    };
                                     BHBotUnity.logger.info("Selecting " + opponentName + " opponent");
                                     seg = MarvinSegment.fromCue(BHBotUnity.cues.get("Fight"), 5 * Misc.Durations.SECOND, gvgOpponentBounds, bot.browser);
                                     if (seg == null) {
@@ -1156,14 +1167,17 @@ public class AdventureThread implements Runnable {
                                     bot.browser.readScreen();
                                     Misc.sleep(Misc.Durations.SECOND);
 
-                                    seg = MarvinSegment.fromCue(BHBotUnity.cues.get("Accept"), 5 * Misc.Durations.SECOND, Bounds.fromWidthHeight(470, 445, 100, 40), bot.browser);
+                                    Bounds acceptBounds = Bounds.fromWidthHeight(445, 440, 145, 55);
+                                    Cue gvgAccept = new Cue(BHBotUnity.cues.get("TeamAccept"), acceptBounds);
+
+                                    seg = MarvinSegment.fromCue(gvgAccept, 5 * Misc.Durations.SECOND, bot.browser);
                                     if (seg == null) {
                                         BHBotUnity.logger.error("Imppossible to find the Accept button in the GvG screen, restarting!");
                                         restart();
                                         continue;
                                     }
                                     //bot.browser.clickOnSeg(seg);
-                                    bot.browser.closePopupSecurely(BHBotUnity.cues.get("Accept"), BHBotUnity.cues.get("Accept"));
+                                    bot.browser.closePopupSecurely(gvgAccept, gvgAccept);
                                     Misc.sleep(Misc.Durations.SECOND);
 
                                     if (handleTeamMalformedWarning()) {
@@ -2172,43 +2186,12 @@ public class AdventureThread implements Runnable {
     }
 
     /**
-     * Returns number of badges we have. Works only if GVG window is open. Returns -1 in case it cannot read number of badges for some reason.
-     */
-    private int getBadges() {
-        MarvinSegment seg;
-
-        seg = MarvinSegment.fromCue(BHBotUnity.cues.get("BadgeBar"), bot.browser);
-
-        if (seg == null) // this should probably not happen
-            return -1;
-
-        int left = seg.x2 + 1;
-        int top = seg.y1 + 6;
-
-        final Color full = new Color(17, 208, 226);
-
-        int value = 0;
-        int maxBadges = bot.settings.maxBadges;
-
-        // badges bar is 78 pixels wide (however last two pixels will have "medium" color and not full color (it's so due to shading))
-        for (int i = 0; i < 76; i++) {
-            value = i;
-            Color col = new Color(bot.browser.getImg().getRGB(left + i, top));
-
-            if (!col.equals(full))
-                break;
-        }
-
-        value = value + 2; //add the last 2 pixels to get an accurate count
-        return Math.round(value * (maxBadges / 75.0f)); // scale it to interval [0..10]
-    }
-
-    /**
      * Processes any kind of dungeon: <br>
      * - normal dungeon <br>
      * - raid <br>
      * - trial <br>
      * - gauntlet <br>
+     * - world boss <br>
      */
     private void processDungeon() {
         MarvinSegment seg;
@@ -2488,9 +2471,9 @@ public class AdventureThread implements Runnable {
          *  Check for the 'Victory' screen and handle post-activity tasks
          */
         //region Victory
-        if (bot.getState() == BHBotUnity.State.WorldBoss || bot.getState() == BHBotUnity.State.Gauntlet
-                || bot.getState() == BHBotUnity.State.Invasion || bot.getState() == BHBotUnity.State.PVP
-                || bot.getState() == BHBotUnity.State.GVG) {
+        if (BHBotUnity.State.WorldBoss.equals(bot.getState()) || BHBotUnity.State.Gauntlet.equals(bot.getState())
+                || BHBotUnity.State.Invasion.equals(bot.getState()) || BHBotUnity.State.PVP.equals(bot.getState())
+                || BHBotUnity.State.GVG.equals(bot.getState())) {
 
             seg = MarvinSegment.fromCue(BHBotUnity.cues.get("VictoryRecap"), bot.browser);
             if (seg != null) {
@@ -2498,6 +2481,7 @@ public class AdventureThread implements Runnable {
                 Bounds townBounds = switch (bot.getState()) {
                     case Gauntlet -> Bounds.fromWidthHeight(320, 420, 160, 65);
                     case WorldBoss -> Bounds.fromWidthHeight(502, 459, 133, 38);
+                    case GVG -> Bounds.fromWidthHeight(365, 455, 95, 50);
                     default -> null;
                 };
 
@@ -2539,11 +2523,13 @@ public class AdventureThread implements Runnable {
                 // close the activity window to return us to the main screen
                 bot.browser.readScreen(3 * Misc.Durations.SECOND); //wait for slide-in animation to finish
 
-                //noinspection SwitchStatementWithTooFewBranches
-                Cue XWithBounds = switch (bot.getState()) {
-                    case WorldBoss -> new Cue(BHBotUnity.cues.get("X"), Bounds.fromWidthHeight(637, 80, 64, 61));
-                    default -> new Cue(BHBotUnity.cues.get("X"), null);
+                Bounds xBounds = switch (bot.getState()) {
+                    case WorldBoss -> Bounds.fromWidthHeight(637, 80, 64, 61);
+                    case GVG -> Bounds.fromWidthHeight(615, 90, 70, 70);
+                    default -> null;
                 };
+
+                Cue XWithBounds = new Cue(BHBotUnity.cues.get("X"), xBounds);
 
                 bot.browser.closePopupSecurely(XWithBounds, BHBotUnity.cues.get("X"));
 
@@ -2672,7 +2658,7 @@ public class AdventureThread implements Runnable {
             Bounds townBounds = switch (bot.getState()) {
                 case WorldBoss -> Bounds.fromWidthHeight(426, 460, 132, 36);
                 case Dungeon -> Bounds.fromWidthHeight(351, 458, 133, 40);
-                case Trials, Gauntlet -> Bounds.fromWidthHeight(365, 455, 95, 50);
+                case Trials, Gauntlet, GVG -> Bounds.fromWidthHeight(365, 455, 95, 50);
                 default -> null;
             };
 
@@ -2697,6 +2683,7 @@ public class AdventureThread implements Runnable {
                     case Dungeon -> Bounds.fromWidthHeight(678, 37, 96, 90);
                     case WorldBoss -> Bounds.fromWidthHeight(639, 81, 63, 58);
                     case Trials, Gauntlet -> Bounds.fromWidthHeight(615, 85, 70, 70);
+                    case GVG -> Bounds.fromWidthHeight(615, 90, 70, 70);
                     default -> null;
                 };
 
@@ -5180,12 +5167,11 @@ public class AdventureThread implements Runnable {
         }
 
         return switch (opponent) {
-            case 1 -> new Bounds(545, 188, 660, 225); //1st opponent
-            case 2 -> new Bounds(545, 243, 660, 279); //2nd opponent
-            case 3 -> new Bounds(544, 296, 660, 335); //1st opponent
-            case 4 -> new Bounds(544, 351, 660, 388);
-            default -> //1st opponent
-                    null;
+            case 1 -> Bounds.fromWidthHeight(552, 193, 102, 27); // 1st opponent
+            case 2 -> Bounds.fromWidthHeight(552, 247, 102, 27); // 2nd opponent
+            case 3 -> Bounds.fromWidthHeight(552, 301, 102, 27); // 3rd opponent
+            case 4 -> Bounds.fromWidthHeight(552, 355, 102, 27); // 4th opponent
+            default -> Bounds.fromWidthHeight(552, 193, 102, 27); // 1st opponent
         };
     }
 

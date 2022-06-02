@@ -298,19 +298,13 @@ class CueManager {
 
         addCue("TeamNotFull", "cues/cueTeamNotFull.png", new Bounds(230, 200, 330, 250)); // warning popup when some friend left you and your team is not complete anymore
         addCue("TeamNotOrdered", "cues/cueTeamNotOrdered.png", new Bounds(230, 190, 350, 250)); // warning popup when some guild member left and your GvG team is not complete anymore
-        addCue("GuildLeaveConfirm", "cues/cueGuildLeaveConfirm.png", new Bounds(195, 105, 605, 395)); // GVG confirm
         addCue("DisabledBattles", "cues/cueDisabledBattles.png", new Bounds(240, 210, 560, 330)); // Disabled Battles Poppup
 
         addCue("Clear", "cues/cueClear.png", null); //clear team button
 
         addCue("AutoOn", "cues/cueAutoOn.png", new Bounds(740, 180, 785, 220)); // cue for auto pilot on
         addCue("AutoOff", "cues/cueAutoOff.png", new Bounds(740, 180, 785, 220)); // cue for auto pilot off
-        addCue("Speed_Full", "cues/Speed_Full.png", new Bounds(7, 488, 65, 504)); // 3/3 speed bar in encounters
-        addCue("Speed", "cues/Speed_Text.png", new Bounds(20, 506, 61, 518)); // speed text label in encounters
 
-
-        addCue("Play", "cues/cuePlay.png", null); // cue for play button in trials/gauntlet window
-        addCue("TokenBar", "cues/cueTokenBar.png", Bounds.fromWidthHeight(310, 40, 65, 55));
         addCue("CloseGreen", "cues/cueCloseGreen.png", null); // close button used with "You have been defeated" popup in gauntlet and also "Victory" window in gauntlet
 
         addCue("UhOh", "cues/cueUhoh.png", new Bounds(319, 122, 526, 184));
@@ -325,18 +319,12 @@ class CueManager {
         addCue("NotEnoughEnergy", "cues/cueNotEnoughEnergy.png", new Bounds(260, 210, 290, 235)); // "Not enough Energy" popup cue
 
         addCue("PVP", "cues/cuePVP.png", new Bounds(0, 70, 40, 110)); // PVP icon in main screen
-        addCue("Fight", "cues/cueFight.png", null); // fight button in PVP window
         addCue("PVPWindow", "cues/cuePVPWindow.png", null); // PVP window cue
 
         addCue("DialogRight", "cues/cueDialogRight.png", new Bounds(675, 205, 690, 250)); // cue for the dialog window (when arrow is at the right side of the window)
         addCue("DialogLeft", "cues/cueDialogLeft.png", new Bounds(100, 205, 125, 250)); // cue for the dialog window (when arrow is at the left side of the window)
 
         addCue("Switch", "cues/cueSwitch.png", new Bounds(0, 450, 100, 520)); //unused
-
-        // GVG related:
-        addCue("GVG", "cues/cueGVG.png", null); // main GVG button cue
-        addCue("BadgeBar", "cues/cueBadgeBar.png", Bounds.fromWidthHeight(315, 40, 60, 55));
-        addCue("GVGWindow", "cues/cueGVGWindow.png", new Bounds(260, 90, 280, 110)); // GVG window cue
 
         addCue("InGamePM", "cues/cueInGamePM.png", new Bounds(450, 330, 530, 380)); // note that the guild window uses the same cue! That's why it's important that user doesn't open guild window while bot is working!
 
@@ -366,10 +354,6 @@ class CueManager {
         addCue("small7", "cues/numbers/small7.png", null);
         addCue("small8", "cues/numbers/small8.png", null);
         addCue("small9", "cues/numbers/small9.png", null);
-
-        // T/G Gauntlet difficulty related
-        addCue("ScrollerNone", "cues/cueScrollerNone.png", Bounds.fromWidthHeight(525, 120, 30, 330));
-
 
         // PvP strip related:
         addCue("StripScrollerTopPos", "cues/strip/cueStripScrollerTopPos.png", new Bounds(525, 140, 540, 370));
@@ -579,13 +563,14 @@ class CueManager {
         addCue("ClearedRecap", "unitycues/common/cueClearedRecap.png", Bounds.fromWidthHeight(320, 55, 165, 50)); // Cleared message on top of the victory recap screen
         addCue("Rerun", "unitycues/common/cueRerun.png", Bounds.fromWidthHeight(86, 445, 641, 57)); // Green "Rerun" button on the victory recap screen
         addCue("Town", "unitycues/common/cueTown.png", Bounds.fromWidthHeight(365, 455, 210, 50)); // The Red "Town" button on the victory/defeat recap screen
-        addCue("VictoryRecap", "unitycues/common/cueVictoryRecap.png", Bounds.fromWidthHeight(330, 55, 150, 55)); // Victory message when completing adventures
+        addCue("VictoryRecap", "unitycues/common/cueVictoryRecap.png", Bounds.fromWidthHeight(335, 60, 135, 45)); // Victory message when completing adventures
         addCue("DefeatRecap", "unitycues/common/cueDefeatRecap.png", Bounds.fromWidthHeight(335, 55, 135, 50)); // Defeat message when completing adventures
         addCue("WeeklyRewards", "unitycues/common/cueWeeklyRewards.png", Bounds.fromWidthHeight(205, 135, 395, 255)); // Weekly rewards gump
         addCue("TopChoice", "unitycues/common/cueTopChoice.png", null); // Top Choice border in selection windows
         addCue("Play", "unitycues/common/cuePlay.png", Bounds.fromWidthHeight(510, 260, 80, 40)); // Blue Play button.
         addCue("NotEnoughTokens", "unitycues/common/cueNotEnoughTokens.png", Bounds.fromWidthHeight(260, 215, 275, 95)); // Not enough token popup.
         addCue("Cost", "unitycues/common/cueCost.png", Bounds.fromWidthHeight(510, 150, 120, 105)); // Cost combo box for T/G, GVG
+        addCue("BadgeBar", "unitycues/common/cueBadgeBar.png", Bounds.fromWidthHeight(315, 40, 60, 55));
         //endregion Common
 
         //region Dungeon
@@ -615,6 +600,12 @@ class CueManager {
         //endregion Familiar bribing cues
         //endregion Familiar
 
+        //region GVG
+        addCue("GVGWindow", "unitycues/gvg/cueGVGWindow.png", Bounds.fromWidthHeight(255, 95, 290, 45)); // GVG Main Window Title
+        addCue("GuildLeaveConfirm", "unitycues/gvg/cueGuildLeaveConfirm.png", Bounds.fromWidthHeight(260, 200, 280, 125)); // GVG Guild warning popup
+        addCue("Fight", "unitycues/gvg/cueFight.png", Bounds.fromWidthHeight(565, 190, 75, 35)); // GVG Fight Button
+        //endregion GVG
+
         //region Merchant
         addCue("Merchant", "unitycues/merchant/cueMerchant.png", Bounds.fromWidthHeight(300, 105, 200, 70)); // cue for merchant dialog/popup
         addCue("MerchantDecline", "unitycues/merchant/cueMerchantDecline.png", Bounds.fromWidthHeight(410, 365, 135, 55)); // cue for merchant dialog/popup
@@ -626,6 +617,8 @@ class CueManager {
         addCue("SettingsGear", "unitycues/mainScreen/cueSettingsGear.png", Bounds.fromWidthHeight(665, 450, 55, 65)); // settings button
         addCue("RaidButton", "unitycues/mainScreen/cueRaidButton.png", Bounds.fromWidthHeight(20, 295, 40, 65)); // Ruby icon used to open the raid menu.
         addCue("GorMenu", "unitycues/mainScreen/cueGorMenu.png", Bounds.fromWidthHeight(95, 465, 55, 60)); // Permagor menu close to the Character menu
+        addCue("GVG", "unitycues/mainScreen/cueGVG.png", null); // main GVG button cue
+
         //endregion
 
         //region Numbers

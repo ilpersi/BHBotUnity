@@ -386,8 +386,11 @@ public class CueBuilder {
                 Set.of(), Set.of(), "Rerun", "unitycues/common/cueRerun.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/common", "cleared_recap_(.*)\\.png", Bounds.fromWidthHeight(453, 466, 72, 26),
                 Set.of(), Set.of(), "Town", "unitycues/common/cueTown.png", "");
-        addCueLocatorByPattern(cueLocators, "cuebuilder/common", "victory_recap_(.*)\\.png", Bounds.fromWidthHeight(340, 68, 128, 28),
+        addCueLocatorByPattern(cueLocators, "cuebuilder/common", "victory_recap_(.*)\\.png", Bounds.fromWidthHeight(346, 73, 109, 17),
                 Set.of(), Set.of(), "VictoryRecap", "unitycues/common/cueVictoryRecap.png", "Victory message when completing adventures");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/gvg", "gvg-victory_(.*)\\.png", Bounds.fromWidthHeight(350, 73, 109, 17),
+                Set.of(), Set.of(), "VictoryRecap", "unitycues/common/cueVictoryRecap.png", "Victory message when completing adventures");
+
         addCueLocatorByPattern(cueLocators, "cuebuilder/common", "defeat_recap_(.*)\\.png", Bounds.fromWidthHeight(347, 67, 113, 28),
                 Set.of(), Set.of(), "DefeatRecap", "unitycues/common/cueDefeatRecap.png", "Defeat message when completing adventures");
 
@@ -402,6 +405,10 @@ public class CueBuilder {
 
         addCueLocatorByPattern(cueLocators, "cuebuilder/tierGauntlet", "tg_cost_(.*)\\.png", Bounds.fromWidthHeight(521, 274, 58, 15),
                 Set.of(), Set.of(), "Play", "unitycues/common/cuePlay.png", "Blue Play button.");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/gvg", "gvg-main_(.*)\\.png", Bounds.fromWidthHeight(522, 275, 58, 15),
+                Set.of(), Set.of(), "Play", "unitycues/common/cuePlay.png", "Blue Play button.");
+
+
         addCueLocatorByPattern(cueLocators, "cuebuilder/common", "not_enough_tokens_(.*)\\.png", Bounds.fromWidthHeight(272, 227, 251, 70),
                 Set.of(), Set.of(), "NotEnoughTokens", "unitycues/common/cueNotEnoughTokens.png", "Not enough token popup.");
 
@@ -412,6 +419,9 @@ public class CueBuilder {
         final Set<Bounds> gvgCostTransp = Set.of(Bounds.fromWidthHeight(519, 197, 50, 30), Bounds.fromWidthHeight(519, 200, 53, 24));
         addCueLocatorByPattern(cueLocators, "cuebuilder/gvg", "gvg-main_(.*)\\.png", Bounds.fromWidthHeight(525, 159, 86, 71),
                 Set.of(), gvgCostTransp, "Cost", "unitycues/common/cueCost.png", "Cost combo box for T/G, GVG");
+
+        addCueLocatorByPattern(cueLocators, "cuebuilder/gvg", "gvg-main_(.*)\\.png", Bounds.fromWidthHeight(327, 53, 34, 32),
+                Set.of(), Set.of(), "BadgeBar", "unitycues/common/cueBadgeBar.png", "Badge bar popup");
 
         //endregion Common
 
@@ -466,6 +476,15 @@ public class CueBuilder {
         addCueLocatorByPattern(cueLocators, "cuebuilder/familiarEncounter", "capture_success_(.*)\\.png", null,
                 Set.of(), Set.of(), "CaptureSuccess", "unitycues/familiarEncounter/cueCaptureSuccess.png", "Capture Successful text in familiar encounters");
         //endregion
+
+        //region GVG
+        addCueLocatorByPattern(cueLocators, "cuebuilder/gvg", "gvg-main_(.*)\\.png", Bounds.fromWidthHeight(267, 107, 265, 21),
+                Set.of(), Set.of(), "GVGWindow", "unitycues/gvg/cueGVGWindow.png", "GVG Main Window Title");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/gvg", "gvg-popup_(.*)\\.png", Bounds.fromWidthHeight(272, 210, 256, 104),
+                Set.of(), Set.of(), "GuildLeaveConfirm", "unitycues/gvg/cueGuildLeaveConfirm.png", "GVG Guild warning popup");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/gvg", "gvg-opponement_(.*)\\.png", Bounds.fromWidthHeight(576, 201, 53, 12),
+                Set.of(), Set.of(), "Fight", "unitycues/gvg/cueFight.png", "GVG Fight Button");
+        //endregion GVG
 
         //region Merchant
         addCueLocatorByPattern(cueLocators, "cuebuilder/merchant", "merchant-title(.*)\\.png", Bounds.fromWidthHeight(311, 116, 175, 49),
@@ -1142,6 +1161,60 @@ public class CueBuilder {
         }
     }
 
+    static void manageBadgeBar() {
+        Set<Color> badgeColors = new HashSet<>();
+        Set<Color> blackColors = new HashSet<>(Set.of(new Color(50, 51, 52), new Color(8, 10, 11)));
+
+        // Path to files with raid bar
+        File badgePath = new File("barbuilder/badge");
+
+        BufferedImage badgePopUp;
+        try {
+            badgePopUp = ImageIO.read(new File("src/main/resources/unitycues/common/cueBadgeBar.png"));
+        } catch (IOException e) {
+            System.out.println("Errow while reading badge pop-up");
+            e.printStackTrace();
+            return;
+        }
+
+        // Loop on all the files
+        ImageFilter badgeFilter = new ImageFilter("gvg-main_(.*)\\.png");
+        String[] badgeBars = badgePath.list(badgeFilter);
+
+        if (badgeBars != null) {
+            for (String BadgeImgFile : badgeBars) {
+                File BadgeBarFile = new File("barbuilder/badge/" + BadgeImgFile);
+
+                //noinspection DuplicatedCode
+                if (!BadgeBarFile.exists() || BadgeBarFile.isDirectory()) {
+                    System.out.println("File " + BadgeBarFile.getAbsolutePath() + " is not a valid bar file");
+                    continue;
+                }
+
+                BufferedImage dungImg;
+                try {
+                    dungImg = ImageIO.read(BadgeBarFile);
+                } catch (IOException e) {
+                    System.out.println("Exception while loading image" + BadgeBarFile.getAbsolutePath());
+                    e.printStackTrace();
+                    continue;
+                }
+
+                ImageHelper.getImgColors(dungImg.getSubimage(361, 61, 80, 1)).forEach((col) -> {
+                    if (!blackColors.contains(col)) badgeColors.add(col);
+                });
+
+                System.out.println("Found colors for Badges:");
+                ImageHelper.printColors(badgeColors);
+
+                MarvinSegment seg = FindSubimage.findImage(dungImg, badgePopUp, 0, 0, 0, 0);
+                // As images can have different shat totals we use 100 so we get the percentage
+                int badge = AdventureThread.readResourceBarPercentage(seg, 100, Misc.BarOffsets.GVG.x, Misc.BarOffsets.GVG.y, badgeColors, dungImg);
+                System.out.println("Badge bar is " + badge + "% full for image " + BadgeBarFile.getAbsolutePath());
+            }
+        }
+    }
+
     public static void main(String[] args) {
         boolean printUnused = false;
 
@@ -1160,5 +1233,7 @@ public class CueBuilder {
         manageTokenBar();
         System.out.println("====== Xeal bar ======");
         manageXealBar();
+        System.out.println("====== Badge bar ======");
+        manageBadgeBar();
     }
 }
