@@ -9,11 +9,13 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.*;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 /**
  * This is a quick and dirty solution aimed at creating multiple Cues from an origin image file.
@@ -874,7 +876,9 @@ public class CueBuilder {
         // We print out the unused cue builder files
         if (printUnused) {
             try {
-                Files.walk(Paths.get("cuebuilder/"))
+                Stream<Path> fileWalker = Files.walk(Paths.get("cuebuilder/"));
+
+                fileWalker
                         .filter(p -> {
                             boolean isFile = Files.isRegularFile(p);
                             String fileName = p.toString().toLowerCase();
@@ -897,6 +901,8 @@ public class CueBuilder {
                             }
 
                         });
+
+                fileWalker.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
