@@ -400,6 +400,8 @@ public class CueBuilder {
 
         addCueLocatorByPattern(cueLocators, "cuebuilder/tierGauntlet", "tg_cost_(.*)\\.png", Bounds.fromWidthHeight(521, 274, 58, 15),
                 Set.of(), Set.of(), "Play", "unitycues/common/cuePlay.png", "Blue Play button.");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/common", "not_enough_tokens_(.*)\\.png", Bounds.fromWidthHeight(272, 227, 251, 70),
+                Set.of(), Set.of(), "NotEnoughTokens", "unitycues/common/cueNotEnoughTokens.png", "Not enough token popup.");
 
         //endregion Common
 

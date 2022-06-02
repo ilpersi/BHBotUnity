@@ -340,9 +340,6 @@ class CueManager {
 
         addCue("InGamePM", "cues/cueInGamePM.png", new Bounds(450, 330, 530, 380)); // note that the guild window uses the same cue! That's why it's important that user doesn't open guild window while bot is working!
 
-        addCue("TrialsOrGauntletWindow", "cues/cueTrialsOrGauntletWindow.png", new Bounds(300, 30, 510, 105)); // cue for a trials/gauntlet window
-        addCue("NotEnoughTokens", "cues/cueNotEnoughTokens.png", Bounds.fromWidthHeight(274, 228, 253, 79)); // cue to check for the not enough tokens popup
-
         addCue("DifficultyExpedition", "cues/cueDifficultyExpedition.png", null); // selected difficulty in trials/gauntlet window
         addCue("SelectDifficultyExpedition", "cues/cueSelectDifficultyExpedition.png", null);
         addCue("SelectCost", "cues/cueSelectCost.png", new Bounds(555, 170, 595, 205)); // cue for select cost found in both PvP and Gauntlet/Trials windows. Note that bounds are wide, because position of this cue in PvP is different from that in Gauntlet/Trials!
@@ -357,8 +354,6 @@ class CueManager {
         addCue("8", "cues/numbers/cue8.png", null);
         addCue("9", "cues/numbers/cue9.png", null);
 
-        // Difficulty Tier
-        addCue("hyphen", "cues/numbers/hyphen.png", null);
 
         // Invasion Level Numbers
         addCue("small0", "cues/numbers/small0.png", null);
@@ -589,6 +584,7 @@ class CueManager {
         addCue("WeeklyRewards", "unitycues/common/cueWeeklyRewards.png", Bounds.fromWidthHeight(205, 135, 395, 255)); // Weekly rewards gump
         addCue("TopChoice", "unitycues/common/cueTopChoice.png", null); // Top Choice border in selection windows
         addCue("Play", "unitycues/common/cuePlay.png", Bounds.fromWidthHeight(510, 260, 80, 40)); // Blue Play button.
+        addCue("NotEnoughTokens", "unitycues/common/cueNotEnoughTokens.png", Bounds.fromWidthHeight(260, 215, 275, 95)); // Not enough token popup.
         //endregion Common
 
         //region Dungeon

@@ -648,7 +648,7 @@ public class AdventureThread implements Runnable {
                                 detectCharacterDialogAndHandleIt();
 
                                 //bot.browser.clickOnSeg(seg);
-                                Cue AcceptWithBounds = new Cue(BHBotUnity.cues.get("Accept"), Bounds.fromWidthHeight(465, 445, 110, 40));
+                                Cue AcceptWithBounds = new Cue(BHBotUnity.cues.get("TeamAccept"), Bounds.fromWidthHeight(445, 440, 145, 55));
                                 bot.browser.closePopupSecurely(AcceptWithBounds, AcceptWithBounds);
                                 bot.browser.readScreen(2 * Misc.Durations.SECOND);
 
@@ -2397,8 +2397,8 @@ public class AdventureThread implements Runnable {
          * we also search for the "Rerun" button
          */
         //region Cleared
-        if (bot.getState() == BHBotUnity.State.Raid || bot.getState() == BHBotUnity.State.Dungeon
-                || bot.getState() == BHBotUnity.State.Expedition || bot.getState() == BHBotUnity.State.Trials) {
+        if (BHBotUnity.State.Raid.equals(bot.getState()) || BHBotUnity.State.Dungeon.equals(bot.getState())
+                || BHBotUnity.State.Expedition.equals(bot.getState()) ||  BHBotUnity.State.Trials.equals(bot.getState())) {
 
             seg = MarvinSegment.fromCue(BHBotUnity.cues.get("ClearedRecap"), bot.browser);
             if (seg != null) {
@@ -2443,6 +2443,7 @@ public class AdventureThread implements Runnable {
 
                     Bounds townBounds = switch (bot.getState()) {
                         case Raid, Dungeon -> Bounds.fromWidthHeight(440, 455, 95, 50);
+                        case Trials, Gauntlet -> Bounds.fromWidthHeight(365, 455, 95, 50);
                         default -> null;
                     };
 
@@ -2452,23 +2453,21 @@ public class AdventureThread implements Runnable {
                     bot.browser.closePopupSecurely(BHBotUnity.cues.get("ClearedRecap"), cueTown);
 
                     // close the activity window to return us to the main screen
-                    if (bot.getState() != BHBotUnity.State.Expedition) {
+                    if (!BHBotUnity.State.Expedition.equals(bot.getState())) {
                         bot.browser.readScreen(3 * Misc.Durations.SECOND); //wait for slide-in animation to finish
 
                         Cue XWithBounds;
                         Bounds xBounds;
                         switch (bot.getState()) {
-                            case WorldBoss -> XWithBounds = new Cue(BHBotUnity.cues.get("X"), Bounds.fromWidthHeight(640, 75, 60, 60));
-                            case Raid -> {
-                                xBounds = Bounds.fromWidthHeight(605, 85, 70, 70);
-                                XWithBounds = new Cue(BHBotUnity.cues.get("X"), xBounds);
-                            }
-                            case Dungeon -> {
-                                xBounds = Bounds.fromWidthHeight(695, 40, 70, 75);
-                                XWithBounds = new Cue(BHBotUnity.cues.get("X"), xBounds);
-                            }
-                            default -> XWithBounds = new Cue(BHBotUnity.cues.get("X"), null);
+                            case WorldBoss -> xBounds = Bounds.fromWidthHeight(640, 75, 60, 60);
+                            case Raid -> xBounds = Bounds.fromWidthHeight(605, 85, 70, 70);
+                            case Dungeon -> xBounds = Bounds.fromWidthHeight(695, 40, 70, 75);
+                            case Trials, Gauntlet -> xBounds = Bounds.fromWidthHeight(615, 85, 70, 70);
+                            default -> xBounds = null;
                         }
+
+                        XWithBounds = new Cue(BHBotUnity.cues.get("X"), xBounds);
+
                         bot.browser.closePopupSecurely(XWithBounds, XWithBounds);
                     } else {
                         //For Expedition we need to close 3 windows (Exped/Portal/Team) to return to main screen
@@ -2577,7 +2576,7 @@ public class AdventureThread implements Runnable {
             String runtimeAvg = Misc.millisToHumanForm(counters.get(bot.getState()).getDefeatAverageDuration());
 
             //return stats for non-invasion
-            if (bot.getState() != BHBotUnity.State.Invasion) {
+            if (!BHBotUnity.State.Invasion.equals(bot.getState())) {
                 BHBotUnity.logger.warn(bot.getState().getName() + " #" + counters.get(bot.getState()).getTotal() + " completed. Result: Defeat.");
                 BHBotUnity.logger.stats(bot.getState().getName() + " " + counters.get(bot.getState()).successRateDesc());
                 BHBotUnity.logger.stats("Defeat run time: " + runtime + ". Average: " + runtimeAvg + ".");
@@ -2594,7 +2593,7 @@ public class AdventureThread implements Runnable {
             }
 
             //check for invasion loot drops and send via Pushover/Screenshot
-            if (bot.getState() == BHBotUnity.State.Invasion) {
+            if (BHBotUnity.State.Invasion.equals(bot.getState())) {
                 handleLoot();
             }
 
@@ -2627,7 +2626,7 @@ public class AdventureThread implements Runnable {
                     String updated = expeditionFailsafePortal + " " + newExpedDifficulty;
                     settingsUpdate(original, updated);
                 }
-            } else if (bot.getState().equals(BHBotUnity.State.Trials) && bot.settings.difficultyFailsafe.containsKey("t")) {
+            } else if (BHBotUnity.State.Trials.equals(bot.getState()) && bot.settings.difficultyFailsafe.containsKey("t")) {
                 // Difficulty failsafe for trials
                 // The key is the difficulty decrease, the value is the minimum level
                 Map.Entry<Integer, Integer> trialDifficultyFailsafe = bot.settings.difficultyFailsafe.get("t");
@@ -2646,7 +2645,7 @@ public class AdventureThread implements Runnable {
                     String updated = "difficultyTrials " + newTrialDifficulty;
                     settingsUpdate(original, updated);
                 }
-            } else if (bot.getState().equals(BHBotUnity.State.Gauntlet) && bot.settings.difficultyFailsafe.containsKey("g")) {
+            } else if (BHBotUnity.State.Gauntlet.equals(bot.getState()) && bot.settings.difficultyFailsafe.containsKey("g")) {
                 // Difficulty failsafe for Gauntlet
                 // The key is the difficulty decrease, the value is the minimum level
                 Map.Entry<Integer, Integer> gauntletDifficultyFailsafe = bot.settings.difficultyFailsafe.get("g");
@@ -2670,11 +2669,10 @@ public class AdventureThread implements Runnable {
             resetAppropriateTimers();
             reviveManager.reset();
 
-            Misc.saveScreen("defeat-pop-up-" + bot.getState(), "debug", BHBotUnity.includeMachineNameInScreenshots, bot.browser.getImg());
-
             Bounds townBounds = switch (bot.getState()) {
                 case WorldBoss -> Bounds.fromWidthHeight(426, 460, 132, 36);
                 case Dungeon -> Bounds.fromWidthHeight(351, 458, 133, 40);
+                case Trials, Gauntlet -> Bounds.fromWidthHeight(365, 455, 95, 50);
                 default -> null;
             };
 
@@ -2683,6 +2681,7 @@ public class AdventureThread implements Runnable {
             if (seg != null) {
                 bot.browser.clickOnSeg(seg);
             } else {
+                Misc.saveScreen("defeat-pop-up-" + bot.getState(), "errors/defeatPopUp", BHBotUnity.includeMachineNameInScreenshots, bot.browser.getImg());
                 BHBotUnity.logger.warn("Problem: 'Defeat' popup detected but no 'Town' button detected in " + bot.getState().getName() + ".");
                 if (bot.getState() == BHBotUnity.State.PVP) dressUp(bot.settings.pvpstrip);
                 if (bot.getState() == BHBotUnity.State.GVG) dressUp(bot.settings.gvgstrip);
@@ -2697,6 +2696,7 @@ public class AdventureThread implements Runnable {
                 Bounds xBounds = switch (bot.getState()) {
                     case Dungeon -> Bounds.fromWidthHeight(678, 37, 96, 90);
                     case WorldBoss -> Bounds.fromWidthHeight(639, 81, 63, 58);
+                    case Trials, Gauntlet -> Bounds.fromWidthHeight(615, 85, 70, 70);
                     default -> null;
                 };
 
@@ -2713,11 +2713,12 @@ public class AdventureThread implements Runnable {
             }
 
             // We make sure to dress up
-            if (bot.getState() == BHBotUnity.State.PVP && bot.settings.pvpstrip.size() > 0) dressUp(bot.settings.pvpstrip);
-            if (bot.getState() == BHBotUnity.State.GVG && bot.settings.gvgstrip.size() > 0) dressUp(bot.settings.gvgstrip);
+            if (BHBotUnity.State.PVP.equals(bot.getState()) && bot.settings.pvpstrip.size() > 0) dressUp(bot.settings.pvpstrip);
+            if (BHBotUnity.State.GVG.equals(bot.getState()) && bot.settings.gvgstrip.size() > 0) dressUp(bot.settings.gvgstrip);
 
             // We make sure to disable autoShrine when defeated
-            if (bot.getState() == BHBotUnity.State.Trials || bot.getState() == BHBotUnity.State.Raid || bot.getState() == BHBotUnity.State.Expedition) {
+            if (BHBotUnity.State.Trials.equals(bot.getState()) || BHBotUnity.State.Raid.equals(bot.getState())
+                    || BHBotUnity.State.Expedition.equals(bot.getState())) {
 
                 bot.browser.readScreen(Misc.Durations.SECOND);
                 if (!shrineManager.updateShrineSettings(false, false)) {
@@ -3726,7 +3727,9 @@ public class AdventureThread implements Runnable {
             }
 
             if (closeTeamWindow) {
-                if (!bot.browser.closePopupSecurely(BHBotUnity.cues.get("Accept"), BHBotUnity.cues.get("X"))) {
+                // This is generic so we are not sure about accept button posion
+                Cue teamAccept = new Cue(BHBotUnity.cues.get("TeamAccept"), null);
+                if (!bot.browser.closePopupSecurely(teamAccept, BHBotUnity.cues.get("X"))) {
                     BHBotUnity.logger.error("Impossible to close the team window when no tokens are available. Restarting");
                     return null;
                 }
@@ -5768,13 +5771,19 @@ public class AdventureThread implements Runnable {
         final int xOffset = 3, yOffset = 41, w = 31, h = 22;
 
         bot.browser.readScreen();
-
-        MarvinSegment seg = MarvinSegment.fromCue(BHBotUnity.cues.get("Cost"), 15 * Misc.Durations.SECOND, bot.browser);
+        // We make sure to search for the cost Cue in all the screen (TG position is different from GVG and so on...)
+        Cue costCue = new Cue(BHBotUnity.cues.get("Cost"), null);
+        MarvinSegment seg = MarvinSegment.fromCue(costCue, 15 * Misc.Durations.SECOND, bot.browser);
         if (seg == null) {
             BHBotUnity.logger.error("Error: unable to detect cost selection box!");
             bot.saveGameScreen("cost_selection", "errors");
             return 0; // error
         }
+
+        Bounds suggestedBounds = Bounds.fromMarvinSegment(seg, null);
+        BHBotUnity.logger.debug("Cost Cue found at: " + seg);
+        BHBotUnity.logger.debug("Suggested Bounds: " + suggestedBounds.getJavaCode(true, false));
+        BHBotUnity.logger.debug("Suggested Bounds.fromWidthHeight: " + suggestedBounds.getJavaCode(true, true));
 
         // We get the  region with the cost number
         BufferedImage numImg = bot.browser.getImg().getSubimage(seg.x1 + xOffset, seg.y1 + yOffset, w, h);
