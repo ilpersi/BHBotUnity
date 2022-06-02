@@ -4588,7 +4588,7 @@ public class AdventureThread implements Runnable {
             newCost = 1;
         }
 
-        final int xOffset = 85, yOffset = 60;
+        final int xOffset = 65, yOffset = 60;
         MarvinSegment seg = MarvinSegment.fromCue(BHBotUnity.cues.get("Cost"), 5 * Misc.Durations.SECOND, bot.browser);
         if (seg == null) {
             BHBotUnity.logger.error("Error: unable to detect 'select cost' button while trying to change cost!");
