@@ -585,6 +585,7 @@ class CueManager {
         addCue("TopChoice", "unitycues/common/cueTopChoice.png", null); // Top Choice border in selection windows
         addCue("Play", "unitycues/common/cuePlay.png", Bounds.fromWidthHeight(510, 260, 80, 40)); // Blue Play button.
         addCue("NotEnoughTokens", "unitycues/common/cueNotEnoughTokens.png", Bounds.fromWidthHeight(260, 215, 275, 95)); // Not enough token popup.
+        addCue("Cost", "unitycues/common/cueCost.png", Bounds.fromWidthHeight(510, 150, 120, 105)); // Cost combo box for T/G, GVG
         //endregion Common
 
         //region Dungeon
@@ -768,7 +769,6 @@ class CueManager {
         addCue("Difficulty", "unitycues/tierGauntlet/cueDifficulty.png", Bounds.fromWidthHeight(460, 340, 185, 95)); // T/G Difficulty combo box
         addCue("DifficultyDisabled", "unitycues/tierGauntlet/cueDifficultyDisabled.png", Bounds.fromWidthHeight(455, 340, 190, 100)); // Greyed out TG Difficulty drop down
         addCue("SelectDifficulty", "unitycues/tierGauntlet/cueSelectDifficulty.png", Bounds.fromWidthHeight(575, 365, 70, 65)); // Difficulty arrow pointing down
-        addCue("Cost", "unitycues/tierGauntlet/cueCost.png", Bounds.fromWidthHeight(510, 150, 110, 95)); // T/G Cost combo box
         addCue("CostDropDown", "unitycues/tierGauntlet/cueCostDropDown.png", Bounds.fromWidthHeight(270, 50, 265, 75)); // Cost selection window
         addCue("DifficultyDropDown", "unitycues/tierGauntlet/cueDifficultyDropDown.png", Bounds.fromWidthHeight(280, 50, 245, 75)); // Difficulty text on top of difficulty selection.
         //endregion

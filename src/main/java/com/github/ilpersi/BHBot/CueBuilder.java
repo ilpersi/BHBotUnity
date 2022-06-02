@@ -405,6 +405,14 @@ public class CueBuilder {
         addCueLocatorByPattern(cueLocators, "cuebuilder/common", "not_enough_tokens_(.*)\\.png", Bounds.fromWidthHeight(272, 227, 251, 70),
                 Set.of(), Set.of(), "NotEnoughTokens", "unitycues/common/cueNotEnoughTokens.png", "Not enough token popup.");
 
+        final Set<Bounds> tgCostTransp = Set.of(Bounds.fromWidthHeight(518, 198, 50, 30), Bounds.fromWidthHeight(518, 201, 53, 24));
+        addCueLocatorByPattern(cueLocators, "cuebuilder/tierGauntlet", "tg_cost_(.*)\\.png", Bounds.fromWidthHeight(524, 160, 86, 71),
+                Set.of(), tgCostTransp, "Cost", "unitycues/common/cueCost.png", "Cost combo box for T/G, GVG");
+
+        final Set<Bounds> gvgCostTransp = Set.of(Bounds.fromWidthHeight(519, 197, 50, 30), Bounds.fromWidthHeight(519, 200, 53, 24));
+        addCueLocatorByPattern(cueLocators, "cuebuilder/gvg", "gvg-main_(.*)\\.png", Bounds.fromWidthHeight(525, 159, 86, 71),
+                Set.of(), gvgCostTransp, "Cost", "unitycues/common/cueCost.png", "Cost combo box for T/G, GVG");
+
         //endregion Common
 
         //region CueX
@@ -752,10 +760,6 @@ public class CueBuilder {
                 Set.of(), tgDiffTransp, "DifficultyDisabled", "unitycues/tierGauntlet/cueDifficultyDisabled.png", "Greyed out TG Difficulty drop down is");
         addCueLocatorByPattern(cueLocators, "cuebuilder/tierGauntlet", "tg_window_(.*)\\.png", Bounds.fromWidthHeight(587, 377, 45, 43),
                 Set.of(), tgDiffTransp, "SelectDifficulty", "unitycues/tierGauntlet/cueSelectDifficulty.png", "Difficulty arrow pointing down");
-
-        final Set<Bounds> tgCostTransp = Set.of(Bounds.fromWidthHeight(518, 198, 50, 30), Bounds.fromWidthHeight(518, 201, 53, 24));
-        addCueLocatorByPattern(cueLocators, "cuebuilder/tierGauntlet", "tg_cost_(.*)\\.png", Bounds.fromWidthHeight(524, 160, 86, 71),
-                Set.of(), tgCostTransp, "Cost", "unitycues/tierGauntlet/cueCost.png", "T/G Cost combo box");
 
         final Set<Bounds> tgCostSelectTransp = Set.of(Bounds.fromWidthHeight(298, 67, 207, 41),
                 Bounds.fromWidthHeight(292, 70, 219, 12), Bounds.fromWidthHeight(292, 94, 219, 12));
