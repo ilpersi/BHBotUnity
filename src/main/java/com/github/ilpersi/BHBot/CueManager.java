@@ -588,7 +588,6 @@ class CueManager {
         //endregion Common
 
         //region Dungeon
-        //region Dungeon cues
         addCue("EnergyBar", "unitycues/dungeon/cueEnergyBar.png", Bounds.fromWidthHeight(390, 0, 60, 50)); // The energy bar icon
         addCue("RightArrow", "unitycues/dungeon/cueRightArrow.png", Bounds.fromWidthHeight(720, 255, 40, 50)); // arrow used in quest screen to change zone
         addCue("LeftArrow", "unitycues/dungeon/cueLeftArrow.png", Bounds.fromWidthHeight(40, 255, 45, 50)); // arrow used in quest screen to change zone
@@ -596,17 +595,7 @@ class CueManager {
         addCue("DungHard", "unitycues/dungeon/cueDungHard.png", Bounds.fromWidthHeight(330, 220, 145, 50));
         addCue("DungHeroic", "unitycues/dungeon/cueDungHeroic.png", Bounds.fromWidthHeight(525, 220, 145, 50));
         addCue("DungeonZones", "unitycues/dungeon/cueDungeonZones.png", Bounds.fromWidthHeight(90, 55, 130, 55));
-        //endregion
-
-        //region Dungeon zones
-        addCue("Zone1", "unitycues/dungeon/zones/cueZone1.png", Bounds.fromWidthHeight(252, 53, 299, 39));
-        addCue("Zone2", "unitycues/dungeon/zones/cueZone2.png", Bounds.fromWidthHeight(252, 53, 299, 39));
-        addCue("Zone3", "unitycues/dungeon/zones/cueZone3.png", Bounds.fromWidthHeight(252, 53, 299, 39));
-        addCue("Zone4", "unitycues/dungeon/zones/cueZone4.png", Bounds.fromWidthHeight(252, 53, 299, 39));
-        addCue("Zone5", "unitycues/dungeon/zones/cueZone5.png", Bounds.fromWidthHeight(252, 53, 299, 39));
-        addCue("Zone6", "unitycues/dungeon/zones/cueZone6.png", Bounds.fromWidthHeight(252, 53, 299, 39));
-        //endregion
-        //endregion
+        //endregion Dungeon
 
         //region Familiar
         // region Familiar encounters
