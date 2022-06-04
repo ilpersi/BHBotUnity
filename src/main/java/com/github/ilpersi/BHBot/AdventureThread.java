@@ -2162,6 +2162,17 @@ public class AdventureThread implements Runnable {
         return Math.round(value * (maxTickets / 77.0f)); // scale it to interval [0..10]
     }
 
+    /**
+     * Generi bar percentage reader.
+     *
+     * @param barLocator The MarvinSegment used to find the resource bar on the screen
+     * @param maxResourceCnt Max count of the current resources
+     * @param xOffset x offset. Based on the x2 of the barLocator parameter
+     * @param yOffset y offset. Based on the y1 of the barLocator parameter
+     * @param barColors A set of valid colors. If colors in this set are found, the bar percentage is increased
+     * @param barImgRead The image used to read the bar percentage.
+     * @return An integeger representing the available resources based on maxResourceCnt
+     */
     static int readResourceBarPercentage(MarvinSegment barLocator, int maxResourceCnt, int xOffset, int yOffset, Set<Color> barColors, BufferedImage barImgRead) {
         if (barLocator == null) return -1;
 
