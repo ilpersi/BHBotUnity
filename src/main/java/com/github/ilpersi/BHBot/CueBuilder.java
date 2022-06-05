@@ -121,6 +121,15 @@ public class CueBuilder {
                 return;
             }
 
+            // We make sure that the target directory for the Cue exists and if it does not exist, we create it.
+            File destinationCueDirectory = new File(destinationCueFile.getAbsoluteFile().getParent());
+            if (!destinationCueDirectory.exists()) {
+                if (!destinationCueDirectory.mkdirs()) {
+                    System.out.println("It was impossible to create Cue destination directory: " + destinationCueDirectory.getAbsolutePath());
+                    return;
+                }
+            }
+
             // If transparent regions are present, we make sure they are transparent
             if (this.transparentRegions.size() > 0) {
                 for (Bounds transaprentRegion : this.transparentRegions) {
