@@ -423,11 +423,13 @@ public class CueBuilder {
 
         final Set<Bounds> tgCostTransp = Set.of(Bounds.fromWidthHeight(518, 198, 50, 30), Bounds.fromWidthHeight(518, 201, 53, 24));
         addCueLocatorByPattern(cueLocators, "cuebuilder/tierGauntlet", "tg_cost_(.*)\\.png", Bounds.fromWidthHeight(524, 160, 86, 71),
-                Set.of(), tgCostTransp, "Cost", "unitycues/common/cueCost.png", "Cost combo box for T/G, GVG");
-
+                Set.of(), tgCostTransp, "Cost", "unitycues/common/cueCost.png", "Cost combo box for T/G, GVG, Expedition");
         final Set<Bounds> gvgCostTransp = Set.of(Bounds.fromWidthHeight(519, 197, 50, 30), Bounds.fromWidthHeight(519, 200, 53, 24));
         addCueLocatorByPattern(cueLocators, "cuebuilder/gvg", "gvg-main_(.*)\\.png", Bounds.fromWidthHeight(525, 159, 86, 71),
-                Set.of(), gvgCostTransp, "Cost", "unitycues/common/cueCost.png", "Cost combo box for T/G, GVG");
+                Set.of(), gvgCostTransp, "Cost", "unitycues/common/cueCost.png", "Cost combo box for T/G, GVG, Expedition");
+        final Set<Bounds> expCostTransp = Set.of(Bounds.fromWidthHeight(519, 194, 50, 30), Bounds.fromWidthHeight(519, 197, 53, 24));
+        addCueLocatorByPattern(cueLocators, "cuebuilder/expedition", "exp-main_(.*)\\.png", Bounds.fromWidthHeight(525, 156, 86, 71),
+                Set.of(), expCostTransp, "Cost", "unitycues/common/cueCost.png", "Cost combo box for T/G, GVG, Expedition");
 
         addCueLocatorByPattern(cueLocators, "cuebuilder/gvg", "gvg-main_(.*)\\.png", Bounds.fromWidthHeight(327, 53, 34, 32),
                 Set.of(), Set.of(), "BadgeBar", "unitycues/common/cueBadgeBar.png", "Badge bar popup");
@@ -462,6 +464,11 @@ public class CueBuilder {
         addCueLocatorByPattern(cueLocators, "cuebuilder/dungeon/zones", "z\\d{2}(.*)\\.png", Bounds.fromWidthHeight(104, 67, 102, 30),
                 Set.of(), Set.of(), "DungeonZones", "unitycues/dungeon/cueDungeonZones.png", "");
         //endregion
+
+        //region Expedition
+        addCueLocatorByPattern(cueLocators, "cuebuilder/expedition", "exp-idol_(.*)\\.png", Bounds.fromWidthHeight(243, 60, 313, 23),
+                Set.of(), Set.of(), "Expedition4", "unitycues/expedition/cueExpedition4Idol.png", "Idol Expedition Title");
+        //endregion Expedition
 
         //region Familiar Encounters
         addCueLocatorByPattern(cueLocators, "cuebuilder/familiarEncounter", "encounter(.*)\\.png", Bounds.fromWidthHeight(141, 275, 23, 31),

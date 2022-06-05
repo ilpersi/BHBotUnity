@@ -1,5 +1,8 @@
 package com.github.ilpersi.BHBot;
 
+/**
+ * Use this simple class to test cue detection logic in images. This is mainly focused on developers that are creating new Cues
+ */
 public class CueTest {
     public static void main(String[] args) {
         final String usage = "CueTest <imageToSearchPat> <cueImagePath>";

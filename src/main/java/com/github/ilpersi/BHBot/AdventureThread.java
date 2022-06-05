@@ -1386,6 +1386,7 @@ public class AdventureThread implements Runnable {
                                         bot.settings.activitiesEnabled.remove("e");
                                         BHBotUnity.logger.error("It was impossible to get the current expedition type!");
                                         bot.notificationManager.sendErrorNotification("Expedition error", "It was impossible to get the current expedition type. Expeditions are now disabled!");
+                                        Misc.saveScreen("unknown-expedition", "errors/expedition", true, bot.browser.getImg());
 
                                         bot.browser.readScreen();
                                         seg = MarvinSegment.fromCue(BHBotUnity.cues.get("X"), Misc.Durations.SECOND, bot.browser);
@@ -1415,7 +1416,7 @@ public class AdventureThread implements Runnable {
                                         continue;
                                     }
 
-                                    bot.browser.clickInGame(p.x, p.y);
+                                    bot.browser.clickInGame(p);
 
                                     // select difficulty if needed:
                                     int difficulty = detectDifficulty(BHBotUnity.cues.get("DifficultyExpedition"));
@@ -3157,23 +3158,27 @@ public class AdventureThread implements Runnable {
     }
 
     /**
+     * This method will return you the position of the desired portal or null if the portal could not be found.
+     * To understand if portals are enabled, the method checks for pixel color in specific locations
+     *
      * @param targetPortal in standard format, e.g. "h4/i4".
      * @return null in case dungeon parameter is malformed (can even throw an exception)
      */
     private Point getExpeditionIconPos(int currentExpedition, String targetPortal) {
+        // Sanity check on portal length
         if (targetPortal.length() != 2) {
             BHBotUnity.logger.error("targetPortal length Mismatch in getExpeditionIconPos");
             return null;
         }
 
-        String portalName = getExpeditionPortalName(currentExpedition, targetPortal);
-
+        // Sanity check on portal code
         if (!"p1".equals(targetPortal) && !"p2".equals(targetPortal)
                 && !"p3".equals(targetPortal) && !"p4".equals(targetPortal)) {
             BHBotUnity.logger.error("Unexpected target portal in getExpeditionIconPos: " + targetPortal);
             return null;
         }
 
+        // We transform portal code to int
         int portalInt = switch (targetPortal) {
             case "p1" -> 1;
             case "p2" -> 2;
@@ -3235,10 +3240,10 @@ public class AdventureThread implements Runnable {
             colorCheck[2] = Color.WHITE;
             colorCheck[3] = Color.WHITE;
         } else if (currentExpedition == 4) { // Idol
-            portalCheck[0] = new Point(370, 140); // Blublix
-            portalCheck[1] = new Point(226, 369); // Mowhi
-            portalCheck[2] = new Point(534, 350); // Wizbot
-            portalCheck[3] = new Point(370, 324); // Astamus
+            portalCheck[0] = new Point(370, 141); // Blublix
+            portalCheck[1] = new Point(229, 372); // Mowhi
+            portalCheck[2] = new Point(535, 351); // Wizbot
+            portalCheck[3] = new Point(371, 325); // Astamus
 
             portalPosition[0] = new Point(400, 165); // Blublix
             portalPosition[1] = new Point(243, 385); // Mowhi
@@ -3283,6 +3288,7 @@ public class AdventureThread implements Runnable {
         }
 
         // If the desired portal is not enabled, we try to find the highest enabled one
+        String portalName = getExpeditionPortalName(currentExpedition, targetPortal);
         int i = 3;
         while (i >= 0) {
             if (portalEnabled[i]) {

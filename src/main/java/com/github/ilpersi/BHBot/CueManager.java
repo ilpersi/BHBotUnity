@@ -409,11 +409,9 @@ class CueManager {
         addCue("InvasionWindow", "cues/cueInvasionWindow.png", new Bounds(260, 90, 280, 110)); // GVG window cue
 
         // Expedition related:
-        addCue("ExpeditionButton", "cues/cueExpeditionButton.png", null);
         addCue("Expedition1", "cues/expedition/cueExpedition1Hallowed.png", new Bounds(168, 34, 628, 108)); // Hallowed Expedtion Title
         addCue("Expedition2", "cues/expedition/cueExpedition2Inferno.png", new Bounds(200, 40, 600, 100)); //Inferno Expedition
         addCue("Expedition3", "cues/expedition/cueExpedition3Jammie.png", new Bounds(230, 40, 565, 100)); //Jammie Dimension
-        addCue("Expedition4", "cues/expedition/cueExpedition4Idol.png", new Bounds(230, 40, 565, 100)); //Idol Dimension
         addCue("Expedition5", "cues/expedition/cueExpedition5BattleBards.png", new Bounds(230, 40, 565, 100)); //Battle Bards!
         addCue("PortalBorderLeaves", "cues/expedition/portalBorderLeaves.png", new Bounds(48, 447, 107, 503));
 
@@ -582,6 +580,11 @@ class CueManager {
         addCue("DungHeroic", "unitycues/dungeon/cueDungHeroic.png", Bounds.fromWidthHeight(525, 220, 145, 50));
         addCue("DungeonZones", "unitycues/dungeon/cueDungeonZones.png", Bounds.fromWidthHeight(90, 55, 130, 55));
         //endregion Dungeon
+
+        //region Expedition
+        addCue("ExpeditionButton", "unitycues/mainScreen/cueExpeditionButton.png", null); // Expedition Icon in main screen
+        addCue("Expedition4", "unitycues/expedition/cueExpedition4Idol.png", Bounds.fromWidthHeight(230, 50, 340, 45)); // "Idol Expedition Title"
+        //endregion Expedition
 
         //region Familiar
         // region Familiar encounters
