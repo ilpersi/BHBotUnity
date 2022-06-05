@@ -450,6 +450,8 @@ public class BrowserManager {
      * Note that before entering into this method, caller had probably already detected the 'popup' cue (but not necessarily). <br>
      * Note: in case of failure, it will print it out.
      *
+     * @param popup A Cue used to identify how to close the popup. As long as this Cue is on screen, the popup is considered as opened
+     * @param close A Cue used to cose the popup: usually the X Cue. Can be any Cue you want.
      * @return false in case it failed to close it (timed out).
      */
     synchronized boolean closePopupSecurely(Cue popup, Cue close) {

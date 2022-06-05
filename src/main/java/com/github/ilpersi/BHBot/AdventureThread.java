@@ -560,7 +560,7 @@ public class AdventureThread implements Runnable {
                                 }
                                 if (difficulty != targetDifficulty) {
                                     BHBotUnity.logger.info("Detected " + (trials ? "trials" : "gauntlet") + " difficulty level: " + difficulty + ", settings level: " + targetDifficulty + ". Changing..");
-                                    int result = selectDifficulty(difficulty, targetDifficulty, BHBotUnity.cues.get("SelectDifficulty"), 1, true);
+                                    int result = selectDifficulty(difficulty, targetDifficulty, BHBotUnity.cues.get("SelectDifficulty"), BHBotUnity.cues.get("TokenBar"), 1, true);
                                     if (result == 0) { // error!
 
                                         BHBotUnity.logger.warn("Unable to change difficulty, usually because desired level is not unlocked. Running " + (trials ? "trials" : "gauntlet") + " at " + difficulty + ".");
@@ -1433,7 +1433,7 @@ public class AdventureThread implements Runnable {
 
                                     if (difficulty != targetDifficulty) {
                                         BHBotUnity.logger.info("Detected Expedition difficulty level: " + difficulty + ", settings level is " + targetDifficulty + ". Changing..");
-                                        int result = selectDifficulty(difficulty, targetDifficulty, BHBotUnity.cues.get("SelectDifficultyExpedition"), 5, false);
+                                        int result = selectDifficulty(difficulty, targetDifficulty, BHBotUnity.cues.get("SelectDifficultyExpedition"), null, 5, false);
                                         if (result == 0) { // error!
                                             // see if drop down menu is still open and close it:
                                             bot.browser.readScreen(Misc.Durations.SECOND);
@@ -4225,17 +4225,20 @@ public class AdventureThread implements Runnable {
      * @return 0 in case of error, newDifficulty if everything was ok, another integer if for any reason the desired
      * level could not be set. Caller will have to check this in its own code.
      */
-    int selectDifficulty(int oldDifficulty, int newDifficulty, Cue difficulty, int step, boolean useDifficultyRanges) {
+    int selectDifficulty(int oldDifficulty, int newDifficulty, Cue difficultyCue, Cue toCloseCue, int step, boolean useDifficultyRanges) {
         if (oldDifficulty == newDifficulty)
             return newDifficulty; // no change
 
-        MarvinSegment seg = MarvinSegment.fromCue(difficulty, 2 * Misc.Durations.SECOND, bot.browser);
+        MarvinSegment seg = MarvinSegment.fromCue(difficultyCue, 2 * Misc.Durations.SECOND, bot.browser);
         if (seg == null) {
             BHBotUnity.logger.error("Error: unable to detect 'select difficulty' button while trying to change difficulty level!");
             return 0; // error
         }
 
-        bot.browser.clickOnSeg(seg);
+        if (toCloseCue == null)
+            bot.browser.clickOnSeg(seg);
+        else
+            bot.browser.closePopupSecurely(toCloseCue, difficultyCue);
 
         bot.browser.readScreen(5 * Misc.Durations.SECOND);
 
