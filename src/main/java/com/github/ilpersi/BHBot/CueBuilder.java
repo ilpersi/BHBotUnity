@@ -433,6 +433,9 @@ public class CueBuilder {
 
         addCueLocatorByPattern(cueLocators, "cuebuilder/gvg", "gvg-main_(.*)\\.png", Bounds.fromWidthHeight(327, 53, 34, 32),
                 Set.of(), Set.of(), "BadgeBar", "unitycues/common/cueBadgeBar.png", "Badge bar popup");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/expedition", "exp-portal_(.*)\\.png", Bounds.fromWidthHeight(363, 455, 73, 15),
+                Set.of(), Set.of(), "Enter", "unitycues/common/cueEnter.png", "Green Enter button found in Expedition and in some D4");
+
 
         //endregion Common
 
@@ -468,6 +471,11 @@ public class CueBuilder {
         //region Expedition
         addCueLocatorByPattern(cueLocators, "cuebuilder/expedition", "exp-idol_(.*)\\.png", Bounds.fromWidthHeight(243, 60, 313, 23),
                 Set.of(), Set.of(), "Expedition4", "unitycues/expedition/cueExpedition4Idol.png", "Idol Expedition Title");
+        final Set<Bounds> expDiffTransp = Set.of(Bounds.fromWidthHeight(413, 393, 108, 28), Bounds.fromWidthHeight(410, 396, 114, 24));
+        addCueLocatorByPattern(cueLocators, "cuebuilder/expedition", "exp-portal_(.*)\\.png", Bounds.fromWidthHeight(403, 366, 162, 69),
+                Set.of(), expDiffTransp, "DifficultyExpedition", "unitycues/expedition/cueDifficultyExpedition.png", "Expedition Difficulty combo box");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/expedition", "exp-portal_(.*)\\.png", Bounds.fromWidthHeight(530, 366, 33, 69),
+                Set.of(), Set.of(), "SelectDifficultyExpedition", "unitycues/expedition/cueSelectDifficultyExpedition.png", "Expedition Difficulty selection Arrow");
         //endregion Expedition
 
         //region Familiar Encounters

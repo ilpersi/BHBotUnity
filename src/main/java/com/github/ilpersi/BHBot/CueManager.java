@@ -315,7 +315,6 @@ class CueManager {
         addCue("IgnoreCheck", "cues/cueIgnoreCheck.png", null);
 
         addCue("ZonesButton", "cues/cueZonesButton.png", new Bounds(105, 60, 125, 75));
-        addCue("Enter", "cues/cueEnter.png", null); // "Enter" button found on d4 window
         addCue("NotEnoughEnergy", "cues/cueNotEnoughEnergy.png", new Bounds(260, 210, 290, 235)); // "Not enough Energy" popup cue
 
         addCue("PVP", "cues/cuePVP.png", new Bounds(0, 70, 40, 110)); // PVP icon in main screen
@@ -328,8 +327,6 @@ class CueManager {
 
         addCue("InGamePM", "cues/cueInGamePM.png", new Bounds(450, 330, 530, 380)); // note that the guild window uses the same cue! That's why it's important that user doesn't open guild window while bot is working!
 
-        addCue("DifficultyExpedition", "cues/cueDifficultyExpedition.png", null); // selected difficulty in trials/gauntlet window
-        addCue("SelectDifficultyExpedition", "cues/cueSelectDifficultyExpedition.png", null);
         addCue("SelectCost", "cues/cueSelectCost.png", new Bounds(555, 170, 595, 205)); // cue for select cost found in both PvP and Gauntlet/Trials windows. Note that bounds are wide, because position of this cue in PvP is different from that in Gauntlet/Trials!
         addCue("0", "cues/numbers/cue0.png", null);
         addCue("1", "cues/numbers/cue1.png", null);
@@ -569,6 +566,7 @@ class CueManager {
         addCue("NotEnoughTokens", "unitycues/common/cueNotEnoughTokens.png", Bounds.fromWidthHeight(260, 215, 275, 95)); // Not enough token popup.
         addCue("Cost", "unitycues/common/cueCost.png", Bounds.fromWidthHeight(510, 150, 120, 105)); // Cost combo box for T/G, GVG
         addCue("BadgeBar", "unitycues/common/cueBadgeBar.png", Bounds.fromWidthHeight(315, 40, 60, 55));
+        addCue("Enter", "unitycues/common/cueEnter.png", Bounds.fromWidthHeight(350, 445, 100, 35)); // Green Enter button found in Expedition and in some D4
         //endregion Common
 
         //region Dungeon
@@ -584,6 +582,8 @@ class CueManager {
         //region Expedition
         addCue("ExpeditionButton", "unitycues/mainScreen/cueExpeditionButton.png", null); // Expedition Icon in main screen
         addCue("Expedition4", "unitycues/expedition/cueExpedition4Idol.png", Bounds.fromWidthHeight(230, 50, 340, 45)); // "Idol Expedition Title"
+        addCue("DifficultyExpedition", "unitycues/expedition/cueDifficultyExpedition.png", Bounds.fromWidthHeight(390, 355, 185, 90)); // Expedition Difficulty combo box
+        addCue("SelectDifficultyExpedition", "unitycues/expedition/cueSelectDifficultyExpedition.png", Bounds.fromWidthHeight(520, 355, 55, 90)); // Expedition Difficulty selection Arrow
         //endregion Expedition
 
         //region Familiar

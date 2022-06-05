@@ -1433,7 +1433,7 @@ public class AdventureThread implements Runnable {
 
                                     if (difficulty != targetDifficulty) {
                                         BHBotUnity.logger.info("Detected Expedition difficulty level: " + difficulty + ", settings level is " + targetDifficulty + ". Changing..");
-                                        int result = selectDifficulty(difficulty, targetDifficulty, BHBotUnity.cues.get("SelectDifficultyExpedition"), null, 5, false);
+                                        int result = selectDifficulty(difficulty, targetDifficulty, BHBotUnity.cues.get("SelectDifficultyExpedition"), BHBotUnity.cues.get("BadgeBar"), 5, false);
                                         if (result == 0) { // error!
                                             // see if drop down menu is still open and close it:
                                             bot.browser.readScreen(Misc.Durations.SECOND);
@@ -1457,12 +1457,12 @@ public class AdventureThread implements Runnable {
                                         }
                                     }
 
-                                    //click enter
+                                    //click Green Enter button
                                     seg = MarvinSegment.fromCue(BHBotUnity.cues.get("Enter"), 2 * Misc.Durations.SECOND, bot.browser);
                                     bot.browser.clickOnSeg(seg);
 
-                                    //click enter
-                                    Cue expeditionAccept = new Cue(BHBotUnity.cues.get("Accept"), Bounds.fromWidthHeight(420, 430, 200, 65));
+                                    //click Accept
+                                    Cue expeditionAccept = new Cue(BHBotUnity.cues.get("TeamAccept"), Bounds.fromWidthHeight(445, 440, 145, 55));
 
                                     seg = MarvinSegment.fromCue(expeditionAccept, 3 * Misc.Durations.SECOND, bot.browser);
                                     if (seg != null) {
@@ -1494,7 +1494,7 @@ public class AdventureThread implements Runnable {
                             }
                             //endregion Expedition
                             else {
-                                // do neither gvg nor invasion
+                                // do neither gvg nor invasion nor expedition
                                 seg = MarvinSegment.fromCue(BHBotUnity.cues.get("X"), bot.browser);
                                 bot.browser.clickOnSeg(seg);
                                 Misc.sleep(2 * Misc.Durations.SECOND);
@@ -3243,7 +3243,7 @@ public class AdventureThread implements Runnable {
             portalCheck[0] = new Point(370, 141); // Blublix
             portalCheck[1] = new Point(229, 372); // Mowhi
             portalCheck[2] = new Point(535, 351); // Wizbot
-            portalCheck[3] = new Point(371, 325); // Astamus
+            portalCheck[3] = new Point(371, 323); // Astamus
 
             portalPosition[0] = new Point(400, 165); // Blublix
             portalPosition[1] = new Point(243, 385); // Mowhi
@@ -3974,6 +3974,9 @@ public class AdventureThread implements Runnable {
      */
     int detectDifficulty(Cue difficulty) {
 
+        // TODO Remember to remove this!!
+        debugDifficulty();
+
         bot.browser.readScreen(2 * Misc.Durations.SECOND); // note that sometimes the cue will be gray (disabled) since the game is fetching data from the server - in that case we'll have to wait a bit
 
         MarvinSegment seg = MarvinSegment.fromCue(difficulty, bot.browser);
@@ -4552,6 +4555,10 @@ public class AdventureThread implements Runnable {
      * @return 0 in case of an error, or cost value in interval [1..5]
      */
     int detectCost() {
+
+        // TODO Remember to remove this!
+        debugCost();
+
         MarvinSegment seg = MarvinSegment.fromCue(BHBotUnity.cues.get("Cost"), 15 * Misc.Durations.SECOND, bot.browser);
         if (seg == null) {
             BHBotUnity.logger.error("Error: unable to detect cost selection box!");
@@ -5743,17 +5750,28 @@ public class AdventureThread implements Runnable {
      * @return The found difficulty number.
      */
     int debugDifficulty() {
-        // Check the conversion parameters are correct
-        final Cue difficultyCue = BHBotUnity.cues.get("Difficulty");
+        String detectedDifficulty = "TG";
 
         bot.browser.readScreen();
 
         // We check that the difficulty screen is opened
-        MarvinSegment seg = MarvinSegment.fromCue(difficultyCue, bot.browser);
+        MarvinSegment seg = MarvinSegment.fromCue(BHBotUnity.cues.get("Difficulty"), bot.browser);
         if (seg == null) {
-            BHBotUnity.logger.warn("Impossible to find difficulty cue. Make sure that the T/G Window is opened.");
-            return 0;
+
+            seg = MarvinSegment.fromCue(BHBotUnity.cues.get("DifficultyExpedition"), bot.browser);
+
+            if (seg == null) {
+                BHBotUnity.logger.warn("Impossible to find difficulty cue. Make sure that the T/G or Expedition Window is opened.");
+                return 0;
+            } else {
+                detectedDifficulty = "Expedition";
+            }
         }
+
+        Bounds suggestedBounds = Bounds.fromMarvinSegment(seg, null);
+        BHBotUnity.logger.debug(detectedDifficulty + " difficulty Cue found at: " + seg);
+        BHBotUnity.logger.debug("Suggested Bounds: " + suggestedBounds.getJavaCode(true, false));
+        BHBotUnity.logger.debug("Suggested Bounds.fromWidthHeight: " + suggestedBounds.getJavaCode(true, true));
 
         BufferedImage numImg = bot.browser.getImg().getSubimage(seg.x1 + 26, seg.y1 + 32, 70, 25);
 
@@ -5761,13 +5779,14 @@ public class AdventureThread implements Runnable {
         toBlackAndWhite.toBlackWhite(110);
         toBlackAndWhite.update();
 
-        int result = AdventureThread.readNumFromImg(toBlackAndWhite.getBufferedImage(), "tg_diff_cost_win_11_", Set.of(), true, false);
+        BufferedImage imb = toBlackAndWhite.getBufferedImage();
+        int result = AdventureThread.readNumFromImg(imb, "tg_diff_cost_win_11_", Set.of(), true, false);
 
         // We save the image and the read difficulty for troubleshooting purpose
-        String tgDiffFileName = "tg_diff_" + result;
-        String tgFile = Misc.saveScreen(tgDiffFileName, "tg_debug_diff", true, numImg);
+        String tgDiffFileName = detectedDifficulty.toLowerCase() + "_diff_" + result;
+        String diffFile = Misc.saveScreen(tgDiffFileName, "debug/difficulty", true, numImg);
         BHBotUnity.logger.debug("Detected difficulty is: " + result);
-        BHBotUnity.logger.debug("Image saved to: " + tgFile);
+        BHBotUnity.logger.debug("Image saved to: " + diffFile);
 
         return result;
     }
@@ -5805,7 +5824,7 @@ public class AdventureThread implements Runnable {
 
         // We save the image and the read difficulty for troubleshooting purpose
         String costFileName = "cost_" + result;
-        String costFile = Misc.saveScreen(costFileName, "debug_cost", true, numImg);
+        String costFile = Misc.saveScreen(costFileName, "debug/cost", true, numImg);
         BHBotUnity.logger.debug("Detected cost is: " + result);
         BHBotUnity.logger.debug("Image saved to: " + costFile);
 
