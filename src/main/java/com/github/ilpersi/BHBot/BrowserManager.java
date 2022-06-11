@@ -165,6 +165,8 @@ public class BrowserManager {
             }
         }
 
+        BHBotUnity.logger.info("Using browser: %s Version: %s".formatted(caps.getBrowserName(), caps.getBrowserVersion()));
+
         jsExecutor = (JavascriptExecutor) driver;
 
     }
