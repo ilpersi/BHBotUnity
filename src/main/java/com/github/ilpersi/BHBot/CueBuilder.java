@@ -416,6 +416,8 @@ public class CueBuilder {
                 Set.of(), Set.of(), "Play", "unitycues/common/cuePlay.png", "Blue Play button.");
         addCueLocatorByPattern(cueLocators, "cuebuilder/gvg", "gvg-main_(.*)\\.png", Bounds.fromWidthHeight(522, 275, 58, 15),
                 Set.of(), Set.of(), "Play", "unitycues/common/cuePlay.png", "Blue Play button.");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/invasion", "inv-main_(.*)\\.png", Bounds.fromWidthHeight(522, 274, 58, 15),
+                Set.of(), Set.of(), "Play", "unitycues/common/cuePlay.png", "Blue Play button.");
 
 
         addCueLocatorByPattern(cueLocators, "cuebuilder/common", "not_enough_tokens_(.*)\\.png", Bounds.fromWidthHeight(272, 227, 251, 70),
@@ -430,9 +432,15 @@ public class CueBuilder {
         final Set<Bounds> expCostTransp = Set.of(Bounds.fromWidthHeight(519, 194, 50, 30), Bounds.fromWidthHeight(519, 197, 53, 24));
         addCueLocatorByPattern(cueLocators, "cuebuilder/expedition", "exp-main_(.*)\\.png", Bounds.fromWidthHeight(525, 156, 86, 71),
                 Set.of(), expCostTransp, "Cost", "unitycues/common/cueCost.png", "Cost combo box for T/G, GVG, Expedition");
+        final Set<Bounds> invCostTransp = Set.of(Bounds.fromWidthHeight(519, 198, 50, 30), Bounds.fromWidthHeight(519, 201, 53, 24));
+        addCueLocatorByPattern(cueLocators, "cuebuilder/invasion", "inv-main_(.*)\\.png", Bounds.fromWidthHeight(525, 160, 86, 71),
+                Set.of(), invCostTransp, "Cost", "unitycues/common/cueCost.png", "Cost combo box for T/G, GVG, Expedition");
 
         addCueLocatorByPattern(cueLocators, "cuebuilder/gvg", "gvg-main_(.*)\\.png", Bounds.fromWidthHeight(327, 53, 34, 32),
                 Set.of(), Set.of(), "BadgeBar", "unitycues/common/cueBadgeBar.png", "Badge bar popup");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/invasion", "inv-main_(.*)\\.png", Bounds.fromWidthHeight(327, 53, 34, 32),
+                Set.of(), Set.of(), "BadgeBar", "unitycues/common/cueBadgeBar.png", "Badge bar popup");
+
         addCueLocatorByPattern(cueLocators, "cuebuilder/expedition", "exp-portal_(.*)\\.png", Bounds.fromWidthHeight(363, 455, 73, 15),
                 Set.of(), Set.of(), "Enter", "unitycues/common/cueEnter.png", "Green Enter button found in Expedition and in some D4");
 
@@ -510,6 +518,11 @@ public class CueBuilder {
                 Set.of(), Set.of(), "Fight", "unitycues/gvg/cueFight.png", "GVG Fight Button");
         //endregion GVG
 
+        //region Invasion
+        addCueLocatorByPattern(cueLocators, "cuebuilder/invasion", "inv-main_(.*)\\.png", Bounds.fromWidthHeight(324, 107, 152, 21),
+                Set.of(), Set.of(), "InvasionWindow", "unitycues/invasion/cueInvasionWindow.png", "Invasion Main Window Title");
+        //endregion Invasion
+
         //region Merchant
         addCueLocatorByPattern(cueLocators, "cuebuilder/merchant", "merchant-title(.*)\\.png", Bounds.fromWidthHeight(311, 116, 175, 49),
                 Set.of(), Set.of(), "Merchant", "unitycues/merchant/cueMerchant.png", "");
@@ -526,6 +539,8 @@ public class CueBuilder {
                 Set.of(), Set.of(), "RaidButton", "unitycues/mainScreen/cueRaidButton.png", "Ruby icon used to open the raid menu.");
         addCueLocatorByPattern(cueLocators, "cuebuilder/mainScreen", "raid-menu(.*)\\.png", Bounds.fromWidthHeight(24, 15, 24, 51),
                 Set.of(), Set.of(), "Quest", "unitycues/mainScreen/cueQuestButton.png", "Quest icon used to open the dungeon menu.");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/invasion", "inv-icon_(.*)\\.png", Bounds.fromWidthHeight(747, 243, 31, 44),
+                Set.of(), Set.of(), "Invasion", "unitycues/mainScreen/cueInvasion.png", "Quest icon used to open the Invasion menu.");
         //endregion
 
         //region Numbers
@@ -1233,7 +1248,7 @@ public class CueBuilder {
 
                 MarvinSegment seg = FindSubimage.findImage(dungImg, badgePopUp, 0, 0, 0, 0);
                 // As images can have different shat totals we use 100 so we get the percentage
-                int badge = AdventureThread.readResourceBarPercentage(seg, 100, Misc.BarOffsets.GVG.x, Misc.BarOffsets.GVG.y, badgeColors, dungImg);
+                int badge = AdventureThread.readResourceBarPercentage(seg, 100, Misc.BarOffsets.Badge.x, Misc.BarOffsets.Badge.y, badgeColors, dungImg);
                 System.out.println("Badge bar is " + badge + "% full for image " + BadgeBarFile.getAbsolutePath());
             }
         }

@@ -401,10 +401,6 @@ class CueManager {
             addCue(rune.getRuneSelectCueName(), rune.getRuneSelectCueFileName(), new Bounds(235, 185, 540, 350));
         }
 
-        // invasion related:
-        addCue("Invasion", "cues/cueInvasion.png", null);
-        addCue("InvasionWindow", "cues/cueInvasionWindow.png", new Bounds(260, 90, 280, 110)); // GVG window cue
-
         // Expedition related:
         addCue("Expedition1", "cues/expedition/cueExpedition1Hallowed.png", new Bounds(168, 34, 628, 108)); // Hallowed Expedtion Title
         addCue("Expedition2", "cues/expedition/cueExpedition2Inferno.png", new Bounds(200, 40, 600, 100)); //Inferno Expedition
@@ -609,19 +605,24 @@ class CueManager {
         addCue("Fight", "unitycues/gvg/cueFight.png", Bounds.fromWidthHeight(565, 190, 75, 35)); // GVG Fight Button
         //endregion GVG
 
+        //region Invasion
+        addCue("InvasionWindow", "unitycues/invasion/cueInvasionWindow.png", Bounds.fromWidthHeight(310, 95, 180, 45)); // Invasion Main Window Title
+        //endregion Invasion
+
         //region Merchant
         addCue("Merchant", "unitycues/merchant/cueMerchant.png", Bounds.fromWidthHeight(300, 105, 200, 70)); // cue for merchant dialog/popup
         addCue("MerchantDecline", "unitycues/merchant/cueMerchantDecline.png", Bounds.fromWidthHeight(410, 365, 135, 55)); // cue for merchant dialog/popup
         //endregion
 
         //region Main screen cues
+        Bounds rigthMenuBounds = Bounds.fromWidthHeight(695, 110, 105, 405);
         addCue("Main", "unitycues/mainScreen/cueMainScreen.png", Bounds.fromWidthHeight(60, 5, 140, 40)); // Gem cue used to identify the main screen
         addCue("Quest", "unitycues/mainScreen/cueQuestButton.png", Bounds.fromWidthHeight(10, 5, 50, 75)); // Quest icon used to open the dungeon menu.
         addCue("SettingsGear", "unitycues/mainScreen/cueSettingsGear.png", Bounds.fromWidthHeight(665, 450, 55, 65)); // settings button
         addCue("RaidButton", "unitycues/mainScreen/cueRaidButton.png", Bounds.fromWidthHeight(20, 295, 40, 65)); // Ruby icon used to open the raid menu.
         addCue("GorMenu", "unitycues/mainScreen/cueGorMenu.png", Bounds.fromWidthHeight(95, 465, 55, 60)); // Permagor menu close to the Character menu
-        addCue("GVG", "unitycues/mainScreen/cueGVG.png", null); // main GVG button cue
-
+        addCue("GVG", "unitycues/mainScreen/cueGVG.png", rigthMenuBounds); // main GVG button cue
+        addCue("Invasion", "unitycues/mainScreen/cueInvasion.png", rigthMenuBounds); // Invasion icon cue
         //endregion
 
         //region Numbers

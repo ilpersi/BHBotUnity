@@ -1051,8 +1051,8 @@ public class AdventureThread implements Runnable {
                             bot.browser.readScreen();
 
                             seg = MarvinSegment.fromCue("BadgeBar", 5 * Misc.Durations.SECOND, bot.browser);
-                            final Set<Color> badgeBarColors = Set.of(new Color (17, 208, 226), new Color (1, 133, 146));
-                            int badges = readResourceBarPercentage(seg, bot.settings.maxBadges, Misc.BarOffsets.GVG.x, Misc.BarOffsets.GVG.y, badgeBarColors, bot.browser.getImg());
+                            final Set<Color> badgeBarColors = Set.of(new Color (17, 208, 226), new Color (1, 133, 146), new Color (17, 198, 215), new Color (17, 201, 218), new Color (18, 205, 223));
+                            int badges = readResourceBarPercentage(seg, bot.settings.maxBadges, Misc.BarOffsets.Badge.x, Misc.BarOffsets.Badge.y, badgeBarColors, bot.browser.getImg());
 
                             globalBadges = badges;
                             BHBotUnity.logger.readout("Badges: " + badges + ", required: >" + bot.settings.minBadges + ", " + badgeEvent.toString() + " cost: " +
@@ -1246,7 +1246,7 @@ public class AdventureThread implements Runnable {
                                         }
                                     }
 
-                                    seg = MarvinSegment.fromCue(BHBotUnity.cues.get("Play"), 5 * Misc.Durations.SECOND, Bounds.fromWidthHeight(505, 255, 90, 45), bot.browser);
+                                    seg = MarvinSegment.fromCue(BHBotUnity.cues.get("Play"), 5 * Misc.Durations.SECOND, Bounds.fromWidthHeight(510, 260, 80, 40), bot.browser);
                                     if (seg == null) {
                                         BHBotUnity.logger.error("Unable to find the Play button in the Invasion screen, restarting!");
                                         restart();
@@ -1254,14 +1254,15 @@ public class AdventureThread implements Runnable {
                                     }
                                     bot.browser.clickOnSeg(seg);
 
-                                    seg = MarvinSegment.fromCue(BHBotUnity.cues.get("Accept"), 10 * Misc.Durations.SECOND, Bounds.fromWidthHeight(470, 450, 100, 30), bot.browser);
+                                    Cue invAccept = new Cue(BHBotUnity.cues.get("TeamAccept"), Bounds.fromWidthHeight(445, 440, 145, 55));
+                                    seg = MarvinSegment.fromCue(invAccept, 10 * Misc.Durations.SECOND, bot.browser);
                                     if (seg == null) {
                                         BHBotUnity.logger.error("Unable to find the Accept button in the Invasion screen, restarting!");
                                         restart();
                                         continue;
                                     }
                                     //bot.browser.clickOnSeg(seg);
-                                    bot.browser.closePopupSecurely(BHBotUnity.cues.get("Accept"), BHBotUnity.cues.get("Accept"));
+                                    bot.browser.closePopupSecurely(invAccept, invAccept);
                                     Misc.sleep(2 * Misc.Durations.SECOND);
 
                                     if (handleTeamMalformedWarning()) {
@@ -2573,27 +2574,14 @@ public class AdventureThread implements Runnable {
             counters.get(bot.getState()).increaseDefeatsDuration(activityRuntime);
             String runtimeAvg = Misc.millisToHumanForm(counters.get(bot.getState()).getDefeatAverageDuration());
 
-            //return stats for non-invasion
-            if (!BHBotUnity.State.Invasion.equals(bot.getState())) {
-                BHBotUnity.logger.warn(bot.getState().getName() + " #" + counters.get(bot.getState()).getTotal() + " completed. Result: Defeat.");
-                BHBotUnity.logger.stats(bot.getState().getName() + " " + counters.get(bot.getState()).successRateDesc());
-                BHBotUnity.logger.stats("Defeat run time: " + runtime + ". Average: " + runtimeAvg + ".");
-            } else {
-                //return the stats for invasion (no victory possible so we skip the warning)
-                bot.browser.readScreen();
-                MarvinImage subm = new MarvinImage(bot.browser.getImg().getSubimage(375, 20, 55, 20));
-                subm.toBlackWhite(new Color(25, 25, 25), new Color(255, 255, 255), 64);
-                subm.update();
-                BufferedImage subimagetestbw = subm.getBufferedImage();
-                int num = readNumFromImg(subimagetestbw, "small", Set.of(), false, false);
-                BHBotUnity.logger.info(bot.getState().getName() + " #" + counters.get(bot.getState()).getTotal() + " completed. Level reached: " + num);
-                BHBotUnity.logger.stats("Run time: " + runtime + ". Average: " + runtimeAvg + ".");
-            }
+            BHBotUnity.logger.warn(bot.getState().getName() + " #" + counters.get(bot.getState()).getTotal() + " completed. Result: Defeat.");
+            BHBotUnity.logger.stats(bot.getState().getName() + " " + counters.get(bot.getState()).successRateDesc());
+            BHBotUnity.logger.stats("Defeat run time: " + runtime + ". Average: " + runtimeAvg + ".");
 
             //check for invasion loot drops and send via Pushover/Screenshot
-            if (BHBotUnity.State.Invasion.equals(bot.getState())) {
+            /*if (BHBotUnity.State.Invasion.equals(bot.getState())) {
                 handleLoot();
-            }
+            }*/
 
             // Difficulty failsafe logic
             if (bot.getState().equals(BHBotUnity.State.Expedition) && bot.settings.difficultyFailsafe.containsKey("e")) {
@@ -2670,7 +2658,7 @@ public class AdventureThread implements Runnable {
             Bounds townBounds = switch (bot.getState()) {
                 case WorldBoss -> Bounds.fromWidthHeight(426, 460, 132, 36);
                 case Dungeon -> Bounds.fromWidthHeight(351, 458, 133, 40);
-                case Trials, Gauntlet, GVG -> Bounds.fromWidthHeight(365, 455, 95, 50);
+                case Trials, Gauntlet, GVG, Invasion -> Bounds.fromWidthHeight(365, 455, 95, 50);
                 default -> null;
             };
 
@@ -2695,7 +2683,7 @@ public class AdventureThread implements Runnable {
                     case Dungeon -> Bounds.fromWidthHeight(678, 37, 96, 90);
                     case WorldBoss -> Bounds.fromWidthHeight(639, 81, 63, 58);
                     case Trials, Gauntlet -> Bounds.fromWidthHeight(615, 85, 70, 70);
-                    case GVG -> Bounds.fromWidthHeight(615, 90, 70, 70);
+                    case GVG, Invasion -> Bounds.fromWidthHeight(615, 90, 70, 70);
                     default -> null;
                 };
 
@@ -3585,7 +3573,7 @@ public class AdventureThread implements Runnable {
                 BHBotUnity.logger.error("Error: 'Team not full/ordered' window detected, but no 'No' button found. Restarting...");
                 return true;
             }
-            bot.browser.clickOnSeg(seg);
+            bot.browser.closePopupSecurely(BHBotUnity.cues.get("No"), BHBotUnity.cues.get("No"));
             bot.browser.readScreen();
 
             seg = MarvinSegment.fromCue(BHBotUnity.cues.get("AutoTeam"), 2 * Misc.Durations.SECOND, bot.browser);
@@ -4447,6 +4435,7 @@ public class AdventureThread implements Runnable {
                      * matched difficulty we found earlier
                      * */
                     for (int idxI = 5; idxI < possibleDifficulties.size(); idxI++) {
+                        // TODO Kongregate bug, sometimes you are prompted back to T/G main window. Try to think of a fix
                         difficultySB.scrollDown(500);
 
                         if (possibleDifficulties.get(idxI) == matchedDifficulty) {
