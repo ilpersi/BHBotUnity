@@ -1909,7 +1909,7 @@ public class AdventureThread implements Runnable {
                                         seg = MarvinSegment.fromCue(cueX, 5 * Misc.Durations.SECOND, bot.browser);
                                         if (seg != null) {
                                             if ((bot.settings.screenshots.contains("b"))) {
-                                                bot.saveGameScreen("bounty-loot", "rewards");
+                                                Misc.saveScreen("bounty-loot", "rewards/bounty", true, bot.browser.getImg());
                                             }
                                             bot.browser.clickOnSeg(seg);
                                             BHBotUnity.logger.info("Collected bounties");

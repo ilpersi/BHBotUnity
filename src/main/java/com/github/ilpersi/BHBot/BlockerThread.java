@@ -185,7 +185,7 @@ public class BlockerThread implements Runnable {
                     if (seg != null) {
                         if ((bot.settings.screenshots.contains("d"))) {
                             BufferedImage reward = bot.browser.getImg().getSubimage(131, 136, 513, 283);
-                            Misc.saveScreen("daily_reward", "rewards", BHBotUnity.includeMachineNameInScreenshots, reward);
+                            Misc.saveScreen("daily_reward", "rewards/daily", true, reward);
                         }
                         bot.browser.closePopupSecurely(BHBotUnity.cues.get("DailyRewards"), BHBotUnity.cues.get("Claim"));
                     } else {
