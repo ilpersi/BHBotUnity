@@ -360,7 +360,6 @@ public class BlockerThread implements Runnable {
             // We have an ArrayList containing all the required details
             final ArrayList<rewardInfo> rewardDetails = new ArrayList<>();
             rewardDetails.add(new rewardInfo("Expedition", BHBotUnity.cues.get("Expedition_Rewards"), "expedition"));
-            rewardDetails.add(new rewardInfo("Fishing", BHBotUnity.cues.get("Fishing_Rewards"), "fishing"));
             rewardDetails.add(new rewardInfo("Gauntlet", BHBotUnity.cues.get("Gauntlet_Rewards"), "gauntlet"));
             rewardDetails.add(new rewardInfo("GVG", BHBotUnity.cues.get("GVG_Rewards"), "gvg"));
             rewardDetails.add(new rewardInfo("Invasion", BHBotUnity.cues.get("Invasion_Rewards"), "invasion"));
