@@ -114,7 +114,7 @@ public final class EncounterManager {
 
         // We save all the errors and persuasions based on settings
         if ((familiarLevel.getValue() >= bot.settings.familiarScreenshot) || familiarLevel == FamiliarType.ERROR) {
-            Misc.saveScreen(persuasionLog.toString(), "familiars", BHBotUnity.includeMachineNameInScreenshots, bot.browser.getImg());
+            Misc.saveScreen(persuasionLog.toString(), "familiars/" + familiarLevel.toString().toLowerCase(), BHBotUnity.includeMachineNameInScreenshots, bot.browser.getImg());
         }
 
         // if (bot.settings.contributeFamiliars) {
