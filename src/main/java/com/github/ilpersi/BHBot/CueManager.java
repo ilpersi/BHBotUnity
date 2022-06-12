@@ -465,15 +465,8 @@ class CueManager {
 
         //weekly reward cues
         //these include the top of the loot window so they aren't triggered by the text in the activity panel
-        addCue("PVP_Rewards", "cues/weeklyrewards/pvp.png", new Bounds(290, 130, 510, 160));
-        addCue("Trials_Rewards", "cues/weeklyrewards/trials.png", new Bounds(290, 130, 510, 160));
-        addCue("Trials_Rewards_Large", "cues/weeklyrewards/trials_large.png", new Bounds(290, 50, 510, 130));
         addCue("Gauntlet_Rewards", "cues/weeklyrewards/gauntlet.png", new Bounds(290, 130, 510, 160));
         addCue("Gauntlet_Rewards_Large", "cues/weeklyrewards/gauntlet_large.png", new Bounds(290, 50, 510, 130));
-        addCue("GVG_Rewards", "cues/weeklyrewards/gvg.png", new Bounds(290, 130, 510, 160));
-        addCue("Invasion_Rewards", "cues/weeklyrewards/invasion.png", new Bounds(290, 130, 510, 160));
-        addCue("Expedition_Rewards", "cues/weeklyrewards/expedition.png", new Bounds(290, 130, 510, 160));
-        addCue("Fishing_Rewards", "cues/weeklyrewards/fishing.png", new Bounds(290, 130, 510, 160));
 
         // We build Unity Cues on top of the standard ones
         updateUnityCues();
@@ -809,6 +802,7 @@ class CueManager {
         addCue("GVG_Rewards", "unitycues/weeklyRewards/gvg.png", Bounds.fromWidthHeight(325, 110, 145, 75));
         addCue("Invasion_Rewards", "unitycues/weeklyRewards/invasion.png", Bounds.fromWidthHeight(305, 115, 185, 60));
         addCue("Fishing_Bait", "unitycues/weeklyRewards/fishing_bait.png", Bounds.fromWidthHeight(385, 220, 80, 55)); // Green fishing bait
+        addCue("Expedition_Rewards", "unitycues/weeklyRewards/expedition.png", Bounds.fromWidthHeight(310, 125, 180, 40)); // Expedition popup title
         //endregion
 
         //region Settings

@@ -899,6 +899,8 @@ public class CueBuilder {
                 Set.of(), Set.of(), "Invasion_Rewards", "unitycues/weeklyRewards/invasion.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/weeklyRewards", "fishing_bait_(.*)\\.png", Bounds.fromWidthHeight(395, 230, 60, 33),
                 Set.of(), Set.of(), "Fishing_Bait", "unitycues/weeklyRewards/fishing_bait.png", "Green fishing bait");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/weeklyRewards", "expedition_(.*)\\.png", Bounds.fromWidthHeight(322, 137, 155, 18),
+                Set.of(), Set.of(), "Expedition_Rewards", "unitycues/weeklyRewards/expedition.png", "Expedition popup title");
         //endregion
 
 

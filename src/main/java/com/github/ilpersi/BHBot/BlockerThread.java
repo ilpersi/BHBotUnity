@@ -1,8 +1,7 @@
 package com.github.ilpersi.BHBot;
 
 import java.awt.image.BufferedImage;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
 
 public class BlockerThread implements Runnable {
     BHBotUnity bot;
@@ -343,38 +342,46 @@ public class BlockerThread implements Runnable {
         return true;
     }
 
+    /**
+     * This method takes care of managing weekly pop-up containing rewards for past week events.
+     *
+     * @return false if any error is present, otherwise true
+     */
     private boolean handleWeeklyRewards() {
+
+        record rewardInfo(String name, Cue rewardCue, String pathInfo) {}
+
         // check for weekly rewards popup
         // (note that several, 2 or even 3 such popups may open one after another)
         MarvinSegment seg;
-        if (bot.getState() == BHBotUnity.State.Loading || bot.getState() == BHBotUnity.State.Main) {
+        if (BHBotUnity.State.Loading.equals(bot.getState()) || BHBotUnity.State.Main.equals(bot.getState())) {
             bot.browser.readScreen();
 
-            HashMap<String, Cue> weeklyRewards = new HashMap<>();
-            weeklyRewards.put("PVP", BHBotUnity.cues.get("PVP_Rewards"));
-            weeklyRewards.put("Trials", BHBotUnity.cues.get("Trials_Rewards"));
-            weeklyRewards.put("Trials-XL", BHBotUnity.cues.get("Trials_Rewards_Large"));
-            weeklyRewards.put("Gauntlet", BHBotUnity.cues.get("Gauntlet_Rewards"));
-            weeklyRewards.put("Gauntlet-XL", BHBotUnity.cues.get("Gauntlet_Rewards_Large"));
-            weeklyRewards.put("Fishing", BHBotUnity.cues.get("Fishing_Rewards"));
-            weeklyRewards.put("Invasion", BHBotUnity.cues.get("Invasion_Rewards"));
-            weeklyRewards.put("Expedition", BHBotUnity.cues.get("Expedition_Rewards"));
-            weeklyRewards.put("GVG", BHBotUnity.cues.get("GVG_Rewards"));
+            // We have an ArrayList containing all the required details
+            final ArrayList<rewardInfo> rewardDetails = new ArrayList<>();
+            rewardDetails.add(new rewardInfo("Expedition", BHBotUnity.cues.get("Expedition_Rewards"), "expedition"));
+            rewardDetails.add(new rewardInfo("Fishing", BHBotUnity.cues.get("Fishing_Rewards"), "fishing"));
+            rewardDetails.add(new rewardInfo("Gauntlet", BHBotUnity.cues.get("Gauntlet_Rewards"), "gauntlet"));
+            rewardDetails.add(new rewardInfo("GVG", BHBotUnity.cues.get("GVG_Rewards"), "gvg"));
+            rewardDetails.add(new rewardInfo("Invasion", BHBotUnity.cues.get("Invasion_Rewards"), "invasion"));
+            rewardDetails.add(new rewardInfo("PVP", BHBotUnity.cues.get("PVP_Rewards"), "pvp"));
+            rewardDetails.add(new rewardInfo("Trials", BHBotUnity.cues.get("Trials_Rewards"), "trials"));
 
-            for (Map.Entry<String, Cue> weeklyRewardEntry : weeklyRewards.entrySet()) {
-                seg = MarvinSegment.fromCue(weeklyRewardEntry.getValue(), bot.browser);
+
+            for (rewardInfo weeklyRewardEntry : rewardDetails) {
+                seg = MarvinSegment.fromCue(weeklyRewardEntry.rewardCue, bot.browser);
                 if (seg != null) {
                     BufferedImage reward = bot.browser.getImg();
                     seg = MarvinSegment.fromCue("X", 5 * Misc.Durations.SECOND, bot.browser);
                     if (seg != null) bot.browser.clickOnSeg(seg);
                     else {
-                        BHBotUnity.logger.error(weeklyRewardEntry.getKey() + " reward popup detected, however could not detect the X button. Restarting...");
+                        BHBotUnity.logger.error(weeklyRewardEntry.name + " reward popup detected, however could not detect the X button. Restarting...");
                         return false;
                     }
 
-                    BHBotUnity.logger.info(weeklyRewardEntry.getKey() + " reward claimed successfully.");
+                    BHBotUnity.logger.info(weeklyRewardEntry.name + " reward claimed successfully.");
                     if ((bot.settings.screenshots.contains("w"))) {
-                        Misc.saveScreen(weeklyRewardEntry.getKey().toLowerCase() + "_reward", "rewards", BHBotUnity.includeMachineNameInScreenshots, reward);
+                        Misc.saveScreen(weeklyRewardEntry.pathInfo + "_reward", "rewards/" + weeklyRewardEntry.pathInfo, BHBotUnity.includeMachineNameInScreenshots, reward);
                     }
                 }
             }
