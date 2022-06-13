@@ -113,8 +113,6 @@ public class AdventureThread implements Runnable {
         activitysIterator = bot.settings.activitiesEnabled.iterator();
         reviveManager = new AutoReviveManager(bot);
         dungSignatures = new DungeonSignature(this.bot);
-
-        adventureSpeed = 1;
     }
 
     static void printFamiliars() {
@@ -3802,46 +3800,43 @@ public class AdventureThread implements Runnable {
         bot.browser.readScreen();
         BufferedImage speedImg = bot.browser.getImg();
 
+        // TODO Remove this
+        // Misc.saveScreen("speed-dump", "debug/speed", true, speedImg);
+
         // As we do not know the exact color of the yellow, we get colors from a region and store them in a set
         int[] pixels1X = speedImg.getRGB(boundsSpeed1X.x1, boundsSpeed1X.y1, boundsSpeed1X.width, boundsSpeed1X.height, null, 0, boundsSpeed1X.width);
         Set<Integer> speedActive = Arrays.stream(pixels1X).boxed().collect(Collectors.toSet());
 
         Set<Integer> intersection;
 
-        if (adventureSpeed < 2) {
-            intersection = new HashSet<>(speedActive);
+        // 2X Speed
+        intersection = new HashSet<>(speedActive);
 
-            // We get colors for 2X speed region
-            int[] pixels2X = speedImg.getRGB(boundsSpeed2X.x1, boundsSpeed2X.y1, boundsSpeed2X.width, boundsSpeed2X.height, null, 0, boundsSpeed2X.width);
-            Set<Integer> speed2X = Arrays.stream(pixels2X).boxed().collect(Collectors.toSet());
+        // We get colors for 2X speed region
+        int[] pixels2X = speedImg.getRGB(boundsSpeed2X.x1, boundsSpeed2X.y1, boundsSpeed2X.width, boundsSpeed2X.height, null, 0, boundsSpeed2X.width);
+        Set<Integer> speed2X = Arrays.stream(pixels2X).boxed().collect(Collectors.toSet());
 
-            // We intersect speed1X with speed 2X and check the size of the intersection
-            intersection.retainAll(speed2X);
+        // We intersect speed1X with speed 2X and check the size of the intersection
+        intersection.retainAll(speed2X);
 
-            // If there is no intersection, it means that 2X speed is disabled
-            if (intersection.size() == 0) {
-                BHBotUnity.logger.debug("Speed set to 2X");
-                bot.browser.clickInGame(boundsSpeed2X.x1, boundsSpeed2X.y1);
-            }
-
-            adventureSpeed = 2;
+        // If there is no intersection, it means that 2X speed is disabled
+        if (intersection.size() == 0) {
+            BHBotUnity.logger.debug("Speed set to 2X");
+            bot.browser.clickInGame(boundsSpeed2X.x1, boundsSpeed2X.y1);
         }
 
-        if (adventureSpeed < 3) {
-            intersection = new HashSet<>(speedActive);
+        // 3X Speed
+        intersection = new HashSet<>(speedActive);
 
-            // We also check 3X speed
-            int[] pixels3X = speedImg.getRGB(boundsSpeed3X.x1, boundsSpeed3X.y1, boundsSpeed3X.width, boundsSpeed3X.height, null, 0, boundsSpeed3X.width);
-            Set<Integer> speed3X = Arrays.stream(pixels3X).boxed().collect(Collectors.toSet());
+        // We also check 3X speed
+        int[] pixels3X = speedImg.getRGB(boundsSpeed3X.x1, boundsSpeed3X.y1, boundsSpeed3X.width, boundsSpeed3X.height, null, 0, boundsSpeed3X.width);
+        Set<Integer> speed3X = Arrays.stream(pixels3X).boxed().collect(Collectors.toSet());
 
-            intersection.retainAll(speed3X);
+        intersection.retainAll(speed3X);
 
-            if (intersection.size() == 0) {
-                BHBotUnity.logger.debug("Speed set to 3X");
-                bot.browser.clickInGame(boundsSpeed3X.x1, boundsSpeed3X.y1);
-            }
-
-            adventureSpeed = 3;
+        if (intersection.size() == 0) {
+            BHBotUnity.logger.debug("Speed set to 3X");
+            bot.browser.clickInGame(boundsSpeed3X.x1, boundsSpeed3X.y1);
         }
     }
 

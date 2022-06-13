@@ -1316,7 +1316,6 @@ public class BHBotUnity {
         adventure.encounterManager = new EncounterManager(this);
         adventure.reviveManager.reset();
         adventure.positionChecker = new AdventurePositionChecker();
-        adventure.adventureSpeed = 1;
     }
 
     enum State {
