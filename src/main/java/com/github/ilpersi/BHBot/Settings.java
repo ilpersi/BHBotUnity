@@ -5,10 +5,7 @@ import org.apache.logging.log4j.Level;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
@@ -215,9 +212,7 @@ public class Settings {
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
-            if (!(o instanceof ActivitiesScheduleSetting)) return false;
-
-            ActivitiesScheduleSetting that = (ActivitiesScheduleSetting) o;
+            if (!(o instanceof ActivitiesScheduleSetting that)) return false;
 
             if (!weekDay.equals(that.weekDay)) return false;
             if (!startTime.equals(that.startTime)) return false;
@@ -247,6 +242,7 @@ public class Settings {
         ActivitiesScheduleList() {
             // We initialize the array list and override the toString method
             this.scheduleList = new ArrayList<>() {
+                @Serial
                 private static final long serialVersionUID = 1L;
 
                 @Override
@@ -433,11 +429,8 @@ public class Settings {
      * World Boss Settings
      **/
     RandomCollection<WorldBossSetting> worldBossSettings;
-    //    List<String> worldBossSettings;
-//    int worldBossTimer = 0;
-//    boolean worldBossSolo = false;
+
     boolean debugWBTS = false;
-//    boolean dungeonOnTimeout = true;
     /**
      * Autorevive Settings
      **/
@@ -741,7 +734,7 @@ public class Settings {
 
 
 
-        Pattern scheduleRegex = Pattern.compile("(?<weekDay>[0-9*]+)\\s*(?<startH>\\d{1,2}):(?<startM>\\d{1,2})(?<secStartGrp>:(?<startS>\\d{1,2}))?-(?<endH>\\d{1,2}):(?<endM>\\d{1,2})(?<secEndGrp>:(?<endS>\\d{1,2}))?\\s*(?<plan>\\w+)?\\s*(?<chromeProfPath>\"(?<profilePath>[^\"]+)\")?", Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
+        Pattern scheduleRegex = Pattern.compile("(?<weekDay>[\\d*]+)\\s*(?<startH>\\d{1,2}):(?<startM>\\d{1,2})(?<secStartGrp>:(?<startS>\\d{1,2}))?-(?<endH>\\d{1,2}):(?<endM>\\d{1,2})(?<secEndGrp>:(?<endS>\\d{1,2}))?\\s*(?<plan>\\w+)?\\s*(?<chromeProfPath>\"(?<profilePath>[^\"]+)\")?", Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
 
         this.activitiesSchedule.clear();
 
@@ -888,7 +881,7 @@ public class Settings {
         //    Match a single character that is a “digit” (ASCII 0–9 only) «\d+»
         //       Between one and unlimited times, as many times as possible, giving back as needed (greedy) «+»
 
-        Pattern wbRegex = Pattern.compile("\\s*(?<type>" + wbTypeString.toString() + ")\\s+(?<difficulty>[123])\\s+" +
+        Pattern wbRegex = Pattern.compile("\\s*(?<type>" + wbTypeString + ")\\s+(?<difficulty>[123])\\s+" +
                 "(?<tier>\\d{1,2})\\s+(?<chanceToRun>\\d*)\\s*(?<timer>\\d*)\\s*" +
                 "(?<solo>[01])*\\s*(?<minimumTotalTS>\\d+)*\\s*(?<minimumPlayerTS>\\d+)*");
 
@@ -1032,7 +1025,7 @@ public class Settings {
     private void setDifficultyFailsafe(String... failSafes) {
         this.difficultyFailsafe.clear();
         // We only support Trial and Gauntlets and Expedition, so we do sanity checks here only settings the right letters t, g, e
-        String pattern = "([tge]):([\\d]+)(:([\\d]+))?";
+        String pattern = "([tge]):(\\d+)(:(\\d+))?";
         Pattern r = Pattern.compile(pattern);
         for (String f : failSafes) {
 
@@ -1062,7 +1055,7 @@ public class Settings {
     private void setSuccessThreshold(String... tresholds) {
         this.successThreshold.clear();
         // We only support Trial and Gauntlets, so we do sanity checks here only settings the right letters t and g
-        String tresholdPatternStr = "([tg]):([\\d]+):([\\d]+)";
+        String tresholdPatternStr = "([tg]):(\\d+):(\\d+)";
         Pattern tresholdPattern = Pattern.compile(tresholdPatternStr);
         for (String t : tresholds) {
             Matcher m = tresholdPattern.matcher(t.trim());
@@ -1473,19 +1466,8 @@ public class Settings {
 
     private void setLogLevelFromString(String level) {
         switch (level.toUpperCase()) {
-            case "TRACE":
-            case "DEBUG":
-            case "INFO":
-            case "WARN":
-            case "ERROR":
-            case "FATAL":
-            case "OFF":
-            case "ALL":
-                logLevel = Level.toLevel(level);
-                break;
-            default:
-                logLevel = Level.toLevel("INFO");
-                break;
+            case "TRACE", "DEBUG", "INFO", "WARN", "ERROR", "FATAL", "OFF", "ALL" -> logLevel = Level.toLevel(level);
+            default -> logLevel = Level.toLevel("INFO");
         }
     }
 
