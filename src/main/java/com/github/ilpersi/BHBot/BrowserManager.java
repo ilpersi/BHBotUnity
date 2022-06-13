@@ -515,22 +515,26 @@ public class BrowserManager {
     }
 
     boolean closeAllPopups() {
-        return closeAllPopups("Main", 10);
+        return closeAllPopups("Main", 10, Misc.Durations.SECOND / 2);
     }
 
     boolean closeAllPopups(String requiredCueName) {
-        return closeAllPopups(requiredCueName, 10);
+        return closeAllPopups(requiredCueName, 10, Misc.Durations.SECOND / 2);
     }
 
     /**
      * This method will attempt to close all the opened windows using the "ESC" key.
      *
      * @param requiredCueName The method will use the esc key utill this cue is found
-     * @param maxAttempts How many attempts are performed before we return false
-     *
+     * @param maxAttempts     How many attempts are performed before we return false
+     * @param keyDelay They delay between each "ESCAPE" simulated key press
      */
-    boolean closeAllPopups(String requiredCueName, Integer maxAttempts) {
+    boolean closeAllPopups(String requiredCueName, Integer maxAttempts, Integer keyDelay) {
         final int MAX_CNT = maxAttempts != null ? maxAttempts : 10;
+
+        int DELAY = keyDelay != null ? keyDelay : Misc.Durations.SECOND / 2;
+        if (DELAY < (Misc.Durations.SECOND / 2)) DELAY = Misc.Durations.SECOND / 2;
+
         int curCnt = 0;
 
         MarvinSegment seg = MarvinSegment.fromCue(requiredCueName, bot.browser);
@@ -539,9 +543,10 @@ public class BrowserManager {
             act.sendKeys(Keys.ESCAPE);
             act.perform();
 
-            // We wait for half a second before we try again
-            seg = MarvinSegment.fromCue(requiredCueName, Misc.Durations.SECOND / 2, bot.browser);
             curCnt++;
+
+            // We wait before we try again
+            seg = MarvinSegment.fromCue(requiredCueName, DELAY, bot.browser);
         }
 
         seg = MarvinSegment.fromCue(requiredCueName, bot.browser);

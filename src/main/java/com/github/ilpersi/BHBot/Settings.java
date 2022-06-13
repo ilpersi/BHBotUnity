@@ -538,6 +538,9 @@ public class Settings {
         setDefault();
     }
 
+    // How should we close Clearde/Victory/Defeat pop-up dialogs?
+    boolean useLegacyAdventureClose = false;
+
     /**
      * Takes care of resetting all the settings to their default value.
      */
@@ -636,6 +639,7 @@ public class Settings {
         useFirefox = false;
         dumpReadScreen = false;
         useHeadlessMode = false;
+        useLegacyAdventureClose = false;
         username = "";
         victoryScreenshot = false;
         warningSettingLInes = new ArrayList<>();
@@ -1523,6 +1527,7 @@ public class Settings {
         dumpReadScreen = lastUsedMap.getOrDefault("dumpReadScreen", dumpReadScreen ? "1" : "0").equals("1");
         hideWindowOnRestart = lastUsedMap.getOrDefault("hideWindowOnRestart", hideWindowOnRestart ? "1" : "0").equals("1");
         resetTimersOnBattleEnd = lastUsedMap.getOrDefault("resetTimersOnBattleEnd", resetTimersOnBattleEnd ? "1" : "0").equals("1");
+        useLegacyAdventureClose = lastUsedMap.getOrDefault("useLegacyAdventureClose", useLegacyAdventureClose ? "1" : "0").equals("1");
         autoStartChromeDriver = lastUsedMap.getOrDefault("autoStartChromeDriver", autoStartChromeDriver ? "1" : "0").equals("1");
         reconnectTimer = Integer.parseInt(lastUsedMap.getOrDefault("reconnectTimer", "" + reconnectTimer));
         tooManyLoginsTimer = Integer.parseInt(lastUsedMap.getOrDefault("tooManyLoginsTimer", "" + tooManyLoginsTimer));

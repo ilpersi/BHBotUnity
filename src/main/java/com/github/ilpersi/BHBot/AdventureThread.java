@@ -2437,39 +2437,43 @@ public class AdventureThread implements Runnable {
                     bot.setState(BHBotUnity.State.RerunRaid);
                 } else {
 
-                    Bounds townBounds = switch (bot.getState()) {
-                        case Raid, Dungeon -> Bounds.fromWidthHeight(440, 455, 95, 50);
-                        case Trials, Gauntlet -> Bounds.fromWidthHeight(365, 455, 95, 50);
-                        default -> null;
-                    };
+                    if (bot.settings.useLegacyAdventureClose) {
+                        Bounds townBounds = switch (bot.getState()) {
+                            case Raid, Dungeon -> Bounds.fromWidthHeight(440, 455, 95, 50);
+                            case Trials, Gauntlet -> Bounds.fromWidthHeight(365, 455, 95, 50);
+                            default -> null;
+                        };
 
-                    //close 'cleared' popup
-                    bot.browser.readScreen(Misc.Durations.SECOND); // The pop-up is bouncing let's wait for it to stabilize
-                    Cue cueTown = new Cue(BHBotUnity.cues.get("Town"), townBounds);
-                    bot.browser.closePopupSecurely(BHBotUnity.cues.get("ClearedRecap"), cueTown);
+                        //close 'cleared' popup
+                        bot.browser.readScreen(Misc.Durations.SECOND); // The pop-up is bouncing let's wait for it to stabilize
+                        Cue cueTown = new Cue(BHBotUnity.cues.get("Town"), townBounds);
+                        bot.browser.closePopupSecurely(BHBotUnity.cues.get("ClearedRecap"), cueTown);
 
-                    // close the activity window to return us to the main screen
-                    if (!BHBotUnity.State.Expedition.equals(bot.getState())) {
-                        bot.browser.readScreen(3 * Misc.Durations.SECOND); //wait for slide-in animation to finish
+                        // close the activity window to return us to the main screen
+                        if (!BHBotUnity.State.Expedition.equals(bot.getState())) {
+                            bot.browser.readScreen(3 * Misc.Durations.SECOND); //wait for slide-in animation to finish
 
-                        Cue XWithBounds;
-                        Bounds xBounds;
-                        switch (bot.getState()) {
-                            case WorldBoss -> xBounds = Bounds.fromWidthHeight(640, 75, 60, 60);
-                            case Raid -> xBounds = Bounds.fromWidthHeight(605, 85, 70, 70);
-                            case Dungeon -> xBounds = Bounds.fromWidthHeight(695, 40, 70, 75);
-                            case Trials, Gauntlet -> xBounds = Bounds.fromWidthHeight(615, 85, 70, 70);
-                            default -> xBounds = null;
+                            Cue XWithBounds;
+                            Bounds xBounds;
+                            switch (bot.getState()) {
+                                case WorldBoss -> xBounds = Bounds.fromWidthHeight(640, 75, 60, 60);
+                                case Raid -> xBounds = Bounds.fromWidthHeight(605, 85, 70, 70);
+                                case Dungeon -> xBounds = Bounds.fromWidthHeight(695, 40, 70, 75);
+                                case Trials, Gauntlet -> xBounds = Bounds.fromWidthHeight(615, 85, 70, 70);
+                                default -> xBounds = null;
+                            }
+
+                            XWithBounds = new Cue(BHBotUnity.cues.get("X"), xBounds);
+
+                            bot.browser.closePopupSecurely(XWithBounds, XWithBounds);
+                        } else {
+                            //For Expedition we need to close 3 windows (Exped/Portal/Team) to return to main screen
+                            bot.browser.closePopupSecurely(BHBotUnity.cues.get("Enter"), BHBotUnity.cues.get("X"));
+                            bot.browser.closePopupSecurely(BHBotUnity.cues.get("PortalBorderLeaves"), BHBotUnity.cues.get("X"));
+                            bot.browser.closePopupSecurely(BHBotUnity.cues.get("BadgeBar"), BHBotUnity.cues.get("X"));
                         }
-
-                        XWithBounds = new Cue(BHBotUnity.cues.get("X"), xBounds);
-
-                        bot.browser.closePopupSecurely(XWithBounds, XWithBounds);
                     } else {
-                        //For Expedition we need to close 3 windows (Exped/Portal/Team) to return to main screen
-                        bot.browser.closePopupSecurely(BHBotUnity.cues.get("Enter"), BHBotUnity.cues.get("X"));
-                        bot.browser.closePopupSecurely(BHBotUnity.cues.get("PortalBorderLeaves"), BHBotUnity.cues.get("X"));
-                        bot.browser.closePopupSecurely(BHBotUnity.cues.get("BadgeBar"), BHBotUnity.cues.get("X"));
+                        bot.browser.closeAllPopups("Main", 15, Misc.Durations.SECOND);
                     }
 
                     bot.setState(BHBotUnity.State.Main); // reset state
@@ -2491,21 +2495,6 @@ public class AdventureThread implements Runnable {
             seg = MarvinSegment.fromCue(BHBotUnity.cues.get("VictoryRecap"), bot.browser);
             if (seg != null) {
 
-                Bounds townBounds = switch (bot.getState()) {
-                    case Gauntlet -> Bounds.fromWidthHeight(320, 420, 160, 65);
-                    case WorldBoss -> Bounds.fromWidthHeight(502, 459, 133, 38);
-                    case GVG -> Bounds.fromWidthHeight(365, 455, 95, 50);
-                    default -> null;
-                };
-
-//                // Sometime the victory pop-up is show without the close button, this check is there to ignore it
-//                seg = MarvinSegment.fromCue(BHBot.cues.get("CloseGreen"), 2 * Misc.Durations.SECOND, townBounds, bot.browser);
-//                if (seg == null) {
-//                    BHBot.logger.debug("Unable to find close button for " + bot.getState().getName() + " victory screen. Ignoring it.");
-//                    handleLoot();
-//                    return;
-//                }
-
                 //Calculate activity stats
                 counters.get(bot.getState()).increaseVictories();
                 long activityRuntime = Misc.getTime() - activityStartTime * 1000; //get elapsed time in milliseconds
@@ -2523,28 +2512,39 @@ public class AdventureThread implements Runnable {
                 //check for loot drops and send via Pushover/Screenshot
                 handleLoot();
 
-                // If we are here the close button should be there
-                seg = MarvinSegment.fromCue(BHBotUnity.cues.get("Town"), 2 * Misc.Durations.SECOND, townBounds, bot.browser);
-                if (seg != null) {
-                    bot.browser.clickOnSeg(seg);
+                if (bot.settings.useLegacyAdventureClose) {
+                    Bounds townBounds = switch (bot.getState()) {
+                        case Gauntlet -> Bounds.fromWidthHeight(320, 420, 160, 65);
+                        case WorldBoss -> Bounds.fromWidthHeight(502, 459, 133, 38);
+                        case GVG -> Bounds.fromWidthHeight(365, 455, 95, 50);
+                        default -> null;
+                    };
+
+                    // If we are here the close button should be there
+                    seg = MarvinSegment.fromCue(BHBotUnity.cues.get("Town"), 2 * Misc.Durations.SECOND, townBounds, bot.browser);
+                    if (seg != null) {
+                        bot.browser.clickOnSeg(seg);
+                    } else {
+                        BHBotUnity.logger.error("Victory pop-up error while performing " + bot.getState().getName() + "! Restarting the bot.");
+                        restart();
+                        return;
+                    }
+
+                    // close the activity window to return us to the main screen
+                    bot.browser.readScreen(3 * Misc.Durations.SECOND); //wait for slide-in animation to finish
+
+                    Bounds xBounds = switch (bot.getState()) {
+                        case WorldBoss -> Bounds.fromWidthHeight(637, 80, 64, 61);
+                        case GVG -> Bounds.fromWidthHeight(615, 90, 70, 70);
+                        default -> null;
+                    };
+
+                    Cue XWithBounds = new Cue(BHBotUnity.cues.get("X"), xBounds);
+
+                    bot.browser.closePopupSecurely(XWithBounds, BHBotUnity.cues.get("X"));
                 } else {
-                    BHBotUnity.logger.error("Victory pop-up error while performing " + bot.getState().getName() + "! Restarting the bot.");
-                    restart();
-                    return;
+                    bot.browser.closeAllPopups("Main", 15, Misc.Durations.SECOND);
                 }
-
-                // close the activity window to return us to the main screen
-                bot.browser.readScreen(3 * Misc.Durations.SECOND); //wait for slide-in animation to finish
-
-                Bounds xBounds = switch (bot.getState()) {
-                    case WorldBoss -> Bounds.fromWidthHeight(637, 80, 64, 61);
-                    case GVG -> Bounds.fromWidthHeight(615, 90, 70, 70);
-                    default -> null;
-                };
-
-                Cue XWithBounds = new Cue(BHBotUnity.cues.get("X"), xBounds);
-
-                bot.browser.closePopupSecurely(XWithBounds, BHBotUnity.cues.get("X"));
 
                 //last few post activity tasks
                 resetAppropriateTimers();
@@ -2655,48 +2655,56 @@ public class AdventureThread implements Runnable {
             resetAppropriateTimers();
             reviveManager.reset();
 
-            Bounds townBounds = switch (bot.getState()) {
-                case WorldBoss -> Bounds.fromWidthHeight(426, 460, 132, 36);
-                case Dungeon -> Bounds.fromWidthHeight(351, 458, 133, 40);
-                case Trials, Gauntlet, GVG, Invasion -> Bounds.fromWidthHeight(365, 455, 95, 50);
-                default -> null;
-            };
-
-            seg = MarvinSegment.fromCue("Town", 3 * Misc.Durations.SECOND, townBounds, bot.browser);
-
-            if (seg != null) {
-                bot.browser.clickOnSeg(seg);
-            } else {
-                Misc.saveScreen("defeat-pop-up-" + bot.getState(), "errors/defeatPopUp", BHBotUnity.includeMachineNameInScreenshots, bot.browser.getImg());
-                BHBotUnity.logger.warn("Problem: 'Defeat' popup detected but no 'Town' button detected in " + bot.getState().getName() + ".");
-                if (bot.getState() == BHBotUnity.State.PVP) dressUp(bot.settings.pvpstrip);
-                if (bot.getState() == BHBotUnity.State.GVG) dressUp(bot.settings.gvgstrip);
-                return;
-            }
-
-            // If tips are enabled we make sure that the dialog is correctly closed
-            detectCharacterDialogAndHandleIt();
-
-            if (bot.getState() != BHBotUnity.State.Expedition) {
-
-                Bounds xBounds = switch (bot.getState()) {
-                    case Dungeon -> Bounds.fromWidthHeight(678, 37, 96, 90);
-                    case WorldBoss -> Bounds.fromWidthHeight(639, 81, 63, 58);
-                    case Trials, Gauntlet -> Bounds.fromWidthHeight(615, 85, 70, 70);
-                    case GVG, Invasion -> Bounds.fromWidthHeight(615, 90, 70, 70);
+            if (bot.settings.useLegacyAdventureClose) {
+                Bounds townBounds = switch (bot.getState()) {
+                    case WorldBoss -> Bounds.fromWidthHeight(426, 460, 132, 36);
+                    case Dungeon -> Bounds.fromWidthHeight(351, 458, 133, 40);
+                    case Trials, Gauntlet, GVG, Invasion -> Bounds.fromWidthHeight(365, 455, 95, 50);
                     default -> null;
                 };
 
-                Cue xButton = new Cue(BHBotUnity.cues.get("X"), xBounds);
+                seg = MarvinSegment.fromCue("Town", 3 * Misc.Durations.SECOND, townBounds, bot.browser);
 
-                //Close the activity window to return us to the main screen
-                bot.browser.readScreen(3 * Misc.Durations.SECOND); //wait for slide-in animation to finish
-                bot.browser.closePopupSecurely(xButton, BHBotUnity.cues.get("X"));
+                if (seg != null) {
+                    bot.browser.clickOnSeg(seg);
+                } else {
+                    Misc.saveScreen("defeat-pop-up-" + bot.getState(), "errors/defeatPopUp", BHBotUnity.includeMachineNameInScreenshots, bot.browser.getImg());
+                    BHBotUnity.logger.warn("Problem: 'Defeat' popup detected but no 'Town' button detected in " + bot.getState().getName() + ".");
+                    if (bot.getState() == BHBotUnity.State.PVP) dressUp(bot.settings.pvpstrip);
+                    if (bot.getState() == BHBotUnity.State.GVG) dressUp(bot.settings.gvgstrip);
+                    return;
+                }
+
+                // If tips are enabled we make sure that the dialog is correctly closed
+                detectCharacterDialogAndHandleIt();
+
+                if (bot.getState() != BHBotUnity.State.Expedition) {
+
+                    Bounds xBounds = switch (bot.getState()) {
+                        case Dungeon -> Bounds.fromWidthHeight(678, 37, 96, 90);
+                        case WorldBoss -> Bounds.fromWidthHeight(639, 81, 63, 58);
+                        case Trials, Gauntlet -> Bounds.fromWidthHeight(615, 85, 70, 70);
+                        case GVG, Invasion -> Bounds.fromWidthHeight(615, 90, 70, 70);
+                        default -> null;
+                    };
+
+                    Cue xButton = new Cue(BHBotUnity.cues.get("X"), xBounds);
+
+                    //Close the activity window to return us to the main screen
+                    bot.browser.readScreen(3 * Misc.Durations.SECOND); //wait for slide-in animation to finish
+                    bot.browser.closePopupSecurely(xButton, BHBotUnity.cues.get("X"));
+                } else {
+                    //For Expedition we need to close 3 windows (Exped/Portal/Team) to return to main screen
+                    bot.browser.closePopupSecurely(BHBotUnity.cues.get("Enter"), BHBotUnity.cues.get("X"));
+                    bot.browser.closePopupSecurely(BHBotUnity.cues.get("PortalBorderLeaves"), BHBotUnity.cues.get("X"));
+                    bot.browser.closePopupSecurely(BHBotUnity.cues.get("BadgeBar"), BHBotUnity.cues.get("X"));
+                }
             } else {
-                //For Expedition we need to close 3 windows (Exped/Portal/Team) to return to main screen
-                bot.browser.closePopupSecurely(BHBotUnity.cues.get("Enter"), BHBotUnity.cues.get("X"));
-                bot.browser.closePopupSecurely(BHBotUnity.cues.get("PortalBorderLeaves"), BHBotUnity.cues.get("X"));
-                bot.browser.closePopupSecurely(BHBotUnity.cues.get("BadgeBar"), BHBotUnity.cues.get("X"));
+                if (!bot.browser.closeAllPopups("Main", 8, Misc.Durations.SECOND)) {
+                    // If tips are enabled we make sure that the dialog is correctly closed
+                    detectCharacterDialogAndHandleIt();
+                    bot.browser.closeAllPopups("Main", 8, Misc.Durations.SECOND);
+                }
             }
 
             // We make sure to dress up
