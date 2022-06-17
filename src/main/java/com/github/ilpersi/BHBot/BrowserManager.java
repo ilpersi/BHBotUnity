@@ -45,6 +45,8 @@ public class BrowserManager {
     private final String COOKIE_DAT_PATH_FORMAT = "./data/cookies_%s.dat";
     boolean cookiesLoaded = false;
 
+    boolean isRestarting = false;
+
     BrowserManager(BHBotUnity bot, String browserProfile) {
         this.bot = bot;
         this.browserProfile = browserProfile;
@@ -172,6 +174,9 @@ public class BrowserManager {
     }
 
     synchronized void restart(boolean useDoNotShareUrl) {
+        isRestarting = true;
+        Misc.sleep(Misc.Durations.SECOND * 5); // We make sure that other threads are notified about the ongoing restart
+
         if (useDoNotShareUrl) {
             Pattern regex = Pattern.compile("\"(https://.+?\\?DO_NOT_SHARE_THIS_LINK[^\"]+?)\"");
             for (LogEntry le : driver.manage().logs().get(LogType.PERFORMANCE)) {
@@ -186,7 +191,7 @@ public class BrowserManager {
 
         try {
             if (driver != null) {
-                driver.close();
+                // driver.close();
                 driver.quit();
             }
             driver = null;
@@ -219,6 +224,8 @@ public class BrowserManager {
         } else {
             driver.manage().window().setSize(new Dimension(vw, vh));
         }
+
+        isRestarting = false;
     }
 
     synchronized void close() {
@@ -377,6 +384,12 @@ public class BrowserManager {
         } catch (RasterFormatException e) {
             jsExecutor.executeScript("arguments[0].scrollIntoView(true);", game);
             throw e;
+        }
+        catch (org.openqa.selenium.NoSuchSessionException e) {
+            if (!isRestarting) {
+                BHBotUnity.logger.error("NoSuchSessionException when taking screenshot and no restart in progress: ", e);
+            }
+            return new BufferedImage(800, 520, BufferedImage.TYPE_INT_RGB);
         }
         catch (UnreachableBrowserException e) {
             BHBotUnity.logger.error("UnreachableBrowserException when taking screenshot: ", e);
@@ -578,6 +591,8 @@ public class BrowserManager {
      * @param game if true, then screenshot of a WebElement will be taken that contains the flash game. If false, then simply a screenshot of a browser will be taken.
      */
     void readScreen(int wait, boolean game) {
+        if (isRestarting) return;
+
         if (wait != 0)
             Misc.sleep(wait);
         img = takeScreenshot(game);

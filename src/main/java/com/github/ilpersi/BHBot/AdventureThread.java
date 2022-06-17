@@ -153,7 +153,7 @@ public class AdventureThread implements Runnable {
             bot.scheduler.backupIdleTime();
             try {
                 bot.scheduler.process();
-                if (bot.scheduler.isPaused()) {
+                if (bot.scheduler.isPaused()  || bot.browser.isRestarting) {
                     Misc.sleep(500);
                     continue;
                 }

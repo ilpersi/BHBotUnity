@@ -25,7 +25,7 @@ public class BlockerThread implements Runnable {
 
             try {
                 bot.scheduler.process();
-                if (bot.scheduler.isPaused()) {
+                if (bot.scheduler.isPaused() || bot.browser.isRestarting) {
                     Misc.sleep(500);
                     continue;
                 }
