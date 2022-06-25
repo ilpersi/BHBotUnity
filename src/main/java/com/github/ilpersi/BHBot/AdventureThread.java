@@ -1357,7 +1357,7 @@ public class AdventureThread implements Runnable {
                                     String targetPortal = expedition[0];
                                     int targetDifficulty = Integer.parseInt(expedition[1]);
 
-                                    // if exped difficulty isn't a multiple of 5 we reduce it
+                                    // if expedition difficulty isn't a multiple of 5 we reduce it
                                     int difficultyModule = targetDifficulty % 5;
                                     if (difficultyModule != 0) {
                                         BHBotUnity.logger.warn(targetDifficulty + " is not a multiplier of 5! Rounding it to " + (targetDifficulty - difficultyModule) + "...");
@@ -3219,13 +3219,13 @@ public class AdventureThread implements Runnable {
             colorCheck[2] = Color.WHITE;
             colorCheck[3] = Color.WHITE;
         } else if (currentExpedition == 3) { // Jammie
-            portalCheck[0] = new Point(145, 187); // Zorgo
-            portalCheck[1] = new Point(309, 289); // Yackerz
-            portalCheck[2] = new Point(474, 343); // Vionot
-            portalCheck[3] = new Point(621, 370); // Grampa
+            portalCheck[0] = new Point(143, 187); // Zorgo
+            portalCheck[1] = new Point(300, 285); // Yackerz
+            portalCheck[2] = new Point(478, 342); // Vionot
+            portalCheck[3] = new Point(616, 365); // Grampa
 
             portalPosition[0] = new Point(170, 200); // Zorgo
-            portalPosition[1] = new Point(315, 260); // Yackerz
+            portalPosition[1] = new Point(320, 280); // Yackerz
             portalPosition[2] = new Point(480, 360); // Vinot
             portalPosition[3] = new Point(635, 385); // Grampa
 
@@ -3276,6 +3276,8 @@ public class AdventureThread implements Runnable {
             }
 
         }
+
+        BHBotUnity.logger.debug("Enabled portals for expedition %s: %s".formatted(currentExpedition, Arrays.toString(portalEnabled)));
 
         if (portalEnabled[portalInt - 1]) {
             return portalPosition[portalInt - 1];
@@ -4439,7 +4441,7 @@ public class AdventureThread implements Runnable {
                      * */
                     for (int idxI = 5; idxI < possibleDifficulties.size(); idxI++) {
                         // TODO Kongregate bug, sometimes you are prompted back to T/G main window. Try to think of a fix
-                        difficultySB.scrollDown(500);
+                        difficultySB.scrollDown(750);
 
                         if (possibleDifficulties.get(idxI) == matchedDifficulty) {
                             // We can finally click on the difficulty value!!
@@ -4472,23 +4474,21 @@ public class AdventureThread implements Runnable {
 
         if (recursionDepth > 3) {
             BHBotUnity.logger.error("Error: Selecting difficulty level from the drop-down menu ran into an endless loop!");
-            bot.saveGameScreen("select_difficulty_recursion", "errors");
+            bot.saveGameScreen("select_difficulty_recursion", "errors/difficulty");
             tryClosingWindow(); // clean up after our selves (ignoring any exception while doing it)
             return 0;
         }
 
-        MarvinSegment seg;
-
         // the first (upper most) of the 5 buttons in the drop-down menu. Note that every while a "tier x" is written bellow it, so text is higher up (hence we need to scan a larger area)
         MarvinImage subm = new MarvinImage(bot.browser.getImg().getSubimage(350, 150, 70, 35));
-        subm.toBlackWhite(new Color(25, 25, 25), new Color(255, 255, 255), 254);
+        subm.toBlackWhite(110);
         subm.update();
         BufferedImage sub = subm.getBufferedImage();
-        int num = readNumFromImg(sub, "", Set.of(), false, false);
+        int num = readNumFromImg(sub, "tg_diff_selection_17_", Set.of(), false, false);
 //		BHBot.logger.info("num = " + Integer.toString(num));
         if (num == 0) {
             BHBotUnity.logger.error("Error: unable to read difficulty level from a drop-down menu!");
-            bot.saveGameScreen("select_difficulty_read", "errors");
+            bot.saveGameScreen("select_difficulty_read", "errors/difficulty");
             tryClosingWindow(); // clean up after our selves (ignoring any exception while doing it)
             return 0;
         }
@@ -4505,32 +4505,33 @@ public class AdventureThread implements Runnable {
         // scroll the drop-down until we reach our position:
         // recursively select new difficulty
         //*** should we increase this time?
+        ScrollBarManager difficultySB = new ScrollBarManager(bot.browser);
         if (move > 0) {
             // move up
-            seg = MarvinSegment.fromCue(BHBotUnity.cues.get("DropDownUp"), bot.browser);
-            if (seg == null) {
-                BHBotUnity.logger.error("Error: unable to detect up arrow in trials/gauntlet/expedition difficulty drop-down menu!");
-                bot.saveGameScreen("select_difficulty_arrow_up", "errors");
+            if (!difficultySB.canScrollUp) {
+                BHBotUnity.logger.error("Error: unable to scroll up in trials/gauntlet/expedition difficulty drop-down menu!");
+                bot.saveGameScreen("no_scroll_up", "errors/difficulty");
                 bot.browser.clickInGame(posx, posy[0]); // regardless of the error, click on the first selection in the drop-down, so that we don't need to re-scroll entire list next time we try!
                 return 0;
             }
             for (int i = 0; i < move; i++) {
-                bot.browser.clickOnSeg(seg);
+                // TODO Kongregate bug, sometimes you are prompted back to T/G/EXP main window. Try to think of a fix
+                difficultySB.scrollUp(750);
             }
             // OK, we should have a target value on screen now, in the first spot. Let's click it!
         } else {
             // move down
-            seg = MarvinSegment.fromCue(BHBotUnity.cues.get("DropDownDown"), bot.browser);
-            if (seg == null) {
-                BHBotUnity.logger.error("Error: unable to detect down arrow in trials/gauntlet/expedition difficulty drop-down menu!");
-                bot.saveGameScreen("select_difficulty_arrow_down", "errors");
+            if (!difficultySB.canScrollDown) {
+                BHBotUnity.logger.error("Error: unable to scroll down ain trials/gauntlet/expedition difficulty drop-down menu!");
+                bot.saveGameScreen("no_scroll_down", "errors/difficulty");
                 bot.browser.clickInGame(posx, posy[0]); // regardless of the error, click on the first selection in the drop-down, so that we don't need to re-scroll entire list next time we try!
                 return 0;
             }
             int moves = Math.abs(move) - 4;
 //			BHBot.logger.info("Scrolls to 60 = " + Integer.toString(moves));
             for (int i = 0; i < moves; i++) {
-                bot.browser.clickOnSeg(seg);
+                // TODO Kongregate bug, sometimes you are prompted back to T/G/EXP main window. Try to think of a fix
+                difficultySB.scrollDown(750);
             }
             // OK, we should have a target value on screen now, in the first spot. Let's click it!
         }

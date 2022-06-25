@@ -477,6 +477,8 @@ public class CueBuilder {
         //endregion
 
         //region Expedition
+        addCueLocatorByPattern(cueLocators, "cuebuilder/expedition", "exp-jammie_(.*)\\.png", Bounds.fromWidthHeight(219, 60, 361, 23),
+                Set.of(), Set.of(), "Expedition3", "unitycues/expedition/cueExpedition3Jammie.png", "Jammie Expedition Title");
         addCueLocatorByPattern(cueLocators, "cuebuilder/expedition", "exp-idol_(.*)\\.png", Bounds.fromWidthHeight(243, 60, 313, 23),
                 Set.of(), Set.of(), "Expedition4", "unitycues/expedition/cueExpedition4Idol.png", "Idol Expedition Title");
         final Set<Bounds> expDiffTransp = Set.of(Bounds.fromWidthHeight(413, 393, 108, 28), Bounds.fromWidthHeight(410, 396, 114, 24));
