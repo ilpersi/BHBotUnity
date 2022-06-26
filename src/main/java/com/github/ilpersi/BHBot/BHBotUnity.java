@@ -447,7 +447,7 @@ public class BHBotUnity {
                 if (params.length > 1) {
                     int goal = Integer.parseInt(params[1]);
                     logger.info("Goal difficulty: " + goal);
-                    int result = adventure.selectDifficulty(current, goal, BHBotUnity.cues.get("SelectDifficulty"), null, 1, true);
+                    int result = adventure.selectDifficulty(current, goal, BHBotUnity.cues.get("SelectDifficulty"), null, null, 1, true);
                     logger.info("Difficulty change result: " + result);
                 }
                 break;

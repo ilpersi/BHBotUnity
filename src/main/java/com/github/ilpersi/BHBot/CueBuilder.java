@@ -440,6 +440,8 @@ public class CueBuilder {
                 Set.of(), Set.of(), "BadgeBar", "unitycues/common/cueBadgeBar.png", "Badge bar popup");
         addCueLocatorByPattern(cueLocators, "cuebuilder/invasion", "inv-main_(.*)\\.png", Bounds.fromWidthHeight(327, 53, 34, 32),
                 Set.of(), Set.of(), "BadgeBar", "unitycues/common/cueBadgeBar.png", "Badge bar popup");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/expedition", "exp-portal_(.*)\\.png", Bounds.fromWidthHeight(327, 42, 34, 32),
+                Set.of(), Set.of(), "BadgeBar", "unitycues/common/cueBadgeBar.png", "Badge bar popup");
 
         addCueLocatorByPattern(cueLocators, "cuebuilder/expedition", "exp-portal_(.*)\\.png", Bounds.fromWidthHeight(363, 455, 73, 15),
                 Set.of(), Set.of(), "Enter", "unitycues/common/cueEnter.png", "Green Enter button found in Expedition and in some D4");

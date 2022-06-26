@@ -558,7 +558,7 @@ public class AdventureThread implements Runnable {
                                 }
                                 if (difficulty != targetDifficulty) {
                                     BHBotUnity.logger.info("Detected " + (trials ? "trials" : "gauntlet") + " difficulty level: " + difficulty + ", settings level: " + targetDifficulty + ". Changing..");
-                                    int result = selectDifficulty(difficulty, targetDifficulty, BHBotUnity.cues.get("SelectDifficulty"), BHBotUnity.cues.get("TokenBar"), 1, true);
+                                    int result = selectDifficulty(difficulty, targetDifficulty, BHBotUnity.cues.get("SelectDifficulty"), BHBotUnity.cues.get("TokenBar"), null, 1, true);
                                     if (result == 0) { // error!
 
                                         BHBotUnity.logger.warn("Unable to change difficulty, usually because desired level is not unlocked. Running " + (trials ? "trials" : "gauntlet") + " at " + difficulty + ".");
@@ -1191,7 +1191,7 @@ public class AdventureThread implements Runnable {
                                 continue;
                             } //endregion GVG
                             //region Invasion
-                            else if (badgeEvent == BadgeEvent.Invasion) {
+                            else if (BadgeEvent.Invasion.equals(badgeEvent)) {
                                 if ((!bot.scheduler.doInvasionImmediately && (badges <= bot.settings.minBadges)) || (badges < bot.settings.costInvasion)) {
 
                                     //if we have 1 resource and need 5 we don't need to check every 10 minutes, this increases the timer so we start checking again when we are one under the check limit
@@ -1276,7 +1276,7 @@ public class AdventureThread implements Runnable {
                                 continue;
                             } //endregion Invasion
                             //region Expedition
-                            else if (badgeEvent == BadgeEvent.Expedition) {
+                            else if (BadgeEvent.Expedition.equals(badgeEvent)) {
 
                                 if ((!bot.scheduler.doExpeditionImmediately && (badges <= bot.settings.minBadges)) || (badges < bot.settings.costExpedition)) {
 
@@ -1432,7 +1432,7 @@ public class AdventureThread implements Runnable {
 
                                     if (difficulty != targetDifficulty) {
                                         BHBotUnity.logger.info("Detected Expedition difficulty level: " + difficulty + ", settings level is " + targetDifficulty + ". Changing..");
-                                        int result = selectDifficulty(difficulty, targetDifficulty, BHBotUnity.cues.get("SelectDifficultyExpedition"), BHBotUnity.cues.get("BadgeBar"), 5, false);
+                                        int result = selectDifficulty(difficulty, targetDifficulty, BHBotUnity.cues.get("SelectDifficultyExpedition"), BHBotUnity.cues.get("BadgeBar"), Bounds.fromWidthHeight(315, 30, 60, 55), 5, false);
                                         if (result == 0) { // error!
                                             // see if drop down menu is still open and close it:
                                             bot.browser.readScreen(Misc.Durations.SECOND);
@@ -4221,7 +4221,7 @@ public class AdventureThread implements Runnable {
      * @return 0 in case of error, newDifficulty if everything was ok, another integer if for any reason the desired
      * level could not be set. Caller will have to check this in its own code.
      */
-    int selectDifficulty(int oldDifficulty, int newDifficulty, Cue difficultyCue, Cue toCloseCue, int step, boolean useDifficultyRanges) {
+    int selectDifficulty(int oldDifficulty, int newDifficulty, Cue difficultyCue, Cue toCloseCue, Bounds toCloseBounds, int step, boolean useDifficultyRanges) {
         if (oldDifficulty == newDifficulty)
             return newDifficulty; // no change
 
@@ -4231,10 +4231,12 @@ public class AdventureThread implements Runnable {
             return 0; // error
         }
 
-        if (toCloseCue == null)
+        if (toCloseCue == null) {
             bot.browser.clickOnSeg(seg);
-        else
+        } else {
+            if (toCloseBounds != null) toCloseCue = new Cue(toCloseCue, toCloseBounds);
             bot.browser.closePopupSecurely(toCloseCue, difficultyCue);
+        }
 
         bot.browser.readScreen(5 * Misc.Durations.SECOND);
 
@@ -4480,7 +4482,7 @@ public class AdventureThread implements Runnable {
         }
 
         // the first (upper most) of the 5 buttons in the drop-down menu. Note that every while a "tier x" is written bellow it, so text is higher up (hence we need to scan a larger area)
-        MarvinImage subm = new MarvinImage(bot.browser.getImg().getSubimage(350, 150, 70, 35));
+        MarvinImage subm = new MarvinImage(bot.browser.getImg().getSubimage(350, 140, 70, 35));
         subm.toBlackWhite(110);
         subm.update();
         BufferedImage sub = subm.getBufferedImage();
