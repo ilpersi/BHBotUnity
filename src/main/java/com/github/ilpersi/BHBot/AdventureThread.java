@@ -4527,6 +4527,9 @@ public class AdventureThread implements Runnable {
             for (int i = 0; i < move; i++) {
                 // TODO Kongregate bug, sometimes you are prompted back to T/G/EXP main window. Try to think of a fix
                 difficultySB.scrollUp(750);
+
+                // Sometimes scrolling can take time, we make sure not to time out
+                bot.scheduler.resetIdleTime();
             }
             // OK, we should have a target value on screen now, in the first spot. Let's click it!
         } else {
@@ -4542,6 +4545,9 @@ public class AdventureThread implements Runnable {
             for (int i = 0; i < moves; i++) {
                 // TODO Kongregate bug, sometimes you are prompted back to T/G/EXP main window. Try to think of a fix
                 difficultySB.scrollDown(750);
+
+                // Sometimes scrolling can take time, we make sure not to time out
+                bot.scheduler.resetIdleTime();
             }
             // OK, we should have a target value on screen now, in the first spot. Let's click it!
         }
