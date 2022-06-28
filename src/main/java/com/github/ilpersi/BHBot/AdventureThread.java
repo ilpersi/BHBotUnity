@@ -4489,7 +4489,7 @@ public class AdventureThread implements Runnable {
         }
 
         // the first (upper most) of the 5 buttons in the drop-down menu. Note that every while a "tier x" is written bellow it, so text is higher up (hence we need to scan a larger area)
-        MarvinImage subm = new MarvinImage(bot.browser.getImg().getSubimage(350, 140, 70, 35));
+        MarvinImage subm = new MarvinImage(bot.browser.getImg().getSubimage(350, 140, 80, 35));
         subm.toBlackWhite(110);
         subm.update();
         BufferedImage sub = subm.getBufferedImage();
