@@ -1278,25 +1278,25 @@ public class AdventureThread implements Runnable {
                             //region Expedition
                             else if (BadgeEvent.Expedition.equals(badgeEvent)) {
 
-                                if ((!bot.scheduler.doExpeditionImmediately && (badges <= bot.settings.minBadges)) || (badges < bot.settings.costExpedition)) {
+                                if (bot.scheduler.doExpeditionImmediately)
+                                    bot.scheduler.doExpeditionImmediately = false; // reset it
+
+                                if (badges <= bot.settings.minBadges || badges < bot.settings.costExpedition) {
 
                                     //if we have 1 resource and need 5 we don't need to check every 10 minutes, this increases the timer so we start checking again when we are one under the check limit
-                                    int badgeDifference = bot.settings.costGVG - badges; //difference between needed and current resource
+                                    int badgeDifference = bot.settings.costExpedition - badges; //difference between needed and current resource
                                     if (badgeDifference > 1) {
-                                        int increase = (badgeDifference - 1) * 45;
-                                        BADGES_CHECK_INTERVAL = (long) increase * Misc.Durations.MINUTE; //add 45 minutes to the check interval for each ticket needed above 1
+                                        int increase = (badgeDifference - 1) * 35;
+                                        BADGES_CHECK_INTERVAL = (long) increase * Misc.Durations.MINUTE; //add 35 minutes to the check interval for each ticket needed above 1
                                     } else
                                         BADGES_CHECK_INTERVAL = 10 * Misc.Durations.MINUTE; //if we only need 1 check every 10 minutes
+
 
                                     seg = MarvinSegment.fromCue(BHBotUnity.cues.get("X"), bot.browser);
                                     bot.browser.clickOnSeg(seg);
                                     Misc.sleep(2 * Misc.Durations.SECOND);
                                     continue;
                                 } else {
-                                    // do the expedition!
-
-                                    if (bot.scheduler.doExpeditionImmediately)
-                                        bot.scheduler.doExpeditionImmediately = false; // reset it
 
 //                                    if (bot.settings.costExpedition > badges) {
 //                                        BHBot.logger.info("Target cost " + bot.settings.costExpedition + " is higher than available badges " + badges + ". Expedition will be skipped.");
