@@ -42,6 +42,7 @@ class ScrollBarManager {
      * @param browserManager A BrowserManager instance used to take screenshots and perform click actions
      */
     ScrollBarManager(BrowserManager browserManager) {
+        browserManager.moveMouseAway();
         this.browserManager = browserManager;
         this.arrowDown = MarvinSegment.fromCue("DropDownDown", browserManager);
         this.arrowUp = MarvinSegment.fromCue("DropDownUp", browserManager);
