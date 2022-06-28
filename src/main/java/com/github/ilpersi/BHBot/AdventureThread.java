@@ -4551,8 +4551,8 @@ public class AdventureThread implements Runnable {
      */
     int detectCost() {
 
-        // TODO Remember to remove this!
-        debugCost();
+        // Enable this if you want to log cost detection logic
+        // debugCost();
 
         MarvinSegment seg = MarvinSegment.fromCue(BHBotUnity.cues.get("Cost"), 15 * Misc.Durations.SECOND, bot.browser);
         if (seg == null) {
