@@ -483,6 +483,7 @@ public class BHBotUnity {
 
                                 int diffSel = AdventureThread.readNumFromImg(topLvlBImg, "tg_diff_selection_17_", Set.of(), false, false);
                                 fileName.append(diffSel);
+
                             }
 
                             Misc.saveScreen(fileName.toString(), "debug-tg-ds", true, bwDS);
@@ -493,6 +494,8 @@ public class BHBotUnity {
                             browser.moveMouseAway();
                         }
 
+                        // Sometimes degugds can take long time, we make sure to let the bot know we are still working
+                        scheduler.resetIdleTime();
 
                     } while (!dsSB.isAtBottom());
                 }
