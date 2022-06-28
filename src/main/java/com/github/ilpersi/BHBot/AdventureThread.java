@@ -3266,6 +3266,7 @@ public class AdventureThread implements Runnable {
         }
 
         // We check which of the portals are enabled
+        bot.browser.readScreen();
         for (int i = 0; i <= 3; i++) {
             if (!bot.browser.isDoNotShareUrl()) {
                 Color col = new Color(bot.browser.getImg().getRGB(portalCheck[i].x, portalCheck[i].y));
@@ -3278,6 +3279,12 @@ public class AdventureThread implements Runnable {
         }
 
         BHBotUnity.logger.debug("Enabled portals for expedition %s: %s".formatted(currentExpedition, Arrays.toString(portalEnabled)));
+        StringBuilder enabledFName = new StringBuilder();
+        for (boolean b : portalEnabled) {
+            if (enabledFName.length() > 0) enabledFName.append("-");
+            enabledFName.append(b);
+        }
+        Misc.saveScreen(enabledFName.toString(), "debug/expedition/portals", true, bot.browser.getImg());
 
         if (portalEnabled[portalInt - 1]) {
             return portalPosition[portalInt - 1];
@@ -4487,16 +4494,17 @@ public class AdventureThread implements Runnable {
         subm.update();
         BufferedImage sub = subm.getBufferedImage();
         int num = readNumFromImg(sub, "tg_diff_selection_17_", Set.of(), false, false);
-//		BHBot.logger.info("num = " + Integer.toString(num));
+		BHBotUnity.logger.debug("selectDifficultyFromDropDown num = " + num);
         if (num == 0) {
             BHBotUnity.logger.error("Error: unable to read difficulty level from a drop-down menu!");
             bot.saveGameScreen("select_difficulty_read", "errors/difficulty");
             tryClosingWindow(); // clean up after our selves (ignoring any exception while doing it)
             return 0;
         }
+        Misc.saveScreen("%d-exp-difficulty".formatted(num), "debug/expedition/difficulty-drop-down", true, sub);
 
         int move = (newDifficulty - num) / step; // if negative, we have to move down (in dropdown/numbers), or else up
-//		BHBot.logger.info("move = " + Integer.toString(move));
+		BHBotUnity.logger.debug("selectDifficultyFromDropDown move = " + move);
 
         if (move >= -4 && move <= 0) {
             // we have it on screen. Let's select it!
@@ -4562,7 +4570,6 @@ public class AdventureThread implements Runnable {
         }
 
         final int xOffset = 3, yOffset = 41, w = 31, h = 22;
-
 
         // We get the  region with the cost number
         BufferedImage numImg = bot.browser.getImg().getSubimage(seg.x1 + xOffset, seg.y1 + yOffset, w, h);
