@@ -4529,7 +4529,7 @@ public class AdventureThread implements Runnable {
                 difficultySB.scrollUp(750);
 
                 // Sometimes scrolling can take time, we make sure not to time out
-                bot.scheduler.resetIdleTime();
+                bot.scheduler.resetIdleTime(true);
             }
             // OK, we should have a target value on screen now, in the first spot. Let's click it!
         } else {
@@ -4547,7 +4547,7 @@ public class AdventureThread implements Runnable {
                 difficultySB.scrollDown(750);
 
                 // Sometimes scrolling can take time, we make sure not to time out
-                bot.scheduler.resetIdleTime();
+                bot.scheduler.resetIdleTime(true);
             }
             // OK, we should have a target value on screen now, in the first spot. Let's click it!
         }
