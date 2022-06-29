@@ -5781,7 +5781,7 @@ public class AdventureThread implements Runnable {
         BHBotUnity.logger.debug("Suggested Bounds: " + suggestedBounds.getJavaCode(true, false));
         BHBotUnity.logger.debug("Suggested Bounds.fromWidthHeight: " + suggestedBounds.getJavaCode(true, true));
 
-        BufferedImage numImg = bot.browser.getImg().getSubimage(seg.x1 + 26, seg.y1 + 32, 70, 25);
+        BufferedImage numImg = bot.browser.getImg().getSubimage(seg.x1 + 24, seg.y1 + 32, 90, 27);
 
         MarvinImage toBlackAndWhite = new MarvinImage(numImg, "PNG");
         toBlackAndWhite.toBlackWhite(110);
@@ -5792,7 +5792,7 @@ public class AdventureThread implements Runnable {
 
         // We save the image and the read difficulty for troubleshooting purpose
         String tgDiffFileName = detectedDifficulty.toLowerCase() + "_diff_" + result;
-        String diffFile = Misc.saveScreen(tgDiffFileName, "debug/difficulty", true, numImg);
+        String diffFile = Misc.saveScreen(tgDiffFileName, "debug/difficulty", true, imb);
         BHBotUnity.logger.debug("Detected difficulty is: " + result);
         BHBotUnity.logger.debug("Image saved to: " + diffFile);
 
