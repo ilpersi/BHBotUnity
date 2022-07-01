@@ -895,16 +895,18 @@ public class CueBuilder {
         //region Weekly Rewards
         addCueLocatorByPattern(cueLocators, "cuebuilder/weeklyRewards", "pvp(.*)\\.png", Bounds.fromWidthHeight(361, 120, 75, 54),
                 Set.of(), Set.of(), "PVP_Rewards", "unitycues/weeklyRewards/pvp.png", "");
-        addCueLocatorByPattern(cueLocators, "cuebuilder/weeklyRewards", "trials(.*)\\.png", Bounds.fromWidthHeight(336, 120, 123, 54),
-                Set.of(), Set.of(), "Trials_Rewards", "unitycues/weeklyRewards/trials.png", "");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/weeklyRewards", "trials(.*)\\.png", Bounds.fromWidthHeight(365, 68, 109, 21),
+                Set.of(), Set.of(), "Trials_Rewards", "unitycues/weeklyRewards/trials.png", "Trial Reward popup");
         addCueLocatorByPattern(cueLocators, "cuebuilder/weeklyRewards", "gvg(.*)\\.png", Bounds.fromWidthHeight(336, 120, 123, 54),
                 Set.of(), Set.of(), "GVG_Rewards", "unitycues/weeklyRewards/gvg.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/weeklyRewards", "invasion(.*)\\.png", Bounds.fromWidthHeight(315, 129, 165, 35),
                 Set.of(), Set.of(), "Invasion_Rewards", "unitycues/weeklyRewards/invasion.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/weeklyRewards", "fishing_bait_(.*)\\.png", Bounds.fromWidthHeight(395, 230, 60, 33),
                 Set.of(), Set.of(), "Fishing_Bait", "unitycues/weeklyRewards/fishing_bait.png", "Green fishing bait");
-        addCueLocatorByPattern(cueLocators, "cuebuilder/weeklyRewards", "expedition_(.*)\\.png", Bounds.fromWidthHeight(322, 137, 155, 18),
-                Set.of(), Set.of(), "Expedition_Rewards", "unitycues/weeklyRewards/expedition.png", "Expedition popup title");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/weeklyRewards", "expedition_large_(.*)\\.png", Bounds.fromWidthHeight(309, 68, 181, 21),
+                Set.of(), Set.of(), "Expedition_RewardsLarge", "unitycues/weeklyRewards/expedition-large.png", "Large Expedition popup title");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/weeklyRewards", "expedition_small_(.*)\\.png", Bounds.fromWidthHeight(322, 137, 155, 18),
+                Set.of(), Set.of(), "Expedition_RewardsSmall", "unitycues/weeklyRewards/expedition-small.png", "Small Expedition popup title");
         //endregion
 
 

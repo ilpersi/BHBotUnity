@@ -798,11 +798,12 @@ class CueManager {
 
         //region Weekly Rewards
         addCue("PVP_Rewards", "unitycues/weeklyRewards/pvp.png", Bounds.fromWidthHeight(350, 110, 100, 75));
-        addCue("Trials_Rewards", "unitycues/weeklyRewards/trials.png", Bounds.fromWidthHeight(325, 110, 145, 75));
+        addCue("Trials_Rewards", "unitycues/weeklyRewards/trials.png", Bounds.fromWidthHeight(355, 55, 130, 45)); // Trial Reward popup
         addCue("GVG_Rewards", "unitycues/weeklyRewards/gvg.png", Bounds.fromWidthHeight(325, 110, 145, 75));
         addCue("Invasion_Rewards", "unitycues/weeklyRewards/invasion.png", Bounds.fromWidthHeight(305, 115, 185, 60));
         addCue("Fishing_Bait", "unitycues/weeklyRewards/fishing_bait.png", Bounds.fromWidthHeight(385, 220, 80, 55)); // Green fishing bait
-        addCue("Expedition_Rewards", "unitycues/weeklyRewards/expedition.png", Bounds.fromWidthHeight(310, 125, 180, 40)); // Expedition popup title
+        addCue("Expedition_RewardsLarge", "unitycues/weeklyRewards/expedition-large.png", Bounds.fromWidthHeight(295, 55, 205, 45)); // Large Expedition popup title
+        addCue("Expedition_RewardsSmall", "unitycues/weeklyRewards/expedition-small.png", Bounds.fromWidthHeight(310, 125, 180, 40)); // Small Expedition popup title
         //endregion
 
         //region Settings
