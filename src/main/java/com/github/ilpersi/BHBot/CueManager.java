@@ -271,9 +271,6 @@ class CueManager {
         addCue("News", "cues/cueNewsPopup.png", new Bounds(345, 60, 365, 85)); // news popup
         addCue("Close", "cues/cueClose.png", null); // close button used with "News" popup, also when defeated in dungeon, etc.
 
-        addCue("EnergyBar", "cues/cueEnergyBar.png", new Bounds(390, 0, 420, 20));
-        addCue("TicketBar", "cues/cueTicketBar.png", new Bounds(540, 0, 770, 20));
-
         addCue("NotEnoughShards", "cues/cueNotEnoughShards.png", Bounds.fromWidthHeight(265, 215, 270, 70));
 
         // New Raid level detection logic
@@ -317,7 +314,6 @@ class CueManager {
         addCue("ZonesButton", "cues/cueZonesButton.png", new Bounds(105, 60, 125, 75));
         addCue("NotEnoughEnergy", "cues/cueNotEnoughEnergy.png", new Bounds(260, 210, 290, 235)); // "Not enough Energy" popup cue
 
-        addCue("PVP", "cues/cuePVP.png", new Bounds(0, 70, 40, 110)); // PVP icon in main screen
         addCue("PVPWindow", "cues/cuePVPWindow.png", null); // PVP window cue
 
         addCue("DialogRight", "cues/cueDialogRight.png", new Bounds(675, 205, 690, 250)); // cue for the dialog window (when arrow is at the right side of the window)
@@ -555,6 +551,7 @@ class CueManager {
         addCue("Cost", "unitycues/common/cueCost.png", Bounds.fromWidthHeight(510, 150, 120, 105)); // Cost combo box for T/G, GVG
         addCue("BadgeBar", "unitycues/common/cueBadgeBar.png", Bounds.fromWidthHeight(315, 40, 60, 55));
         addCue("Enter", "unitycues/common/cueEnter.png", Bounds.fromWidthHeight(350, 445, 100, 35)); // Green Enter button found in Expedition and in some D4
+        addCue("Fight", "unitycues/common/cueFight.png", Bounds.fromWidthHeight(565, 190, 75, 35)); // PVP/GVG Fight Button
         //endregion Common
 
         //region Dungeon
@@ -595,7 +592,6 @@ class CueManager {
         //region GVG
         addCue("GVGWindow", "unitycues/gvg/cueGVGWindow.png", Bounds.fromWidthHeight(255, 95, 290, 45)); // GVG Main Window Title
         addCue("GuildLeaveConfirm", "unitycues/gvg/cueGuildLeaveConfirm.png", Bounds.fromWidthHeight(260, 200, 280, 125)); // GVG Guild warning popup
-        addCue("Fight", "unitycues/gvg/cueFight.png", Bounds.fromWidthHeight(565, 190, 75, 35)); // GVG Fight Button
         //endregion GVG
 
         //region Invasion
@@ -616,6 +612,7 @@ class CueManager {
         addCue("GorMenu", "unitycues/mainScreen/cueGorMenu.png", Bounds.fromWidthHeight(95, 465, 55, 60)); // Permagor menu close to the Character menu
         addCue("GVG", "unitycues/mainScreen/cueGVG.png", rigthMenuBounds); // main GVG button cue
         addCue("Invasion", "unitycues/mainScreen/cueInvasion.png", rigthMenuBounds); // Invasion icon cue
+        addCue("PVP", "unitycues/mainScreen/cuePVP.png", Bounds.fromWidthHeight(5, 80, 65, 65)); // PVP icon in main screen
         //endregion
 
         //region Numbers
@@ -683,7 +680,7 @@ class CueManager {
         addCue("wb_tier_7", "unitycues/numbers/wbTier/wb_tier_7.png", null);
         addCue("wb_tier_8", "unitycues/numbers/wbTier/wb_tier_8.png", null);
         addCue("wb_tier_9", "unitycues/numbers/wbTier/wb_tier_9.png", null);
-        // endregion
+        // endregion WB Tiers
 
         // region WB Tier Buttons
         // These are used when selecting World Boss tier
@@ -697,7 +694,7 @@ class CueManager {
         addCue("wb_tier_button_7", "unitycues/numbers/wbTierButton/wb_tier_button_7.png", null);
         addCue("wb_tier_button_8", "unitycues/numbers/wbTierButton/wb_tier_button_8.png", null);
         addCue("wb_tier_button_9", "unitycues/numbers/wbTierButton/wb_tier_button_9.png", null);
-        // endregion
+        // endregion WB Tier Buttons
 
         //region WB Total TS 16px
         addCue("wb_total_ts_16_0", "unitycues/numbers/wbTotalTS16/wb_total_ts_16_0.png", null); // WB Total TS 16px 0
@@ -710,7 +707,7 @@ class CueManager {
         addCue("wb_total_ts_16_7", "unitycues/numbers/wbTotalTS16/wb_total_ts_16_7.png", null); // WB Total TS 16px 7
         addCue("wb_total_ts_16_8", "unitycues/numbers/wbTotalTS16/wb_total_ts_16_8.png", null); // WB Total TS 16px 8
         addCue("wb_total_ts_16_9", "unitycues/numbers/wbTotalTS16/wb_total_ts_16_9.png", null); // WB Total TS 16px 9
-        // endregion
+        // endregion WB Total TS 16px
 
         //region WB Total TS 18px
         addCue("wb_total_ts_18_0", "unitycues/numbers/wbTotalTS18/wb_total_ts_18_0.png", null); // WB Total TS 18px 0
@@ -723,7 +720,7 @@ class CueManager {
         addCue("wb_total_ts_18_7", "unitycues/numbers/wbTotalTS18/wb_total_ts_18_7.png", null); // WB Total TS 18px 7
         addCue("wb_total_ts_18_8", "unitycues/numbers/wbTotalTS18/wb_total_ts_18_8.png", null); // WB Total TS 18px 8
         addCue("wb_total_ts_18_9", "unitycues/numbers/wbTotalTS18/wb_total_ts_18_9.png", null); // WB Total TS 18px 9
-        // endregion
+        // endregion WB Total TS 18px
 
         //region WB Total TS 20px
         addCue("wb_total_ts_20_0", "unitycues/numbers/wbTotalTS20/wb_total_ts_20_0.png", null); // WB Total TS 20px 0
@@ -736,8 +733,12 @@ class CueManager {
         addCue("wb_total_ts_20_7", "unitycues/numbers/wbTotalTS20/wb_total_ts_20_7.png", null); // WB Total TS 20px 7
         addCue("wb_total_ts_20_8", "unitycues/numbers/wbTotalTS20/wb_total_ts_20_8.png", null); // WB Total TS 20px 8
         addCue("wb_total_ts_20_9", "unitycues/numbers/wbTotalTS20/wb_total_ts_20_9.png", null); // WB Total TS 20px 9
-        // endregion
-        //endregion
+        // endregion WB Total TS 20px
+        //endregion Numbers
+
+        //region PVP
+        addCue("TicketBar", "unitycues/pvp/cueTicketBar.png", Bounds.fromWidthHeight(545, 0, 55, 55));
+        //endregion PVP
 
         //region Raid
         addCue("RaidPopup", "unitycues/raid/cueRaidPopup.png", Bounds.fromWidthHeight(310, 45, 60, 45)); // The raid near the bar

@@ -890,7 +890,10 @@ public class AdventureThread implements Runnable {
 
                             bot.browser.readScreen();
 
-                            int tickets = getTickets();
+                            final Set<Color> ticketBarColors = Set.of(new Color (152, 9, 40), new Color (226, 42, 81));
+                            seg = MarvinSegment.fromCue(BHBotUnity.cues.get("TicketBar"), bot.browser);
+                            int tickets = readResourceBarPercentage(seg, 100, Misc.BarOffsets.PVP.x, Misc.BarOffsets.PVP.y, ticketBarColors, bot.browser.getImg());
+
                             globalTickets = tickets;
                             BHBotUnity.logger.readout("Tickets: " + tickets + ", required: >" + bot.settings.minTickets + ", PVP cost: " + bot.settings.costPVP);
 
@@ -936,7 +939,7 @@ public class AdventureThread implements Runnable {
                                 int cost = detectCost();
                                 if (cost == 0) { // error!
                                     BHBotUnity.logger.error("Due to an error#1 in cost detection, PVP will be skipped.");
-                                    bot.browser.closePopupSecurely(BHBotUnity.cues.get("PVPWindow"), BHBotUnity.cues.get("X"));
+                                    bot.browser.closeAllPopups("Main");
                                     dressUp(bot.settings.pvpstrip);
                                     continue;
                                 }
@@ -944,20 +947,13 @@ public class AdventureThread implements Runnable {
                                     BHBotUnity.logger.info("Detected PVP cost: " + cost + ", settings cost is " + bot.settings.costPVP + ". Changing..");
                                     boolean result = selectCost(cost, bot.settings.costPVP);
                                     if (!result) { // error!
-                                        // see if drop down menu is still open and close it:
-                                        bot.browser.readScreen(Misc.Durations.SECOND);
-                                        tryClosingWindow(BHBotUnity.cues.get("CostDropDown"));
-                                        bot.browser.readScreen(5 * Misc.Durations.SECOND);
-                                        seg = MarvinSegment.fromCue(BHBotUnity.cues.get("PVPWindow"), 15 * Misc.Durations.SECOND, bot.browser);
-                                        if (seg != null)
-                                            bot.browser.closePopupSecurely(BHBotUnity.cues.get("PVPWindow"), BHBotUnity.cues.get("X"));
-                                        BHBotUnity.logger.error("Due to an error#2 in cost selection, PVP will be skipped.");
+                                        bot.browser.closeAllPopups("Main");
                                         dressUp(bot.settings.pvpstrip);
                                         continue;
                                     }
                                 }
 
-                                seg = MarvinSegment.fromCue(BHBotUnity.cues.get("Play"), 5 * Misc.Durations.SECOND, bot.browser);
+                                seg = MarvinSegment.fromCue(BHBotUnity.cues.get("Play"), 5 * Misc.Durations.SECOND, Bounds.fromWidthHeight(510, 255, 80, 40), bot.browser);
                                 bot.browser.clickOnSeg(seg);
                                 bot.browser.readScreen(2 * Misc.Durations.SECOND);
 
@@ -965,7 +961,14 @@ public class AdventureThread implements Runnable {
                                 detectCharacterDialogAndHandleIt();
 
                                 Bounds pvpOpponentBounds = opponentSelector(bot.settings.pvpOpponent);
-                                String opponentName = (bot.settings.pvpOpponent == 1 ? "1st" : bot.settings.pvpOpponent == 2 ? "2nd" : bot.settings.pvpOpponent == 3 ? "3rd" : "4th");
+                                String opponentName = switch (bot.settings.pvpOpponent) {
+                                    case 1 -> "1st";
+                                    case 2 -> "2nd";
+                                    case 3 -> "3rd";
+                                    case 4 -> "4th";
+                                    default -> "unknown";
+                                };
+
                                 BHBotUnity.logger.info("Selecting " + opponentName + " opponent");
                                 seg = MarvinSegment.fromCue("Fight", 5 * Misc.Durations.SECOND, pvpOpponentBounds, bot.browser);
                                 if (seg == null) {
@@ -976,7 +979,7 @@ public class AdventureThread implements Runnable {
                                 bot.browser.clickOnSeg(seg);
 
                                 bot.browser.readScreen();
-                                seg = MarvinSegment.fromCue("Accept", 5 * Misc.Durations.SECOND, new Bounds(430, 430, 630, 500), bot.browser);
+                                seg = MarvinSegment.fromCue("TeamAccept", 5 * Misc.Durations.SECOND, Bounds.fromWidthHeight(445, 440, 145, 55), bot.browser);
                                 if (seg == null) {
                                     BHBotUnity.logger.error("Impossible to find the Accept button in the PVP screen, restarting");
                                     restart();
@@ -2131,39 +2134,7 @@ public class AdventureThread implements Runnable {
     }
 
     /**
-     * Returns number of tickets left (for PvP) in interval [0..10]. Returns -1 in case it cannot read number of tickets for some reason.
-     */
-    private int getTickets() {
-        MarvinSegment seg;
-
-        seg = MarvinSegment.fromCue(BHBotUnity.cues.get("TicketBar"), bot.browser);
-
-        if (seg == null) // this should probably not happen
-            return -1;
-
-        int left = seg.x2 + 1;
-        int top = seg.y1 + 6;
-
-        final Color full = new Color(226, 42, 81);
-
-        int value = 0;
-        int maxTickets = bot.settings.maxTickets;
-
-        // ticket bar is 80 pixels long (however last two pixels will have "medium" color and not full color (it's so due to shading))
-        for (int i = 0; i < 78; i++) {
-            value = i;
-            Color col = new Color(bot.browser.getImg().getRGB(left + i, top));
-
-            if (!col.equals(full))
-                break;
-        }
-
-        value = value + 2; //add the last 2 pixels to get an accurate count
-        return Math.round(value * (maxTickets / 77.0f)); // scale it to interval [0..10]
-    }
-
-    /**
-     * Generi bar percentage reader.
+     * Generic bar percentage reader.
      *
      * @param barLocator The MarvinSegment used to find the resource bar on the screen
      * @param maxResourceCnt Max count of the current resources
@@ -2171,7 +2142,7 @@ public class AdventureThread implements Runnable {
      * @param yOffset y offset. Based on the y1 of the barLocator parameter
      * @param barColors A set of valid colors. If colors in this set are found, the bar percentage is increased
      * @param barImgRead The image used to read the bar percentage.
-     * @return An integeger representing the available resources based on maxResourceCnt
+     * @return An integer representing the available resources based on maxResourceCnt
      */
     static int readResourceBarPercentage(MarvinSegment barLocator, int maxResourceCnt, int xOffset, int yOffset, Set<Color> barColors, BufferedImage barImgRead) {
         if (barLocator == null) return -1;
@@ -4556,17 +4527,17 @@ public class AdventureThread implements Runnable {
     }
 
     /**
-     * This method detects the select cost in PvP/GvG/Trials/Gauntlet window. <p>
+     * This method detects the select cost in PvP/GvG/Trials/Gauntlet/Expedition/Invasion window. <p>
      * <p>
-     * Note: PvP cost has different position from GvG/Gauntlet/Trials. <br>
-     * Note: PvP/GvG/Trials/Gauntlet window must be open in order for this to work!
+     * Note: Position of cost bar may be different based on the current adventure type. <br>
+     * Note: PvP/GvG/Trials/Gauntlet/Expedition/Invasion window must be open in order for this to work!
      *
      * @return 0 in case of an error, or cost value in interval [1..5]
      */
     int detectCost() {
 
         // Enable this if you want to log cost detection logic
-        // debugCost();
+        debugCost();
 
         MarvinSegment seg = MarvinSegment.fromCue(BHBotUnity.cues.get("Cost"), 15 * Misc.Durations.SECOND, bot.browser);
         if (seg == null) {
@@ -5781,7 +5752,7 @@ public class AdventureThread implements Runnable {
         BHBotUnity.logger.debug("Suggested Bounds: " + suggestedBounds.getJavaCode(true, false));
         BHBotUnity.logger.debug("Suggested Bounds.fromWidthHeight: " + suggestedBounds.getJavaCode(true, true));
 
-        BufferedImage numImg = bot.browser.getImg().getSubimage(seg.x1 + 24, seg.y1 + 32, 90, 27);
+        BufferedImage numImg = bot.browser.getImg().getSubimage(seg.x1 + 20, seg.y1 + 32, 90, 31);
 
         MarvinImage toBlackAndWhite = new MarvinImage(numImg, "PNG");
         toBlackAndWhite.toBlackWhite(110);

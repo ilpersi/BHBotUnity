@@ -418,23 +418,27 @@ public class CueBuilder {
                 Set.of(), Set.of(), "Play", "unitycues/common/cuePlay.png", "Blue Play button.");
         addCueLocatorByPattern(cueLocators, "cuebuilder/invasion", "inv-main_(.*)\\.png", Bounds.fromWidthHeight(522, 274, 58, 15),
                 Set.of(), Set.of(), "Play", "unitycues/common/cuePlay.png", "Blue Play button.");
-
+        addCueLocatorByPattern(cueLocators, "cuebuilder/pvp", "pvp-main_(.*)\\.png", Bounds.fromWidthHeight(521, 269, 58, 15),
+                Set.of(), Set.of(), "Play", "unitycues/common/cuePlay.png", "Blue Play button.");
 
         addCueLocatorByPattern(cueLocators, "cuebuilder/common", "not_enough_tokens_(.*)\\.png", Bounds.fromWidthHeight(272, 227, 251, 70),
                 Set.of(), Set.of(), "NotEnoughTokens", "unitycues/common/cueNotEnoughTokens.png", "Not enough token popup.");
 
         final Set<Bounds> tgCostTransp = Set.of(Bounds.fromWidthHeight(518, 198, 50, 30), Bounds.fromWidthHeight(518, 201, 53, 24));
         addCueLocatorByPattern(cueLocators, "cuebuilder/tierGauntlet", "tg_cost_(.*)\\.png", Bounds.fromWidthHeight(524, 160, 86, 71),
-                Set.of(), tgCostTransp, "Cost", "unitycues/common/cueCost.png", "Cost combo box for T/G, GVG, Expedition");
+                Set.of(), tgCostTransp, "Cost", "unitycues/common/cueCost.png", "Cost combo box for T/G, GVG, PVP, Invasion, Expedition");
         final Set<Bounds> gvgCostTransp = Set.of(Bounds.fromWidthHeight(519, 197, 50, 30), Bounds.fromWidthHeight(519, 200, 53, 24));
         addCueLocatorByPattern(cueLocators, "cuebuilder/gvg", "gvg-main_(.*)\\.png", Bounds.fromWidthHeight(525, 159, 86, 71),
-                Set.of(), gvgCostTransp, "Cost", "unitycues/common/cueCost.png", "Cost combo box for T/G, GVG, Expedition");
+                Set.of(), gvgCostTransp, "Cost", "unitycues/common/cueCost.png", "Cost combo box for T/G, GVG, PVP, Invasion, Expedition");
         final Set<Bounds> expCostTransp = Set.of(Bounds.fromWidthHeight(519, 194, 50, 30), Bounds.fromWidthHeight(519, 197, 53, 24));
         addCueLocatorByPattern(cueLocators, "cuebuilder/expedition", "exp-main_(.*)\\.png", Bounds.fromWidthHeight(525, 156, 86, 71),
-                Set.of(), expCostTransp, "Cost", "unitycues/common/cueCost.png", "Cost combo box for T/G, GVG, Expedition");
+                Set.of(), expCostTransp, "Cost", "unitycues/common/cueCost.png", "Cost combo box for T/G, GVG, PVP, Invasion, Expedition");
         final Set<Bounds> invCostTransp = Set.of(Bounds.fromWidthHeight(519, 198, 50, 30), Bounds.fromWidthHeight(519, 201, 53, 24));
         addCueLocatorByPattern(cueLocators, "cuebuilder/invasion", "inv-main_(.*)\\.png", Bounds.fromWidthHeight(525, 160, 86, 71),
-                Set.of(), invCostTransp, "Cost", "unitycues/common/cueCost.png", "Cost combo box for T/G, GVG, Expedition");
+                Set.of(), invCostTransp, "Cost", "unitycues/common/cueCost.png", "Cost combo box for T/G, GVG, PVP, Invasion, Expedition");
+        final Set<Bounds> pvpCostTransp = Set.of(Bounds.fromWidthHeight(518, 192, 50, 30), Bounds.fromWidthHeight(518, 195, 53, 24));
+        addCueLocatorByPattern(cueLocators, "cuebuilder/pvp", "pvp-main_(.*)\\.png", Bounds.fromWidthHeight(524, 154, 86, 71),
+                Set.of(), pvpCostTransp, "Cost", "unitycues/common/cueCost.png", "Cost combo box for T/G, GVG, PVP, Invasion, Expedition");
 
         addCueLocatorByPattern(cueLocators, "cuebuilder/gvg", "gvg-main_(.*)\\.png", Bounds.fromWidthHeight(327, 53, 34, 32),
                 Set.of(), Set.of(), "BadgeBar", "unitycues/common/cueBadgeBar.png", "Badge bar popup");
@@ -445,8 +449,8 @@ public class CueBuilder {
 
         addCueLocatorByPattern(cueLocators, "cuebuilder/expedition", "exp-portal_(.*)\\.png", Bounds.fromWidthHeight(363, 455, 73, 15),
                 Set.of(), Set.of(), "Enter", "unitycues/common/cueEnter.png", "Green Enter button found in Expedition and in some D4");
-
-
+        addCueLocatorByPattern(cueLocators, "cuebuilder/gvg", "gvg-opponement_(.*)\\.png", Bounds.fromWidthHeight(576, 201, 53, 12),
+                Set.of(), Set.of(), "Fight", "unitycues/common/cueFight.png", "PVP/GVG Fight Button");
         //endregion Common
 
         //region CueX
@@ -518,8 +522,6 @@ public class CueBuilder {
                 Set.of(), Set.of(), "GVGWindow", "unitycues/gvg/cueGVGWindow.png", "GVG Main Window Title");
         addCueLocatorByPattern(cueLocators, "cuebuilder/gvg", "gvg-popup_(.*)\\.png", Bounds.fromWidthHeight(272, 210, 256, 104),
                 Set.of(), Set.of(), "GuildLeaveConfirm", "unitycues/gvg/cueGuildLeaveConfirm.png", "GVG Guild warning popup");
-        addCueLocatorByPattern(cueLocators, "cuebuilder/gvg", "gvg-opponement_(.*)\\.png", Bounds.fromWidthHeight(576, 201, 53, 12),
-                Set.of(), Set.of(), "Fight", "unitycues/gvg/cueFight.png", "GVG Fight Button");
         //endregion GVG
 
         //region Invasion
@@ -1262,6 +1264,60 @@ public class CueBuilder {
         }
     }
 
+    static void manageTicketBar() {
+        Set<Color> ticketColors = new HashSet<>();
+        Set<Color> blackColors = new HashSet<>(Set.of(new Color(50, 51, 52), new Color(8, 10, 11)));
+
+        // Path to files with pvp bar
+        File ticketPath = new File("barbuilder/ticket");
+
+        BufferedImage ticketPopUp;
+        try {
+            ticketPopUp = ImageIO.read(new File("src/main/resources/unitycues/pvp/cueTicketBar.png"));
+        } catch (IOException e) {
+            System.out.println("Errow while reading ticket pop-up");
+            e.printStackTrace();
+            return;
+        }
+
+        // Loop on all the files
+        ImageFilter ticketFilter = new ImageFilter("ticket_bar_(.*)\\.png");
+        String[] ticketBars = ticketPath.list(ticketFilter);
+
+        if (ticketBars != null) {
+            for (String TicketImgFile : ticketBars) {
+                File TicketBarFile = new File("barbuilder/ticket/" + TicketImgFile);
+
+                //noinspection DuplicatedCode
+                if (!TicketBarFile.exists() || TicketBarFile.isDirectory()) {
+                    System.out.println("File " + TicketBarFile.getAbsolutePath() + " is not a valid bar file");
+                    continue;
+                }
+
+                BufferedImage ticketBarImg;
+                try {
+                    ticketBarImg = ImageIO.read(TicketBarFile);
+                } catch (IOException e) {
+                    System.out.println("Exception while loading image" + TicketBarFile.getAbsolutePath());
+                    e.printStackTrace();
+                    continue;
+                }
+
+                ImageHelper.getImgColors(ticketBarImg.getSubimage(590, 15, 80, 1)).forEach((col) -> {
+                    if (!blackColors.contains(col)) ticketColors.add(col);
+                });
+
+                System.out.println("Found colors for Tickets:");
+                ImageHelper.printColors(ticketColors);
+
+                MarvinSegment seg = FindSubimage.findImage(ticketBarImg, ticketPopUp, 0, 0, 0, 0);
+                // As images can have different shat totals we use 100 so we get the percentage
+                int ticket = AdventureThread.readResourceBarPercentage(seg, 100, Misc.BarOffsets.PVP.x, Misc.BarOffsets.PVP.y, ticketColors, ticketBarImg);
+                System.out.println("Ticket bar is " + ticket + "% full for image " + TicketBarFile.getAbsolutePath());
+            }
+        }
+    }
+
     public static void main(String[] args) {
         boolean printUnused = false;
 
@@ -1282,5 +1338,7 @@ public class CueBuilder {
         manageXealBar();
         System.out.println("====== Badge bar ======");
         manageBadgeBar();
+        System.out.println("====== Ticket bar ======");
+        manageTicketBar();
     }
 }

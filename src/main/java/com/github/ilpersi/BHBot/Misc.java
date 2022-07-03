@@ -131,11 +131,12 @@ public class Misc {
     }
 
     static final class BarOffsets {
-        static final Point RAID = new Point(0, 9);
-        static final Point DUNGEON = new Point(0, 21);
-        static final Point WB = new Point(0, 26);
-        static final Point TG = new Point(0, 23);
         static final Point Badge = new Point(0, 8);
+        static final Point DUNGEON = new Point(0, 21);
+        static final Point PVP = new Point(0, 6);
+        static final Point RAID = new Point(0, 9);
+        static final Point TG = new Point(0, 23);
+        static final Point WB = new Point(0, 26);
     }
 
     static final Bounds SIGNATURE_BOUNDS = Bounds.fromWidthHeight(90, 400, 70, 60);
