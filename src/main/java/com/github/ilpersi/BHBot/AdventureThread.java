@@ -892,7 +892,7 @@ public class AdventureThread implements Runnable {
 
                             final Set<Color> ticketBarColors = Set.of(new Color (152, 9, 40), new Color (226, 42, 81));
                             seg = MarvinSegment.fromCue(BHBotUnity.cues.get("TicketBar"), bot.browser);
-                            int tickets = readResourceBarPercentage(seg, 100, Misc.BarOffsets.PVP.x, Misc.BarOffsets.PVP.y, ticketBarColors, bot.browser.getImg());
+                            int tickets = readResourceBarPercentage(seg, bot.settings.maxTickets, Misc.BarOffsets.PVP.x, Misc.BarOffsets.PVP.y, ticketBarColors, bot.browser.getImg());
 
                             globalTickets = tickets;
                             BHBotUnity.logger.readout("Tickets: " + tickets + ", required: >" + bot.settings.minTickets + ", PVP cost: " + bot.settings.costPVP);
@@ -985,7 +985,7 @@ public class AdventureThread implements Runnable {
                                     restart();
                                     continue;
                                 }
-                                bot.browser.closePopupSecurely(BHBotUnity.cues.get("Accept"), BHBotUnity.cues.get("Accept"));
+                                bot.browser.closePopupSecurely(BHBotUnity.cues.get("TeamAccept"), BHBotUnity.cues.get("TeamAccept"));
                                 //bot.browser.clickOnSeg(seg);
 
                                 if (handleTeamMalformedWarning()) {
