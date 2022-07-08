@@ -515,7 +515,9 @@ public class CueBuilder {
                 Set.of(), Set.of(), "YouCurrentlyOwn", "unitycues/familiarEncounter/cueYouCurrentlyOwn.png", "You currently own text in familiar encounters");
         addCueLocatorByPattern(cueLocators, "cuebuilder/familiarEncounter", "capture_success_(.*)\\.png", null,
                 Set.of(), Set.of(), "CaptureSuccess", "unitycues/familiarEncounter/cueCaptureSuccess.png", "Capture Successful text in familiar encounters");
-        //endregion
+        addCueLocatorByPattern(cueLocators, "cuebuilder/familiarEncounter", "familiar_capture_(.*)\\.png", Bounds.fromWidthHeight(363, 452, 73, 15),
+                Set.of(), Set.of(), "CloseCapture", "unitycues/familiarEncounter/cueCloseCapture.png", "Blue Close button when capturing familiars");
+        //endregion Familiar Encounters
 
         //region GVG
         addCueLocatorByPattern(cueLocators, "cuebuilder/gvg", "gvg-main_(.*)\\.png", Bounds.fromWidthHeight(267, 107, 265, 21),

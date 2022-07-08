@@ -269,7 +269,6 @@ class CueManager {
         addCue("X", "cues/cueX.png", null); // "X" close button used with claimed daily rewards popup
 
         addCue("News", "cues/cueNewsPopup.png", new Bounds(345, 60, 365, 85)); // news popup
-        addCue("Close", "cues/cueClose.png", null); // close button used with "News" popup, also when defeated in dungeon, etc.
 
         addCue("NotEnoughShards", "cues/cueNotEnoughShards.png", Bounds.fromWidthHeight(265, 215, 270, 70));
 
@@ -580,6 +579,7 @@ class CueManager {
         addCue("DeclineRed", "unitycues/familiarEncounter/cueDeclineRed.png", Bounds.fromWidthHeight(240, 430, 135, 50)); // decline persuation attempts
         addCue("YouCurrentlyOwn", "unitycues/familiarEncounter/cueYouCurrentlyOwn.png", Bounds.fromWidthHeight(135, 395, 275, 40)); // You currently own text in familiar encounters
         addCue("CaptureSuccess", "unitycues/familiarEncounter/cueCaptureSuccess.png", null); // Capture Successful text in familiar encounters
+        addCue("CloseCapture", "unitycues/familiarEncounter/cueCloseCapture.png", Bounds.fromWidthHeight(350, 440, 100, 40)); // Blue Close button when capturing familiars
         //endregion Familiar encounters
         //region Familiar bribing cues
         addCue("RareFamiliar", "unitycues/familiarEncounter/type/cue02RareFamiliar.png", Bounds.fromWidthHeight(527, 261, 158, 59)); // Rare Bribe cue

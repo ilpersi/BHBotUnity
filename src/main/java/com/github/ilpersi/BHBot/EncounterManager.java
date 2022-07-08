@@ -184,10 +184,13 @@ public final class EncounterManager {
      * Make sure that the successful capture screen is correctly closed
      */
     private void closeCaptureScreen() {
-        MarvinSegment seg = MarvinSegment.fromCue("CaptureSuccess", Misc.Durations.SECOND * 3, null);
+        MarvinSegment seg = MarvinSegment.fromCue("CaptureSuccess", Misc.Durations.SECOND * 10, bot.browser);
 
         if (seg != null) {
-            bot.browser.closePopupSecurely(BHBotUnity.cues.get("CaptureSuccess"), BHBotUnity.cues.get("Close"));
+            bot.browser.closePopupSecurely(BHBotUnity.cues.get("CaptureSuccess"), BHBotUnity.cues.get("CloseCapture"));
+        } else {
+            BHBotUnity.logger.debug("No CaptureSuccess clue found after persuasion/bribe attempt!");
+            Misc.saveScreen("no-capture-success", "debug/closeCaptureScreen", true, bot.browser.getImg());
         }
     }
 
@@ -252,6 +255,7 @@ public final class EncounterManager {
             seg = MarvinSegment.fromCue(BHBotUnity.cues.get("YesGreen"), Misc.Durations.SECOND * 7, bot.browser);
             if (seg != null) {
                 bot.browser.clickOnSeg(seg);
+                closeCaptureScreen();
             } else {
                 BHBotUnity.logger.error("Impossible to find YesGreen in bribeFamiliar");
                 return false;
@@ -293,13 +297,12 @@ public final class EncounterManager {
             seg = MarvinSegment.fromCue(BHBotUnity.cues.get("YesGreen"), Misc.Durations.SECOND * 5, Bounds.fromWidthHeight(245, 330, 165, 65), bot.browser);
             if (seg != null) {
                 bot.browser.clickOnSeg(seg);
+                closeCaptureScreen();
                 return true;
             } else {
                 BHBotUnity.logger.error("Impossible to find the YesGreen button in persuadeFamiliar");
             }
         }
-
-        closeCaptureScreen();
 
         return false;
     }
