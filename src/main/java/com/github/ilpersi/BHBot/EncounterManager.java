@@ -184,13 +184,10 @@ public final class EncounterManager {
      * Make sure that the successful capture screen is correctly closed
      */
     private void closeCaptureScreen() {
-        MarvinSegment seg = MarvinSegment.fromCue("CaptureSuccess", Misc.Durations.SECOND * 10, bot.browser);
+        MarvinSegment seg = MarvinSegment.fromCue("CaptureSuccess", Misc.Durations.SECOND * 5, bot.browser);
 
         if (seg != null) {
             bot.browser.closePopupSecurely(BHBotUnity.cues.get("CaptureSuccess"), BHBotUnity.cues.get("CloseCapture"));
-        } else {
-            BHBotUnity.logger.debug("No CaptureSuccess clue found after persuasion/bribe attempt!");
-            Misc.saveScreen("no-capture-success", "debug/closeCaptureScreen", true, bot.browser.getImg());
         }
     }
 
