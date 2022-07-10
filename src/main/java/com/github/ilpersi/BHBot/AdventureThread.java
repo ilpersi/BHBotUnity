@@ -2374,10 +2374,14 @@ public class AdventureThread implements Runnable {
                 String runtime = Misc.millisToHumanForm(activityRuntime);
                 counters.get(bot.getState()).increaseVictoriesDuration(activityRuntime);
                 String runtimeAvg = Misc.millisToHumanForm(counters.get(bot.getState()).getVictoryAverageDuration());
+
                 //return stats
                 BHBotUnity.logger.info(bot.getState().getName() + " #" + counters.get(bot.getState()).getTotal() + " completed. Result: Victory");
                 BHBotUnity.logger.stats(bot.getState().getName() + " " + counters.get(bot.getState()).successRateDesc());
                 BHBotUnity.logger.stats("Victory run time: " + runtime + ". Average: " + runtimeAvg + ".");
+
+                // Adventure Screen
+                saveAdventureScreen("cleared");
 
                 //handle SuccessThreshold
                 handleSuccessThreshold(bot.getState());
@@ -2470,10 +2474,14 @@ public class AdventureThread implements Runnable {
                 String runtime = Misc.millisToHumanForm(activityRuntime);
                 counters.get(bot.getState()).increaseVictoriesDuration(activityRuntime);
                 String runtimeAvg = Misc.millisToHumanForm(counters.get(bot.getState()).getVictoryAverageDuration());
+
                 //return stats
                 BHBotUnity.logger.info(bot.getState().getName() + " #" + counters.get(bot.getState()).getTotal() + " completed. Result: Victory");
                 BHBotUnity.logger.stats(bot.getState().getName() + " " + counters.get(bot.getState()).successRateDesc());
                 BHBotUnity.logger.stats("Victory run time: " + runtime + ". Average: " + runtimeAvg + ".");
+
+                // Adventure Screen
+                saveAdventureScreen("victory");
 
                 //handle SuccessThreshold
                 handleSuccessThreshold(bot.getState());
@@ -2546,6 +2554,9 @@ public class AdventureThread implements Runnable {
             BHBotUnity.logger.warn(bot.getState().getName() + " #" + counters.get(bot.getState()).getTotal() + " completed. Result: Defeat.");
             BHBotUnity.logger.stats(bot.getState().getName() + " " + counters.get(bot.getState()).successRateDesc());
             BHBotUnity.logger.stats("Defeat run time: " + runtime + ". Average: " + runtimeAvg + ".");
+
+            // Adventure Screen
+            saveAdventureScreen("defeat");
 
             //check for invasion loot drops and send via Pushover/Screenshot
             /*if (BHBotUnity.State.Invasion.equals(bot.getState())) {
@@ -5808,6 +5819,26 @@ public class AdventureThread implements Runnable {
         BHBotUnity.logger.debug("Image saved to: " + costFile);
 
         return result;
+    }
+
+    /**
+     * This is used to save the final state of any adventure. This method should only be called by the processDungeon one as it
+     * assumes that the adventure is just over and either one of the following screen is present: cleared, defeat, victory
+     *
+     * @param adventureResult The result of the adventure: cleared|defeat|victory
+     */
+    private void saveAdventureScreen(String adventureResult) {
+
+        if (bot.settings.screenshots.contains("as")) {
+            String adventurePathName = bot.getState()
+                    .toString()
+                    .toLowerCase()
+                    .replaceAll("[^a-zA-Z\\d-_.]", "-");
+
+            String adventureFileName = adventurePathName + "-" + String.format("%02d", counters.get(bot.getState()).getTotal());
+            Misc.saveScreen(adventureFileName, "adventure/" + adventurePathName + "/" + adventureResult, true, bot.browser.getImg());
+        }
+
     }
 
 }
