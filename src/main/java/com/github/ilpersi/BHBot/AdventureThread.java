@@ -2520,7 +2520,10 @@ public class AdventureThread implements Runnable {
 
                     bot.browser.closePopupSecurely(XWithBounds, BHBotUnity.cues.get("X"));
                 } else {
-                    bot.browser.closeAllPopups("Main", 15, Misc.Durations.SECOND);
+                    // Main Cue is visible when PVP window is opened
+                    String cueName = BHBotUnity.State.PVP.equals(bot.getState()) ? "Quest" : "Main";
+
+                    bot.browser.closeAllPopups(cueName, 15, Misc.Durations.SECOND);
                 }
 
                 //last few post activity tasks
@@ -2680,10 +2683,13 @@ public class AdventureThread implements Runnable {
                     bot.browser.closePopupSecurely(BHBotUnity.cues.get("BadgeBar"), BHBotUnity.cues.get("X"));
                 }
             } else {
-                if (!bot.browser.closeAllPopups("Main", 8, Misc.Durations.SECOND)) {
+                // Main Cue is visible when PVP window is opened
+                String cueName = BHBotUnity.State.PVP.equals(bot.getState()) ? "Quest" : "Main";
+
+                if (!bot.browser.closeAllPopups(cueName, 8, Misc.Durations.SECOND)) {
                     // If tips are enabled we make sure that the dialog is correctly closed
                     detectCharacterDialogAndHandleIt();
-                    bot.browser.closeAllPopups("Main", 8, Misc.Durations.SECOND);
+                    bot.browser.closeAllPopups(cueName, 8, Misc.Durations.SECOND);
                 }
             }
 
