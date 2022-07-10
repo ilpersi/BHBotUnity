@@ -139,6 +139,11 @@ public class Misc {
         static final Point WB = new Point(0, 26);
     }
 
+    static final class BoundsOffsets {
+        static final Bounds Difficulty = Bounds.fromWidthHeight(20, 32, 90, 31);
+        static final Bounds Cost = Bounds.fromWidthHeight(0, 41, 34, 22);
+    }
+
     static final Bounds SIGNATURE_BOUNDS = Bounds.fromWidthHeight(90, 400, 70, 60);
 
     /**

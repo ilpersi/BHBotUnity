@@ -3962,7 +3962,7 @@ public class AdventureThread implements Runnable {
      */
     int detectDifficulty(Cue difficulty) {
 
-        // TODO Remember to remove this!!
+        // Uncomment this to always debug difficulty
         debugDifficulty();
 
         bot.browser.readScreen(2 * Misc.Durations.SECOND); // note that sometimes the cue will be gray (disabled) since the game is fetching data from the server - in that case we'll have to wait a bit
@@ -3983,7 +3983,7 @@ public class AdventureThread implements Runnable {
         }
 
         // We get the  region with the difficulty number
-        BufferedImage numImg = bot.browser.getImg().getSubimage(seg.x1 + 26, seg.y1 + 32, 70, 25);
+        BufferedImage numImg = bot.browser.getImg().getSubimage(seg.x1 + Misc.BoundsOffsets.Difficulty.x1, seg.y1 + Misc.BoundsOffsets.Difficulty.y1, Misc.BoundsOffsets.Difficulty.width, Misc.BoundsOffsets.Difficulty.height);
 
         // We transform it in B&W using available customMax
         MarvinImage im = new MarvinImage(numImg, "PNG");
@@ -4566,7 +4566,7 @@ public class AdventureThread implements Runnable {
         final int xOffset = 3, yOffset = 41, w = 31, h = 22;
 
         // We get the  region with the cost number
-        BufferedImage numImg = bot.browser.getImg().getSubimage(seg.x1 + xOffset, seg.y1 + yOffset, w, h);
+        BufferedImage numImg = bot.browser.getImg().getSubimage(seg.x1 + Misc.BoundsOffsets.Cost.x1, seg.y1 + Misc.BoundsOffsets.Cost.y1, Misc.BoundsOffsets.Cost.width, Misc.BoundsOffsets.Cost.height);
 
         // We transform it in B&W using available customMax
         MarvinImage im = new MarvinImage(numImg, "PNG");
@@ -5769,7 +5769,7 @@ public class AdventureThread implements Runnable {
         BHBotUnity.logger.debug("Suggested Bounds: " + suggestedBounds.getJavaCode(true, false));
         BHBotUnity.logger.debug("Suggested Bounds.fromWidthHeight: " + suggestedBounds.getJavaCode(true, true));
 
-        BufferedImage numImg = bot.browser.getImg().getSubimage(seg.x1 + 20, seg.y1 + 32, 90, 31);
+        BufferedImage numImg = bot.browser.getImg().getSubimage(seg.x1 + Misc.BoundsOffsets.Difficulty.x1, seg.y1 + Misc.BoundsOffsets.Difficulty.y1, Misc.BoundsOffsets.Difficulty.width, Misc.BoundsOffsets.Difficulty.height);
 
         MarvinImage toBlackAndWhite = new MarvinImage(numImg, "PNG");
         toBlackAndWhite.toBlackWhite(110);
@@ -5788,9 +5788,6 @@ public class AdventureThread implements Runnable {
     }
 
     int debugCost() {
-        // Calculation offsets
-        final int xOffset = 3, yOffset = 41, w = 31, h = 22;
-
         bot.browser.readScreen();
         // We make sure to search for the cost Cue in all the screen (TG position is different from GVG and so on...)
         Cue costCue = new Cue(BHBotUnity.cues.get("Cost"), null);
@@ -5807,7 +5804,7 @@ public class AdventureThread implements Runnable {
         BHBotUnity.logger.debug("Suggested Bounds.fromWidthHeight: " + suggestedBounds.getJavaCode(true, true));
 
         // We get the  region with the cost number
-        BufferedImage numImg = bot.browser.getImg().getSubimage(seg.x1 + xOffset, seg.y1 + yOffset, w, h);
+        BufferedImage numImg = bot.browser.getImg().getSubimage(seg.x1 + Misc.BoundsOffsets.Cost.x1, seg.y1 + Misc.BoundsOffsets.Cost.y1, Misc.BoundsOffsets.Cost.width, Misc.BoundsOffsets.Cost.height);
 
         // We transform it in B&W using available customMax
         MarvinImage im = new MarvinImage(numImg, "PNG");
@@ -5820,7 +5817,7 @@ public class AdventureThread implements Runnable {
 
         // We save the image and the read difficulty for troubleshooting purpose
         String costFileName = "cost_" + result;
-        String costFile = Misc.saveScreen(costFileName, "debug/cost", true, numImg);
+        String costFile = Misc.saveScreen(costFileName, "debug/cost", true, imb);
         BHBotUnity.logger.debug("Detected cost is: " + result);
         BHBotUnity.logger.debug("Image saved to: " + costFile);
 
@@ -5842,7 +5839,7 @@ public class AdventureThread implements Runnable {
                     .replaceAll("[^a-zA-Z\\d-_.]", "-");
 
             String adventureFileName = adventurePathName + "-" + String.format("%02d", counters.get(bot.getState()).getTotal());
-            Misc.saveScreen(adventureFileName, "adventure/" + adventurePathName + "/" + adventureResult, true, bot.browser.getImg());
+            Misc.saveScreen(adventureFileName, "adventure-screen/" + adventurePathName + "/" + adventureResult, true, bot.browser.getImg());
         }
 
     }
