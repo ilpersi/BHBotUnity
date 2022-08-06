@@ -397,8 +397,6 @@ class CueManager {
         }
 
         // Expedition related:
-        addCue("Expedition1", "cues/expedition/cueExpedition1Hallowed.png", new Bounds(168, 34, 628, 108)); // Hallowed Expedtion Title
-        addCue("Expedition2", "cues/expedition/cueExpedition2Inferno.png", new Bounds(200, 40, 600, 100)); //Inferno Expedition
         addCue("Expedition5", "cues/expedition/cueExpedition5BattleBards.png", new Bounds(230, 40, 565, 100)); //Battle Bards!
         addCue("PortalBorderLeaves", "cues/expedition/portalBorderLeaves.png", new Bounds(48, 447, 107, 503));
 
@@ -565,6 +563,8 @@ class CueManager {
 
         //region Expedition
         addCue("ExpeditionButton", "unitycues/mainScreen/cueExpeditionButton.png", null); // Expedition Icon in main screen
+        addCue("Expedition1", "unitycues/expedition/cueExpedition1Hallowed.png", Bounds.fromWidthHeight(195, 50, 205, 45)); // Hallowed Expedition Title
+        addCue("Expedition2", "unitycues/expedition/cueExpedition2Inferno.png", Bounds.fromWidthHeight(195, 50, 185, 45)); // Inferno Expedition Title
         addCue("Expedition3", "unitycues/expedition/cueExpedition3Jammie.png", Bounds.fromWidthHeight(205, 50, 385, 45)); // Jammie Expedition Title
         addCue("Expedition4", "unitycues/expedition/cueExpedition4Idol.png", Bounds.fromWidthHeight(230, 50, 340, 45)); // "Idol Expedition Title"
         addCue("DifficultyExpedition", "unitycues/expedition/cueDifficultyExpedition.png", Bounds.fromWidthHeight(390, 355, 185, 90)); // Expedition Difficulty combo box

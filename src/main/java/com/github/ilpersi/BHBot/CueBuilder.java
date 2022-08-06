@@ -483,6 +483,10 @@ public class CueBuilder {
         //endregion
 
         //region Expedition
+        addCueLocatorByPattern(cueLocators, "cuebuilder/expedition", "exp-hallowed_(.*)\\.png", Bounds.fromWidthHeight(209, 61, 178, 21),
+                Set.of(), Set.of(), "Expedition1", "unitycues/expedition/cueExpedition1Hallowed.png", "Hallowed Expedition Title");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/expedition", "exp-inferno_(.*)\\.png", Bounds.fromWidthHeight(209, 60, 161, 23),
+                Set.of(), Set.of(), "Expedition2", "unitycues/expedition/cueExpedition2Inferno.png", "Inferno Expedition Title");
         addCueLocatorByPattern(cueLocators, "cuebuilder/expedition", "exp-jammie_(.*)\\.png", Bounds.fromWidthHeight(219, 60, 361, 23),
                 Set.of(), Set.of(), "Expedition3", "unitycues/expedition/cueExpedition3Jammie.png", "Jammie Expedition Title");
         addCueLocatorByPattern(cueLocators, "cuebuilder/expedition", "exp-idol_(.*)\\.png", Bounds.fromWidthHeight(243, 60, 313, 23),

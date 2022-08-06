@@ -3177,12 +3177,12 @@ public class AdventureThread implements Runnable {
 
         if (currentExpedition == 1) { // Hallowed
 
-            portalCheck[0] = new Point(190, 146); //Googarum
+            portalCheck[0] = new Point(188, 144); //Googarum
             portalCheck[1] = new Point(484, 205); //Svord
             portalCheck[2] = new Point(328, 339); //Twimbo
-            portalCheck[3] = new Point(641, 345); //X5-T34M
+            portalCheck[3] = new Point(641, 343); //X5-T34M
 
-            portalPosition[0] = new Point(200, 200); //Googarum
+            portalPosition[0] = new Point(200, 185); //Googarum
             portalPosition[1] = new Point(520, 220); //Svord
             portalPosition[2] = new Point(360, 360); //Twimbo
             portalPosition[3] = new Point(650, 380); //X5-T34M
