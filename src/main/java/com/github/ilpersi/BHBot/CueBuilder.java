@@ -491,6 +491,8 @@ public class CueBuilder {
                 Set.of(), Set.of(), "Expedition3", "unitycues/expedition/cueExpedition3Jammie.png", "Jammie Expedition Title");
         addCueLocatorByPattern(cueLocators, "cuebuilder/expedition", "exp-idol_(.*)\\.png", Bounds.fromWidthHeight(243, 60, 313, 23),
                 Set.of(), Set.of(), "Expedition4", "unitycues/expedition/cueExpedition4Idol.png", "Idol Expedition Title");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/expedition", "exp-battle_(.*)\\.png", Bounds.fromWidthHeight(252, 60, 187, 23),
+                Set.of(), Set.of(), "Expedition5", "unitycues/expedition/cueExpedition5Battle.png", "Battle Bards Expedition Title");
         final Set<Bounds> expDiffTransp = Set.of(Bounds.fromWidthHeight(413, 393, 108, 28), Bounds.fromWidthHeight(410, 396, 114, 24));
         addCueLocatorByPattern(cueLocators, "cuebuilder/expedition", "exp-portal_(.*)\\.png", Bounds.fromWidthHeight(403, 366, 162, 69),
                 Set.of(), expDiffTransp, "DifficultyExpedition", "unitycues/expedition/cueDifficultyExpedition.png", "Expedition Difficulty combo box");

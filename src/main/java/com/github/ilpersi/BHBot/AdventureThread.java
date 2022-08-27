@@ -3237,10 +3237,10 @@ public class AdventureThread implements Runnable {
             colorCheck[2] = Color.WHITE;
             colorCheck[3] = new Color(251, 201, 126);
         } else { // Battle Bards!
-            portalCheck[0] = new Point(387, 152); // Hero Fest
-            portalCheck[1] = new Point(253, 412); // Burning Fam
-            portalCheck[2] = new Point(568, 418); // Melvapaloozo
-            portalCheck[3] = new Point(435, 306); // Bitstock
+            portalCheck[0] = new Point(387, 166); // Hero Fest
+            portalCheck[1] = new Point(253, 422); // Burning Fam
+            portalCheck[2] = new Point(568, 426); // Melvapaloozo
+            portalCheck[3] = new Point(437, 306); // Bitstock
 
             portalPosition[0] = new Point(402, 172); // Hero Fest
             portalPosition[1] = new Point(240, 371); // Burning Fam
