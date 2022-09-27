@@ -470,7 +470,7 @@ class CueManager {
      */
     void updateUnityCues() {
         //region Autoshrine
-        addCue("Settings", "unitycues/autoShrine/cueSettings.png", Bounds.fromWidthHeight(365, 105, 60, 80)); // settings menu
+        addCue("Settings", "unitycues/autoShrine/cueSettings.png", Bounds.fromWidthHeight(295, 110, 60, 60)); // Tabs from the setting menu to make sure it is opened.
         addCue("IgnoreCheck", "unitycues/autoShrine/cueIgnoreCheck.png", null); // Green check used on the Ignore options
         //endregion
 

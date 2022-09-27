@@ -136,7 +136,7 @@ public class SettingsManager {
 
             closeSettings();
         } else {
-            BHBotUnity.logger.warn("SettingsManger could not open the settings menu!");
+            BHBotUnity.logger.warn("SettingsManager could not open the settings menu!");
         }
 
     }
@@ -156,7 +156,7 @@ public class SettingsManager {
             bot.browser.clickOnSeg(seg);
             seg = MarvinSegment.fromCue(BHBotUnity.cues.get("Settings"), delay, bot.browser);
             if (seg == null) {
-                bot.saveGameScreen("open-settings-no-setting-menu", "errors");
+                bot.saveGameScreen("open-settings-no-setting-menu", "errors/setting-manager");
             } else {
                 // Let's wait a bit more for the setting menu to stay in the correct position.
                 // Sometimes it bounces and this leads to errors

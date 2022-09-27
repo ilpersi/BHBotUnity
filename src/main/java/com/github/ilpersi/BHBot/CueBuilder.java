@@ -318,8 +318,8 @@ public class CueBuilder {
         //endregion
 
         //region Auto Shrine
-        addCueLocatorByPattern(cueLocators, "cuebuilder/autoShrine", "settings(.*)\\.png", Bounds.fromWidthHeight(376, 115, 39, 58),
-                Set.of(), Set.of(), "Settings", "unitycues/autoShrine/cueSettings.png", "");
+        addCueLocatorByPattern(cueLocators, "cuebuilder/autoShrine", "settings(.*)\\.png", Bounds.fromWidthHeight(307, 121, 34, 38),
+                Set.of(), Set.of(), "Settings", "unitycues/autoShrine/cueSettings.png", "Tabs from the setting menu to make sure it is opened.");
         //endregion
 
         //region Blockers
