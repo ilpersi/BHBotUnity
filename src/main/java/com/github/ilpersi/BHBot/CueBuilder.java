@@ -327,8 +327,8 @@ public class CueBuilder {
                 Set.of(), Set.of(), "Reconnect", "unitycues/blockers/cueReconnect.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/blockers", "news(.*)\\.png", Bounds.fromWidthHeight(358, 64, 83, 58),
                 Set.of(), Set.of(), "News", "unitycues/blockers/cueNewsPopup.png", "");
-        cueLocators.add(new CueLocator("cuebuilder/blockers/news.png", Bounds.fromWidthHeight(421, 447, 119, 32),
-                Set.of(new Color(255, 255, 255)), Set.of(), "NewsClose", "unitycues/blockers/cueNewsClose.png", true, ""));
+        addCueLocatorByPattern(cueLocators, "cuebuilder/blockers", "news(.*)\\.png", Bounds.fromWidthHeight(421, 447, 119, 32),
+                Set.of(), Set.of(), "NewsClose", "unitycues/blockers/cueNewsClose.png", "Close button for News.");
         addCueLocatorByPattern(cueLocators, "cuebuilder/blockers", "reconnect(.*)\\.png", Bounds.fromWidthHeight(336, 131, 129, 58),
                 Set.of(), Set.of(), "UhOh", "unitycues/blockers/cueUhoh.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/blockers", "reconnect(.*)\\.png", Bounds.fromWidthHeight(300, 230, 212, 67),
@@ -338,7 +338,7 @@ public class CueBuilder {
         addCueLocatorByPattern(cueLocators, "cuebuilder/blockers", "daily(.*)\\.png", Bounds.fromWidthHeight(353, 444, 97, 31),
                 Set.of(), Set.of(), "Claim", "unitycues/blockers/cueClaim.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/blockers", "items(.*)\\.png", Bounds.fromWidthHeight(339, 117, 119, 58),
-                Set.of(), Set.of(), "Items", "unitycues/blockers/cueItems.png", "");
+                Set.of(), Set.of(), "Items", "unitycues/blockers/cueItems.png", "Items Cue for daily reward");
         addCueLocatorByPattern(cueLocators, "cuebuilder/blockers", "recently_disc_(.*)\\.png", Bounds.fromWidthHeight(270, 208, 258, 109),
                 Set.of(), Set.of(), "RecentlyDisconnected", "unitycues/blockers/cueRecentlyDisconnected.png", "");
         addCueLocatorByPattern(cueLocators, "cuebuilder/blockers", "not_in_guild_(.*)\\.png", Bounds.fromWidthHeight(267, 226, 264, 65),

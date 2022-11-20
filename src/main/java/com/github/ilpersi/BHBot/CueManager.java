@@ -263,13 +263,6 @@ class CueManager {
         addCue("Selector", "cues/cueSelector.png", Bounds.fromWidthHeight(295, 55, 205, 45));
         addCue("LightBlueSelect", "cues/cueLightBlueSelect.png", Bounds.fromWidthHeight(255, 410, 90, 25));
 
-        addCue("DailyRewards", "cues/cueDailyRewards.png", new Bounds(260, 45, 285, 75));
-        addCue("Claim", "cues/cueClaim.png", null); // claim button, when daily rewards popup is open
-        addCue("Items", "cues/cueItems.png", null); // used when we clicked "claim" on daily rewards popup. Used also with main menu ads.
-        addCue("X", "cues/cueX.png", null); // "X" close button used with claimed daily rewards popup
-
-        addCue("News", "cues/cueNewsPopup.png", new Bounds(345, 60, 365, 85)); // news popup
-
         addCue("NotEnoughShards", "cues/cueNotEnoughShards.png", Bounds.fromWidthHeight(265, 215, 270, 70));
 
         // New Raid level detection logic
@@ -498,7 +491,7 @@ class CueManager {
         addCue("UhOh", "unitycues/blockers/cueUhoh.png", Bounds.fromWidthHeight(325, 120, 150, 80)); // UH OH Popup title
         addCue("Disconnected", "unitycues/blockers/cueDisconnected.png", Bounds.fromWidthHeight(290, 220, 235, 90)); // cue for "You have been disconnected" popup
         addCue("Reconnect", "unitycues/blockers/cueReconnect.png", Bounds.fromWidthHeight(325, 335, 150, 55)); // used with "You have been disconnected" dialog and also with the "maintenance" dialog
-        addCue("NewsClose", "unitycues/blockers/cueNewsClose.png", Bounds.fromWidthHeight(431, 448, 88, 28)); // close button used with "News" popup
+        addCue("NewsClose", "unitycues/blockers/cueNewsClose.png", Bounds.fromWidthHeight(410, 435, 140, 55)); // Close button for News
         addCue("DailyRewards", "unitycues/blockers/cueDailyRewards.png", Bounds.fromWidthHeight(245, 40, 310, 80)); // Daily Reward Claim Screen
         addCue("Claim", "unitycues/blockers/cueClaim.png", Bounds.fromWidthHeight(340, 430, 120, 55)); // Daily Reward green claim button
         addCue("Items", "unitycues/blockers/cueItems.png", Bounds.fromWidthHeight(325, 105, 145, 80)); // Imes Cue for daily reward
