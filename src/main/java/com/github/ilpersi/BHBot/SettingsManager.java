@@ -120,7 +120,7 @@ public class SettingsManager {
                         alreadyFound.add(setting.cueName);
                     } else {
                         BHBotUnity.logger.debug(String.format("Impossible to find %s at bar position %d", setting.cueName, setting.barPosition));
-                        String imgName = "no_%s_pos_%d".formatted(setting.cueName, setting.barPosition);
+                        String imgName = "scroller_%02d_no_%s".formatted(setting.barPosition, setting.cueName);
                         Misc.saveScreen(imgName, "errors/settingsManager", true, bot.browser.getImg());
                     }
                 }
