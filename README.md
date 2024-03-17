@@ -1,16 +1,13 @@
-# BHBot
+# BHBotUnity
 
-[![Gitter chat](https://img.shields.io/gitter/room/ilpersi/BHBot.svg?color=red&style=plastic&logo=gitter)](https://gitter.im/BHBot/community)
-[![GitHub release](https://img.shields.io/github/release/ilpersi/BHBot.svg?label=last%20release&style=plastic&logo=docusign)](https://github.com/ilpersi/BHBot/releases/latest)
-[![GitHub issues by-label](https://img.shields.io/github/issues/ilpersi/BHBot/bug.svg?label=bug%28s%29&style=plastic&logo=hackaday)](https://github.com/ilpersi/BHBot/labels/bug)
-![GitHub All Releases](https://img.shields.io/github/downloads/ilpersi/BHBot/total.svg?label=total%20downloads&style=plastic)
-[![Paypal Donate](https://img.shields.io/badge/donate-paypal-informational.svg?logo=paypal&style=plastic)](https://www.paypal.me/ilpersi)
-[![Liberapay Goal](https://img.shields.io/liberapay/goal/BHBot.svg?logo=liberapay&style=plastic)](https://liberapay.com/BHBot/donate)
+## Important Note March 17 2024
+I've lost interest in the game and I am no longer updating the bot. The code logic should be ok, however all the cues need review/update to make this bot work correctly. I am making the code public just in case someone wants to pick the work where I left it.
 
-## What is BHBot?
-BHBot is a program that automates the [Bit Heroes](http://www.kongregate.com/games/juppiomenz/bit-heroes) game.
-It is a non intrusive program that works by opening up a Chromium window and controls the game by taking a screenshot every few seconds, detecting cues from the screenshot and
-then simulating mouse clicks. BHBot is a good example of how to create such bots to automate flash games or other browser games
+
+## What is BHBotUnity?
+BHBotUnity is a program that automates the [Bit Heroes](http://www.kongregate.com/games/juppiomenz/bit-heroes) game. It is a fork of my original [BHBot](https://github.com/ilpersi/BHBot) that supports the Unity engine release in 2021.
+It is a non intrusive program that works by opening up a Browser window and controls the game by taking a screenshot every few seconds, detecting cues from the screenshot and
+then simulating mouse clicks. BHBotUnity is a good example of how to create such bots to automate flash games or other browser games
 (it can be easily adjusted to play other games).
 
 Once configured and running the bot is designed to run unattended indefinitely.
@@ -44,14 +41,8 @@ The level/difficulty for each activity can be defined in the settings file. The 
 If the bot detects a "Disconnected" dialog, it will pause its execution for an hour giving the user a chance to play manually.
 Disconnects are usually result of another instance logging into the game. This is why bot pauses in case it detects it.
 
-## Download
-You can download the latest stable release BHBot.jar from the [releases](https://github.com/ilpersi/BHBot/releases) page.
-
-For the latest functionality it is recommended to compile your own version as there are frequent commits with bug-fixes and new functionality between major releases.
-
-## First time setup
-
-See [the wiki](https://github.com/ilpersi/BHBot/wiki) for the first time setup guide.
+## Download & First time setup
+As the cues require updates, there is no a packaged release of the bot. No support is provided and you can have a look at the old BHBot documentation to get an idea.
 
 ## Important
 
@@ -80,22 +71,7 @@ command input box):
 - `shot [prefix]`: takes a screenshot of the game and saves it to 'shot.png'. If a _prefix_ is specified it will be used instead of the default _shot_ one.
 - `show`: shows Chromium window again after it has been hidden.
 - `stop`: stops the bot execution (may take a few seconds. Once it is stopped, the console will close automatically).
-  
-## Donate
-BHBot is free and always will be. If you would like to make a donation towards the project you can use [Paypal](https://www.paypal.me/ilpersi) or [Liberapay](https://liberapay.com/BHBot/donate).
+
   
 ## Authors
-BHBot was originally created by [Betalord](https://github.com/Betalord). On 29th of September 2017 (the 1st year anniversary of the Bit Heroes game) he quit the game and released the bot to the public. In December 2018 [Fortigate](https://github.com/Fortigate) picked up the development and from March 2019 [ilpersi](https://github.com/ilpersi) joined him to make the bot what it is today. In June 2019 the project ownership was tranferred to ilpersi, granting autonomy moving forwards.
-
-## Special thanks
-The bot would not exist without everybody who uses or contributes to it.
-
-A special mention goes to the teams that created two amzing products:
-- the [IntelliJ team](https://www.jetbrains.com/?from=BHBot) who granted us a free open-source IntelliJ Ultimate license that we use to code the bot.
-- the <a href="https://www.ej-technologies.com/products/jprofiler/overview.html" rel="external">JProfiler team</a>, a Java profiler tool, that granted us a free open-source license to help make this tool even better.
-
-## Finally
-
-Hopefully this bot will prove useful to you, if you have any questions just raise an issue or join our gitter room in which you can talk directly with the developers! Enjoy :-)
-
-Made with love using [![IntelliJ](https://drive.google.com/uc?export=view&id=1DxGuLJD9hpkZ2ZWrAohwL2ePIMynRUqa)](https://www.jetbrains.com/?from=BHBot) and [![JProfiler](https://drive.google.com/uc?export=view&id=1O3bBvTXWRGuNJ8xdpDsp9lHfDQ4NCTnW)](https://www.ej-technologies.com/products/jprofiler/overview.html)
+BHBot was originally created by [Betalord](https://github.com/Betalord). On 29th of September 2017 (the 1st year anniversary of the Bit Heroes game) he quit the game and released the bot to the public. In December 2018 [Fortigate](https://github.com/Fortigate) picked up the development and from March 2019 [ilpersi](https://github.com/ilpersi) joined him to make the bot what it is today. In June 2019 the project ownership was tranferred to ilpersi, granting autonomy moving forwards. Starting from January 2021, ilpersi developed a private Unity fork.
